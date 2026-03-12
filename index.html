@@ -95,7 +95,8 @@
     backdrop-filter: blur(4px);
   }
 
-  .logo-img { height: 36px; width: auto; object-fit: contain; display: block; }
+  .logo-img { height: 36px; max-height: 36px; width: auto; max-width: 160px; object-fit: contain; display: block; }
+  .logo-wrapper { height: 36px; max-height: 36px; display: flex; align-items: center; overflow: hidden; }
   .logo-text {
     font-size: 20px; font-weight: 900; letter-spacing: 4px;
     color: var(--gold); text-transform: uppercase;
@@ -385,7 +386,7 @@
   <!-- ✏️ LOGO
        Replace YOUR_LOGO_URL_HERE.png with your logo image URL.
        The logo-text fallback shows automatically if image fails. -->
-  <div>
+  <div class="logo-wrapper">
     <img
       class="logo-img"
       src="https://raw.githubusercontent.com/Majidangawi/malearnsa/main/MA%20Learn%20white-08.png"
