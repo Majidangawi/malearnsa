@@ -33,7 +33,15 @@
   @font-face {
     font-family: 'GumelaArabic';
     src: url('fonts/gumela-arabic-bold.otf') format('opentype');
-    font-weight: bold;
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  @font-face {
+    font-family: 'GumelaArabic';
+    src: url('fonts/gumela-arabic-light.otf') format('opentype');
+    font-weight: 300;
     font-style: normal;
     font-display: swap;
   }
@@ -45,6 +53,7 @@
   .store-text h3,
   .section-title {
     font-family: 'GumelaArabic', 'Cairo', sans-serif;
+    font-weight: 700;
   }
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -53,8 +62,9 @@
   body {
     background: var(--bg);
     color: var(--white);
-    /* Body font stays Cairo — headings use GumelaArabic above */
-    font-family: 'Cairo', sans-serif;
+    /* Body font: Gumela Arabic Light */
+    font-family: 'GumelaArabic', 'Cairo', sans-serif;
+    font-weight: 300;
     min-height: 100vh;
     overflow-x: hidden;
     /* ARABIC MOBILE FIX — prevents letters from breaking */
@@ -296,7 +306,7 @@
     text-decoration: none; padding: 14px 36px;
     font-size: 14px; font-weight: 700;
     white-space: nowrap; transition: all 0.3s;
-    font-family: 'Cairo', sans-serif; flex-shrink: 0;
+    font-family: 'GumelaArabic', 'Cairo', sans-serif; flex-shrink: 0;
   }
   .store-btn:hover { background: var(--gold); color: #080808; }
 
