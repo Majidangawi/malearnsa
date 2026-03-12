@@ -6,19 +6,10 @@
 <title>MA LEARN — منصة التعلم الإبداعي</title>
 
 <!--
-  ╔══════════════════════════════════════════════════════╗
-  ║  FONT — To change the font, replace "Cairo" in      ║
-  ║  the Google Fonts link AND in font-family below.    ║
-  ║                                                      ║
-  ║  Good Arabic Google Fonts to try:                    ║
-  ║  • Cairo        (current — clean, modern)            ║
-  ║  • Tajawal      (rounded, friendly)                  ║
-  ║  • Almarai      (editorial, premium)                 ║
-  ║  • Noto Sans Arabic (neutral, universal)             ║
-  ╚══════════════════════════════════════════════════════╝
+  Custom font: Gumela Arabic Bold (headings only)
+  File: gumela-arabic-bold.otf — must be in the same folder as index.html on GitHub
+  Body font: Cairo (Google Fonts, loaded below)
 -->
-
-<!-- 🔤 FONT URL — change "Cairo" here to switch font -->
 <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
 
 <style>
@@ -33,13 +24,36 @@
     --body: #BBBBBB;
   }
 
+  /* ── CUSTOM FONT ──────────────────────────────────────
+     Gumela Arabic Bold — applied to all headings.
+     The file must be uploaded to your GitHub repo as:
+       fonts/gumela-arabic-bold.otf
+     Then update the src path below to match.
+  ────────────────────────────────────────────────────── */
+  @font-face {
+    font-family: 'GumelaArabic';
+    src: url('fonts/gumela-arabic-bold.otf') format('opentype');
+    font-weight: bold;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  h1, h2, h3,
+  .hero-title,
+  .course-title,
+  .about-text h2,
+  .store-text h3,
+  .section-title {
+    font-family: 'GumelaArabic', 'Cairo', sans-serif;
+  }
+
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html { scroll-behavior: smooth; }
 
   body {
     background: var(--bg);
     color: var(--white);
-    /* 🔤 FONT FAMILY — change "Cairo" here too */
+    /* Body font stays Cairo — headings use GumelaArabic above */
     font-family: 'Cairo', sans-serif;
     min-height: 100vh;
     overflow-x: hidden;
@@ -317,7 +331,7 @@
     header { padding: 14px 20px; }
     nav { display: none; }
     .hero { padding: 100px 20px 80px; }
-    .hero-title { font-size: clamp(40px, 9vw, 48px); line-height: 1.2; }
+    .hero-title { font-size: clamp(30px, 9vw, 48px); line-height: 1.2; }
     .hero-eyebrow { font-size: 10px; letter-spacing: 2px; }
     .hero-sub { font-size: 15px; max-width: 100%; }
     .section { padding: 64px 20px; }
@@ -357,7 +371,7 @@
   <div>
     <img
       class="logo-img"
-      src="https://github.com/Majidangawi/malearnsa/blob/e4808b44939c34bb1ae5db2aac4f4e3366dc070e/MA%20Learn%20white-08.png?raw=true"
+      src="YOUR_LOGO_URL_HERE.png"
       alt="MA LEARN"
       onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
     />
