@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>MA LEARN — منصة التعلم الإبداعي</title>
+
+<!--
+  ╔══════════════════════════════════════════════════════╗
+  ║  FONT — To change the font, replace "Cairo" in      ║
+  ║  the Google Fonts link AND in font-family below.    ║
+  ║                                                      ║
+  ║  Good Arabic Google Fonts to try:                    ║
+  ║  • Cairo        (current — clean, modern)            ║
+  ║  • Tajawal      (rounded, friendly)                  ║
+  ║  • Almarai      (editorial, premium)                 ║
+  ║  • Noto Sans Arabic (neutral, universal)             ║
+  ╚══════════════════════════════════════════════════════╝
+-->
+
+<!-- 🔤 FONT URL — change "Cairo" here to switch font -->
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E8D08A;
+    --bg: #080808;
+    --bg2: #0E0E0E;
+    --bg3: #141414;
+    --white: #F5F0E8;
+    --muted: #888;
+    --body: #BBBBBB;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--white);
+    /* 🔤 FONT FAMILY — change "Cairo" here too */
+    font-family: 'Cairo', sans-serif;
+    min-height: 100vh;
+    overflow-x: hidden;
+    /* ARABIC MOBILE FIX — prevents letters from breaking */
+    word-break: keep-all;
+    overflow-wrap: break-word;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.4;
+  }
+
+  /* HEADER */
+  header {
+    position: fixed;
+    top: 0; width: 100%;
+    z-index: 100;
+    padding: 16px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: linear-gradient(to bottom, rgba(8,8,8,0.97) 0%, transparent 100%);
+    backdrop-filter: blur(4px);
+  }
+
+  .logo-img { height: 40px; width: auto; object-fit: contain; display: block; }
+  .logo-text {
+    font-size: 20px; font-weight: 900; letter-spacing: 4px;
+    color: var(--gold); text-transform: uppercase; display: none;
+  }
+  .logo-text span { color: var(--white); opacity: 0.4; font-weight: 300; }
+
+  nav { display: flex; align-items: center; }
+  nav a {
+    color: var(--muted); text-decoration: none; font-size: 14px;
+    margin-right: 32px; transition: color 0.3s; white-space: nowrap;
+  }
+  nav a:hover { color: var(--gold); }
+
+  /* HERO */
+  .hero {
+    min-height: 100vh;
+    display: flex; flex-direction: column;
+    justify-content: center; align-items: center;
+    text-align: center;
+    padding: 120px 24px 100px;
+    position: relative; overflow: hidden;
+  }
+
+  .hero-bg {
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 50% 60%, rgba(201,168,76,0.07) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 30% at 20% 20%, rgba(201,168,76,0.04) 0%, transparent 60%);
+  }
+
+  .hero-line {
+    width: 1px; height: 70px;
+    background: linear-gradient(to bottom, transparent, var(--gold), transparent);
+    margin: 0 auto 40px;
+    animation: pulse 3s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.4; transform: scaleY(1); }
+    50% { opacity: 1; transform: scaleY(1.2); }
+  }
+
+  .hero-eyebrow {
+    font-size: 11px; font-weight: 700; letter-spacing: 3px;
+    color: var(--gold); text-transform: uppercase; margin-bottom: 24px;
+    opacity: 0; animation: fadeUp 1s ease forwards 0.3s;
+    word-spacing: normal;
+  }
+
+  .hero-title {
+    font-size: clamp(34px, 6vw, 88px);
+    font-weight: 900; line-height: 1.15; margin-bottom: 24px;
+    opacity: 0; animation: fadeUp 1s ease forwards 0.5s;
+    word-break: keep-all; hyphens: none;
+    max-width: 88vw;
+  }
+
+  .hero-title .accent {
+    color: transparent;
+    -webkit-text-stroke: 1.5px var(--gold);
+    display: inline-block;
+    padding: 0 2px;
+  }
+
+  .hero-sub {
+    font-size: clamp(15px, 1.8vw, 19px);
+    color: var(--body); max-width: 520px;
+    line-height: 1.8; font-weight: 400; margin-bottom: 48px;
+    opacity: 0; animation: fadeUp 1s ease forwards 0.7s;
+    word-break: keep-all;
+  }
+
+  .hero-cta {
+    display: inline-flex; align-items: center; gap: 12px;
+    background: var(--gold); color: #080808;
+    text-decoration: none; padding: 16px 44px;
+    font-size: 15px; font-weight: 700; letter-spacing: 1px;
+    transition: all 0.3s; white-space: nowrap;
+    opacity: 0; animation: fadeUp 1s ease forwards 0.9s;
+  }
+
+  .hero-cta:hover {
+    background: var(--gold-light);
+    transform: translateY(-2px);
+    box-shadow: 0 20px 60px rgba(201,168,76,0.3);
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(24px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* COURSES */
+  .section { padding: 100px 48px; max-width: 1200px; margin: 0 auto; }
+
+  .section-header { display: flex; align-items: center; gap: 20px; margin-bottom: 56px; }
+  .section-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 4px;
+    color: var(--gold); text-transform: uppercase; white-space: nowrap;
+  }
+  .section-line {
+    flex: 1; height: 1px;
+    background: linear-gradient(to left, transparent, rgba(201,168,76,0.3));
+  }
+
+  .courses-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2px;
+  }
+
+  .course-card {
+    background: var(--bg2); padding: 44px 36px;
+    position: relative; overflow: hidden;
+    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    cursor: pointer; text-decoration: none;
+    display: block; color: inherit;
+    border-top: 1px solid rgba(201,168,76,0.2);
+  }
+
+  .course-card::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(201,168,76,0.06) 0%, transparent 60%);
+    opacity: 0; transition: opacity 0.4s;
+  }
+
+  .course-card:hover { background: var(--bg3); transform: translateY(-4px); }
+  .course-card:hover::before { opacity: 1; }
+
+  .course-card.coming-soon { opacity: 0.5; cursor: default; pointer-events: none; }
+
+  .course-number {
+    font-size: 64px; font-weight: 900;
+    color: transparent; -webkit-text-stroke: 1px rgba(201,168,76,0.2);
+    line-height: 1; margin-bottom: 20px;
+    direction: ltr; text-align: right;
+  }
+
+  .course-tag {
+    display: inline-block; font-size: 10px; font-weight: 700;
+    letter-spacing: 2px; text-transform: uppercase;
+    padding: 5px 12px; margin-bottom: 18px;
+    border: 1px solid; white-space: nowrap;
+  }
+  .course-tag.available { color: var(--gold); border-color: rgba(201,168,76,0.4); background: rgba(201,168,76,0.08); }
+  .course-tag.soon      { color: var(--muted); border-color: rgba(136,136,136,0.3); }
+  .course-tag.live      { color: #4CAF50; border-color: rgba(76,175,80,0.4); background: rgba(76,175,80,0.08); animation: livePulse 2s ease-in-out infinite; }
+
+  @keyframes livePulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+
+  .course-title { font-size: 24px; font-weight: 700; line-height: 1.4; margin-bottom: 14px; color: var(--white); word-break: keep-all; }
+  .course-desc  { font-size: 15px; color: var(--body); line-height: 1.75; font-weight: 400; margin-bottom: 28px; word-break: keep-all; }
+
+  .course-meta {
+    display: flex; align-items: center; justify-content: space-between;
+    padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.06);
+  }
+
+  .course-price { font-size: 28px; font-weight: 900; color: var(--gold); direction: ltr; }
+  .course-price span { font-size: 12px; font-weight: 400; color: var(--muted); margin-right: 3px; }
+
+  .course-arrow {
+    width: 44px; height: 44px; border: 1px solid rgba(201,168,76,0.3);
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.3s; color: var(--gold); font-size: 18px; flex-shrink: 0;
+  }
+  .course-card:hover .course-arrow { background: var(--gold); color: #080808; border-color: var(--gold); }
+
+  /* ABOUT */
+  .about-strip {
+    background: var(--bg2);
+    border-top: 1px solid rgba(201,168,76,0.15);
+    border-bottom: 1px solid rgba(201,168,76,0.15);
+    padding: 80px 48px;
+  }
+
+  .about-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center; }
+  .about-text h2 { font-size: clamp(26px, 3vw, 40px); font-weight: 900; line-height: 1.3; margin-bottom: 20px; word-break: keep-all; }
+  .about-text p  { font-size: 16px; color: var(--body); line-height: 1.85; font-weight: 400; word-break: keep-all; }
+
+  .stats-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; }
+  .stat-box { background: var(--bg3); padding: 28px; text-align: center; }
+  .stat-number { font-size: 44px; font-weight: 900; color: var(--gold); line-height: 1; margin-bottom: 8px; direction: ltr; }
+  .stat-label { font-size: 11px; color: var(--muted); letter-spacing: 1px; text-transform: uppercase; }
+
+  /* STORE */
+  .store-banner { max-width: 1200px; margin: 0 auto; padding: 80px 48px 100px; }
+
+  .store-inner {
+    background: var(--bg2); border: 1px solid rgba(201,168,76,0.2);
+    padding: 48px 56px; display: flex; align-items: center;
+    justify-content: space-between; gap: 40px;
+    position: relative; overflow: hidden;
+  }
+
+  .store-inner::before {
+    content: ''; position: absolute;
+    right: 0; top: 0; bottom: 0; width: 4px;
+    background: var(--gold);
+  }
+
+  .store-text h3 { font-size: 26px; font-weight: 700; margin-bottom: 8px; word-break: keep-all; }
+  .store-text p  { color: var(--body); font-size: 15px; font-weight: 400; word-break: keep-all; }
+
+  .store-btn {
+    display: inline-flex; align-items: center; gap: 10px;
+    border: 1px solid var(--gold); color: var(--gold);
+    text-decoration: none; padding: 14px 36px;
+    font-size: 14px; font-weight: 700;
+    white-space: nowrap; transition: all 0.3s;
+    font-family: 'Cairo', sans-serif; flex-shrink: 0;
+  }
+  .store-btn:hover { background: var(--gold); color: #080808; }
+
+  /* FOOTER */
+  footer {
+    border-top: 1px solid rgba(255,255,255,0.06);
+    padding: 32px 48px; display: flex;
+    justify-content: space-between; align-items: center; gap: 16px;
+  }
+  footer p { font-size: 13px; color: var(--muted); }
+  footer a { color: var(--muted); text-decoration: none; font-size: 13px; transition: color 0.3s; white-space: nowrap; }
+  footer a:hover { color: var(--gold); }
+
+  /* SCROLL HINT */
+  .scroll-hint {
+    position: absolute; bottom: 36px; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center; gap: 8px;
+    opacity: 0; animation: fadeUp 1s ease forwards 1.4s;
+  }
+  .scroll-hint span { font-size: 10px; letter-spacing: 3px; color: var(--muted); text-transform: uppercase; }
+  .scroll-dot { width: 1px; height: 36px; background: linear-gradient(to bottom, var(--gold), transparent); animation: scrollDown 1.5s ease-in-out infinite; }
+
+  @keyframes scrollDown {
+    0%   { transform: scaleY(0); transform-origin: top; }
+    50%  { transform: scaleY(1); transform-origin: top; }
+    51%  { transform: scaleY(1); transform-origin: bottom; }
+    100% { transform: scaleY(0); transform-origin: bottom; }
+  }
+
+  /* MOBILE */
+  @media (max-width: 768px) {
+    header { padding: 14px 20px; }
+    nav { display: none; }
+    .hero { padding: 100px 20px 80px; }
+    .hero-title { font-size: clamp(30px, 9vw, 48px); line-height: 1.2; }
+    .hero-eyebrow { font-size: 10px; letter-spacing: 2px; }
+    .hero-sub { font-size: 15px; max-width: 100%; }
+    .section { padding: 64px 20px; }
+    .courses-grid { grid-template-columns: 1fr; }
+    .course-card { padding: 32px 24px; }
+    .course-title { font-size: 20px; }
+    .course-desc { font-size: 14px; }
+    .about-inner { grid-template-columns: 1fr; gap: 40px; }
+    .about-strip { padding: 56px 20px; }
+    .about-text h2 { font-size: clamp(22px, 6vw, 32px); }
+    .store-banner { padding: 48px 20px 64px; }
+    .store-inner { flex-direction: column; padding: 32px 24px; text-align: center; }
+    .store-inner::before { right: auto; left: 0; top: 0; bottom: auto; width: 100%; height: 3px; }
+    .store-text h3 { font-size: 20px; }
+    footer { flex-direction: column; gap: 12px; text-align: center; padding: 24px 20px; }
+    .stat-number { font-size: 36px; }
+    .stat-box { padding: 20px 12px; }
+  }
+
+  @media (max-width: 400px) {
+    .hero-title { font-size: 28px; line-height: 1.25; }
+    .hero-eyebrow { font-size: 9px; letter-spacing: 1.5px; }
+    .course-price { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════
+     HEADER
+════════════════════════════════════════════════════ -->
+<header>
+
+  <!-- ✏️ LOGO
+       Replace YOUR_LOGO_URL_HERE.png with your logo image URL.
+       The logo-text fallback shows automatically if image fails. -->
+  <div>
+    <img
+      class="logo-img"
+      src="YOUR_LOGO_URL_HERE.png"
+      alt="MA LEARN"
+      onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+    />
+    <div class="logo-text">MA <span>|</span> LEARN</div>
+  </div>
+
+  <!-- ✏️ NAV LINKS -->
+  <nav>
+    <a href="#courses">الدورات</a>
+    <a href="#about">عن المنصة</a>
+    <a href="https://malearnstore.com">المتجر</a>
+  </nav>
+
+</header>
+
+
+<!-- ═══════════════════════════════════════════════════
+     HERO
+     ✏️ Edit: eyebrow, title, subtitle, button
+════════════════════════════════════════════════════ -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-line"></div>
+
+  <!-- ✏️ Small label above title -->
+  <p class="hero-eyebrow">منصة التعلم الإبداعي — MA LEARN</p>
+
+  <!-- ✏️ Main title — word in <span class="accent"> shows as outline -->
+  <h1 class="hero-title">
+    تعلّم من<br>
+    <span class="accent">المحترفين</span>
+  </h1>
+
+  <!-- ✏️ Subtitle -->
+  <p class="hero-sub">
+    دورات متخصصة في التصوير الاحترافي والذكاء الاصطناعي الإبداعي — صُممت لمن يريد الوصول إلى المستوى التالي
+  </p>
+
+  <!-- ✏️ Button text -->
+  <a href="#courses" class="hero-cta">اكتشف الدورات</a>
+
+  <div class="scroll-hint">
+    <span>تصفح</span>
+    <div class="scroll-dot"></div>
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════
+     COURSES
+     ✏️ Edit each card: tag, title, description, price
+     To activate a coming-soon card:
+       1. Change <div class="course-card coming-soon"> to <a href="URL" class="course-card">
+       2. Change the closing </div> to </a>
+       3. Remove class="coming-soon"
+════════════════════════════════════════════════════ -->
+<section class="section" id="courses">
+  <div class="section-header">
+    <!-- ✏️ Section label -->
+    <span class="section-label">الدورات المتاحة</span>
+    <div class="section-line"></div>
+  </div>
+
+  <div class="courses-grid">
+
+    <!-- COURSE 1 ✏️ -->
+    <a href="https://course.malearnsa.com" class="course-card">
+      <div class="course-number">01</div>
+      <!-- ✏️ Tag: available / soon / live -->
+      <div class="course-tag available">متاح الآن</div>
+      <!-- ✏️ Title -->
+      <h3 class="course-title">أبعد من إمكانيات الإضاءة</h3>
+      <!-- ✏️ Description -->
+      <p class="course-desc">
+        أكثر من 15 إعداد إضاءة احترافي، 82 صفحة من المحتوى العملي، وفيديوهات تطبيقية — كل ما تحتاجه لتتحكم في الضوء وتصنع صوراً لا تُنسى.
+      </p>
+      <div class="course-meta">
+        <!-- ✏️ Price -->
+        <div class="course-price"><span>SAR</span>650</div>
+        <div class="course-arrow">←</div>
+      </div>
+    </a>
+
+    <!-- COURSE 2 ✏️ — Coming Soon -->
+    <div class="course-card coming-soon">
+      <div class="course-number">02</div>
+      <!-- ✏️ Tag -->
+      <div class="course-tag live">قريباً — بعد العيد</div>
+      <!-- ✏️ Title -->
+      <h3 class="course-title">الذكاء الاصطناعي للمبدعين</h3>
+      <!-- ✏️ Description -->
+      <p class="course-desc">
+        Midjourney، Higgsfield، وأقوى أدوات الـ AI الإبداعية — دورة مباشرة تحوّل طريقة عملك وتضاعف إنتاجيتك.
+      </p>
+      <div class="course-meta">
+        <!-- ✏️ Replace with price when ready to launch -->
+        <div class="course-price" style="color: var(--muted); font-size: 18px;">يُعلن قريباً</div>
+        <div class="course-arrow" style="opacity:0.3">←</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════
+     ABOUT
+     ✏️ Edit: heading, paragraph, stat numbers & labels
+════════════════════════════════════════════════════ -->
+<div class="about-strip" id="about">
+  <div class="about-inner">
+    <div class="about-text">
+      <!-- ✏️ Heading -->
+      <h2>خبرة تتجاوز<br>١٥ عاماً في<br>صناعة الصورة</h2>
+      <!-- ✏️ Paragraph -->
+      <p>
+        MA LEARN منصة تعليمية أسسها مجد العنقاوي — مصوّر أزياء ومجوهرات، سفير Fujifilm، وصاحب أكثر من 17 غلاف مجلة بينها Harper's Bazaar Arabia. كل دورة مبنية على تجربة حقيقية في السوق الاحترافي.
+      </p>
+    </div>
+
+    <div class="stats-grid">
+      <!-- ✏️ Stat 1 -->
+      <div class="stat-box">
+        <div class="stat-number">17+</div>
+        <div class="stat-label">غلاف مجلة</div>
+      </div>
+      <!-- ✏️ Stat 2 -->
+      <div class="stat-box">
+        <div class="stat-number">15+</div>
+        <div class="stat-label">سنة خبرة</div>
+      </div>
+      <!-- ✏️ Stat 3 -->
+      <div class="stat-box">
+        <div class="stat-number">1M</div>
+        <div class="stat-label">هدف الإلهام</div>
+      </div>
+      <!-- ✏️ Stat 4 -->
+      <div class="stat-box">
+        <div class="stat-number">91K</div>
+        <div class="stat-label">مشاهدة عضوية</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════
+     STORE BANNER
+     ✏️ Edit: heading, subtitle, button text
+════════════════════════════════════════════════════ -->
+<div class="store-banner">
+  <div class="store-inner">
+    <div class="store-text">
+      <!-- ✏️ Heading -->
+      <h3>هل أنت مستعد للشراء؟</h3>
+      <!-- ✏️ Subtitle -->
+      <p>توجه إلى المتجر الرسمي للاشتراك في الدورات وشراء الكتب الإلكترونية</p>
+    </div>
+    <!-- ✏️ Button -->
+    <a href="https://malearnstore.com" class="store-btn">زيارة المتجر ←</a>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════
+     FOOTER
+     ✏️ Edit: year, email
+════════════════════════════════════════════════════ -->
+<footer>
+  <div>
+    <img
+      class="logo-img"
+      style="height: 28px;"
+      src="YOUR_LOGO_URL_HERE.png"
+      alt="MA LEARN"
+      onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+    />
+    <div class="logo-text" style="font-size:16px;">MA <span>|</span> LEARN</div>
+  </div>
+
+  <!-- ✏️ Year -->
+  <p>© 2025 MA Learn — جميع الحقوق محفوظة</p>
+
+  <!-- ✏️ Email -->
+  <a href="/cdn-cgi/l/email-protection#6e2f00090f190740230f04070a2e09030f0702400d0103">توا
