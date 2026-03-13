@@ -159,8 +159,14 @@
     justify-content: center;
     align-items: center;
     text-align: center;
-    /* enough top padding so header doesn't overlap, bottom for dots */
     padding: 100px 48px 110px;
+    /* Inactive slide contents must never catch clicks */
+    pointer-events: none;
+  }
+
+  /* Only the active slide's content is clickable */
+  .slide.active .slide-content {
+    pointer-events: auto;
   }
 
   .slide-rule {
