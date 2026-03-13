@@ -659,9 +659,9 @@
 
     .slide-eyebrow {
       font-size: 10px;
-      letter-spacing: 2px;
+      letter-spacing: 0;
+      word-spacing: 0;
       margin-bottom: 14px;
-      /* on mobile, allow wrap instead of ellipsis */
       white-space: normal;
       overflow: visible;
       text-overflow: unset;
@@ -692,9 +692,9 @@
 
     /* About me */
     .about-me { padding: 64px 20px; }
-    .about-me-inner { grid-template-columns: 1fr; gap: 48px; }
-    .about-me-photo { position: static; }
-    .about-me-photo img { max-height: 480px; }
+    .about-me-inner { grid-template-columns: 1fr; gap: 40px; }
+    .about-me-photo { position: static; order: -1; }
+    .about-me-photo img { max-height: 420px; object-position: center top; }
     .achieve-grid { grid-template-columns: 1fr 1fr; }
     .about-me-name { font-size: clamp(28px, 8vw, 42px); }
     .about-me-bio { font-size: 16px; }
