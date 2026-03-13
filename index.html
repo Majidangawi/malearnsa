@@ -112,9 +112,14 @@
     opacity: 0;
     transition: opacity 1.6s cubic-bezier(0.4, 0, 0.2, 1);
     will-change: opacity;
+    /* Inactive slides must not intercept any clicks */
+    pointer-events: none;
   }
 
-  .slide.active { opacity: 1; }
+  .slide.active {
+    opacity: 1;
+    pointer-events: auto;
+  }
 
   .slide img {
     width: 100%;
@@ -741,7 +746,7 @@
        Slide 1 → images/1.jpg   (new image you'll upload)
        Slide 2 → images/2.jpg   (new image you'll upload)
        Slide 3 → images/16.jpg  (keep — you on set)
-       Slide 4 → images/4.jpeg   (new image you'll upload)
+       Slide 4 → images/4.jpg   (new image you'll upload)
 ══════════════════════════════════════════════ -->
 <section class="slideshow" id="slideshow">
 
