@@ -1,175 +1,318 @@
 # Skill: freebie-creation
 
-Create a freebie Google Doc from a post idea, write the content in Majid's voice, save it to his Drive freebies folder, and return a shareable link.
+End-to-end freebie creation — from post idea to public Drive link. Writes content in Majid's voice, generates a fully branded HTML file, opens it for PDF export, then uploads the PDF to Google Drive automatically.
 
 ---
 
 ## Trigger
 
-Use this skill when Majid says:
 - "create a freebie for [post/topic]"
 - "build a freebie based on this post"
 - "make a lead magnet for [topic]"
 
 ---
 
-## Inputs to Gather
+## Step 1 — Gather inputs
 
-Before starting, confirm:
-1. **Post content or topic** — paste the post, or describe the idea
-2. **Freebie type** — one of:
-   - `mini-guide` — conceptual explainer with steps or tips
-   - `prompt-pack` — a collection of ready-to-use prompts
-   - `link` — a freebie that delivers an external link (platform, affiliate, resource)
-   - `template` — a reusable framework or fill-in-the-blank structure
-3. **Freebie title** — Arabic title preferred, or Majid can describe and Claude suggests
-4. **Main content** — what specifically goes inside (prompts, steps, links, tips)
+Ask only what's missing. If Majid already provided these, skip ahead.
 
-If any input is missing, ask before proceeding.
+1. **Post content or topic** — paste the post or describe the idea
+2. **Freebie type:**
+   - `mini-guide` — conceptual explainer with numbered steps
+   - `prompt-pack` — ready-to-use prompt collection
+   - `link` — delivers an external link (platform, tool, affiliate, workflow)
+   - `template` — reusable fill-in-the-blank framework
+3. **Hook / aha moment** — the insight that makes this freebie worth downloading
+4. **Post angle** — the main point of the Instagram post this freebie supports
+5. **Audience level** — beginner, familiar, or experienced with the topic
+6. **Link URL** — if type is `link`, get the exact URL
 
 ---
 
-## Document Structure
+## Step 2 — Write the content
 
-Every freebie follows this exact structure. Never deviate.
+Write the full freebie in Majid's voice. Present it to Majid before generating the design.
+Ask: "Ready to generate the design, or any changes first?"
+
+### Content structure (every freebie)
 
 ```
-[Label: دليل الأداة / دليل المحتوى / حزمة البروومبتات / etc.]
-[Main Title — English or mixed]
+[Label]
+[Title — English or mixed]
 [Subtitle — Arabic, Saudi dialect, one line that delivers the promise]
 
+[Link box — if type is `link`, place the URL prominently here]
 
 الفكرة
-[2–3 short paragraphs. The "why". The mindset. Why this matters.
-Written in Saudi dialect. Inspirational and direct — friend and mentor tone.
-Not instructional yet. Make them feel something before you show them anything.]
+[2–3 short paragraphs. The "why". The mindset. Make them feel something before showing anything.
+Saudi dialect. Friend and mentor tone. Inspirational but never vague.]
 
-
-[Section title based on type:]
+[Section title by type:]
   mini-guide  → الخطوات
   prompt-pack → البروومبتات
-  link        → الأداة
+  link        → الخطوات
   template    → القالب
 
-[Main content — see type-specific structure below]
+[Main content — see type rules below]
 
+[Closing insight — one italic line]
 
 تواصل معي
-إذا استفدت، تابعني للمزيد من المحتوى عن الذكاء الاصطناعي والإبداع البصري
+إذا استفدت، تابعني على منصاتي للمزيد من المحتوى عن الذكاء الاصطناعي والإبداع البصري
 Instagram  @majidangawi
 Instagram  @angawi.studio
 MA Learn   malearnsa.com
 
+صنّاع الإلهام ✦
+```
 
-صنّاع الإلهام
-✦
+### Type-specific content rules
+
+**mini-guide:** Arabic numerals (١ ٢ ٣). Each step: bold title + 1–2 sentence detail. Max 7 steps. End with one closing insight line.
+
+**prompt-pack:** Brief intro on how to use the prompts. Label each: PROMPT 01, PROMPT 02. Full English prompt (copy-paste ready). One Arabic note below each explaining what it achieves. End with a customization tip.
+
+**link:** الفكرة explains why the resource matters. الخطوات gives ٣–٥ numbered steps to use it. Link displayed prominently in a link box before الفكرة.
+
+**template:** Explain the framework and when to use it. Present template with [اكتب هنا] markers. Include one worked example. End with when NOT to use it.
+
+### Voice rules
+
+- Saudi dialect throughout. English only for tool names, proper nouns, prompts.
+- Friend and mentor — cares about the reader, direct because honest, not cold.
+- Short sentences. No fluff. Can be funny. Can be blunt.
+- Never: formal MSA, corporate language, filler phrases, hype words.
+
+---
+
+## Step 3 — Generate the branded HTML file
+
+After Majid approves the content, generate the HTML file.
+
+**File naming:** use the freebie title in English, kebab-case, e.g. `midjourney-moodboards.html`
+**Save to:** `/Users/mastudio/MA Photography Dropbox/MA Creative Studio/MA Ai/Claude AI/MA EA/freebies-drafts/`
+
+Use this exact HTML template. Replace only the content placeholders — never modify the CSS or brand elements.
+
+```html
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{TITLE}}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    @font-face { font-family:'Gumela'; src:url('../brand_assets/gumela-arabic-bold.otf') format('opentype'); font-weight:700; }
+    @font-face { font-family:'Gumela'; src:url('../brand_assets/gumela-arabic-regular.otf') format('opentype'); font-weight:400; }
+    @font-face { font-family:'Gumela'; src:url('../brand_assets/gumela-arabic-light.otf') format('opentype'); font-weight:300; }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    @page { size:A4; margin:0; }
+    body { font-family:'Gumela','Cairo',sans-serif; background:#040408; direction:rtl; -webkit-print-color-adjust:exact; print-color-adjust:exact; }
+    .page { width:210mm; min-height:297mm; margin:0 auto; background:#07070F; display:flex; flex-direction:column; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E"); }
+    .top-bar { height:4px; background:linear-gradient(to left,#8A6420,#C9A84C,#E8D08A,#C9A84C,#8A6420); flex-shrink:0; }
+    .header { padding:7mm 16mm 6mm; display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid rgba(201,168,76,0.2); flex-shrink:0; }
+    .header-meta { font-size:8pt; font-weight:300; color:#555; letter-spacing:0.04em; direction:ltr; }
+    .logo { height:26px; width:auto; }
+    .content { flex:1; padding:9mm 16mm 6mm; }
+    .label { font-size:7.5pt; font-weight:700; color:#C9A84C; letter-spacing:0.22em; margin-bottom:5px; }
+    .title { font-size:26pt; font-weight:700; color:#F5F0E8; line-height:1.15; margin-bottom:7px; direction:ltr; text-align:right; }
+    .subtitle { font-size:12pt; font-weight:300; color:#BBBBBB; line-height:1.7; margin-bottom:10px; }
+    .link-box { background:rgba(201,168,76,0.06); border:1px solid rgba(201,168,76,0.3); border-radius:5px; padding:8px 12px; margin:10px 0; }
+    .link-box-label { font-size:7.5pt; font-weight:700; color:#C9A84C; letter-spacing:0.1em; margin-bottom:4px; }
+    .link-box a { font-size:8.5pt; font-weight:400; color:#E8D08A; text-decoration:none; word-break:break-all; direction:ltr; display:block; text-align:left; }
+    .divider { height:1px; background:linear-gradient(to left,transparent,#C9A84C 30%,#C9A84C 70%,transparent); margin:10px 0; opacity:0.35; }
+    .section { margin:10px 0; }
+    .section-title { font-size:13pt; font-weight:700; color:#C9A84C; margin-bottom:8px; padding-bottom:5px; border-bottom:1px solid rgba(201,168,76,0.18); }
+    p { font-size:10.5pt; font-weight:300; color:#BBBBBB; line-height:1.9; margin-bottom:8px; }
+    .step { display:flex; gap:10px; align-items:flex-start; margin-bottom:10px; }
+    .step-num { font-size:15pt; font-weight:700; color:#C9A84C; line-height:1.3; min-width:26px; flex-shrink:0; text-align:center; }
+    .step-body { flex:1; }
+    .step-title { font-size:10.5pt; font-weight:700; color:#F5F0E8; line-height:1.5; }
+    .step-detail { font-size:9.5pt; font-weight:300; color:#888; line-height:1.7; margin-top:2px; }
+    .prompt-block { background:rgba(201,168,76,0.04); border:1px solid rgba(201,168,76,0.15); border-radius:4px; padding:10px 12px; margin-bottom:12px; }
+    .prompt-label { font-size:7.5pt; font-weight:700; color:#C9A84C; letter-spacing:0.15em; margin-bottom:6px; direction:ltr; }
+    .prompt-text { font-size:8pt; font-weight:300; color:#888; line-height:1.7; direction:ltr; text-align:left; margin-bottom:6px; font-family:'Courier New',monospace; }
+    .prompt-note { font-size:9pt; font-weight:300; color:#BBBBBB; line-height:1.6; }
+    .closing-note { font-size:9.5pt; font-weight:400; font-style:italic; color:#888; text-align:center; padding:10px 0; border-top:1px solid rgba(201,168,76,0.2); border-bottom:1px solid rgba(201,168,76,0.2); margin:12px 0 0; line-height:1.7; }
+    .footer { padding:7mm 16mm 6mm; border-top:1px solid rgba(201,168,76,0.2); flex-shrink:0; }
+    .contact-title { font-size:10pt; font-weight:700; color:#F5F0E8; margin-bottom:3px; }
+    .contact-sub { font-size:8.5pt; font-weight:300; color:#555; line-height:1.6; margin-bottom:7px; }
+    .contact-links { display:flex; gap:0; flex-wrap:wrap; }
+    .contact-link { font-size:8.5pt; font-weight:400; color:#BBBBBB; margin-left:18px; }
+    .contact-link:last-child { margin-left:0; }
+    .brand-close { text-align:center; margin-top:8px; padding-top:7px; border-top:1px solid rgba(201,168,76,0.15); }
+    .brand-close-text { font-size:9.5pt; font-weight:700; color:#C9A84C; letter-spacing:0.08em; }
+    .bottom-bar { height:4px; background:linear-gradient(to left,#8A6420,#C9A84C,#E8D08A,#C9A84C,#8A6420); flex-shrink:0; }
+    @media print { body { background:#07070F; } .page { margin:0; box-shadow:none; } }
+    @media screen { body { padding:12mm 0; } .page { box-shadow:0 8px 48px rgba(0,0,0,0.6); } }
+  </style>
+</head>
+<body>
+<div class="page">
+  <div class="top-bar"></div>
+  <div class="header">
+    <span class="header-meta">malearnsa.com</span>
+    <img src="../brand_assets/logo-malearn-white.png" alt="MA Learn" class="logo">
+  </div>
+  <div class="content">
+    <div class="label">{{LABEL}}</div>
+    <div class="title">{{TITLE_EN}}</div>
+    <div class="subtitle">{{SUBTITLE_AR}}</div>
+
+    {{LINK_BOX}}
+
+    <div class="divider"></div>
+
+    <div class="section">
+      <div class="section-title">الفكرة</div>
+      {{FIKRA_CONTENT}}
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="section">
+      <div class="section-title">{{MAIN_SECTION_TITLE}}</div>
+      {{MAIN_CONTENT}}
+    </div>
+
+    <div class="closing-note">{{CLOSING_NOTE}}</div>
+  </div>
+  <div class="footer">
+    <div class="contact-title">تواصل معي</div>
+    <div class="contact-sub">إذا استفدت من هذا الدليل، تابعني على منصاتي للمزيد من المحتوى عن الذكاء الاصطناعي والإبداع البصري</div>
+    <div class="contact-links">
+      <span class="contact-link">Instagram · @majidangawi</span>
+      <span class="contact-link">Instagram · @angawi.studio</span>
+      <span class="contact-link">MA Learn · malearnsa.com</span>
+    </div>
+    <div class="brand-close">
+      <div class="brand-close-text">صنّاع الإلهام &nbsp; ✦</div>
+    </div>
+  </div>
+  <div class="bottom-bar"></div>
+</div>
+</body>
+</html>
+```
+
+### Template placeholder reference
+
+| Placeholder | What to put |
+|---|---|
+| `{{LABEL}}` | دليل الأداة / حزمة البروومبتات / دليل المحتوى / القالب |
+| `{{TITLE_EN}}` | English or mixed title |
+| `{{SUBTITLE_AR}}` | One-line Arabic promise |
+| `{{LINK_BOX}}` | Full link-box div if type=link, otherwise delete this line |
+| `{{FIKRA_CONTENT}}` | 2–3 `<p>` tags |
+| `{{MAIN_SECTION_TITLE}}` | الخطوات / البروومبتات / القالب |
+| `{{MAIN_CONTENT}}` | Steps, prompts, or template HTML — see patterns below |
+| `{{CLOSING_NOTE}}` | One italic closing insight |
+
+### HTML patterns for main content
+
+**Steps (mini-guide / link):**
+```html
+<div class="step">
+  <div class="step-num">١</div>
+  <div class="step-body">
+    <div class="step-title">Step title here</div>
+    <div class="step-detail">Optional detail line</div>
+  </div>
+</div>
+```
+
+**Prompts (prompt-pack):**
+```html
+<div class="prompt-block">
+  <div class="prompt-label">PROMPT 01</div>
+  <div class="prompt-text">Full English prompt text here...</div>
+  <div class="prompt-note">Arabic note explaining what this prompt achieves</div>
+</div>
+```
+
+**Link box (type=link only):**
+```html
+<div class="link-box">
+  <div class="link-box-label">رابط الـ [Platform] — جاهز تجرّبه الآن</div>
+  <a href="URL">URL</a>
+</div>
 ```
 
 ---
 
-## Type-Specific Content Structure
+## Step 4 — Open in browser
 
-### mini-guide
-- Numbered steps (use Arabic numerals: ١ ٢ ٣)
-- Each step: bold label + 1–2 sentence explanation
-- End with a one-line closing insight in italics
-- Max 5–7 steps
+```bash
+open "FULL_PATH_TO_HTML_FILE"
+```
 
-### prompt-pack
-- Brief intro: what these prompts do and how to use them
-- Each prompt labeled: PROMPT 01, PROMPT 02, etc.
-- Full prompt in English (exact, copy-paste ready)
-- One-line Arabic note below each prompt explaining what it achieves
-- End with a tip about customizing or combining prompts
-
-### link
-- Explain what the platform/resource is and why it matters (الفكرة section)
-- Under الأداة: numbered steps to access or use it (٣–٥ steps)
-- Dedicated line for the link: **الرابط:** [link here]
-- If it's a video: **رابط الشرح:** [link here]
-
-### template
-- Explain the framework and when to use it
-- Present the template clearly labeled with fill-in-the-blank markers ([اكتب هنا])
-- Include one worked example showing the template filled in
-- End with a reminder of when NOT to use it
+Tell Majid: "Design is open in your browser. File → Print → Save as PDF → save to the freebies-drafts folder. Tell me when done."
 
 ---
 
-## Voice & Tone Rules
+## Step 5 — Detect and upload the PDF
 
-- **Language:** Arabic Saudi dialect throughout. English only for proper nouns, tool names, prompts.
-- **Tone:** Friend and mentor. Cares about the reader. Direct because he's honest, not cold.
-- **Style:** Short sentences. No fluff. Inspirational but never vague. Can be funny. Can be blunt.
-- **Never:** formal MSA, corporate language, filler phrases, or sycophantic openers.
-- Match the existing freebie voice — read the الفكرة section of the Moodboards guide as the benchmark.
+After Majid confirms the PDF is saved, find the newest PDF in the folder:
+
+```bash
+ls -t "/Users/mastudio/MA Photography Dropbox/MA Creative Studio/MA Ai/Claude AI/MA EA/freebies-drafts/"*.pdf | head -1
+```
+
+Upload it to Drive:
+
+```bash
+gws drive files create \
+  --params '{"fields": "id,name,webViewLink"}' \
+  --upload "PDF_FILE_PATH" \
+  --upload-content-type "application/pdf" \
+  --json '{"name": "PDF_FILENAME", "parents": ["1dvgALtbTwOHyJINept4N4pCwmFFoYWPe"]}' 2>&1
+```
 
 ---
 
-## Execution Steps
+## Step 6 — Set public sharing
 
-Run these steps in order. Do not skip any.
-
-### Step 1 — Write the content
-Write the full freebie text following the structure and type rules above.
-Present it to Majid for a quick review before creating the doc.
-Ask: "Ready to create the doc, or any changes first?"
-
-### Step 2 — Create the Google Doc
-```bash
-gws docs documents create --json '{"title": "FREEBIE_TITLE"}' 2>&1
-```
-Save the returned `documentId`.
-
-### Step 3 — Insert the content
-```bash
-gws docs documents batchUpdate \
-  --params '{"documentId": "DOC_ID"}' \
-  --json '{
-    "requests": [
-      {
-        "insertText": {
-          "location": {"index": 1},
-          "text": "FULL_CONTENT_HERE"
-        }
-      }
-    ]
-  }' 2>&1
-```
-
-### Step 4 — Move to freebies folder
-```bash
-gws drive files update \
-  --params '{"fileId": "DOC_ID", "addParents": "1dvgALtbTwOHyJINept4N4pCwmFFoYWPe", "removeParents": "root"}' \
-  --json '{}' 2>&1
-```
-
-### Step 5 — Set public sharing (anyone with link can view)
 ```bash
 gws drive permissions create \
-  --params '{"fileId": "DOC_ID"}' \
+  --params '{"fileId": "FILE_ID"}' \
   --json '{"role": "reader", "type": "anyone"}' 2>&1
 ```
 
-### Step 6 — Return the result
+---
+
+## Step 7 — Return the result
+
 Return:
-- **Google Doc link:** `https://docs.google.com/document/d/DOC_ID/edit`
-- **Reminder:** Open the doc → apply brand design (colors, fonts, logo) → File → Download → PDF → upload the PDF to the same Drive folder: https://drive.google.com/drive/folders/1dvgALtbTwOHyJINept4N4pCwmFFoYWPe
+- **Public link:** `https://drive.google.com/file/d/FILE_ID/view?usp=sharing`
+- Ready to paste into the post, story, or WhatsApp broadcast.
 
 ---
 
-## Brand Constants
+## Brand constants
 
-- Freebies folder ID: `1dvgALtbTwOHyJINept4N4pCwmFFoYWPe`
-- Brand closing: `صنّاع الإلهام ✦`
-- Instagram: `@majidangawi` and `@angawi.studio`
-- Platform: `malearnsa.com`
-- Accent color (for design reference): warm golden amber — RGB(201, 168, 76)
+- **Freebies folder ID:** `1dvgALtbTwOHyJINept4N4pCwmFFoYWPe`
+- **Freebies drafts path:** `/Users/mastudio/MA Photography Dropbox/MA Creative Studio/MA Ai/Claude AI/MA EA/freebies-drafts/`
+- **Brand assets path:** `/Users/mastudio/MA Photography Dropbox/MA Creative Studio/MA Ai/Claude AI/MA EA/brand_assets/`
+- **Background:** Deep Space `#07070F`
+- **Accent:** Heritage Gold `#C9A84C`
+- **Primary text:** Warm Ivory `#F5F0E8`
+- **Body text:** Silver Mist `#BBBBBB`
+- **Logo:** white version on dark background
+- **Font:** Gumela Arabic (Bold/Regular/Light) — Cairo as fallback
+- **Brand closing:** `صنّاع الإلهام ✦`
 
 ---
 
-## What This Skill Does NOT Do
+## Automation summary
 
-- Does not apply visual design (colors, fonts, logo) — that step stays manual in Google Docs
-- Does not export or upload the PDF — that step stays manual
-- Does not publish or share the link anywhere — Majid does that
+| Step | Who |
+|---|---|
+| Trigger the skill | Majid |
+| Answer clarifying questions | Majid |
+| Write content | Claude |
+| Review content | Majid |
+| Generate HTML + open browser | Claude |
+| Export PDF to freebies-drafts/ | Majid |
+| Upload to Drive + set sharing | Claude |
+| Return public link | Claude |
