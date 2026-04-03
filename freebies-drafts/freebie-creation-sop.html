@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="ar">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Freebie Creation Workflow | MA Learn SOP</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    @font-face {
+      font-family: 'Gumela';
+      src: url('../brand_assets/gumela-arabic-bold.otf') format('opentype');
+      font-weight: 700;
+    }
+    @font-face {
+      font-family: 'Gumela';
+      src: url('../brand_assets/gumela-arabic-regular.otf') format('opentype');
+      font-weight: 400;
+    }
+    @font-face {
+      font-family: 'Gumela';
+      src: url('../brand_assets/gumela-arabic-light.otf') format('opentype');
+      font-weight: 300;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    @page { size: A4; margin: 0; }
+
+    body {
+      font-family: 'Gumela', 'Cairo', sans-serif;
+      background: #040408;
+      direction: rtl;
+      -webkit-print-color-adjust: exact;
+      print-color-adjust: exact;
+    }
+
+    .page {
+      width: 210mm;
+      min-height: 297mm;
+      margin: 0 auto;
+      background: #07070F;
+      display: flex;
+      flex-direction: column;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    }
+
+    .top-bar {
+      height: 4px;
+      background: linear-gradient(to left, #8A6420, #C9A84C, #E8D08A, #C9A84C, #8A6420);
+      flex-shrink: 0;
+    }
+
+    .header {
+      padding: 7mm 16mm 6mm;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(201,168,76,0.2);
+      flex-shrink: 0;
+    }
+
+    .header-meta {
+      font-size: 8pt;
+      font-weight: 300;
+      color: #555555;
+      letter-spacing: 0.04em;
+      direction: ltr;
+    }
+
+    .logo { height: 26px; width: auto; }
+
+    .content { flex: 1; padding: 9mm 16mm 6mm; }
+
+    .label {
+      font-size: 7.5pt;
+      font-weight: 700;
+      color: #C9A84C;
+      letter-spacing: 0.22em;
+      margin-bottom: 5px;
+      direction: ltr;
+      text-align: right;
+    }
+
+    .title {
+      font-size: 22pt;
+      font-weight: 700;
+      color: #F5F0E8;
+      line-height: 1.2;
+      margin-bottom: 5px;
+      direction: ltr;
+      text-align: right;
+    }
+
+    .subtitle {
+      font-size: 11pt;
+      font-weight: 300;
+      color: #888888;
+      line-height: 1.6;
+      margin-bottom: 10px;
+      direction: ltr;
+      text-align: right;
+    }
+
+    .divider {
+      height: 1px;
+      background: linear-gradient(to left, transparent, #C9A84C 30%, #C9A84C 70%, transparent);
+      margin: 10px 0;
+      opacity: 0.35;
+    }
+
+    .section { margin: 10px 0; }
+
+    .section-title {
+      font-size: 11pt;
+      font-weight: 700;
+      color: #C9A84C;
+      margin-bottom: 8px;
+      padding-bottom: 5px;
+      border-bottom: 1px solid rgba(201,168,76,0.18);
+      direction: ltr;
+      text-align: right;
+    }
+
+    /* Steps */
+    .step {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      margin-bottom: 11px;
+      direction: ltr;
+    }
+
+    .step-num {
+      font-size: 8pt;
+      font-weight: 700;
+      color: #07070F;
+      background: #C9A84C;
+      width: 20px;
+      height: 20px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .step-body { flex: 1; text-align: left; }
+
+    .step-title {
+      font-size: 10pt;
+      font-weight: 700;
+      color: #F5F0E8;
+      line-height: 1.4;
+      margin-bottom: 2px;
+    }
+
+    .step-detail {
+      font-size: 9pt;
+      font-weight: 300;
+      color: #888888;
+      line-height: 1.7;
+    }
+
+    .step-detail code {
+      font-family: 'Courier New', monospace;
+      font-size: 8pt;
+      color: #E8D08A;
+      background: rgba(201,168,76,0.08);
+      padding: 1px 5px;
+      border-radius: 3px;
+    }
+
+    /* Tag badges */
+    .tag {
+      display: inline-block;
+      font-size: 7pt;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      padding: 2px 7px;
+      border-radius: 3px;
+      margin-right: 6px;
+      vertical-align: middle;
+    }
+
+    .tag-auto {
+      background: rgba(201,168,76,0.15);
+      color: #C9A84C;
+      border: 1px solid rgba(201,168,76,0.3);
+    }
+
+    .tag-manual {
+      background: rgba(187,187,187,0.08);
+      color: #888888;
+      border: 1px solid rgba(187,187,187,0.2);
+    }
+
+    /* Legend */
+    .legend {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 12px;
+      direction: ltr;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 8.5pt;
+      font-weight: 300;
+      color: #888888;
+    }
+
+    /* Info box */
+    .info-box {
+      background: rgba(201,168,76,0.05);
+      border: 1px solid rgba(201,168,76,0.25);
+      border-radius: 5px;
+      padding: 9px 12px;
+      margin: 10px 0;
+      direction: ltr;
+      text-align: left;
+    }
+
+    .info-box-title {
+      font-size: 8pt;
+      font-weight: 700;
+      color: #C9A84C;
+      letter-spacing: 0.1em;
+      margin-bottom: 5px;
+    }
+
+    .info-box p {
+      font-size: 9pt;
+      font-weight: 300;
+      color: #BBBBBB;
+      line-height: 1.7;
+      margin-bottom: 4px;
+    }
+
+    .info-box p:last-child { margin-bottom: 0; }
+
+    /* Output line */
+    .output-line {
+      font-size: 9pt;
+      font-weight: 400;
+      color: #E8D08A;
+      margin-top: 10px;
+      direction: ltr;
+      text-align: left;
+    }
+
+    /* Footer */
+    .footer {
+      padding: 6mm 16mm 5mm;
+      border-top: 1px solid rgba(201,168,76,0.2);
+      flex-shrink: 0;
+    }
+
+    .footer-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .footer-meta {
+      font-size: 8pt;
+      font-weight: 300;
+      color: #555555;
+      direction: ltr;
+    }
+
+    .brand-close {
+      font-size: 9pt;
+      font-weight: 700;
+      color: #C9A84C;
+    }
+
+    .bottom-bar {
+      height: 4px;
+      background: linear-gradient(to left, #8A6420, #C9A84C, #E8D08A, #C9A84C, #8A6420);
+      flex-shrink: 0;
+    }
+
+    @media print {
+      body { background: #07070F; }
+      .page { margin: 0; box-shadow: none; }
+    }
+
+    @media screen {
+      body { padding: 12mm 0; }
+      .page { box-shadow: 0 8px 48px rgba(0,0,0,0.6); }
+    }
+  </style>
+</head>
+<body>
+<div class="page">
+
+  <div class="top-bar"></div>
+
+  <div class="header">
+    <span class="header-meta">MA Learn · Internal SOP · v1.0 · 2026</span>
+    <img src="../brand_assets/logo-malearn-white.png" alt="MA Learn" class="logo">
+  </div>
+
+  <div class="content">
+
+    <div class="label">STANDARD OPERATING PROCEDURE</div>
+    <div class="title">Freebie Creation Workflow</div>
+    <div class="subtitle">From post idea to public Drive link — full end-to-end process</div>
+
+    <div class="divider"></div>
+
+    <div class="legend">
+      <div class="legend-item"><span class="tag tag-auto">AUTO</span> Claude handles this step</div>
+      <div class="legend-item"><span class="tag tag-manual">MANUAL</span> Majid handles this step</div>
+    </div>
+
+    <div class="section">
+      <div class="section-title">The Workflow</div>
+
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title"><span class="tag tag-manual">MANUAL</span> Trigger the skill</div>
+          <div class="step-detail">Say: "Create a freebie for [post or topic]" and specify the freebie type:<br>
+          <code>mini-guide</code> &nbsp;·&nbsp; <code>prompt-pack</code> &nbsp;·&nbsp; <code>link</code> &nbsp;·&nbsp; <code>template</code></div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title"><span class="tag tag-auto">AUTO</span> Claude asks clarifying questions</div>
+          <div class="step-detail">Hook / aha moment · post angle · audience level · link or resource URL if applicable. Claude only asks what's missing — no redundant questions.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title"><span class="tag tag-manual">MANUAL</span> Answer the questions</div>
+          <div class="step-detail">Brief answers are enough. Claude fills in the gaps using context from your brand and voice guidelines.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <div class="step-title"><span class="tag tag-auto">AUTO</span> Claude writes the full freebie content</div>
+          <div class="step-detail">Written in Saudi dialect · mentor tone · following the standard structure:<br>
+          Label → Title → Subtitle → Workflow link (if applicable) → الفكرة → Content → Closing note → تواصل معي → صنّاع الإلهام ✦</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">5</div>
+        <div class="step-body">
+          <div class="step-title"><span class="tag tag-manual">MANUAL</span> Review the content</div>
+          <div class="step-detail">Read through and request any changes by number. When satisfied, say "go ahead."</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">6</div>
+        <div class="step-body">
+          <div class="step-title"><span class="tag tag-auto">AUTO</span> Claude generates the branded HTML file</div>
+          <div class="step-detail">Saved to <code>freebies-drafts/</code> · Dark background #07070F · Heritage Gold accents · Gumela Arabic font · MA Learn white logo · RTL A4 layout · Gold top/bottom bars · Grain texture overlay</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">7</div>
+        <div class="step-body">
+          <div class="step-title"><span class="tag tag-auto">AUTO</span> Claude opens the file in the browser</div>
+          <div class="step-detail">The HTML file opens automatically for visual review.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">8</div>
+        <div class="step-body">
+          <div class="step-title"><span class="tag tag-manual">MANUAL</span> Export to PDF</div>
+          <div class="step-detail">Browser → File → Print → Save as PDF → Save to <code>freebies-drafts/</code> folder.<br>
+          Filename will be auto-detected by Claude in the next step.</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">9</div>
+        <div class="step-body">
+          <div class="step-title"><span class="tag tag-auto">AUTO</span> Claude uploads the PDF to Google Drive</div>
+          <div class="step-detail">Detects the new PDF in <code>freebies-drafts/</code> · uploads to the MA Learn freebies folder · sets sharing to "anyone with link can view."</div>
+        </div>
+      </div>
+
+      <div class="step">
+        <div class="step-num">10</div>
+        <div class="step-body">
+          <div class="step-title"><span class="tag tag-auto">AUTO</span> Claude returns the shareable link</div>
+          <div class="step-detail">The public Drive link is ready to paste into your post, story, or WhatsApp broadcast.</div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="divider"></div>
+
+    <div class="info-box">
+      <div class="info-box-title">STEP BREAKDOWN — AUTOMATED vs MANUAL</div>
+      <p>Automated: Steps 2, 4, 6, 7, 9, 10 &nbsp;·&nbsp; Manual: Steps 1, 3, 5, 8</p>
+      <p>The only unavoidable manual step is the PDF export (Step 8) — browser security prevents automated printing. Every other step runs automatically.</p>
+    </div>
+
+    <div class="output-line">
+      Final output → Public Google Drive PDF link, ready to share.
+    </div>
+
+  </div>
+
+  <div class="footer">
+    <div class="footer-row">
+      <span class="footer-meta">MA Learn · Freebie Creation SOP · v1.0 · 2026</span>
+      <span class="brand-close">صنّاع الإلهام ✦</span>
+    </div>
+  </div>
+
+  <div class="bottom-bar"></div>
+
+</div>
+</body>
+</html>
