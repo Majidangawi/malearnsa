@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>تم الشراء بنجاح — أبعد من إمكانيات الإضاءة | MA Learn</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    @font-face { font-family:'Gumela'; src:url('../../brand_assets/gumela-arabic-bold.otf') format('opentype'); font-weight:700; }
+    @font-face { font-family:'Gumela'; src:url('../../brand_assets/gumela-arabic-regular.otf') format('opentype'); font-weight:400; }
+    :root { --bg:#080808; --gold:#C9A84C; --ivory:#F5F0E8; --silver:#BBBBBB; --grey:#888; }
+    *,*::before,*::after { box-sizing:border-box; margin:0; padding:0; }
+    body { font-family:'Gumela','Cairo',sans-serif; background:var(--bg); color:var(--ivory); min-height:100vh; direction:rtl; }
+    body::before {
+      content:''; position:fixed; inset:0; pointer-events:none;
+      background:radial-gradient(ellipse 60% 50% at 30% 30%, rgba(201,168,76,0.08) 0%, transparent 70%);
+    }
+    .spinner { width:20px;height:20px;border:2px solid rgba(201,168,76,0.2);border-top-color:var(--gold);border-radius:50%;animation:spin 0.7s linear infinite;margin:0 auto 16px; }
+    @keyframes spin { to { transform:rotate(360deg); } }
+  </style>
+</head>
+<body>
+
+<!-- Nav -->
+<nav style="padding:14px 32px;border-bottom:1px solid rgba(201,168,76,0.08);position:relative;z-index:10;background:rgba(8,8,8,0.92);backdrop-filter:blur(10px);">
+  <div style="max-width:1000px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+    <img src="../../brand_assets/logo-malearn-white.png" alt="MA Learn" style="height:28px;width:auto;" onerror="this.style.display='none'">
+    <div style="display:flex;gap:18px;align-items:center;flex-wrap:wrap;">
+      <a href="https://malearnsa.com" style="color:#888;text-decoration:none;font-size:0.82rem;">الرئيسية</a>
+      <a href="https://malearnsa.com/#courses" style="color:#888;text-decoration:none;font-size:0.82rem;">الدورات</a>
+    </div>
+  </div>
+</nav>
+
+<div style="position:relative;z-index:1;max-width:600px;margin:0 auto;padding:80px 24px;text-align:center;">
+
+  <!-- Processing state (shown while API call is running) -->
+  <div id="processing">
+    <div class="spinner"></div>
+    <p style="color:var(--grey);font-size:0.9rem;">جاري تأكيد طلبك...</p>
+  </div>
+
+  <!-- Success state -->
+  <div id="success-view" style="display:none;">
+    <div style="width:80px;height:80px;border:2px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 28px;">
+      <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <p style="color:var(--gold);font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:12px;">تم الشراء بنجاح</p>
+    <h1 style="font-size:clamp(1.6rem,4vw,2rem);font-weight:700;margin-bottom:16px;line-height:1.3;">
+      مرحباً بك في دورة أبعد من إمكانيات الإضاءة
+    </h1>
+    <p style="color:var(--silver);font-size:0.9rem;line-height:1.8;max-width:460px;margin:0 auto 40px;">
+      وصلك رابط الدورة على إيميلك الآن.<br>
+      تحقق من صندوق الوارد — وإذا ما وصلك اتفقد Spam.
+    </p>
+
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(201,168,76,0.18);border-radius:12px;padding:24px;margin-bottom:32px;text-align:right;">
+      <p style="font-size:0.78rem;color:var(--grey);margin-bottom:12px;letter-spacing:0.08em;">ماذا يحصل الآن؟</p>
+      <div style="display:flex;flex-direction:column;gap:10px;font-size:0.85rem;color:var(--silver);">
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span style="color:var(--gold);font-size:1rem;">✓</span>
+          رابط الدورة وصلك على إيميلك
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span style="color:var(--gold);font-size:1rem;">✓</span>
+          الرابط خاص بك — يشتغل من أي جهاز
+        </div>
+        <div style="display:flex;align-items:center;gap:10px;">
+          <span style="color:var(--gold);font-size:1rem;">✓</span>
+          وصول مدى الحياة بدون قيود
+        </div>
+      </div>
+    </div>
+
+    <a href="https://malearnsa.com" style="display:inline-block;background:var(--gold);color:#000;font-weight:700;padding:14px 36px;text-decoration:none;font-family:'Gumela','Cairo',sans-serif;border-radius:0;">
+      العودة إلى الرئيسية
+    </a>
+  </div>
+
+  <!-- Failed state (payment failed or cancelled) -->
+  <div id="failed-view" style="display:none;">
+    <div style="font-size:3rem;margin-bottom:20px;">⚠️</div>
+    <h1 style="font-size:1.5rem;font-weight:700;margin-bottom:12px;">لم يتم إتمام الدفع</h1>
+    <p style="color:var(--silver);font-size:0.9rem;line-height:1.8;max-width:420px;margin:0 auto 32px;">
+      تم إلغاء العملية أو واجهنا مشكلة في الدفع.<br>
+      يمكنك المحاولة مرة ثانية.
+    </p>
+    <a href="https://malearnsa.com/beyond-lighting/checkout.html"
+       style="display:inline-block;background:var(--gold);color:#000;font-weight:700;padding:14px 36px;text-decoration:none;font-family:'Gumela','Cairo',sans-serif;">
+      حاول مرة ثانية
+    </a>
+  </div>
+
+</div>
+
+<!-- Footer -->
+<footer style="padding:20px 32px;text-align:center;border-top:1px solid rgba(255,255,255,0.05);position:relative;z-index:1;margin-top:40px;">
+  <p style="font-size:0.75rem;color:#444;">© MA Learn 2026 — support@malearnsa.com</p>
+</footer>
+
+<script>
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzXC4Ef5WxNX0aPov7Q1Kdn2DiXuODd74w3iOCtovrw86o9grwVREqNsRdhlyQkoBnQ/exec';
+
+  async function handleSuccess() {
+    // Read purchase data saved before Moyasar redirect
+    let purchaseData = {};
+    try { purchaseData = JSON.parse(localStorage.getItem('bl_purchase') || '{}'); } catch(e) {}
+
+    // Get Moyasar payment ID from URL
+    const params    = new URLSearchParams(window.location.search);
+    const status    = params.get('status');
+    const paymentId = params.get('id') || params.get('payment_id') || '';
+
+    if (status === 'failed' || status === 'canceled') {
+      document.getElementById('processing').style.display = 'none';
+      document.getElementById('failed-view').style.display = 'block';
+      return;
+    }
+
+    // Call Apps Script to complete purchase
+    try {
+      const url = `${APPS_SCRIPT_URL}?action=complete_purchase` +
+        `&product=beyond-lighting` +
+        `&name=${encodeURIComponent(purchaseData.name || '')}` +
+        `&email=${encodeURIComponent(purchaseData.email || '')}` +
+        `&phone=${encodeURIComponent(purchaseData.phone || '')}` +
+        `&amount=${encodeURIComponent(purchaseData.amount || '')}` +
+        `&coupon=${encodeURIComponent(purchaseData.coupon || '')}` +
+        `&payment_id=${encodeURIComponent(paymentId)}`;
+
+      await fetch(url);
+    } catch(e) {
+      console.warn('Apps Script call failed (non-blocking):', e);
+    }
+
+    // Clear localStorage
+    localStorage.removeItem('bl_purchase');
+
+    // Show success
+    document.getElementById('processing').style.display = 'none';
+    document.getElementById('success-view').style.display = 'block';
+  }
+
+  handleSuccess();
+</script>
+
+</body>
+</html>
