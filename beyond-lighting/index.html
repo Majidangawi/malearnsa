@@ -1,0 +1,1233 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>أبعد من إمكانيات الإضاءة | MA Learn</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @font-face {
+      font-family: 'Gumela';
+      src: url('brand_assets/gumela-arabic-bold.otf') format('opentype');
+      font-weight: 700;
+    }
+    @font-face {
+      font-family: 'Gumela';
+      src: url('brand_assets/gumela-arabic-regular.otf') format('opentype');
+      font-weight: 400;
+    }
+    @font-face {
+      font-family: 'Gumela';
+      src: url('brand_assets/gumela-arabic-light.otf') format('opentype');
+      font-weight: 300;
+    }
+
+    :root {
+      --bg:        #080808;
+      --bg-deep:   #07070F;
+      --card-bg:   #0E0E0E;
+      --elevated:  #141414;
+      --gold:      #C9A84C;
+      --gold-lum:  #E8D08A;
+      --gold-deep: #8A6420;
+      --ivory:     #F5F0E8;
+      --silver:    #BBBBBB;
+      --grey:      #888888;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Gumela', 'Cairo', sans-serif;
+      background: var(--bg);
+      color: var(--ivory);
+      overflow-x: hidden;
+      direction: rtl;
+    }
+
+    /* Grain overlay */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+
+    /* Scroll reveal */
+    .reveal {
+      opacity: 0;
+      transform: translateY(36px);
+      transition: opacity 0.75s cubic-bezier(0.22,1,0.36,1),
+                  transform 0.75s cubic-bezier(0.22,1,0.36,1);
+    }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* Cards */
+    .card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(201,168,76,0.18);
+      border-radius: 14px;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      transition: border-color 0.3s, box-shadow 0.3s,
+                  transform 0.35s cubic-bezier(0.22,1,0.36,1);
+    }
+    .card:hover {
+      border-color: rgba(201,168,76,0.42);
+      box-shadow: 0 12px 48px rgba(201,168,76,0.07);
+      transform: translateY(-2px);
+    }
+
+    /* CTA button */
+    .btn-gold {
+      background: var(--gold);
+      color: #000;
+      font-family: 'Gumela', 'Cairo', sans-serif;
+      font-weight: 700;
+      padding: 16px 48px;
+      display: inline-block;
+      cursor: pointer;
+      border: none;
+      outline: none;
+      text-decoration: none;
+      letter-spacing: 0.02em;
+      transition: background 0.25s,
+                  transform 0.3s cubic-bezier(0.22,1,0.36,1),
+                  box-shadow 0.25s;
+    }
+    .btn-gold:hover {
+      background: var(--gold-lum);
+      transform: translateY(-3px);
+      box-shadow: 0 10px 40px rgba(201,168,76,0.28);
+    }
+    .btn-gold:active { transform: translateY(0); }
+    .btn-gold:focus-visible { outline: 2px solid var(--gold); outline-offset: 3px; }
+
+    /* Divider */
+    .divider {
+      height: 1px;
+      background: linear-gradient(to left, transparent, rgba(201,168,76,0.25), transparent);
+    }
+
+    /* Section label */
+    .label {
+      font-size: 0.7rem;
+      font-weight: 400;
+      letter-spacing: 0.05em;
+      color: var(--gold);
+      text-transform: uppercase;
+      display: block;
+    }
+
+    /* Accordion */
+    .acc-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.5s cubic-bezier(0.22,1,0.36,1);
+    }
+    .acc-content.open { max-height: 1500px; }
+    .acc-btn { cursor: pointer; transition: color 0.25s; }
+    .acc-btn:hover { color: var(--gold); }
+    .acc-btn:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+    .acc-icon { transition: transform 0.4s cubic-bezier(0.22,1,0.36,1); display: inline-block; }
+    .acc-icon.open { transform: rotate(45deg); }
+
+    /* Nav */
+    #nav {
+      transition: background 0.4s, backdrop-filter 0.4s, border-color 0.4s;
+    }
+    #nav.scrolled {
+      background: rgba(8,8,8,0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid rgba(201,168,76,0.12);
+    }
+
+    /* Glow orb */
+    .orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(110px);
+      pointer-events: none;
+      animation: orb-pulse 7s ease-in-out infinite;
+    }
+    @keyframes orb-pulse {
+      0%,100% { opacity: 0.22; transform: scale(1); }
+      50%      { opacity: 0.38; transform: scale(1.08); }
+    }
+
+    /* Orbit rings */
+    .ring {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(201,168,76,0.1);
+      pointer-events: none;
+      top: 50%;
+      left: 50%;
+    }
+    .ring-1 { animation: spin 20s linear infinite; }
+    .ring-2 { animation: spin 36s linear infinite reverse; }
+    @keyframes spin {
+      from { transform: translate(-50%,-50%) rotate(0deg); }
+      to   { transform: translate(-50%,-50%) rotate(360deg); }
+    }
+
+    /* Particles */
+    .particle {
+      position: absolute;
+      border-radius: 50%;
+      pointer-events: none;
+      animation: float-up linear infinite;
+    }
+    @keyframes float-up {
+      0%   { opacity: 0;   transform: translateY(0) scale(0.6); }
+      10%  { opacity: 0.9; }
+      85%  { opacity: 0.5; }
+      100% { opacity: 0;   transform: translateY(-75vh) scale(1.1); }
+    }
+
+    /* Image wrapper */
+    .img-wrap {
+      position: relative;
+      overflow: hidden;
+      border-radius: 12px;
+    }
+    .img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      filter: brightness(0.92) contrast(1.08);
+      transition: transform 0.9s cubic-bezier(0.22,1,0.36,1);
+    }
+    .img-wrap:hover img { transform: scale(1.05); }
+    .img-wrap .img-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, rgba(0,0,0,0.65) 0%, transparent 55%);
+      pointer-events: none;
+    }
+    .img-caption {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      left: 0;
+      padding: 20px;
+      z-index: 2;
+    }
+
+    /* Pain item */
+    .pain-card {
+      border-right: 2px solid rgba(180,30,30,0.55);
+      padding-right: 20px;
+    }
+
+    /* Stats */
+    .stat-n {
+      font-size: clamp(2.4rem,5vw,3.8rem);
+      font-weight: 700;
+      color: var(--gold);
+      line-height: 1;
+    }
+
+    /* Result row */
+    .result-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.05);
+    }
+    .result-row:last-child { border-bottom: none; }
+
+    /* FAQ item */
+    .faq-row { border-bottom: 1px solid rgba(201,168,76,0.1); }
+
+    /* Guarantee ring */
+    .guarantee-ring {
+      width: 130px;
+      height: 130px;
+      border-radius: 50%;
+      border: 2px solid rgba(201,168,76,0.3);
+      background: radial-gradient(circle, rgba(201,168,76,0.12) 0%, transparent 70%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    /* Content width */
+    .wrap { max-width: 1200px; margin-left: auto; margin-right: auto; }
+    .wrap-sm { max-width: 760px; margin-left: auto; margin-right: auto; }
+
+    @keyframes hero-img-enter {
+      from { opacity: 0; transform: translateY(24px) scale(0.97); }
+      to   { opacity: 1; transform: translateY(0)   scale(1); }
+    }
+
+    @keyframes orbital-dot {
+      0%   { transform: rotate(0deg)   translateX(290px) rotate(0deg); }
+      100% { transform: rotate(360deg) translateX(290px) rotate(-360deg); }
+    }
+
+    @media (max-width: 768px) {
+      .btn-gold { padding: 14px 32px; font-size: 0.95rem; }
+      .mobile-stack { flex-direction: column !important; }
+    }
+
+    /* Lightbox */
+    #lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 10000;
+      background: rgba(0,0,0,0.93);
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      padding: 16px;
+    }
+    #lightbox.active { display: flex; }
+    #lightbox img {
+      max-width: 100%;
+      max-height: 90vh;
+      object-fit: contain;
+      border-radius: 10px;
+      pointer-events: none;
+      box-shadow: 0 0 60px rgba(0,0,0,0.8);
+    }
+    #lightbox-close {
+      position: absolute;
+      top: 16px;
+      left: 20px;
+      color: rgba(245,240,232,0.7);
+      font-size: 2.5rem;
+      cursor: pointer;
+      line-height: 1;
+      font-weight: 300;
+      z-index: 10001;
+      transition: color 0.2s;
+    }
+    #lightbox-close:hover { color: var(--ivory); }
+    .lb-trigger { cursor: zoom-in; }
+  </style>
+</head>
+
+<body>
+
+  <!-- ═══════════════ NAV ═══════════════ -->
+  <nav id="nav" class="fixed top-0 inset-x-0 z-50 py-4 px-6 md:px-12">
+    <div class="wrap flex items-center justify-between">
+      <div class="flex items-center gap-6 md:gap-8">
+        <a href="https://www.malearnsa.com" style="color:var(--grey); font-size:0.875rem; font-weight:300;"
+           class="hover:text-[var(--ivory)] transition-colors">الرئيسية</a>
+        <a href="https://malearnstore.com/YzZOlWO" class="btn-gold text-sm py-2 px-5">سجّل الآن</a>
+      </div>
+      <a href="https://www.malearnsa.com" class="flex-shrink-0">
+        <img src="../brand_assets/logo-malearn-white.png" alt="MA Learn" class="h-8 w-auto"
+             onerror="this.style.display='none';this.nextElementSibling.style.display='block'">
+        <span style="display:none; color:var(--ivory); font-weight:700; font-size:1.1rem;">MA</span>
+      </a>
+    </div>
+  </nav>
+
+  <!-- ═══════════════ HERO ═══════════════ -->
+  <section class="relative min-h-screen flex flex-col lg:flex-row items-center overflow-hidden" style="padding-top: 80px;">
+
+    <!-- Background -->
+    <div class="absolute inset-0">
+      <img src="course_assets/hero-poster.jpg" alt=""
+           class="w-full h-full object-cover object-top"
+           style="filter: brightness(0.28) contrast(1.1);"
+           onerror="this.style.display='none'">
+      <div class="absolute inset-0"
+           style="background: linear-gradient(to left, rgba(8,8,8,0.1) 0%, rgba(8,8,8,0.65) 45%, rgba(8,8,8,0.97) 100%);"></div>
+      <div class="absolute inset-0"
+           style="background: linear-gradient(to top, var(--bg) 0%, transparent 35%);"></div>
+    </div>
+
+    <!-- Gold orb -->
+    <div class="orb w-[480px] h-[480px]"
+         style="background: radial-gradient(circle, rgba(201,168,76,0.22) 0%, transparent 70%);
+                top: -80px; right: 15%;"></div>
+
+    <!-- Particles -->
+    <div id="particles" class="absolute inset-0 overflow-hidden pointer-events-none"></div>
+
+    <!-- Mobile hero image (shown only on small screens, above text) -->
+    <div class="lg:hidden relative z-10 w-full" style="height:260px; margin-top:0;">
+      <img src="course_assets/Hero-image.jpg" alt=""
+           style="width:100%;height:100%;object-fit:cover;object-position:top center;filter:brightness(0.7) contrast(1.05);"
+           onerror="this.src='course_assets/sample-light-flag.jpg'"
+           class="lb-trigger" onclick="openLightbox(this.src)">
+      <div style="position:absolute;inset:0;background:linear-gradient(to top,var(--bg) 0%,transparent 50%);pointer-events:none;"></div>
+      <div style="position:absolute;inset:0;background:linear-gradient(to bottom,var(--bg) 0%,transparent 30%);pointer-events:none;"></div>
+    </div>
+
+    <!-- Content — 2-column split -->
+    <div class="relative z-10 wrap px-6 md:px-12 py-12 md:py-28 w-full">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-16 items-center">
+
+      <!-- Text (RIGHT in RTL — must be first in HTML) -->
+      <div>
+
+        <span class="label reveal mb-6" style="display:block;">دورة تدريبية مسجلة · إضاءة الاستوديو</span>
+
+        <h1 class="reveal font-bold leading-[1.1] mb-5"
+            style="font-size: clamp(2.8rem, 7vw, 5.5rem); letter-spacing: -0.02em; transition-delay:0.08s;">
+          أبعد من إمكانيات<br>
+          <span style="color:var(--gold);">الإضاءة</span>
+        </h1>
+
+        <p class="reveal font-light mb-4"
+           style="font-size:1.1rem; color:var(--silver); line-height:1.8; transition-delay:0.16s;">
+          أساليب وتقنيات في التصوير الإبداعي بإستخدام إضاءة واحدة
+        </p>
+
+        <p class="reveal font-light mb-10"
+           style="font-size:0.95rem; color:var(--silver); line-height:1.95; transition-delay:0.22s;">
+          حوّل صورك من عادية إلى مستوى المجلات الفخمة بتقنيات الإضاءة الاحترافية<br>
+          التي يستخدمها أكبر المصورين.
+        </p>
+
+        <ul class="reveal space-y-3 mb-12" style="transition-delay:0.28s;">
+          <li class="flex items-start gap-3" style="font-size:0.9rem; color:var(--silver); font-weight:300; line-height:1.8;">
+            <span style="color:var(--gold); margin-top:3px; flex-shrink:0;">✅</span>
+            <span>15 توزيع إضاءة إبداعي — من البورتريه الكلاسيكي إلى الإضاءة الدرامية</span>
+          </li>
+          <li class="flex items-start gap-3" style="font-size:0.9rem; color:var(--silver); font-weight:300; line-height:1.8;">
+            <span style="color:var(--gold); margin-top:3px; flex-shrink:0;">✅</span>
+            <span>تطبيق عملي فوري — كل درس يتضمن التطبيق العملي والنتائج الفورية</span>
+          </li>
+          <li class="flex items-start gap-3" style="font-size:0.9rem; color:var(--silver); font-weight:300; line-height:1.8;">
+            <span style="color:var(--gold); margin-top:3px; flex-shrink:0;">✅</span>
+            <span>بدون معدات معقدة — ضوء واحد فقط لنتائج احترافية وفنية</span>
+          </li>
+          <li class="flex items-start gap-3" style="font-size:0.9rem; color:var(--silver); font-weight:300; line-height:1.8;">
+            <span style="color:var(--gold); margin-top:3px; flex-shrink:0;">✅</span>
+            <span>مناسب لمختلف أنواع التصوير — أفراح أو أزياء أو تجاري</span>
+          </li>
+        </ul>
+
+        <div class="reveal flex flex-wrap gap-4" style="transition-delay:0.36s;">
+          <a href="https://malearnstore.com/YzZOlWO" class="btn-gold">احجز مكانك الآن!</a>
+        </div>
+
+        <p class="reveal mt-8" style="font-size:0.78rem; color:var(--grey); transition-delay:0.44s;">
+          تقديم: <span style="color:var(--gold);">ماجد عنقاوي</span>
+          — مصور تجاري ومخرج إبداعي · 16 عاماً من الخبرة
+        </p>
+      </div><!-- end text col -->
+
+      <!-- Hero image (LEFT in RTL — second in HTML) -->
+      <div class="hidden lg:flex items-center justify-center relative"
+           style="animation: hero-img-enter 1.2s cubic-bezier(0.22,1,0.36,1) 0.4s both;">
+
+        <!-- Orbit rings -->
+        <div class="ring ring-1" style="width:500px;height:500px;top:50%;left:50%;position:absolute;z-index:0;"></div>
+        <div class="ring ring-2" style="width:700px;height:700px;top:50%;left:50%;position:absolute;z-index:0;"></div>
+
+        <!-- Image frame -->
+        <div style="
+          position:relative; z-index:1;
+          width:380px; height:560px;
+          flex-shrink:0;
+          border:1px solid rgba(201,168,76,0.45);
+          border-radius:16px;
+          overflow:hidden;
+          box-shadow:0 0 60px rgba(201,168,76,0.14), 0 30px 80px rgba(0,0,0,0.5);
+        ">
+          <img src="course_assets/Hero-image.jpg" alt="إضاءة إبداعية"
+               style="width:100%;height:100%;object-fit:cover;object-position:center top;
+                      filter:brightness(1.1) contrast(1.05);"
+               onerror="this.src='course_assets/sample-light-flag.jpg'"
+               class="lb-trigger" onclick="openLightbox(this.src)">
+          <!-- Thin fade into bg on left edge only -->
+          <div style="position:absolute;inset:0;background:linear-gradient(to left,transparent 65%,rgba(8,8,8,0.3) 100%);pointer-events:none;"></div>
+          <!-- Gold shimmer top -->
+          <div style="position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(to right,transparent,rgba(201,168,76,0.8),transparent);"></div>
+        </div>
+
+        <!-- Orbital glowing dot -->
+        <div style="
+          position:absolute;width:7px;height:7px;border-radius:50%;
+          background:var(--gold);box-shadow:0 0 12px 3px rgba(201,168,76,0.75);
+          top:50%;left:50%;z-index:2;
+          animation:orbital-dot 18s linear infinite;
+          transform-origin:0 0;
+        "></div>
+
+      </div><!-- end image col -->
+
+      </div><!-- end grid -->
+    </div>
+
+    <!-- Badge -->
+    <div class="hidden lg:block absolute bottom-10 left-6 md:left-12 reveal" style="transition-delay:0.5s;">
+      <div class="card px-5 py-3 flex items-center gap-3">
+        <span style="color:var(--gold);">🎥</span>
+        <div>
+          <p style="font-size:0.75rem; color:var(--grey); font-weight:300;">دورة أبعد من إمكانيات الإضاءة</p>
+          <p style="font-size:0.75rem; color:var(--silver); font-weight:300;">٢٠ فيديو مسجل · وصول مدى الحياة</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══════════════ PAIN POINTS ═══════════════ -->
+  <section class="py-24 px-6 md:px-12">
+    <div class="wrap">
+      <div class="wrap-sm" style="max-width:740px;">
+        <span class="label reveal mb-5">هل تعاني من هذا؟</span>
+        <h2 class="reveal font-bold leading-[1.2] mb-14"
+            style="font-size:clamp(1.9rem,4vw,3.2rem); transition-delay:0.1s;">
+          قد ماتحاول تتعلم الإضاءة<br>
+          <span style="color:var(--gold);">دايما تحس انها ماتطلع زي اللي في بالك؟!</span>
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-16" style="max-width:880px; margin-left:auto; margin-right:auto;">
+        <div class="card pain-card p-6 reveal" style="transition-delay:0.1s;">
+          <p style="font-size:0.9rem; color:var(--silver); font-weight:300; line-height:1.85;">
+            <span class="text-red-500 font-bold ml-2">🔴</span>
+            صورك طالعة سطحية وبدون حياة رغم استخدام معدات غالية؟
+          </p>
+        </div>
+        <div class="card pain-card p-6 reveal" style="transition-delay:0.15s;">
+          <p style="font-size:0.9rem; color:var(--silver); font-weight:300; line-height:1.85;">
+            <span class="text-red-500 font-bold ml-2">🔴</span>
+            تحس بالحيرة لمن تتعامل مع الإضاءة في الاستوديو؟
+          </p>
+        </div>
+        <div class="card pain-card p-6 reveal" style="transition-delay:0.2s;">
+          <p style="font-size:0.9rem; color:var(--silver); font-weight:300; line-height:1.85;">
+            <span class="text-red-500 font-bold ml-2">🔴</span>
+            تخسر عملاء أحياناً لأن صورك ما تنافس جودة المصورين الآخرين؟
+          </p>
+        </div>
+        <div class="card pain-card p-6 reveal" style="transition-delay:0.25s;">
+          <p style="font-size:0.9rem; color:var(--silver); font-weight:300; line-height:1.85;">
+            <span class="text-red-500 font-bold ml-2">🔴</span>
+            تضيع وقت طويل في محاولة الحصول على الإضاءة المناسبة؟
+          </p>
+        </div>
+      </div>
+
+      <div class="text-center reveal" style="transition-delay:0.3s;">
+        <p class="font-bold" style="font-size:clamp(1.3rem,3vw,2rem);">
+          المشكلة مو في المعدات...<br>
+          <span style="color:var(--gold);">المشكلة في فهم الإضاءة!</span>
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══════════════ PHILOSOPHY ═══════════════ -->
+  <section class="py-24 px-6 md:px-12 relative overflow-hidden">
+    <div class="orb" style="width:600px; height:600px; background:radial-gradient(circle,rgba(201,168,76,0.18) 0%,transparent 70%); top:50%; right:-180px; transform:translateY(-50%);"></div>
+
+    <div class="wrap">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+
+        <!-- Text -->
+        <div>
+          <span class="label reveal mb-5">فلسفة الدورة</span>
+          <h2 class="reveal font-bold leading-[1.15] mb-8"
+              style="font-size:clamp(2rem,4vw,3.4rem); transition-delay:0.1s;">
+            فن الإضاءة الإبداعية<br>
+            <span style="color:var(--gold);">بضوء واحد</span>
+          </h2>
+
+          <blockquote class="reveal card p-6 mb-10"
+                      style="border-right: 2px solid var(--gold); border-radius:0 14px 14px 0; transition-delay:0.18s;">
+            <p style="font-size:1.05rem; color:var(--silver); font-weight:300; line-height:1.9;">
+              "الله خلق شمس واحدة ومن ضوءها بنشوف أجمل الصور والمشاهد"
+            </p>
+            <p class="mt-3" style="font-size:0.85rem; color:var(--grey); font-weight:300; line-height:1.8;">
+              إتقانك للتصوير باستخدام إضاءة واحدة حيعطيك كل النتائج اللي تحتاجها — ومنها راح تتمكن من استخدام أكثر من إضاءة
+            </p>
+          </blockquote>
+
+          <div class="space-y-5">
+            <div class="reveal flex items-start gap-4" style="transition-delay:0.22s;">
+              <span style="font-size:1.5rem; margin-top:2px; flex-shrink:0;">🎯</span>
+              <div>
+                <p class="font-bold mb-1" style="font-size:0.95rem;">التركيز على الإبداع</p>
+                <p style="font-size:0.85rem; color:var(--silver); font-weight:300; line-height:1.8;">بدلاً من التعقيد التقني — بسّط الأدوات وعمّق الفهم</p>
+              </div>
+            </div>
+            <div class="reveal flex items-start gap-4" style="transition-delay:0.28s;">
+              <span style="font-size:1.5rem; margin-top:2px; flex-shrink:0;">💡</span>
+              <div>
+                <p class="font-bold mb-1" style="font-size:0.95rem;">نتائج احترافية بأقل التكاليف</p>
+                <p style="font-size:0.85rem; color:var(--silver); font-weight:300; line-height:1.8;">وأبسط المعدات — ضوء واحد يكفي لكل شيء</p>
+              </div>
+            </div>
+            <div class="reveal flex items-start gap-4" style="transition-delay:0.34s;">
+              <span style="font-size:1.5rem; margin-top:2px; flex-shrink:0;">🔬</span>
+              <div>
+                <p class="font-bold mb-1" style="font-size:0.95rem;">فهم عميق لسلوك الضوء</p>
+                <p style="font-size:0.85rem; color:var(--silver); font-weight:300; line-height:1.8;">واتجاهاته وكيف يشكّل الصورة الفوتوغرافية</p>
+              </div>
+            </div>
+            <div class="reveal flex items-start gap-4" style="transition-delay:0.4s;">
+              <span style="font-size:1.5rem; margin-top:2px; flex-shrink:0;">⚡</span>
+              <div>
+                <p class="font-bold mb-1" style="font-size:0.95rem;">سرعة في التنفيذ</p>
+                <p style="font-size:0.85rem; color:var(--silver); font-weight:300; line-height:1.8;">العملاء يحبو المصور اللي ينجز بسرعة وبأعلى جودة</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Image -->
+        <div class="img-wrap reveal" style="transition-delay:0.12s; border-radius:16px; overflow:hidden;">
+          <img src="course_assets/img-3.jpg" alt="فلسفة الدورة"
+               style="width:100%; height:auto; object-fit:unset; display:block; filter:brightness(0.92) contrast(1.08);"
+               class="lb-trigger" onclick="openLightbox(this.src)"
+               onerror="this.src='https://placehold.co/600x800/0E0E0E/C9A84C?text=فلسفة+الدورة'">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ WHAT YOU'LL LEARN ═══════════════ -->
+  <section class="py-24 px-6 md:px-12"
+           style="background:linear-gradient(to bottom, var(--bg), var(--card-bg) 50%, var(--bg));">
+    <div class="wrap">
+      <div class="text-center mb-16">
+        <span class="label reveal mb-4">محتوى الدورة</span>
+        <h2 class="reveal font-bold"
+            style="font-size:clamp(2rem,4vw,3.4rem); transition-delay:0.1s;">
+          ايش راح تتعلم<br>
+          <span style="color:var(--gold);">في الدورة</span>
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-16">
+        <div class="card p-8 reveal" style="transition-delay:0.1s;">
+          <div style="font-size:2.5rem; margin-bottom:20px;">💡</div>
+          <h3 class="font-bold mb-4" style="font-size:1.1rem;">مفاهيم أساسية عن الإضاءة</h3>
+          <p style="font-size:0.875rem; color:var(--silver); font-weight:300; line-height:1.9;">
+            سنتعرف على الضوء وطرق قياسه والتحكم في حدته وكثافته، وكيف نحسّن الضوء ونغيّر خصائصه، وماذا يضيف الاتجاه والمسافة للصورة.
+          </p>
+        </div>
+        <div class="card p-8 reveal" style="transition-delay:0.2s;">
+          <div style="font-size:2.5rem; margin-bottom:20px;">🎨</div>
+          <h3 class="font-bold mb-4" style="font-size:1.1rem;">توزيعات الإضاءة</h3>
+          <p style="font-size:0.875rem; color:var(--silver); font-weight:300; line-height:1.9;">
+            نستعرض سوا ١٥ توزيع إضاءة باستخدام إضاءة واحدة فقط. في كل توزيع مهارة وتقنية جديدة — شرح تفصيلي من الفكرة للنتيجة.
+          </p>
+        </div>
+        <div class="card p-8 reveal" style="transition-delay:0.3s;">
+          <div style="font-size:2.5rem; margin-bottom:20px;">📖</div>
+          <h3 class="font-bold mb-4" style="font-size:1.1rem;">الكتاب الإلكتروني</h3>
+          <p style="font-size:0.875rem; color:var(--silver); font-weight:300; line-height:1.9;">
+            كتاب إلكتروني شامل يضم المحتوى كاملاً مكتوباً ومفصلاً مع الصور والرسومات البيانية — يمكن تنزيله على أي جهاز.
+          </p>
+        </div>
+      </div>
+
+      <div class="text-center reveal" style="transition-delay:0.4s;">
+        <a href="https://malearnstore.com/YzZOlWO" class="btn-gold">ابدأ التعلم الآن!</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══════════════ SAMPLE CONTENT ═══════════════ -->
+  <section class="py-24 px-6 md:px-12">
+    <div class="wrap">
+      <div class="text-center mb-16">
+        <span class="label reveal mb-4">أمثلة حقيقية</span>
+        <h2 class="reveal font-bold mb-4"
+            style="font-size:clamp(2rem,4vw,3.4rem); transition-delay:0.1s;">
+          نماذج من محتوى <span style="color:var(--gold);">الدورة</span>
+        </h2>
+        <p class="reveal" style="font-size:0.95rem; color:var(--silver); font-weight:300; transition-delay:0.2s;">
+          تعلم كيف تم تصوير هذه الصور وأكثر — من الفكرة للنتيجة النهائية بالتفصيل.
+        </p>
+      </div>
+
+      <div class="grid grid-cols-2 gap-3 reveal" style="transition-delay:0.1s;">
+        <div class="img-wrap">
+          <img src="course_assets/sample-red-dress.jpg" alt="خلفية ملونة"
+               style="width:100%; height:auto; object-fit:unset; display:block; filter:brightness(0.92) contrast(1.08); transition: transform 0.9s cubic-bezier(0.22,1,0.36,1);"
+               class="lb-trigger" onclick="openLightbox(this.src)"
+               onerror="this.src='https://placehold.co/600x900/0E0E0E/C9A84C?text=صورة+١٠'">
+          <div class="img-overlay"></div>
+          <div class="img-caption">
+            <p style="font-size:0.72rem; color:var(--gold); letter-spacing:0.12em;">صورة ١٠</p>
+            <p style="font-size:0.9rem; font-weight:700;">خلفية ملونة</p>
+          </div>
+        </div>
+        <div class="img-wrap">
+          <img src="course_assets/sample-light-flag.jpg" alt="إضاءة و عازل"
+               style="width:100%; height:auto; object-fit:unset; display:block; filter:brightness(0.92) contrast(1.08); transition: transform 0.9s cubic-bezier(0.22,1,0.36,1);"
+               class="lb-trigger" onclick="openLightbox(this.src)"
+               onerror="this.src='https://placehold.co/600x900/0E0E0E/C9A84C?text=صورة+٨'">
+          <div class="img-overlay"></div>
+          <div class="img-caption">
+            <p style="font-size:0.72rem; color:var(--gold); letter-spacing:0.12em;">صورة ٨</p>
+            <p style="font-size:0.9rem; font-weight:700;">إضاءة و عازل</p>
+          </div>
+        </div>
+        <div class="img-wrap">
+          <img src="course_assets/sample-spell-lighting.jpg" alt="Spill light"
+               style="width:100%; height:auto; object-fit:unset; display:block; filter:brightness(0.92) contrast(1.08); transition: transform 0.9s cubic-bezier(0.22,1,0.36,1);"
+               class="lb-trigger" onclick="openLightbox(this.src)"
+               onerror="this.src='https://placehold.co/600x900/0E0E0E/C9A84C?text=صورة+٥'">
+          <div class="img-overlay"></div>
+          <div class="img-caption">
+            <p style="font-size:0.72rem; color:var(--gold); letter-spacing:0.12em;">صورة ٥</p>
+            <p style="font-size:0.9rem; font-weight:700;">Spill light</p>
+          </div>
+        </div>
+        <div class="img-wrap">
+          <img src="course_assets/sample-two-points.jpg" alt="نقاط الضوء"
+               style="width:100%; height:auto; object-fit:unset; display:block; filter:brightness(0.92) contrast(1.08); transition: transform 0.9s cubic-bezier(0.22,1,0.36,1);"
+               class="lb-trigger" onclick="openLightbox(this.src)"
+               onerror="this.src='https://placehold.co/600x900/0E0E0E/C9A84C?text=صورة+٩'">
+          <div class="img-overlay"></div>
+          <div class="img-caption">
+            <p style="font-size:0.72rem; color:var(--gold); letter-spacing:0.12em;">صورة ٩</p>
+            <p style="font-size:0.9rem; font-weight:700;">نقاط الضوء</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center mt-16 reveal" style="transition-delay:0.3s;">
+        <a href="https://malearnstore.com/YzZOlWO" class="btn-gold">ابدأ بمشاهدة المحتوى الآن!</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══════════════ RESULTS ═══════════════ -->
+  <section class="py-24 px-6 md:px-12 relative overflow-hidden">
+    <div class="orb" style="width:500px; height:500px; background:radial-gradient(circle,rgba(201,168,76,0.18) 0%,transparent 70%); top:50%; left:-160px; transform:translateY(-50%);"></div>
+
+    <div class="wrap">
+      <div class="text-center mb-16">
+        <span class="label reveal mb-4">ماذا ستحقق؟</span>
+        <h2 class="reveal font-bold"
+            style="font-size:clamp(2rem,4vw,3.4rem); transition-delay:0.1s;">
+          النتائج اللي بتحققها<br>
+          <span style="color:var(--gold);">بعد الدورة</span>
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+        <!-- Technical -->
+        <div class="card p-8 reveal" style="transition-delay:0.1s;">
+          <div class="flex items-center gap-3 mb-8">
+            <div style="width:32px;height:32px;border-radius:50%;background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <span style="color:var(--gold);font-size:0.75rem;">✦</span>
+            </div>
+            <h3 class="font-bold" style="color:var(--gold);">على المستوى الفني</h3>
+          </div>
+          <div>
+            <div class="result-row"><span style="font-size:1.2rem;min-width:28px;">✨</span><p style="font-size:0.875rem;color:var(--silver);font-weight:300;line-height:1.85;">ثقة كاملة في التعامل مع الإضاءة الاحترافية</p></div>
+            <div class="result-row"><span style="font-size:1.2rem;min-width:28px;">🎯</span><p style="font-size:0.875rem;color:var(--silver);font-weight:300;line-height:1.85;">دقة في التحكم بالطابع والإحساس في الصورة</p></div>
+            <div class="result-row"><span style="font-size:1.2rem;min-width:28px;">⚡</span><p style="font-size:0.875rem;color:var(--silver);font-weight:300;line-height:1.85;">سرعة في التنفيذ — من الإعداد إلى النتيجة النهائية</p></div>
+            <div class="result-row"><span style="font-size:1.2rem;min-width:28px;">🏆</span><p style="font-size:0.875rem;color:var(--silver);font-weight:300;line-height:1.85;">بورتفوليو مميز بإضاءة متقنة وفنية</p></div>
+          </div>
+        </div>
+
+        <!-- Commercial -->
+        <div class="card p-8 reveal" style="transition-delay:0.2s;">
+          <div class="flex items-center gap-3 mb-8">
+            <div style="width:32px;height:32px;border-radius:50%;background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.3);display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <span style="color:var(--gold);font-size:0.75rem;">✦</span>
+            </div>
+            <h3 class="font-bold" style="color:var(--gold);">على المستوى التجاري</h3>
+          </div>
+          <div>
+            <div class="result-row"><span style="font-size:1.2rem;min-width:28px;">💰</span><p style="font-size:0.875rem;color:var(--silver);font-weight:300;line-height:1.85;">زيادة في الأسعار — إضاءة احترافية + سرعة = قيمة أعلى</p></div>
+            <div class="result-row"><span style="font-size:1.2rem;min-width:28px;">👥</span><p style="font-size:0.875rem;color:var(--silver);font-weight:300;line-height:1.85;">عملاء أكثر جودة ينجذبون لأسلوبك المتميز</p></div>
+            <div class="result-row"><span style="font-size:1.2rem;min-width:28px;">🚀</span><p style="font-size:0.875rem;color:var(--silver);font-weight:300;line-height:1.85;">سمعة احترافية كخبير في الإضاءة الإبداعية</p></div>
+            <div class="result-row"><span style="font-size:1.2rem;min-width:28px;">📈</span><p style="font-size:0.875rem;color:var(--silver);font-weight:300;line-height:1.85;">تفوق على المنافسين بنتائج تشبهك انت بس</p></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="text-center mt-16 reveal" style="transition-delay:0.4s;">
+        <a href="https://malearnstore.com/YzZOlWO" class="btn-gold">ابدأ بمشاهدة المحتوى الآن!</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══════════════ CURRICULUM ═══════════════ -->
+  <section class="py-24 px-6 md:px-12">
+    <div class="wrap-sm">
+      <div class="text-center mb-16">
+        <span class="label reveal mb-4">ماذا في الدورة؟</span>
+        <h2 class="reveal font-bold"
+            style="font-size:clamp(2rem,4vw,3.4rem); transition-delay:0.1s;">
+          مواد <span style="color:var(--gold);">الدورة</span>
+        </h2>
+      </div>
+
+      <div class="reveal" style="transition-delay:0.2s;">
+        <div class="faq-row">
+          <button class="acc-btn w-full py-5 flex items-center justify-between gap-4 text-right" onclick="toggleAcc(this)">
+            <span class="font-bold" style="font-size:1.05rem;">المقدمة</span>
+            <span class="acc-icon" style="color:var(--gold); font-size:1.4rem; font-weight:300;">+</span>
+          </button>
+          <div class="acc-content">
+            <ul class="pb-5 space-y-2" style="font-size:0.875rem;color:var(--silver);font-weight:300;line-height:1.9;padding-right:8px;">
+              <li style="display:flex;align-items:center;gap:10px;"><span style="color:var(--gold);flex-shrink:0;">▸</span> التجهيز لجلسة التصوير</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="faq-row">
+          <button class="acc-btn w-full py-5 flex items-center justify-between gap-4 text-right" onclick="toggleAcc(this)">
+            <span class="font-bold" style="font-size:1.05rem;">مفاهيم أساسية عن الإضاءة</span>
+            <span class="acc-icon" style="color:var(--gold); font-size:1.4rem; font-weight:300;">+</span>
+          </button>
+          <div class="acc-content">
+            <ul class="pb-5 space-y-2" style="font-size:0.875rem;color:var(--silver);font-weight:300;line-height:1.9;padding-right:8px;">
+              <li style="display:flex;align-items:center;gap:10px;"><span style="color:var(--gold);flex-shrink:0;">▸</span> الـ Stops — الوقفات</li>
+              <li style="display:flex;align-items:center;gap:10px;"><span style="color:var(--gold);flex-shrink:0;">▸</span> جودة الضوء — Light Quality</li>
+              <li style="display:flex;align-items:center;gap:10px;"><span style="color:var(--gold);flex-shrink:0;">▸</span> كثافة الضوء والظل — Light & Shadow Density</li>
+              <li style="display:flex;align-items:center;gap:10px;"><span style="color:var(--gold);flex-shrink:0;">▸</span> تحسين الضوء — Light Modification</li>
+              <li style="display:flex;align-items:center;gap:10px;"><span style="color:var(--gold);flex-shrink:0;">▸</span> المسافة — Distance from Light Source</li>
+              <li style="display:flex;align-items:center;gap:10px;"><span style="color:var(--gold);flex-shrink:0;">▸</span> اتجاه الإضاءة — Light Direction</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="faq-row">
+          <button class="acc-btn w-full py-5 flex items-center justify-between gap-4 text-right" onclick="toggleAcc(this)">
+            <span class="font-bold" style="font-size:1.05rem;">نقاط مهمة عن الإضاءة</span>
+            <span class="acc-icon" style="color:var(--gold); font-size:1.4rem; font-weight:300;">+</span>
+          </button>
+          <div class="acc-content">
+            <ul class="pb-5 space-y-2" style="font-size:0.875rem;color:var(--silver);font-weight:300;line-height:1.9;padding-right:8px;">
+              <li style="display:flex;align-items:center;gap:10px;"><span style="color:var(--gold);flex-shrink:0;">▸</span> نقاط الضوء حول الهدف</li>
+              <li style="display:flex;align-items:center;gap:10px;"><span style="color:var(--gold);flex-shrink:0;">▸</span> آلية الساعة لتحديد مواقع الضوء</li>
+              <li style="display:flex;align-items:center;gap:10px;"><span style="color:var(--gold);flex-shrink:0;">▸</span> زوائد الضوء — Light Feathering</li>
+              <li style="display:flex;align-items:center;gap:10px;"><span style="color:var(--gold);flex-shrink:0;">▸</span> عوازل الضوء — Light Flags</li>
+              <li style="display:flex;align-items:center;gap:10px;"><span style="color:var(--gold);flex-shrink:0;">▸</span> الخلفيات وأثر الضوء عليها</li>
+              <li style="display:flex;align-items:center;gap:10px;"><span style="color:var(--gold);flex-shrink:0;">▸</span> الفكرة هي عصب الصور</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="faq-row" style="border-bottom:none;">
+          <button class="acc-btn w-full py-5 flex items-center justify-between gap-4 text-right" onclick="toggleAcc(this)">
+            <span class="font-bold" style="font-size:1.05rem;">جلسات التصوير — ١٥ توزيع إضاءة</span>
+            <span class="acc-icon" style="color:var(--gold); font-size:1.4rem; font-weight:300;">+</span>
+          </button>
+          <div class="acc-content">
+            <ul class="pb-5 space-y-2" style="font-size:0.875rem;color:var(--silver);font-weight:300;line-height:1.9;padding-right:8px;">
+              <li style="display:flex;align-items:center;gap:10px;"><span style="color:var(--gold);flex-shrink:0;">▸</span> التوزيعات الثلاثة الكلاسيكية — Paramount / Rembrandt / Split</li>
+              <li style="display:flex;align-items:center;gap:10px;"><span style="color:var(--gold);flex-shrink:0;">▸</span> Hard Light — إضاءة حادة</li>
+              <li style="display:flex;align-items:center;gap:10px;"><span style="color:var(--gold);flex-shrink:0;">▸</span> Short Lighting</li>
+              <li style="display:flex;align-items:center;gap:10px;"><span style="color:var(--gold);flex-shrink:0;">▸</span> Broad Lighting</li>
+              <li style="display:flex;align-items:center;gap:10px;"><span style="color:var(--gold);flex-shrink:0;">▸</span> Overhead / Top Light</li>
+              <li style="display:flex;align-items:center;gap:10px;"><span style="color:var(--gold);flex-shrink:0;">▸</span> Spell Lighting</li>
+              <li style="display:flex;align-items:center;gap:10px;"><span style="color:var(--gold);flex-shrink:0;">▸</span> الإضاءة والعواكس — Light & Reflector</li>
+              <li style="display:flex;align-items:center;gap:10px;"><span style="color:var(--gold);flex-shrink:0;">▸</span> Light Flags — عوازل الضوء</li>
+              <li style="display:flex;align-items:center;gap:10px;"><span style="color:var(--gold);flex-shrink:0;">▸</span> نقاط الضوء — 2 Points of Light</li>
+              <li style="display:flex;align-items:center;gap:10px;"><span style="color:var(--gold);flex-shrink:0;">▸</span> الخلفيات الملونة</li>
+              <li style="display:flex;align-items:center;gap:10px;"><span style="color:var(--gold);flex-shrink:0;">▸</span> E-commerce Photography — صور الموقع الإلكتروني</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══════════════ TESTIMONIALS ═══════════════ -->
+  <section class="py-24 px-6 md:px-12">
+    <div class="wrap">
+      <div class="text-center mb-16">
+        <span class="label reveal mb-4">ما يقوله المشتركون</span>
+        <h2 class="reveal font-bold mb-4"
+            style="font-size:clamp(2rem,4vw,3.4rem); transition-delay:0.1s;">
+          أراء بعض <span style="color:var(--gold);">المشتركين</span>
+        </h2>
+        <p class="reveal" style="font-size:0.95rem;color:var(--silver);font-weight:300;transition-delay:0.2s;">
+          آراء وتقييمات حقيقية عن الدورة
+        </p>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="card overflow-hidden reveal" style="transition-delay:0.1s;">
+          <img src="course_assets/Testimonial-1.png" alt="تقييم مشترك" class="w-full lb-trigger" onclick="openLightbox(this.src)" style="cursor:zoom-in;">
+        </div>
+        <div class="card overflow-hidden reveal" style="transition-delay:0.2s;">
+          <img src="course_assets/Testimonial-2.png" alt="تقييم مشترك" class="w-full lb-trigger" onclick="openLightbox(this.src)" style="cursor:zoom-in;">
+        </div>
+        <div class="card overflow-hidden reveal" style="transition-delay:0.3s;">
+          <img src="course_assets/Testimonial-3.png" alt="تقييم مشترك" class="w-full lb-trigger" onclick="openLightbox(this.src)" style="cursor:zoom-in;">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══════════════ INSTRUCTOR ═══════════════ -->
+  <section class="py-24 px-6 md:px-12">
+    <div class="wrap">
+      <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+
+        <!-- Photo -->
+        <div class="reveal order-2 lg:order-1" style="transition-delay:0.2s;">
+          <div class="img-wrap mx-auto" style="height:580px; max-width:460px; max-height:80vw;">
+            <img src="../brand_assets/profile.jpg" alt="ماجد عنقاوي"
+                 style="mix-blend-mode:luminosity; filter:brightness(0.88) contrast(1.12) grayscale(0.15);"
+                 class="lb-trigger" onclick="openLightbox(this.src)">
+            <div class="img-overlay" style="background:linear-gradient(to top,rgba(8,8,8,0.85) 0%,transparent 45%);"></div>
+            <!-- Gold color treatment -->
+            <div class="absolute inset-0" style="background:rgba(201,168,76,0.04); mix-blend-mode:color; pointer-events:none;"></div>
+          </div>
+        </div>
+
+        <!-- Bio -->
+        <div class="order-1 lg:order-2">
+          <span class="label reveal mb-5">المدرب</span>
+          <h2 class="reveal font-bold leading-[1.15] mb-6"
+              style="font-size:clamp(2rem,4vw,3.4rem); transition-delay:0.1s;">
+            مين هو<br>
+            <span style="color:var(--gold);">ماجد عنقاوي؟!</span>
+          </h2>
+
+          <p class="reveal" style="font-size:0.9rem;color:var(--silver);font-weight:300;line-height:1.95;margin-bottom:28px;transition-delay:0.18s;">
+            مخرج إبداعي ومصور تجاري متخصص في الأزياء والمجوهرات في جدة، المملكة العربية السعودية. بخبرة تجاوزت 16 عاماً، جمع بين الفن المعاصر والتصوير التجاري لكبرى العلامات الفاخرة عالمياً.
+          </p>
+
+          <div class="reveal grid grid-cols-2 gap-4 mb-8" style="transition-delay:0.28s;">
+            <div class="card p-5 text-center">
+              <p class="stat-n">16</p>
+              <p style="font-size:0.75rem;color:var(--grey);font-weight:300;margin-top:4px;">عاماً من الخبرة</p>
+            </div>
+            <div class="card p-5 text-center">
+              <p class="stat-n">17+</p>
+              <p style="font-size:0.75rem;color:var(--grey);font-weight:300;margin-top:4px;">غلاف مجلة عالمية</p>
+            </div>
+            <div class="card p-5 text-center">
+              <p class="stat-n">1M</p>
+              <p style="font-size:0.75rem;color:var(--grey);font-weight:300;margin-top:4px;">هدف الإلهام</p>
+            </div>
+            <div class="card p-5 text-center">
+              <p class="stat-n">500+</p>
+              <p style="font-size:0.75rem;color:var(--grey);font-weight:300;margin-top:4px;">طالب</p>
+            </div>
+          </div>
+
+          <p class="reveal" style="font-size:0.78rem;color:var(--grey);font-weight:300;line-height:2.1;transition-delay:0.36s;">
+            Harper's Bazaar · Vogue Arabia · Elle Arabia · Esquire · Haya · Sayidaty<br>
+            Bulgari · Boucheron · Rolex · Hublot · Chopard · Cartier · Dior · Gucci
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══════════════ COURSE DETAILS ═══════════════ -->
+  <section class="py-24 px-6 md:px-12"
+           style="background:linear-gradient(to bottom,var(--bg),var(--card-bg) 50%,var(--bg));">
+    <div class="wrap">
+      <div class="text-center mb-16">
+        <span class="label reveal mb-4">ماذا تحصل؟</span>
+        <h2 class="reveal font-bold"
+            style="font-size:clamp(2rem,4vw,3.4rem); transition-delay:0.1s;">
+          تفاصيل <span style="color:var(--gold);">الدورة</span>
+        </h2>
+      </div>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="card p-8 reveal" style="transition-delay:0.1s;">
+          <h3 class="font-bold mb-6 pb-4" style="color:var(--gold);border-bottom:1px solid rgba(201,168,76,0.18);font-size:1rem;">المحتوى</h3>
+          <ul class="space-y-3">
+            <li class="flex items-start gap-3" style="font-size:0.875rem;color:var(--silver);font-weight:300;"><span>🎥</span><span>٢٠ فيديو مسجل عالي الجودة</span></li>
+            <li class="flex items-start gap-3" style="font-size:0.875rem;color:var(--silver);font-weight:300;"><span>📋</span><span>١٥ توزيع إضاءة كامل مع الرسوم التوضيحية</span></li>
+            <li class="flex items-start gap-3" style="font-size:0.875rem;color:var(--silver);font-weight:300;"><span>📖</span><span>كتاب إلكتروني شامل بالصور والرسومات</span></li>
+            <li class="flex items-start gap-3" style="font-size:0.875rem;color:var(--silver);font-weight:300;"><span>🔧</span><span>قائمة كاملة بالمعدات المطلوبة</span></li>
+            <li class="flex items-start gap-3" style="font-size:0.875rem;color:var(--silver);font-weight:300;"><span>🎁</span><span>تخفيض ١٥٪ على منتجات Profoto</span></li>
+          </ul>
+        </div>
+
+        <div class="card p-8 reveal" style="transition-delay:0.2s;">
+          <h3 class="font-bold mb-6 pb-4" style="color:var(--gold);border-bottom:1px solid rgba(201,168,76,0.18);font-size:1rem;">المميزات</h3>
+          <ul class="space-y-3">
+            <li class="flex items-start gap-3" style="font-size:0.875rem;color:var(--silver);font-weight:300;"><span>🌐</span><span>باللغة العربية — شرح واضح ومباشر</span></li>
+            <li class="flex items-start gap-3" style="font-size:0.875rem;color:var(--silver);font-weight:300;"><span>📱</span><span>متوافق مع جميع الأجهزة</span></li>
+            <li class="flex items-start gap-3" style="font-size:0.875rem;color:var(--silver);font-weight:300;"><span>🔄</span><span>وصول مدى الحياة — راجع المحتوى متى شئت</span></li>
+          </ul>
+        </div>
+
+        <div class="card p-8 reveal" style="transition-delay:0.3s;">
+          <h3 class="font-bold mb-6 pb-4" style="color:var(--gold);border-bottom:1px solid rgba(201,168,76,0.18);font-size:1rem;">المستوى المطلوب</h3>
+          <ul class="space-y-3">
+            <li class="flex items-start gap-3" style="font-size:0.875rem;color:var(--silver);font-weight:300;"><span>📷</span><span>مصور متوسط إلى محترف</span></li>
+            <li class="flex items-start gap-3" style="font-size:0.875rem;color:var(--silver);font-weight:300;"><span>🎛️</span><span>معرفة أساسية بكاميرا DSLR/Mirrorless</span></li>
+            <li class="flex items-start gap-3" style="font-size:0.875rem;color:var(--silver);font-weight:300;"><span>💡</span><span>تجربة محدودة مع الإضاءة الصناعية</span></li>
+            <li class="flex items-start gap-3" style="font-size:0.875rem;color:var(--silver);font-weight:300;"><span>🎯</span><span>رغبة في التطوير والاحترافية</span></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═══════════════ PRICING ═══════════════ -->
+  <section id="enroll" class="py-24 px-6 md:px-12 relative overflow-hidden">
+    <div class="orb" style="width:900px;height:700px;background:radial-gradient(circle,rgba(201,168,76,0.14) 0%,transparent 65%);top:50%;left:50%;transform:translate(-50%,-50%);"></div>
+
+    <div class="wrap-sm text-center relative z-10">
+      <span class="label reveal mb-5">استثمر في نفسك</span>
+      <h2 class="reveal font-bold mb-10"
+          style="font-size:clamp(2rem,4vw,3.4rem); transition-delay:0.1s;">
+        استثمر في <span style="color:var(--gold);">نفسك!</span>
+      </h2>
+
+      <div class="card p-10 reveal text-right" style="transition-delay:0.2s;">
+        <!-- Features -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mb-8">
+          <div class="flex items-start gap-3" style="font-size:0.875rem;color:var(--silver);font-weight:300;"><span style="color:var(--gold);margin-top:2px;flex-shrink:0;">🎯</span><span>١٥ توزيع إضاءة احترافي</span></div>
+          <div class="flex items-start gap-3" style="font-size:0.875rem;color:var(--silver);font-weight:300;"><span style="color:var(--gold);margin-top:2px;flex-shrink:0;">💡</span><span>تقنيات متقدمة بإضاءة واحدة فقط</span></div>
+          <div class="flex items-start gap-3" style="font-size:0.875rem;color:var(--silver);font-weight:300;"><span style="color:var(--gold);margin-top:2px;flex-shrink:0;">📸</span><span>شرح تفصيلي لكل صورة من الفكرة للنتيجة</span></div>
+          <div class="flex items-start gap-3" style="font-size:0.875rem;color:var(--silver);font-weight:300;"><span style="color:var(--gold);margin-top:2px;flex-shrink:0;">⚡</span><span>مهارة جديدة في كل درس — ١٥ مهارة تطبيقية</span></div>
+          <div class="flex items-start gap-3" style="font-size:0.875rem;color:var(--silver);font-weight:300;"><span style="color:var(--gold);margin-top:2px;flex-shrink:0;">🔬</span><span>فهم علمي للضوء — قياس وتحكم</span></div>
+          <div class="flex items-start gap-3" style="font-size:0.875rem;color:var(--silver);font-weight:300;"><span style="color:var(--gold);margin-top:2px;flex-shrink:0;">🎨</span><span>تحسين وتعديل خصائص الضوء</span></div>
+          <div class="flex items-start gap-3" style="font-size:0.875rem;color:var(--silver);font-weight:300;"><span style="color:var(--gold);margin-top:2px;flex-shrink:0;">📚</span><span>محتوى عملي ١٠٠٪ — لا نظريات معقدة</span></div>
+          <div class="flex items-start gap-3" style="font-size:0.875rem;color:var(--silver);font-weight:300;"><span style="color:var(--gold);margin-top:2px;flex-shrink:0;">💪</span><span>مناسب لجميع المستويات</span></div>
+        </div>
+
+        <div class="divider my-8"></div>
+
+        <!-- Price -->
+        <div class="text-center mb-8">
+          <p style="font-size:0.75rem;color:var(--grey);font-weight:300;margin-bottom:8px;">السعر الكامل</p>
+          <p class="font-bold" style="font-size:5rem;color:var(--gold);line-height:1;">650</p>
+          <p style="font-size:1.1rem;color:var(--silver);font-weight:300;">ريال سعودي</p>
+        </div>
+
+        <!-- Badges -->
+        <div class="flex flex-wrap justify-center gap-5 text-xs mb-10" style="color:var(--grey);font-weight:300;">
+          <span>✅ وصول مدى الحياة</span>
+          <span>✅ ضمان استرداد ٧ أيام</span>
+          <span>✅ إمكانية التقسيط</span>
+        </div>
+
+        <div class="text-center">
+          <a href="https://malearnstore.com/YzZOlWO" class="btn-gold" style="font-size:1.1rem; padding:18px 64px;">استثمر في نفسك الآن!</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══════════════ FAQ ═══════════════ -->
+  <section class="py-24 px-6 md:px-12">
+    <div class="wrap-sm">
+      <div class="text-center mb-16">
+        <span class="label reveal mb-4">لديك سؤال؟</span>
+        <h2 class="reveal font-bold mb-4"
+            style="font-size:clamp(2rem,4vw,3.4rem); transition-delay:0.1s;">
+          الأسئلة <span style="color:var(--gold);">المتكررة</span>
+        </h2>
+        <p class="reveal" style="font-size:0.95rem;color:var(--silver);font-weight:300;transition-delay:0.2s;">
+          كل ما ترد معرفته مجاب هنا ببساطة
+        </p>
+      </div>
+
+      <div class="reveal" style="transition-delay:0.2s;">
+        <div class="faq-row">
+          <button class="acc-btn w-full py-5 flex items-center justify-between gap-4 text-right" onclick="toggleAcc(this)">
+            <span class="font-bold">كيف أحصل على محتوى الدورة؟</span>
+            <span class="acc-icon" style="color:var(--gold);font-size:1.4rem;font-weight:300;">+</span>
+          </button>
+          <div class="acc-content">
+            <p class="pb-5" style="font-size:0.875rem;color:var(--silver);font-weight:300;line-height:1.95;">المحتوى مسجل وتقدر تحضره من أي جهاز في أي مكان. بمجرد تسجيل الدخول لحسابك.</p>
+          </div>
+        </div>
+
+        <div class="faq-row">
+          <button class="acc-btn w-full py-5 flex items-center justify-between gap-4 text-right" onclick="toggleAcc(this)">
+            <span class="font-bold">هل الدورة تعلم إضاءة فيديو كمان ولا بس فوتو؟</span>
+            <span class="acc-icon" style="color:var(--gold);font-size:1.4rem;font-weight:300;">+</span>
+          </button>
+          <div class="acc-content">
+            <p class="pb-5" style="font-size:0.875rem;color:var(--silver);font-weight:300;line-height:1.95;">الدورة تشرح مفاهيم أساسية في الإضاءة يمكن تطبيقها على الفوتو والفيديو، لكن التطبيقات في الدورة على الصور الفوتوغرافية فقط.</p>
+          </div>
+        </div>
+
+        <div class="faq-row">
+          <button class="acc-btn w-full py-5 flex items-center justify-between gap-4 text-right" onclick="toggleAcc(this)">
+            <span class="font-bold">هل أحصل على شهادة معتمدة؟</span>
+            <span class="acc-icon" style="color:var(--gold);font-size:1.4rem;font-weight:300;">+</span>
+          </button>
+          <div class="acc-content">
+            <p class="pb-5" style="font-size:0.875rem;color:var(--silver);font-weight:300;line-height:1.95;">لا توجد شهادة معتمدة، ولكن توجد شهادة حضور في حين إكمال مشاهدة المحتوى بالكامل.</p>
+          </div>
+        </div>
+
+        <div class="faq-row">
+          <button class="acc-btn w-full py-5 flex items-center justify-between gap-4 text-right" onclick="toggleAcc(this)">
+            <span class="font-bold">هل لازم تكون عندي نفس المعدات عشان أطلع بنفس النتائج؟</span>
+            <span class="acc-icon" style="color:var(--gold);font-size:1.4rem;font-weight:300;">+</span>
+          </button>
+          <div class="acc-content">
+            <p class="pb-5" style="font-size:0.875rem;color:var(--silver);font-weight:300;line-height:1.95;">لا مو شرط أبداً!! إذا فهمت الشرح وفهمت ليش أخذنا الخطوات هذي وعملت زيها بأي معدات مشابهة بتحصل على نفس النتيجة.</p>
+          </div>
+        </div>
+
+        <div class="faq-row">
+          <button class="acc-btn w-full py-5 flex items-center justify-between gap-4 text-right" onclick="toggleAcc(this)">
+            <span class="font-bold">هل الدورة فقط دروس مسجلة؟</span>
+            <span class="acc-icon" style="color:var(--gold);font-size:1.4rem;font-weight:300;">+</span>
+          </button>
+          <div class="acc-content">
+            <p class="pb-5" style="font-size:0.875rem;color:var(--silver);font-weight:300;line-height:1.95;">الدروس المسجلة هي الأساس، ويوجد أيضاً كتاب إلكتروني شامل لجميع المحتوى بشكل كتابي.</p>
+          </div>
+        </div>
+
+        <div class="faq-row" style="border-bottom:none;">
+          <button class="acc-btn w-full py-5 flex items-center justify-between gap-4 text-right" onclick="toggleAcc(this)">
+            <span class="font-bold">أنا مصور زواجات، كيف راح أستفيد من الدورة؟</span>
+            <span class="acc-icon" style="color:var(--gold);font-size:1.4rem;font-weight:300;">+</span>
+          </button>
+          <div class="acc-content">
+            <p class="pb-5" style="font-size:0.875rem;color:var(--silver);font-weight:300;line-height:1.95;">يمكن الاستفادة بعدة أشكال: فهم أساسيات الإضاءة، تعلم تقنيات الإضاءة الواحدة لتسهيل التنقل بمعدات أقل، و١٥ توزيع إضاءة جاهزة قابلة للتطبيق في أي مكان وأي وقت.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <!-- ═══════════════ FOOTER CTA ═══════════════ -->
+  <section class="py-24 px-6 md:px-12 text-center relative overflow-hidden">
+    <div class="orb" style="width:700px;height:400px;background:radial-gradient(circle,rgba(201,168,76,0.15) 0%,transparent 70%);bottom:-80px;left:50%;transform:translateX(-50%);"></div>
+    <div class="wrap-sm relative z-10">
+      <h2 class="reveal font-bold mb-5" style="font-size:clamp(2rem,5vw,3.8rem);">
+        ابدأ الآن <span style="color:var(--gold);">←</span>
+      </h2>
+      <p class="reveal mb-10" style="font-size:0.95rem;color:var(--silver);font-weight:300;line-height:1.95;transition-delay:0.1s;">
+        كل ما تحتاجه لتبني مسيرة إبداعية حقيقية — في مكان واحد.<br>الدورات جاهزة. أنت جاهز؟
+      </p>
+      <a href="https://malearnstore.com/YzZOlWO" class="reveal btn-gold" style="font-size:1.1rem;padding:18px 64px;transition-delay:0.2s;">ابدأ الآن ←</a>
+    </div>
+  </section>
+
+  <!-- ═══════════════ FOOTER ═══════════════ -->
+  <footer class="py-10 px-6 md:px-12" style="border-top:1px solid rgba(255,255,255,0.05);text-align:center;">
+    <img src="../brand_assets/logo-malearn-white.png" alt="MA Learn" style="height:22px;opacity:0.6;margin:0 auto 14px;display:block;" onerror="this.style.display='none'">
+    <div style="display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:12px;">
+      <span style="font-size:0.65rem;color:#555;margin-left:4px;">الدفع عبر:</span>
+      <svg xmlns="http://www.w3.org/2000/svg" width="64" height="36" viewBox="0 0 64 36"><rect width="64" height="36" rx="4" fill="white"/><rect x="6" y="6" width="17" height="10" rx="1" fill="#29ABE2"/><rect x="6" y="20" width="17" height="10" rx="1" fill="#78BE20"/><text x="42" y="23" text-anchor="middle" font-family="Arial Black,Arial,sans-serif" font-size="11" font-weight="900" fill="#222">mada</text></svg><svg xmlns="http://www.w3.org/2000/svg" width="54" height="36" viewBox="0 0 54 36"><rect width="54" height="36" rx="4" fill="#1A1F71"/><text x="27" y="25" text-anchor="middle" font-family="Arial,sans-serif" font-size="17" font-weight="700" font-style="italic" fill="white">VISA</text></svg><svg xmlns="http://www.w3.org/2000/svg" width="58" height="36" viewBox="0 0 58 36"><circle cx="20" cy="16" r="11" fill="#EB001B"/><circle cx="38" cy="16" r="11" fill="#F79E1B"/><path d="M29,9.68 A11,11 0 0,1 29,22.32 A11,11 0 0,0 29,9.68Z" fill="#FF5F00"/><text x="29" y="35" text-anchor="middle" font-family="Arial,sans-serif" font-size="5" fill="#bbb" letter-spacing="0.5">mastercard</text></svg><svg xmlns="http://www.w3.org/2000/svg" width="74" height="36" viewBox="0 0 74 36"><rect width="74" height="36" rx="4" fill="#111111"/><rect width="74" height="36" rx="4" fill="none" stroke="#383838" stroke-width="1"/><text x="37" y="22" text-anchor="middle" font-family="Helvetica Neue,Helvetica,Arial,sans-serif" font-size="12" font-weight="300" fill="white" letter-spacing="-0.2">Apple Pay</text></svg>
+    </div>
+    <div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-bottom:8px;">
+      <a href="https://malearnsa.com" style="font-size:0.7rem;color:#555;text-decoration:none;" onmouseover="this.style.color='#C9A84C'" onmouseout="this.style.color='#555'">الرئيسية</a>
+      <a href="https://malearnsa.com/refund-policy.html" style="font-size:0.7rem;color:#555;text-decoration:none;" onmouseover="this.style.color='#C9A84C'" onmouseout="this.style.color='#555'">سياسة الاسترجاع</a>
+      <a href="https://malearnsa.com/privacy-policy.html" style="font-size:0.7rem;color:#555;text-decoration:none;" onmouseover="this.style.color='#C9A84C'" onmouseout="this.style.color='#555'">الخصوصية</a>
+      <a href="https://instagram.com/majidangawi" style="font-size:0.7rem;color:#555;text-decoration:none;" onmouseover="this.style.color='#C9A84C'" onmouseout="this.style.color='#555'" target="_blank">Instagram</a>
+    </div>
+    <p style="font-size:0.7rem;color:#444;direction:ltr;margin-bottom:14px;">support@malearnsa.com &nbsp;·&nbsp; +966 560 440 113</p>
+    <div style="display:inline-flex;align-items:center;gap:12px;background:#ffffff;border-radius:10px;padding:10px 16px;direction:rtl;margin-top:4px;">
+      <img src="../brand_assets/freelance-doc.jpg" alt="وثيقة العمل الحر" style="height:44px;width:auto;display:block;" onerror="this.style.display='none'">
+      <div style="border-right:1px solid #ddd;padding-right:12px;text-align:right;">
+        <p style="font-size:0.55rem;color:#888;margin:0 0 3px 0;font-family:Cairo,Arial,sans-serif;line-height:1;">رقم الوثيقة</p>
+        <p style="font-size:0.75rem;font-weight:700;color:#222;margin:0;font-family:Arial,sans-serif;letter-spacing:0.5px;line-height:1;">FL-163949047</p>
+      </div>
+    </div>
+    <p style="font-size:0.7rem;color:var(--grey);margin-top:14px;">© MA Learn 2026 — جميع الحقوق محفوظة</p>
+  </footer>
+
+  <!-- Lightbox -->
+  <div id="lightbox" onclick="closeLightbox()">
+    <span id="lightbox-close" onclick="closeLightbox()">×</span>
+    <img id="lightbox-img" src="" alt="">
+  </div>
+
+  <script>
+    // ── Lightbox ──
+    function openLightbox(src) {
+      document.getElementById('lightbox-img').src = src;
+      document.getElementById('lightbox').classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox() {
+      document.getElementById('lightbox').classList.remove('active');
+      document.getElementById('lightbox-img').src = '';
+      document.body.style.overflow = '';
+    }
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') closeLightbox();
+    });
+
+    // ── Accordion ──
+    function toggleAcc(btn) {
+      const content = btn.nextElementSibling;
+      const icon = btn.querySelector('.acc-icon');
+      const wasOpen = content.classList.contains('open');
+      document.querySelectorAll('.acc-content').forEach(c => c.classList.remove('open'));
+      document.querySelectorAll('.acc-icon').forEach(i => i.classList.remove('open'));
+      if (!wasOpen) {
+        content.classList.add('open');
+        icon.classList.add('open');
+      }
+    }
+
+    // ── Scroll reveal ──
+    const ro = new IntersectionObserver(entries => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.08, rootMargin: '0px 0px -30px 0px' });
+    document.querySelectorAll('.reveal').forEach(el => ro.observe(el));
+
+    // ── Navbar scroll ──
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 50);
+    }, { passive: true });
+
+    // ── Floating particles ──
+    const pc = document.getElementById('particles');
+    function mkParticle() {
+      const el = document.createElement('div');
+      el.className = 'particle';
+      const s = Math.random() * 2.5 + 0.8;
+      const gold = Math.random() > 0.45;
+      el.style.cssText = `
+        width:${s}px; height:${s}px;
+        background:${gold ? 'rgba(201,168,76,0.75)' : 'rgba(245,240,232,0.35)'};
+        left:${Math.random() * 100}%;
+        bottom:${-s}px;
+        animation-duration:${Math.random() * 14 + 11}s;
+        animation-delay:${Math.random() * 8}s;
+      `;
+      pc.appendChild(el);
+      setTimeout(() => el.remove(), 25000);
+    }
+    for (let i = 0; i < 18; i++) mkParticle();
+    setInterval(mkParticle, 1400);
+  </script>
+
+</body>
+</html>
