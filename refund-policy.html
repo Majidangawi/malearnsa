@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>سياسة الاسترجاع والاستبدال | MA Learn</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #080808; --surface: #121212; --border: rgba(255,255,255,0.07);
+      --gold: #C9A84C; --gold-lum: #E8D08A; --ivory: #F5F0E8;
+      --silver: #BBBBBB; --grey: #666; --muted: #888;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: var(--bg); color: var(--ivory);
+      min-height: 100vh; direction: rtl;
+      line-height: 1.9; font-size: 16px;
+    }
+
+    /* ── HEADER ── */
+    header {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(8,8,8,0.95); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 40px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .logo-img { height: 26px; width: auto; }
+    nav a {
+      color: var(--muted); text-decoration: none;
+      font-size: 14px; margin-right: 24px; transition: color 0.2s;
+    }
+    nav a:hover { color: var(--gold); }
+    @media (max-width: 600px) {
+      header { padding: 12px 16px; }
+      nav a { margin-right: 12px; font-size: 13px; }
+    }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 72px 40px 48px;
+      max-width: 820px; margin: 0 auto;
+      border-bottom: 1px solid var(--border);
+    }
+    .breadcrumb {
+      font-size: 12px; color: var(--grey);
+      letter-spacing: 0.08em; margin-bottom: 20px;
+    }
+    .breadcrumb a { color: var(--grey); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--gold); }
+    h1 {
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 900; color: #fff; margin-bottom: 12px;
+    }
+    h1 span { color: var(--gold); }
+    .meta { font-size: 13px; color: var(--grey); }
+
+    /* ── CONTENT ── */
+    .content { max-width: 820px; margin: 0 auto; padding: 48px 40px 80px; }
+
+    /* Language toggle */
+    .lang-toggle {
+      display: inline-flex; border: 1px solid var(--border);
+      border-radius: 6px; overflow: hidden; margin-bottom: 40px;
+    }
+    .lang-btn {
+      padding: 8px 20px; font-size: 13px; font-family: 'Cairo', sans-serif;
+      background: transparent; color: var(--grey);
+      border: none; cursor: pointer; transition: all 0.2s;
+    }
+    .lang-btn.active { background: var(--gold); color: #000; font-weight: 700; }
+
+    .ar-content, .en-content { display: none; }
+    .ar-content.active, .en-content.active { display: block; }
+
+    /* Sections */
+    .section { margin-bottom: 40px; }
+    h2 {
+      font-size: 1.1rem; font-weight: 700; color: var(--gold);
+      letter-spacing: 0.06em; text-transform: uppercase;
+      margin-bottom: 16px; padding-bottom: 10px;
+      border-bottom: 1px solid rgba(201,168,76,0.15);
+    }
+    .en-content h2 { text-align: left; direction: ltr; }
+    p { color: var(--silver); margin-bottom: 12px; font-weight: 300; }
+    ul { list-style: none; padding: 0; margin-bottom: 12px; }
+    ul li {
+      color: var(--silver); padding: 6px 0; font-weight: 300;
+      padding-right: 20px; position: relative;
+    }
+    ul li::before {
+      content: '—'; position: absolute; right: 0;
+      color: var(--gold); font-size: 0.85rem;
+    }
+    .en-content ul li { padding-right: 0; padding-left: 20px; }
+    .en-content ul li::before { right: auto; left: 0; }
+
+    .callout {
+      background: rgba(201,168,76,0.06);
+      border: 1px solid rgba(201,168,76,0.2);
+      border-radius: 8px; padding: 16px 20px; margin: 16px 0;
+    }
+    .callout p { margin: 0; color: var(--ivory); font-weight: 400; }
+    .callout-red {
+      background: rgba(224,82,82,0.06);
+      border-color: rgba(224,82,82,0.2);
+    }
+    .callout-red p { color: #f0a0a0; }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 40px;
+      display: flex; flex-direction: column; align-items: center;
+      gap: 12px; text-align: center;
+    }
+    footer p { font-size: 13px; color: var(--grey); font-weight: 300; }
+    .footer-links { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
+    .footer-links a {
+      font-size: 13px; color: var(--grey); text-decoration: none; transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--gold); }
+    .contact-info { font-size: 13px; color: var(--muted); direction: ltr; }
+
+    @media (max-width: 600px) {
+      .hero { padding: 48px 20px 32px; }
+      .content { padding: 32px 20px 60px; }
+      footer { padding: 24px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <img class="logo-img" src="https://raw.githubusercontent.com/Majidangawi/malearnsa/main/MA%20Learn%20white-08.png"
+       alt="MA Learn" onerror="this.style.display='none'">
+  <nav>
+    <a href="https://malearnsa.com">الرئيسية</a>
+    <a href="privacy-policy.html">سياسة الخصوصية</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <p class="breadcrumb"><a href="https://malearnsa.com">MA Learn</a> ← سياسة الاسترجاع والاستبدال</p>
+  <h1>سياسة <span>الاسترجاع</span> والاستبدال</h1>
+  <p class="meta">آخر تحديث: أبريل ٢٠٢٦ &nbsp;·&nbsp; Refund & Returns Policy</p>
+</div>
+
+<!-- CONTENT -->
+<div class="content">
+
+  <!-- Language toggle -->
+  <div class="lang-toggle">
+    <button class="lang-btn active" onclick="switchLang('ar')">العربية</button>
+    <button class="lang-btn" onclick="switchLang('en')">English</button>
+  </div>
+
+  <!-- ═══════════════ ARABIC ═══════════════ -->
+  <div class="ar-content active">
+
+    <div class="section">
+      <h2>طبيعة الخدمات الرقمية</h2>
+      <p>منصة MA Learn تقدم محتوى رقمياً تعليمياً يشمل الدورات المسجلة، والورش التدريبية المباشرة، والملفات القابلة للتحميل. نظراً لطبيعة هذه المنتجات الرقمية، فإن جميع المشتريات <strong>تُعدّ نهائية</strong> بعد إتمام عملية الدفع وتسليم رابط الوصول أو المحتوى.</p>
+      <div class="callout">
+        <p>هذه السياسة متوافقة مع نظام التجارة الإلكترونية في المملكة العربية السعودية ولائحته التنفيذية الصادرة عن وزارة التجارة.</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>حالات يحق فيها طلب التعويض أو الإصلاح</h2>
+      <p>يحق للعميل طلب تعويض أو حل بديل في الحالات التالية:</p>
+      <ul>
+        <li>إذا كان الملف أو الرابط لا يعمل أو يوجد خلل يمنع فتحه أو استخدامه.</li>
+        <li>إذا استلم العميل محتوى مختلفاً جذرياً عن الوصف المذكور في صفحة المنتج.</li>
+        <li>إذا تعذّر على العميل الوصول للمحتوى بسبب خطأ تقني من المنصة.</li>
+      </ul>
+      <p>في هذه الحالات يتم اتخاذ أحد الإجراءات التالية:</p>
+      <ul>
+        <li>إعادة إرسال الرابط أو المحتوى.</li>
+        <li>تقديم نسخة بديلة تعمل بشكل سليم.</li>
+        <li>تعويض العميل بما يتناسب مع طبيعة المشكلة.</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>حالات لا يحق فيها طلب الاسترجاع</h2>
+      <div class="callout callout-red">
+        <p>لا يمكن قبول طلبات الاسترجاع في الحالات التالية:</p>
+      </div>
+      <ul>
+        <li>بعد تحميل الملف أو الوصول للمحتوى الرقمي بنجاح.</li>
+        <li>إذا كانت المشكلة ناتجة عن برامج أو أجهزة العميل لا عن المنصة.</li>
+        <li>إذا قُدّمت الخدمة وفق المواصفات المعلنة دون أي خلل تقني.</li>
+        <li>بعد مضي أكثر من ٧ أيام من تاريخ الشراء دون إبلاغ المنصة.</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>الورش التدريبية المباشرة (T3)</h2>
+      <p>تُعدّ مبالغ التسجيل في الورش المباشرة غير قابلة للاسترداد بعد إتمام الدفع، وذلك لأن الأماكن محدودة ويُحجز مكانك فور الدفع.</p>
+      <ul>
+        <li>في حال إلغاء الورشة من قِبل المنصة: يُستردّ كامل المبلغ أو يُحوَّل لدورة بديلة.</li>
+        <li>في حال تأجيل الورشة: تُعقد بتاريخ جديد ويُبلَّغ المشتركون مسبقاً.</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>كيفية تقديم طلب</h2>
+      <p>لتقديم طلب تعويض أو الإبلاغ عن مشكلة تقنية، تواصل معنا خلال ٧ أيام من تاريخ الشراء عبر:</p>
+      <ul>
+        <li>البريد الإلكتروني: <a href="mailto:support@malearnsa.com" style="color:var(--gold);">support@malearnsa.com</a></li>
+        <li>واتساب: <a href="https://wa.me/966560440113" style="color:var(--gold);" target="_blank">+966 560 440 113</a></li>
+      </ul>
+      <p>يُرجى تضمين: اسمك الكامل، رقم الطلب، وصف المشكلة.</p>
+    </div>
+
+  </div>
+
+  <!-- ═══════════════ ENGLISH ═══════════════ -->
+  <div class="en-content" style="direction:ltr; text-align:left;">
+
+    <div class="section">
+      <h2>Nature of Digital Services</h2>
+      <p>MA Learn offers digital educational content including recorded courses, live workshops, and downloadable files. Due to the nature of digital products, all purchases are <strong>considered final</strong> once payment is completed and access links or content are delivered.</p>
+      <div class="callout">
+        <p>This policy is compliant with Saudi Arabia's E-Commerce Law and its Executive Regulations issued by the Ministry of Commerce.</p>
+      </div>
+    </div>
+
+    <div class="section">
+      <h2>Eligible Cases for Compensation or Remedy</h2>
+      <p>Customers are entitled to request compensation or an alternative solution in the following cases:</p>
+      <ul>
+        <li>If the file or access link is broken or contains a defect that prevents access or use.</li>
+        <li>If the customer receives content materially different from the product description.</li>
+        <li>If the customer cannot access the content due to a technical error on the platform's side.</li>
+      </ul>
+      <p>In such cases, one of the following remedies will be provided:</p>
+      <ul>
+        <li>Re-sending the access link or content.</li>
+        <li>Providing a functional replacement copy.</li>
+        <li>Offering appropriate compensation based on the nature of the issue.</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>Non-Refundable Cases</h2>
+      <div class="callout callout-red">
+        <p>Refund requests cannot be accepted in the following cases:</p>
+      </div>
+      <ul>
+        <li>After the file has been downloaded or digital content successfully accessed.</li>
+        <li>If the issue is caused by the customer's own device or software, not the platform.</li>
+        <li>If the service was delivered as described with no technical defects.</li>
+        <li>After more than 7 days from the purchase date without reporting to the platform.</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>Live Workshops (T3)</h2>
+      <p>Registration fees for live workshops are non-refundable after payment, as seats are limited and reserved immediately upon purchase.</p>
+      <ul>
+        <li>If the workshop is cancelled by MA Learn: a full refund or transfer to an alternative session will be offered.</li>
+        <li>If the workshop is rescheduled: a new date will be communicated and registered participants will be notified in advance.</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>How to Submit a Request</h2>
+      <p>To submit a compensation request or report a technical issue, contact us within 7 days of purchase:</p>
+      <ul>
+        <li>Email: <a href="mailto:support@malearnsa.com" style="color:var(--gold);">support@malearnsa.com</a></li>
+        <li>WhatsApp: <a href="https://wa.me/966560440113" style="color:var(--gold);" target="_blank">+966 560 440 113</a></li>
+      </ul>
+      <p>Please include: your full name, order number, and a description of the issue.</p>
+    </div>
+
+  </div>
+
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <img src="https://raw.githubusercontent.com/Majidangawi/malearnsa/main/MA%20Learn%20white-08.png"
+       alt="MA Learn" style="height:22px;opacity:0.6;" onerror="this.style.display='none'">
+  <div class="footer-links">
+    <a href="https://malearnsa.com">الرئيسية</a>
+    <a href="refund-policy.html">سياسة الاسترجاع</a>
+    <a href="privacy-policy.html">سياسة الخصوصية</a>
+  </div>
+  <p class="contact-info">support@malearnsa.com &nbsp;·&nbsp; +966 560 440 113</p>
+  <p>© 2026 MA Learn — جميع الحقوق محفوظة &nbsp;·&nbsp; وثيقة العمل الحر FL-163949047</p>
+</footer>
+
+<script>
+function switchLang(lang) {
+  document.querySelector('.ar-content').classList.toggle('active', lang === 'ar');
+  document.querySelector('.en-content').classList.toggle('active', lang === 'en');
+  document.querySelectorAll('.lang-btn').forEach((btn, i) => {
+    btn.classList.toggle('active', (i === 0 && lang === 'ar') || (i === 1 && lang === 'en'));
+  });
+  document.documentElement.setAttribute('dir', lang === 'ar' ? 'rtl' : 'ltr');
+  document.documentElement.setAttribute('lang', lang);
+}
+</script>
+</body>
+</html>
