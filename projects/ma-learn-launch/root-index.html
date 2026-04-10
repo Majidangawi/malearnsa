@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MA Learn — متجر الدورات</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700&display=swap" rel="stylesheet">
+  <style>
+    @font-face { font-family:'Gumela'; src:url('brand_assets/gumela-arabic-bold.otf') format('opentype'); font-weight:700; }
+    @font-face { font-family:'Gumela'; src:url('brand_assets/gumela-arabic-regular.otf') format('opentype'); font-weight:400; }
+    :root { --bg:#080808; --gold:#C9A84C; --gold-lum:#E8D08A; --ivory:#F5F0E8; --silver:#BBBBBB; --grey:#888; }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body {
+      font-family:'Gumela','Cairo',sans-serif;
+      background:var(--bg); color:var(--ivory);
+      min-height:100vh; display:flex; flex-direction:column;
+      align-items:center; justify-content:center;
+      padding:32px 24px; direction:rtl; text-align:center;
+    }
+    body::after {
+      content:''; position:fixed; inset:0; pointer-events:none; z-index:9999; opacity:0.04;
+      background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+    .orb { position:fixed; border-radius:50%; filter:blur(120px); pointer-events:none; animation:pulse 7s ease-in-out infinite; }
+    @keyframes pulse{0%,100%{opacity:.18}50%{opacity:.3}}
+  </style>
+</head>
+<body style="margin:0;font-family:'Gumela','Cairo',sans-serif;background:#080808;color:#F5F0E8;min-height:100vh;display:flex;flex-direction:column;direction:rtl;">
+  <div style="position:fixed;inset:0;pointer-events:none;z-index:9999;opacity:0.04;background-image:url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E\");"></div>
+  <div style="position:fixed;width:500px;height:500px;border-radius:50%;filter:blur(120px);pointer-events:none;background:radial-gradient(circle,rgba(201,168,76,0.12) 0%,transparent 70%);top:50%;left:50%;transform:translate(-50%,-50%);"></div>
+
+<nav style="padding:14px 32px;border-bottom:1px solid rgba(201,168,76,0.08);position:relative;z-index:10;background:rgba(8,8,8,0.92);backdrop-filter:blur(10px);">
+  <div style="max-width:1000px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+    <img src="brand_assets/logo-malearn-white.png" alt="MA Learn" style="height:28px;width:auto;" onerror="this.style.display='none'">
+    <div style="display:flex;gap:18px;align-items:center;flex-wrap:wrap;">
+      <a href="https://malearnsa.com" style="font-size:0.8rem;color:#666;text-decoration:none;font-family:Cairo,sans-serif;" onmouseover="this.style.color='#C9A84C'" onmouseout="this.style.color='#666'">الرئيسية</a>
+      <a href="https://malearnsa.com/#courses" style="font-size:0.8rem;color:#666;text-decoration:none;font-family:Cairo,sans-serif;" onmouseover="this.style.color='#C9A84C'" onmouseout="this.style.color='#666'">الدورات</a>
+      <a href="https://malearnsa.com/refund-policy.html" style="font-size:0.8rem;color:#666;text-decoration:none;font-family:Cairo,sans-serif;" onmouseover="this.style.color='#C9A84C'" onmouseout="this.style.color='#666'">سياسة الاسترجاع</a>
+      <a href="https://malearnsa.com/privacy-policy.html" style="font-size:0.8rem;color:#666;text-decoration:none;font-family:Cairo,sans-serif;" onmouseover="this.style.color='#C9A84C'" onmouseout="this.style.color='#666'">الخصوصية</a>
+    </div>
+  </div>
+</nav>
+
+  <div style="flex:1;display:flex;align-items:center;justify-content:center;position:relative;z-index:1;padding:32px 24px;text-align:center;">
+    <div>
+      <img src="brand_assets/logo-malearn-white.png" alt="MA Learn" style="height:40px;margin:0 auto 32px;display:block;" onerror="this.style.display='none'">
+      <p style="font-size:0.85rem;color:#888;font-weight:300;">قريباً — متجر الدورات</p>
+    </div>
+  </div>
+
+<footer style="padding:28px 32px 20px;text-align:center;border-top:1px solid rgba(255,255,255,0.05);position:relative;z-index:1;">
+  <p style="font-size:0.75rem;color:#666;font-weight:300;margin-bottom:12px;">© MA Learn 2026 — جميع الحقوق محفوظة</p>
+  <div style="display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:12px;">
+    <span style="font-size:0.65rem;color:#555;margin-left:4px;">الدفع عبر:</span>
+    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="36" viewBox="0 0 64 36"><rect width="64" height="36" rx="4" fill="white"/><rect x="6" y="6" width="17" height="10" rx="1" fill="#29ABE2"/><rect x="6" y="20" width="17" height="10" rx="1" fill="#78BE20"/><text x="42" y="23" text-anchor="middle" font-family="Arial Black,Arial,sans-serif" font-size="11" font-weight="900" fill="#222">mada</text></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" width="54" height="36" viewBox="0 0 54 36"><rect width="54" height="36" rx="4" fill="#1A1F71"/><text x="27" y="25" text-anchor="middle" font-family="Arial,sans-serif" font-size="17" font-weight="700" font-style="italic" fill="white">VISA</text></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" width="58" height="36" viewBox="0 0 58 36"><circle cx="20" cy="16" r="11" fill="#EB001B"/><circle cx="38" cy="16" r="11" fill="#F79E1B"/><path d="M29,9.68 A11,11 0 0,1 29,22.32 A11,11 0 0,0 29,9.68Z" fill="#FF5F00"/><text x="29" y="35" text-anchor="middle" font-family="Arial,sans-serif" font-size="5" fill="#bbb" letter-spacing="0.5">mastercard</text></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" width="74" height="36" viewBox="0 0 74 36"><rect width="74" height="36" rx="4" fill="#111111"/><rect width="74" height="36" rx="4" fill="none" stroke="#383838" stroke-width="1"/><text x="37" y="22" text-anchor="middle" font-family="Helvetica Neue,Helvetica,Arial,sans-serif" font-size="12" font-weight="300" fill="white" letter-spacing="-0.2">Apple Pay</text></svg>
+  </div>
+  <div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-bottom:8px;">
+    <a href="https://malearnsa.com" style="font-size:0.7rem;color:#555;text-decoration:none;" onmouseover="this.style.color='#C9A84C'" onmouseout="this.style.color='#555'">الرئيسية</a>
+    <a href="https://malearnsa.com/refund-policy.html" style="font-size:0.7rem;color:#555;text-decoration:none;" onmouseover="this.style.color='#C9A84C'" onmouseout="this.style.color='#555'">سياسة الاسترجاع</a>
+    <a href="https://malearnsa.com/privacy-policy.html" style="font-size:0.7rem;color:#555;text-decoration:none;" onmouseover="this.style.color='#C9A84C'" onmouseout="this.style.color='#555'">الخصوصية</a>
+    <a href="https://instagram.com/majidangawi" style="font-size:0.7rem;color:#555;text-decoration:none;" onmouseover="this.style.color='#C9A84C'" onmouseout="this.style.color='#555'" target="_blank">Instagram</a>
+  </div>
+  <p style="font-size:0.7rem;color:#444;direction:ltr;margin-bottom:14px;">support@malearnsa.com &nbsp;·&nbsp; +966 560 440 113</p>
+  <div style="display:inline-flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:8px;">
+  <a href="https://malearnsa.com/brand_assets/Freelance-certificate-2026.pdf" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:12px;background:#ffffff;border-radius:10px;padding:10px 16px;direction:rtl;text-decoration:none;">
+    <img src="/brand_assets/Freelance.jpg" alt="وثيقة العمل الحر" style="height:44px;width:auto;display:block;">
+    <div style="border-right:1px solid #ddd;padding-right:12px;text-align:right;">
+      <p style="font-size:0.55rem;color:#888;margin:0 0 3px 0;font-family:Cairo,Arial,sans-serif;line-height:1;">رقم الوثيقة</p>
+      <p style="font-size:0.75rem;font-weight:700;color:#222;margin:0;font-family:Arial,sans-serif;letter-spacing:0.5px;line-height:1;">FL-163949047</p>
+    </div>
+  </a>
+  <a href="https://malearnsa.com/brand_assets/SCBC-Certificate-2026.pdf" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:12px;background:#ffffff;border-radius:10px;padding:10px 16px;direction:rtl;text-decoration:none;">
+    <img src="/brand_assets/SCBC.png" alt="SCBC" style="height:44px;width:auto;display:block;">
+    <div style="border-right:1px solid #ddd;padding-right:12px;text-align:right;">
+      <p style="font-size:0.55rem;color:#888;margin:0 0 3px 0;font-family:Cairo,Arial,sans-serif;line-height:1;">رقم الترخيص</p>
+      <p style="font-size:0.75rem;font-weight:700;color:#222;margin:0;font-family:Arial,sans-serif;letter-spacing:0.5px;line-height:1;">0000276647</p>
+    </div>
+  </a>
+</div>
+</footer>
+</body>
+</html>
