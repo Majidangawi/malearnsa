@@ -1,0 +1,583 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>سياسة الخصوصية واتفاقية الاستخدام | MA Learn</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg: #080808; --surface: #121212; --border: rgba(255,255,255,0.07);
+      --gold: #C9A84C; --gold-lum: #E8D08A; --ivory: #F5F0E8;
+      --silver: #BBBBBB; --grey: #666; --muted: #888;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: var(--bg); color: var(--ivory);
+      min-height: 100vh; direction: rtl;
+      line-height: 1.9; font-size: 16px;
+    }
+
+    /* ── HEADER ── */
+    header {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(8,8,8,0.95); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 40px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .logo-img { height: 26px; width: auto; }
+    nav a {
+      color: var(--muted); text-decoration: none;
+      font-size: 14px; margin-right: 24px; transition: color 0.2s;
+    }
+    nav a:hover { color: var(--gold); }
+    @media (max-width: 600px) {
+      header { padding: 12px 16px; }
+      nav a { margin-right: 12px; font-size: 13px; }
+    }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 72px 40px 48px;
+      max-width: 820px; margin: 0 auto;
+      border-bottom: 1px solid var(--border);
+    }
+    .breadcrumb {
+      font-size: 12px; color: var(--grey);
+      letter-spacing: 0.08em; margin-bottom: 20px;
+    }
+    .breadcrumb a { color: var(--grey); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--gold); }
+    h1 {
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      font-weight: 900; color: #fff; margin-bottom: 12px;
+    }
+    h1 span { color: var(--gold); }
+    .meta { font-size: 13px; color: var(--grey); }
+
+    /* ── TAB NAV ── */
+    .tab-nav {
+      display: flex; border-bottom: 1px solid var(--border);
+      max-width: 820px; margin: 0 auto;
+      padding: 0 40px;
+    }
+    .tab-btn {
+      padding: 16px 24px; font-size: 14px; font-family: 'Cairo', sans-serif;
+      font-weight: 600; background: transparent; border: none;
+      color: var(--grey); cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -1px; transition: all 0.2s;
+    }
+    .tab-btn.active { color: var(--gold); border-bottom-color: var(--gold); }
+    @media (max-width: 600px) {
+      .tab-nav { padding: 0 20px; }
+      .tab-btn { padding: 12px 14px; font-size: 13px; }
+    }
+
+    /* ── CONTENT ── */
+    .content { max-width: 820px; margin: 0 auto; padding: 48px 40px 80px; }
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* Language toggle */
+    .lang-toggle {
+      display: inline-flex; border: 1px solid var(--border);
+      border-radius: 6px; overflow: hidden; margin-bottom: 40px;
+    }
+    .lang-btn {
+      padding: 8px 20px; font-size: 13px; font-family: 'Cairo', sans-serif;
+      background: transparent; color: var(--grey);
+      border: none; cursor: pointer; transition: all 0.2s;
+    }
+    .lang-btn.active { background: var(--gold); color: #000; font-weight: 700; }
+
+    .ar-content, .en-content { display: none; }
+    .ar-content.active, .en-content.active { display: block; }
+
+    /* Sections */
+    .section { margin-bottom: 40px; }
+    h2 {
+      font-size: 1.05rem; font-weight: 700; color: var(--gold);
+      letter-spacing: 0.06em; text-transform: uppercase;
+      margin-bottom: 16px; padding-bottom: 10px;
+      border-bottom: 1px solid rgba(201,168,76,0.15);
+    }
+    .en-content h2, .en-panel h2 { text-align: left; direction: ltr; }
+    .numbered-heading {
+      display: inline-flex; align-items: center; gap: 10px;
+    }
+    .num {
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 24px; height: 24px; border-radius: 50%;
+      background: rgba(201,168,76,0.12); border: 1px solid rgba(201,168,76,0.3);
+      font-size: 11px; color: var(--gold); font-weight: 700; flex-shrink: 0;
+    }
+    p { color: var(--silver); margin-bottom: 12px; font-weight: 300; }
+    ul { list-style: none; padding: 0; margin-bottom: 12px; }
+    ul li {
+      color: var(--silver); padding: 6px 0; font-weight: 300;
+      padding-right: 20px; position: relative;
+    }
+    ul li::before {
+      content: '—'; position: absolute; right: 0;
+      color: var(--gold); font-size: 0.85rem;
+    }
+    .en-content ul li, .en-panel ul li {
+      padding-right: 0; padding-left: 20px;
+    }
+    .en-content ul li::before, .en-panel ul li::before {
+      right: auto; left: 0;
+    }
+
+    .callout {
+      background: rgba(201,168,76,0.06);
+      border: 1px solid rgba(201,168,76,0.2);
+      border-radius: 8px; padding: 16px 20px; margin: 16px 0;
+    }
+    .callout p { margin: 0; color: var(--ivory); font-weight: 400; }
+
+    strong { color: var(--ivory); font-weight: 600; }
+    a { color: var(--gold); text-decoration: none; }
+    a:hover { color: var(--gold-lum); text-decoration: underline; }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border);
+      padding: 32px 40px;
+      display: flex; flex-direction: column; align-items: center;
+      gap: 12px; text-align: center;
+    }
+    footer p { font-size: 13px; color: var(--grey); font-weight: 300; }
+    .footer-links { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
+    .footer-links a {
+      font-size: 13px; color: var(--grey); text-decoration: none; transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--gold); }
+    .contact-info { font-size: 13px; color: var(--muted); direction: ltr; }
+
+    @media (max-width: 600px) {
+      .hero { padding: 48px 20px 32px; }
+      .content { padding: 32px 20px 60px; }
+      footer { padding: 24px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <img class="logo-img" src="https://raw.githubusercontent.com/Majidangawi/malearnsa/main/MA%20Learn%20white-08.png" alt="MA Learn" onerror="this.style.display='none'">
+  <nav>
+    <a href="https://malearnsa.com">الرئيسية</a>
+    <a href="https://malearnsa.com/#courses">الدورات</a>
+    <a href="https://malearnsa.com/refund-policy.html">سياسة الاسترجاع</a>
+    <a href="https://malearnsa.com/privacy-policy.html">الخصوصية</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <p class="breadcrumb"><a href="https://malearnsa.com">MA Learn</a> ← سياسة الخصوصية واتفاقية الاستخدام</p>
+  <h1>سياسة <span>الخصوصية</span> واتفاقية الاستخدام</h1>
+  <p class="meta">آخر تحديث: أبريل ٢٠٢٦ &nbsp;·&nbsp; Privacy Policy & Terms of Use</p>
+</div>
+
+<!-- TAB NAV -->
+<div class="tab-nav">
+  <button class="tab-btn active" onclick="switchTab('privacy')">سياسة الخصوصية</button>
+  <button class="tab-btn" onclick="switchTab('terms')">اتفاقية الاستخدام</button>
+</div>
+
+<!-- CONTENT -->
+<div class="content">
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- TAB 1 — PRIVACY POLICY                -->
+  <!-- ═══════════════════════════════════════ -->
+  <div class="tab-panel active" id="panel-privacy">
+
+    <div class="lang-toggle">
+      <button class="lang-btn active" onclick="switchLang('privacy','ar')">العربية</button>
+      <button class="lang-btn" onclick="switchLang('privacy','en')">English</button>
+    </div>
+
+    <div class="ar-content active" id="privacy-ar">
+
+      <div class="section">
+        <h2><span class="numbered-heading"><span class="num">١</span> البيانات التي نجمعها</span></h2>
+        <p>عند استخدامك لمنصة MA Learn أو إتمام عملية شراء، قد نجمع البيانات التالية:</p>
+        <ul>
+          <li><strong>بيانات الهوية:</strong> الاسم الكامل.</li>
+          <li><strong>بيانات التواصل:</strong> عنوان البريد الإلكتروني، رقم الجوال.</li>
+          <li><strong>بيانات المعاملات:</strong> تفاصيل الطلب، قيمة الشراء، رمز الكوبون إن وُجد.</li>
+          <li><strong>بيانات الاستخدام:</strong> صفحات تمت زيارتها، مدة الجلسة (عبر أدوات تحليل مجهولة الهوية).</li>
+        </ul>
+        <div class="callout">
+          <p>لا نجمع بيانات بطاقات الدفع مباشرةً. تُعالَج جميع المدفوعات عبر بوابة <strong>Moyasar</strong> المعتمدة ومزودي الدفع المرتبطين بها.</p>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2><span class="numbered-heading"><span class="num">٢</span> الغرض من جمع البيانات</span></h2>
+        <p>نستخدم بياناتك للأغراض التالية:</p>
+        <ul>
+          <li>إتمام عمليات الشراء وإرسال روابط الوصول للمحتوى.</li>
+          <li>التواصل معك بشأن طلبك أو للدعم الفني.</li>
+          <li>إرسال تفاصيل الجلسات والتحديثات المتعلقة بمنتجاتك المشتراة.</li>
+          <li>تحسين تجربة المستخدم على المنصة.</li>
+          <li>الامتثال للمتطلبات النظامية في المملكة العربية السعودية.</li>
+        </ul>
+        <p>لن نستخدم بياناتك لأغراض تسويقية إلا بموافقتك الصريحة.</p>
+      </div>
+
+      <div class="section">
+        <h2><span class="numbered-heading"><span class="num">٣</span> حفظ البيانات ومشاركتها</span></h2>
+        <p>تُحفظ بيانات المعاملات في <strong>Google Sheets</strong> المحمية بكلمة مرور ومقيّدة الوصول. لا نبيع بياناتك أو نشاركها مع أطراف ثالثة لأغراض تجارية.</p>
+        <p>قد تُشارك بياناتك فقط مع الجهات التالية عند الضرورة:</p>
+        <ul>
+          <li><strong>Moyasar:</strong> لمعالجة الدفع.</li>
+          <li><strong>Google:</strong> لخدمات البريد الإلكتروني وتسليم المحتوى.</li>
+          <li><strong>الجهات الحكومية المختصة:</strong> عند الطلب القانوني.</li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h2><span class="numbered-heading"><span class="num">٤</span> مدة الاحتفاظ بالبيانات</span></h2>
+        <p>نحتفظ ببيانات المعاملات لمدة لا تقل عن <strong>٥ سنوات</strong> وفق متطلبات نظام التجارة الإلكترونية ونظام الفوترة الإلكترونية (ZATCA). بيانات التواصل تُحفظ طالما كانت علاقة التعامل قائمة.</p>
+      </div>
+
+      <div class="section">
+        <h2><span class="numbered-heading"><span class="num">٥</span> ملفات تعريف الارتباط (Cookies)</span></h2>
+        <p>صفحات الدفع قد تستخدم ملفات تعريف ارتباط ضرورية لتشغيل الخدمة (مثل: حفظ بيانات الجلسة أثناء إتمام الدفع). لا نستخدم ملفات تتبع تسويقية.</p>
+      </div>
+
+      <div class="section">
+        <h2><span class="numbered-heading"><span class="num">٦</span> حقوقك وفق نظام حماية البيانات الشخصية (PDPL)</span></h2>
+        <p>وفق نظام حماية البيانات الشخصية السعودي، يحق لك:</p>
+        <ul>
+          <li><strong>الاطلاع:</strong> طلب نسخة من بياناتك الشخصية المحفوظة لدينا.</li>
+          <li><strong>التصحيح:</strong> طلب تصحيح أي بيانات غير دقيقة.</li>
+          <li><strong>الحذف:</strong> طلب حذف بياناتك في الحالات التي يُجيزها النظام.</li>
+          <li><strong>التقييد:</strong> طلب تقييد معالجة بياناتك في حالات معينة.</li>
+        </ul>
+        <p>لممارسة أي من هذه الحقوق، راسلنا على: <a href="mailto:support@malearnsa.com">support@malearnsa.com</a></p>
+      </div>
+
+      <div class="section">
+        <h2><span class="numbered-heading"><span class="num">٧</span> تحديثات السياسة</span></h2>
+        <p>نحتفظ بحق تحديث هذه السياسة في أي وقت. سيُنشر تاريخ آخر تعديل في أعلى هذه الصفحة. استمرارك في استخدام المنصة بعد نشر التعديلات يُعدّ قبولاً ضمنياً لها.</p>
+        <p>الجهة المسؤولة عن تطبيق نظام حماية البيانات الشخصية في المملكة العربية السعودية هي <strong>الهيئة السعودية للبيانات والذكاء الاصطناعي (SDAIA)</strong>.</p>
+      </div>
+
+    </div><!-- /ar-content -->
+
+    <div class="en-content" id="privacy-en" style="direction:ltr; text-align:left;">
+
+      <div class="section">
+        <h2>1. Data We Collect</h2>
+        <p>When you use MA Learn or complete a purchase, we may collect the following data:</p>
+        <ul>
+          <li><strong>Identity data:</strong> Full name.</li>
+          <li><strong>Contact data:</strong> Email address, phone number.</li>
+          <li><strong>Transaction data:</strong> Order details, purchase value, coupon code if applicable.</li>
+          <li><strong>Usage data:</strong> Pages visited, session duration (via anonymized analytics tools).</li>
+        </ul>
+        <div class="callout">
+          <p>We do not collect payment card data directly. All payments are processed through the certified <strong>Moyasar</strong> payment gateway and its associated payment providers.</p>
+        </div>
+      </div>
+
+      <div class="section">
+        <h2>2. Purpose of Data Collection</h2>
+        <p>We use your data for the following purposes:</p>
+        <ul>
+          <li>Processing purchases and delivering content access links.</li>
+          <li>Communicating with you about your order or providing technical support.</li>
+          <li>Sending session details and updates related to your purchased products.</li>
+          <li>Improving user experience on the platform.</li>
+          <li>Complying with regulatory requirements in Saudi Arabia.</li>
+        </ul>
+        <p>We will not use your data for marketing purposes without your explicit consent.</p>
+      </div>
+
+      <div class="section">
+        <h2>3. Data Storage and Sharing</h2>
+        <p>Transaction data is stored in <strong>password-protected, access-restricted Google Sheets</strong>. We do not sell or share your data with third parties for commercial purposes.</p>
+        <p>Your data may only be shared with the following parties when necessary:</p>
+        <ul>
+          <li><strong>Moyasar:</strong> For payment processing.</li>
+          <li><strong>Google:</strong> For email services and content delivery.</li>
+          <li><strong>Relevant government authorities:</strong> Upon legal request.</li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h2>4. Data Retention</h2>
+        <p>Transaction data is retained for a minimum of <strong>5 years</strong> in accordance with Saudi E-Commerce Law and ZATCA e-invoicing requirements. Contact data is retained for as long as the customer relationship is active.</p>
+      </div>
+
+      <div class="section">
+        <h2>5. Cookies</h2>
+        <p>Checkout pages may use essential cookies required to operate the service (e.g., maintaining session state during payment). We do not use marketing tracking cookies.</p>
+      </div>
+
+      <div class="section">
+        <h2>6. Your Rights Under the PDPL</h2>
+        <p>Under Saudi Arabia's Personal Data Protection Law (PDPL), you have the right to:</p>
+        <ul>
+          <li><strong>Access:</strong> Request a copy of your personal data we hold.</li>
+          <li><strong>Correction:</strong> Request correction of any inaccurate data.</li>
+          <li><strong>Deletion:</strong> Request deletion of your data where permitted by law.</li>
+          <li><strong>Restriction:</strong> Request restricted processing of your data in certain circumstances.</li>
+        </ul>
+        <p>To exercise any of these rights, contact us at: <a href="mailto:support@malearnsa.com">support@malearnsa.com</a></p>
+      </div>
+
+      <div class="section">
+        <h2>7. Policy Updates</h2>
+        <p>We reserve the right to update this policy at any time. The date of the latest revision will be published at the top of this page. Continued use of the platform after updates are published constitutes implicit acceptance of the changes.</p>
+        <p>The authority responsible for enforcing the Personal Data Protection Law in Saudi Arabia is the <strong>Saudi Data and Artificial Intelligence Authority (SDAIA)</strong>.</p>
+      </div>
+
+    </div><!-- /en-content -->
+
+  </div><!-- /panel-privacy -->
+
+
+  <!-- ═══════════════════════════════════════ -->
+  <!-- TAB 2 — TERMS OF USE                  -->
+  <!-- ═══════════════════════════════════════ -->
+  <div class="tab-panel" id="panel-terms">
+
+    <div class="lang-toggle">
+      <button class="lang-btn active" onclick="switchLang('terms','ar')">العربية</button>
+      <button class="lang-btn" onclick="switchLang('terms','en')">English</button>
+    </div>
+
+    <div class="ar-content active" id="terms-ar">
+
+      <div class="section">
+        <p>مرحباً بكم في منصة MA Learn. يوضح هذا المستند الشروط والأحكام التي تنظّم استخدامكم للمنصة والخدمات التعليمية والمحتوى الرقمي المتوفر. دخولكم للمنصة أو إتمام عملية شراء يُعدّ موافقة صريحة على هذه الاتفاقية بكامل بنودها.</p>
+      </div>
+
+      <div class="section">
+        <h2><span class="numbered-heading"><span class="num">١</span> أهلية الاستخدام</span></h2>
+        <p>باستخدامك للمنصة فإنك تُقرّ بأنك تتمتع بالأهلية القانونية، وأن عمرك لا يقل عن ١٨ عاماً، أو أنك تستخدمها بإشراف وليّ الأمر.</p>
+      </div>
+
+      <div class="section">
+        <h2><span class="numbered-heading"><span class="num">٢</span> طبيعة الخدمات</span></h2>
+        <p>المنصة تقدم محتوى رقمياً يشمل:</p>
+        <ul>
+          <li>دروساً مسجّلة وورشاً تدريبية مباشرة.</li>
+          <li>ملفات قابلة للتحميل.</li>
+          <li>خدمات تعليمية ومحتوى بصري وإبداعي.</li>
+        </ul>
+        <p>جميع المنتجات رقمية ويستلمها المستهلك فور الشراء من خلال رابط وصول أو بريد إلكتروني.</p>
+      </div>
+
+      <div class="section">
+        <h2><span class="numbered-heading"><span class="num">٣</span> الحساب والمسؤولية</span></h2>
+        <ul>
+          <li>المستهلك مسؤول بشكل كامل عن بيانات وصوله ورابط الدورة الخاص به.</li>
+          <li>يلتزم العميل بتقديم بيانات صحيحة وحديثة عند التسجيل.</li>
+          <li>يحق للمنصة إيقاف الوصول في حال إساءة الاستخدام أو مخالفة الأحكام.</li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h2><span class="numbered-heading"><span class="num">٤</span> استخدام المحتوى الرقمي</span></h2>
+        <p>جميع الدروس والملفات الرقمية تخضع لحقوق الملكية الفكرية ويُسمح باستخدامها <strong>للاستخدام الشخصي فقط</strong>.</p>
+        <p>يُمنع منعاً باتاً:</p>
+        <ul>
+          <li>نسخ المحتوى أو إعادة نشره.</li>
+          <li>مشاركته مع الغير دون إذن كتابي.</li>
+          <li>إعادة بيعه أو توزيعه بأي شكل.</li>
+          <li>رفعه على أي منصة أخرى.</li>
+        </ul>
+        <p>أي استخدام غير مصرّح به يُعدّ انتهاكاً لحقوق الملكية الفكرية وقد يُعرّض المخالف للمسؤولية القانونية.</p>
+      </div>
+
+      <div class="section">
+        <h2><span class="numbered-heading"><span class="num">٥</span> الدفع وإتمام الطلب</span></h2>
+        <ul>
+          <li>تتم عمليات الدفع عبر بوابة <strong>Moyasar</strong> المعتمدة.</li>
+          <li>الأسعار تشمل ضريبة القيمة المضافة (١٥٪) وفق النظام السعودي.</li>
+          <li>إتمام عملية الدفع يعني موافقة كاملة على الشروط المذكورة هنا.</li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h2><span class="numbered-heading"><span class="num">٦</span> الملكية الفكرية</span></h2>
+        <p>جميع الحقوق محفوظة لـ MA Learn. يشمل ذلك:</p>
+        <ul>
+          <li>الفيديوهات والدروس والورش المباشرة.</li>
+          <li>الصور والملفات والتصاميم.</li>
+          <li>الهوية البصرية والنصوص التعليمية.</li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h2><span class="numbered-heading"><span class="num">٧</span> حدود المسؤولية</span></h2>
+        <ul>
+          <li>المنصة لا تتحمل مشاكل تشغيل ناتجة عن أجهزة العميل أو برامجه.</li>
+          <li>المنصة لا تقدم التزاماً مهنياً أو قانونياً يتجاوز طبيعة الخدمات التعليمية المقدّمة.</li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h2><span class="numbered-heading"><span class="num">٨</span> تعديلات الاتفاقية</span></h2>
+        <p>تحتفظ المنصة بالحق في تعديل هذه الاتفاقية في أي وقت، وتصبح نافذة فور نشرها. استمرار الاستخدام بعد التعديل يعني القبول الضمني.</p>
+      </div>
+
+      <div class="section">
+        <h2><span class="numbered-heading"><span class="num">٩</span> النظام القضائي المختص</span></h2>
+        <p>تخضع هذه الاتفاقية لأنظمة وتشريعات المملكة العربية السعودية، وأي نزاع يُعدّ خاضعاً للجهات القضائية المختصة داخل المملكة.</p>
+      </div>
+
+    </div><!-- /ar-content -->
+
+    <div class="en-content" id="terms-en" style="direction:ltr; text-align:left;">
+
+      <div class="section">
+        <p>Welcome to MA Learn. This document outlines the terms and conditions governing your use of the platform and its educational content. Accessing the platform or completing a purchase constitutes your explicit agreement to these terms in full.</p>
+      </div>
+
+      <div class="section">
+        <h2>1. Eligibility</h2>
+        <p>By using the platform, you confirm that you have legal capacity, are at least 18 years of age, or are using it under parental supervision.</p>
+      </div>
+
+      <div class="section">
+        <h2>2. Nature of Services</h2>
+        <p>MA Learn offers digital content including:</p>
+        <ul>
+          <li>Recorded lessons and live training workshops.</li>
+          <li>Downloadable files.</li>
+          <li>Educational, visual, and creative content.</li>
+        </ul>
+        <p>All products are digital and delivered to the customer immediately after purchase via an access link or email.</p>
+      </div>
+
+      <div class="section">
+        <h2>3. Account & Responsibility</h2>
+        <ul>
+          <li>The customer is solely responsible for their access credentials and course link.</li>
+          <li>The customer agrees to provide accurate and current information at the time of purchase.</li>
+          <li>MA Learn reserves the right to revoke access in cases of misuse or breach of these terms.</li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h2>4. Use of Digital Content</h2>
+        <p>All lessons and digital files are protected by intellectual property rights and are permitted for <strong>personal use only</strong>.</p>
+        <p>The following are strictly prohibited:</p>
+        <ul>
+          <li>Copying or republishing content.</li>
+          <li>Sharing with third parties without written permission.</li>
+          <li>Reselling or distributing in any form.</li>
+          <li>Uploading to any other platform.</li>
+        </ul>
+        <p>Unauthorized use constitutes an intellectual property violation and may result in legal liability.</p>
+      </div>
+
+      <div class="section">
+        <h2>5. Payment & Order Completion</h2>
+        <ul>
+          <li>Payments are processed through the certified <strong>Moyasar</strong> payment gateway.</li>
+          <li>Prices include VAT (15%) as required by Saudi regulations.</li>
+          <li>Completing payment constitutes full acceptance of these terms.</li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h2>6. Intellectual Property</h2>
+        <p>All rights reserved to MA Learn. This includes:</p>
+        <ul>
+          <li>Videos, lessons, and live sessions.</li>
+          <li>Images, files, and designs.</li>
+          <li>Visual identity and educational text content.</li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h2>7. Limitation of Liability</h2>
+        <ul>
+          <li>MA Learn is not responsible for operational issues caused by the customer's devices or software.</li>
+          <li>MA Learn makes no professional or legal commitment beyond the scope of the educational services provided.</li>
+        </ul>
+      </div>
+
+      <div class="section">
+        <h2>8. Amendments</h2>
+        <p>MA Learn reserves the right to amend these terms at any time. Changes take effect upon publication. Continued use after amendments constitutes implicit acceptance.</p>
+      </div>
+
+      <div class="section">
+        <h2>9. Governing Law</h2>
+        <p>This agreement is governed by the laws and regulations of the Kingdom of Saudi Arabia. Any dispute is subject to the jurisdiction of the competent courts within the Kingdom.</p>
+      </div>
+
+    </div><!-- /en-content -->
+
+  </div><!-- /panel-terms -->
+
+</div><!-- /content -->
+
+<!-- FOOTER -->
+<footer>
+  <img src="https://raw.githubusercontent.com/Majidangawi/malearnsa/main/MA%20Learn%20white-08.png" alt="MA Learn" style="height:22px;opacity:0.6;" onerror="this.style.display='none'">
+  <div style="display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;margin:8px 0;">
+    <span style="font-size:0.65rem;color:#555;margin-left:4px;">الدفع عبر:</span>
+    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="36" viewBox="0 0 64 36"><rect width="64" height="36" rx="4" fill="white"/><rect x="6" y="6" width="17" height="10" rx="1" fill="#29ABE2"/><rect x="6" y="20" width="17" height="10" rx="1" fill="#78BE20"/><text x="42" y="23" text-anchor="middle" font-family="Arial Black,Arial,sans-serif" font-size="11" font-weight="900" fill="#222">mada</text></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" width="54" height="36" viewBox="0 0 54 36"><rect width="54" height="36" rx="4" fill="#1A1F71"/><text x="27" y="25" text-anchor="middle" font-family="Arial,sans-serif" font-size="17" font-weight="700" font-style="italic" fill="white">VISA</text></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" width="58" height="36" viewBox="0 0 58 36"><circle cx="20" cy="16" r="11" fill="#EB001B"/><circle cx="38" cy="16" r="11" fill="#F79E1B"/><path d="M29,9.68 A11,11 0 0,1 29,22.32 A11,11 0 0,0 29,9.68Z" fill="#FF5F00"/><text x="29" y="35" text-anchor="middle" font-family="Arial,sans-serif" font-size="5" fill="#bbb" letter-spacing="0.5">mastercard</text></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" width="74" height="36" viewBox="0 0 74 36"><rect width="74" height="36" rx="4" fill="#111111"/><rect width="74" height="36" rx="4" fill="none" stroke="#383838" stroke-width="1"/><text x="37" y="22" text-anchor="middle" font-family="Helvetica Neue,Helvetica,Arial,sans-serif" font-size="12" font-weight="300" fill="white" letter-spacing="-0.2">Apple Pay</text></svg>
+  </div>
+  <div class="footer-links">
+    <a href="https://malearnsa.com">الرئيسية</a>
+    <a href="https://malearnsa.com/refund-policy.html">سياسة الاسترجاع</a>
+    <a href="https://malearnsa.com/privacy-policy.html">سياسة الخصوصية</a>
+    <a href="https://instagram.com/majidangawi" target="_blank">Instagram</a>
+  </div>
+  <p class="contact-info">support@malearnsa.com &nbsp;·&nbsp; +966 560 440 113</p>
+  <p>© 2026 MA Learn — جميع الحقوق محفوظة &nbsp;·&nbsp; وثيقة العمل الحر FL-163949047</p>
+  <div style="display:inline-flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:8px;">
+  <a href="https://malearnsa.com/brand_assets/Freelance-certificate-2026.pdf" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:12px;background:#ffffff;border-radius:10px;padding:10px 16px;direction:rtl;text-decoration:none;">
+    <img src="/brand_assets/Freelance.jpg" alt="وثيقة العمل الحر" style="height:44px;width:auto;display:block;">
+    <div style="border-right:1px solid #ddd;padding-right:12px;text-align:right;">
+      <p style="font-size:0.55rem;color:#888;margin:0 0 3px 0;font-family:Cairo,Arial,sans-serif;line-height:1;">رقم الوثيقة</p>
+      <p style="font-size:0.75rem;font-weight:700;color:#222;margin:0;font-family:Arial,sans-serif;letter-spacing:0.5px;line-height:1;">FL-163949047</p>
+    </div>
+  </a>
+  <a href="https://malearnsa.com/brand_assets/SCBC-Certificate-2026.pdf" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:12px;background:#ffffff;border-radius:10px;padding:10px 16px;direction:rtl;text-decoration:none;">
+    <img src="/brand_assets/SCBC.png" alt="SCBC" style="height:44px;width:auto;display:block;">
+    <div style="border-right:1px solid #ddd;padding-right:12px;text-align:right;">
+      <p style="font-size:0.55rem;color:#888;margin:0 0 3px 0;font-family:Cairo,Arial,sans-serif;line-height:1;">رقم الترخيص</p>
+      <p style="font-size:0.75rem;font-weight:700;color:#222;margin:0;font-family:Arial,sans-serif;letter-spacing:0.5px;line-height:1;">0000276647</p>
+    </div>
+  </a>
+</div>
+</footer>
+
+<script>
+function switchTab(tab) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('panel-' + tab).classList.add('active');
+  event.target.classList.add('active');
+}
+
+function switchLang(panel, lang) {
+  const p = document.getElementById('panel-' + panel);
+  p.querySelector('.ar-content').classList.toggle('active', lang === 'ar');
+  p.querySelector('.en-content').classList.toggle('active', lang === 'en');
+  p.querySelectorAll('.lang-btn').forEach((btn, i) => {
+    btn.classList.toggle('active', (i === 0 && lang === 'ar') || (i === 1 && lang === 'en'));
+  });
+}
+</script>
+</body>
+</html>
