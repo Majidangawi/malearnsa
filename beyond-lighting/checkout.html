@@ -166,6 +166,24 @@
       margin-bottom: 18px;
     }
 
+    /* Proceed button */
+    .co-proceed-btn {
+      width: 100%;
+      background: var(--gold);
+      color: #000;
+      border: none;
+      padding: 16px;
+      font-family: 'Gumela', 'Cairo', sans-serif;
+      font-size: 1rem; font-weight: 700;
+      cursor: pointer; border-radius: 10px;
+      transition: background 0.2s, transform 0.1s;
+      letter-spacing: 0.03em;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .co-proceed-btn:hover { background: var(--gold-lum); }
+    .co-proceed-btn:active { transform: scale(0.98); }
+    .co-proceed-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
     /* Security note */
     .co-secure-note {
       font-size: 0.78rem; color: #4caf82;
@@ -271,7 +289,12 @@
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
           دفع آمن عبر Moyasar — mada · Visa · Mastercard · Apple Pay
         </p>
-        <div id="moyasar-form" class="mysr-form"></div>
+        <!-- Proceed button: shown until user clicks, then replaced by Moyasar form -->
+        <button id="proceed-btn" class="co-proceed-btn" onclick="proceedToPayment()">
+          المتابعة للدفع
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <div id="moyasar-form" class="mysr-form" style="display:none;"></div>
       </div>
 
     </div>
@@ -469,7 +492,7 @@
         btn.textContent = '✓';
         document.getElementById('coupon-input').disabled = true;
         // Reinit Moyasar with the discounted amount so payment reflects the new price
-        initPaymentForm(data.finalAmount);
+        // No Moyasar reinit needed — coupon is captured at proceedToPayment() time
       } else {
         appliedCoupon = null;
         msg.style.color = '#e74c3c';
@@ -487,20 +510,43 @@
   }
 
   // ─────────────────────────────────────────────
-  // MOYASAR INIT — reusable, called on load and after coupon
+  // PROCEED TO PAYMENT
+  // Called once when user clicks the button — Moyasar is initialized
+  // exactly once with the correct final amount (coupon already applied or not).
   // ─────────────────────────────────────────────
-  function initPaymentForm(amount) {
-    // Replace the element entirely — Moyasar attaches state to the node itself,
-    // so clearing innerHTML is not enough; a fresh node is required.
-    const oldEl = document.getElementById('moyasar-form');
-    const newEl = document.createElement('div');
-    newEl.id = 'moyasar-form';
-    newEl.className = 'mysr-form';
-    oldEl.replaceWith(newEl);
+  function proceedToPayment() {
+    const name  = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const phone = document.getElementById('phone').value.trim();
 
+    if (!name || !email) {
+      // Scroll to first empty field and highlight it
+      const el = !name ? document.getElementById('name') : document.getElementById('email');
+      el.style.borderColor = 'rgba(231,76,60,0.8)';
+      el.focus();
+      setTimeout(() => el.style.borderColor = 'rgba(201,168,76,0.2)', 2500);
+      return;
+    }
+
+    const finalAmount = appliedCoupon ? appliedCoupon.finalAmount : BASE_AMOUNT;
+
+    // Save customer data for success page
+    localStorage.setItem('bl_purchase', JSON.stringify({
+      name, email, phone,
+      product: PRODUCT_ID,
+      coupon: appliedCoupon ? appliedCoupon.code : '',
+      amount: (finalAmount / 100).toFixed(2)
+    }));
+
+    // Hide button, show form
+    document.getElementById('proceed-btn').style.display = 'none';
+    const formEl = document.getElementById('moyasar-form');
+    formEl.style.display = 'block';
+
+    // Init Moyasar once with the correct amount
     Moyasar.init({
-      element: newEl,
-      amount: amount,
+      element: formEl,
+      amount: finalAmount,
       currency: 'SAR',
       description: 'أبعد من إمكانيات الإضاءة — MA Learn',
       publishable_api_key: 'pk_live_ciyD54kvT4b6bWev3RNzEjzLXpJPC8DmnbgcW47H',
@@ -512,23 +558,24 @@
         validate_merchant_url: 'https://api.moyasar.com/v1/applepay/initiate',
       },
       on_initiating: () => {
-        const name     = document.getElementById('name').value.trim();
-        const email    = document.getElementById('email').value.trim();
-        const phone    = document.getElementById('phone').value.trim();
-        const finalAmt = appliedCoupon ? appliedCoupon.finalAmount : BASE_AMOUNT;
+        // Refresh localStorage in case user changed fields after clicking proceed
         localStorage.setItem('bl_purchase', JSON.stringify({
-          name, email, phone,
+          name: document.getElementById('name').value.trim(),
+          email: document.getElementById('email').value.trim(),
+          phone: document.getElementById('phone').value.trim(),
           product: PRODUCT_ID,
           coupon: appliedCoupon ? appliedCoupon.code : '',
-          amount: (finalAmt / 100).toFixed(2)
+          amount: (finalAmount / 100).toFixed(2)
         }));
       }
     });
+
+    // Scroll payment card into view on mobile
+    document.getElementById('payment-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
   window.addEventListener('DOMContentLoaded', () => {
     localStorage.removeItem('bl_purchase');
-    setTimeout(() => initPaymentForm(BASE_AMOUNT), 300);
     const ci = document.getElementById('coupon-input');
     if (ci) ci.addEventListener('input', () => { ci.value = ci.value.toUpperCase(); });
   });
