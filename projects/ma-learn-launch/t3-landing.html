@@ -1,0 +1,829 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ورشة الذكاء الاصطناعي الإبداعي — MA Learn</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    @font-face { font-family:'Gumela'; src:url('../brand_assets/gumela-arabic-bold.otf') format('opentype'); font-weight:700; }
+    @font-face { font-family:'Gumela'; src:url('../brand_assets/gumela-arabic-regular.otf') format('opentype'); font-weight:400; }
+    @font-face { font-family:'Gumela'; src:url('../brand_assets/gumela-arabic-light.otf') format('opentype'); font-weight:300; }
+
+    :root {
+      --bg:        #080808;
+      --card-bg:   #0E0E0E;
+      --card-bg2:  #111111;
+      --card-border:#1A1A1A;
+      --gold:      #C9A84C;
+      --gold-lum:  #E8D08A;
+      --ivory:     #F5F0E8;
+      --silver:    #BBBBBB;
+      --grey:      #666666;
+      --green:     #4CAF82;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Gumela', 'Cairo', sans-serif;
+      background: var(--bg);
+      color: var(--ivory);
+      min-height: 100vh;
+      direction: rtl;
+      overflow-x: hidden;
+    }
+
+    /* ── GRAIN ── */
+    body::after {
+      content: '';
+      position: fixed; inset: 0;
+      pointer-events: none; z-index: 9999; opacity: 0.035;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      padding: 14px 32px;
+      background: rgba(8,8,8,0.96);
+      border-bottom: 1px solid rgba(201,168,76,0.08);
+      backdrop-filter: blur(12px);
+      transition: border-color 0.3s;
+    }
+    nav.scrolled { border-bottom-color: rgba(201,168,76,0.15); }
+    .nav-inner {
+      max-width: 1060px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    }
+    .nav-logo img { height: 28px; width: auto; display: block; }
+    .nav-links {
+      display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+    }
+    .nav-links a {
+      font-size: 0.78rem; color: var(--grey); text-decoration: none;
+      font-family: 'Cairo', sans-serif; transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-cta {
+      background: var(--gold); color: #000;
+      font-family: 'Gumela', 'Cairo', sans-serif; font-weight: 700; font-size: 0.82rem;
+      padding: 9px 22px; border: none; cursor: pointer; text-decoration: none;
+      transition: background 0.2s; white-space: nowrap; flex-shrink: 0;
+    }
+    .nav-cta:hover { background: var(--gold-lum); }
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      nav { padding: 14px 20px; }
+    }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      text-align: center;
+      padding: 130px 24px 90px;
+      position: relative; overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 55% at 50% 38%, rgba(201,168,76,0.09) 0%, transparent 68%);
+    }
+    .hero-content { position: relative; z-index: 1; max-width: 780px; }
+    .hero-label {
+      display: inline-block;
+      border: 1px solid rgba(201,168,76,0.35);
+      color: var(--gold); font-size: 0.72rem;
+      letter-spacing: 0.1em; padding: 5px 16px;
+      margin-bottom: 28px; text-transform: uppercase;
+    }
+    .hero-title {
+      font-weight: 700;
+      font-size: clamp(2rem, 5.5vw, 3.5rem);
+      line-height: 1.25; color: var(--ivory);
+      margin-bottom: 20px;
+    }
+    .hero-subtitle {
+      font-size: clamp(0.95rem, 2vw, 1.15rem);
+      color: var(--silver); line-height: 1.85;
+      margin-bottom: 36px;
+      max-width: 580px; margin-left: auto; margin-right: auto;
+    }
+    .hero-dates {
+      display: flex; align-items: center; justify-content: center;
+      gap: 28px; margin-bottom: 40px; flex-wrap: wrap;
+    }
+    .hero-date-item {
+      display: flex; align-items: center; gap: 8px;
+      color: var(--silver); font-size: 0.9rem;
+    }
+    .hero-date-item svg { color: var(--gold); flex-shrink: 0; }
+    .hero-price-block { margin-bottom: 36px; }
+    .price-original {
+      font-size: 0.88rem; color: var(--grey);
+      text-decoration: line-through; margin-bottom: 4px;
+    }
+    .price-early {
+      font-size: 2.6rem; font-weight: 700; color: var(--gold); line-height: 1;
+    }
+    .price-early span { font-size: 1rem; color: var(--silver); font-weight: 400; }
+    .price-deadline { font-size: 0.78rem; color: var(--grey); margin-top: 6px; }
+    .btn-primary {
+      display: inline-block;
+      background: var(--gold); color: #000;
+      font-family: 'Gumela', 'Cairo', sans-serif; font-weight: 700;
+      font-size: 1.05rem; padding: 17px 52px;
+      text-decoration: none; border: none; cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .btn-primary:hover { background: var(--gold-lum); transform: translateY(-1px); }
+    .hero-seats { margin-top: 18px; font-size: 0.82rem; color: var(--grey); }
+
+    /* ── SECTION BASE ── */
+    section { padding: 96px 24px; }
+    .container { max-width: 900px; margin: 0 auto; }
+    .section-label {
+      font-size: 0.68rem; letter-spacing: 0.15em;
+      color: var(--gold); text-transform: uppercase; margin-bottom: 14px;
+    }
+    .section-title {
+      font-weight: 700;
+      font-size: clamp(1.55rem, 3.8vw, 2.3rem);
+      color: var(--ivory); line-height: 1.35; margin-bottom: 18px;
+    }
+    .section-body {
+      font-size: 1rem; color: var(--silver); line-height: 1.9;
+    }
+    .divider { border: none; border-top: 1px solid #1a1a1a; margin: 0; }
+
+    /* ── PROBLEM ── */
+    .problem-quote {
+      border-right: 3px solid var(--gold);
+      padding: 24px 28px; margin: 36px 0;
+      background: var(--card-bg);
+    }
+    .problem-quote p {
+      font-size: 1.05rem; color: var(--ivory); line-height: 1.85;
+    }
+
+    /* ── DAYS ── */
+    .days { background: #0A0A0A; }
+    .days-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2px; margin-top: 56px;
+    }
+    .day-card {
+      background: var(--card-bg); padding: 38px 30px;
+      position: relative; overflow: hidden;
+    }
+    .day-card::before {
+      content: ''; position: absolute; top: 0; right: 0;
+      width: 3px; height: 100%; background: var(--gold);
+      opacity: 0; transition: opacity 0.3s;
+    }
+    .day-card:hover::before { opacity: 1; }
+    .day-number {
+      font-size: 0.68rem; letter-spacing: 0.14em;
+      color: var(--gold); text-transform: uppercase; margin-bottom: 14px;
+    }
+    .day-title {
+      font-size: 1.15rem; font-weight: 700;
+      color: var(--ivory); margin-bottom: 12px; line-height: 1.4;
+    }
+    .day-desc { font-size: 0.88rem; color: var(--silver); line-height: 1.75; }
+
+    /* ── GIFT ── */
+    .gift { background: var(--bg); }
+    .gift-card {
+      background: linear-gradient(135deg, rgba(201,168,76,0.08), rgba(201,168,76,0.02));
+      border: 1px solid rgba(201,168,76,0.22);
+      padding: 44px 40px;
+      display: flex; align-items: flex-start; gap: 28px;
+      margin-top: 44px;
+    }
+    .gift-icon { font-size: 2.2rem; flex-shrink: 0; }
+    .gift-title { font-size: 1.25rem; font-weight: 700; color: var(--ivory); margin-bottom: 10px; }
+    .gift-desc { font-size: 0.92rem; color: var(--silver); line-height: 1.8; }
+    .gift-value {
+      display: inline-block;
+      background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.28);
+      color: var(--gold); font-size: 0.78rem; padding: 4px 12px; margin-top: 14px;
+    }
+    @media (max-width: 640px) { .gift-card { flex-direction: column; padding: 30px 22px; } }
+
+    /* Bonus section */
+    .bonus-section { margin-top: 80px; }
+    .bonus-section .section-label { margin-bottom: 10px; }
+    .bonus-card {
+      background: var(--card-bg2);
+      border: 1px solid var(--card-border);
+      border-top: 2px solid rgba(201,168,76,0.35);
+      padding: 36px 40px; margin-top: 32px;
+    }
+    .bonus-card-title { font-size: 1.15rem; font-weight: 700; color: var(--ivory); margin-bottom: 8px; }
+    .bonus-card-date { font-size: 0.78rem; color: var(--gold); margin-bottom: 20px; letter-spacing: 0.05em; }
+    .bonus-includes { list-style: none; }
+    .bonus-includes li {
+      display: flex; align-items: flex-start; gap: 12px;
+      font-size: 0.9rem; color: var(--silver); line-height: 1.6;
+      padding: 10px 0; border-bottom: 1px solid #141414;
+    }
+    .bonus-includes li:last-child { border-bottom: none; }
+    .bonus-includes li::before { content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; }
+
+    /* ── FOR WHO ── */
+    .for-who { background: #0A0A0A; }
+    .who-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 2px; margin-top: 44px;
+    }
+    @media (max-width: 640px) { .who-grid { grid-template-columns: 1fr; } }
+    .who-card { background: var(--card-bg); padding: 34px 30px; }
+    .who-card-title {
+      font-size: 0.72rem; letter-spacing: 0.12em;
+      color: var(--gold); text-transform: uppercase; margin-bottom: 22px;
+    }
+    .who-list { list-style: none; }
+    .who-list li {
+      display: flex; align-items: flex-start; gap: 12px;
+      font-size: 0.92rem; color: var(--silver); line-height: 1.6;
+      padding: 10px 0; border-bottom: 1px solid #141414;
+    }
+    .who-list li:last-child { border-bottom: none; }
+    .icon-yes { color: var(--gold); font-size: 0.78rem; margin-top: 3px; flex-shrink: 0; }
+    .icon-no  { color: var(--grey); font-size: 0.78rem; margin-top: 3px; flex-shrink: 0; }
+
+    /* ── INSTRUCTOR ── */
+    .instructor { background: var(--bg); }
+    .instructor-inner {
+      display: grid; grid-template-columns: 190px 1fr;
+      gap: 56px; align-items: start; margin-top: 44px;
+    }
+    @media (max-width: 640px) {
+      .instructor-inner { grid-template-columns: 1fr; gap: 28px; }
+      .instructor-photo { width: 130px; }
+    }
+    .instructor-photo {
+      width: 100%; aspect-ratio: 3/4; object-fit: cover;
+      object-position: top; filter: grayscale(15%);
+    }
+    .instructor-name { font-size: 1.55rem; font-weight: 700; color: var(--ivory); margin-bottom: 5px; }
+    .instructor-role { font-size: 0.82rem; color: var(--gold); letter-spacing: 0.07em; margin-bottom: 22px; }
+    .instructor-bio { font-size: 0.92rem; color: var(--silver); line-height: 1.9; }
+    .instructor-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
+    .instructor-tag {
+      border: 1px solid #2a2a2a; color: var(--silver);
+      font-size: 0.72rem; padding: 5px 13px;
+    }
+
+    /* ── FAQ ── */
+    .faq { background: #0A0A0A; }
+    .faq-list { margin-top: 44px; }
+    .faq-item { border-bottom: 1px solid #141414; padding: 28px 0; }
+    .faq-item:first-child { border-top: 1px solid #141414; }
+    .faq-q { font-size: 1rem; font-weight: 700; color: var(--ivory); margin-bottom: 10px; }
+    .faq-a { font-size: 0.92rem; color: var(--silver); line-height: 1.8; }
+
+    /* ── PRICING ── */
+    .pricing { background: var(--bg); }
+    .pricing-card {
+      max-width: 560px; margin: 48px auto 0;
+      background: var(--card-bg);
+      border: 1px solid #1a1a1a;
+      padding: 48px 40px;
+      text-align: center; position: relative; overflow: hidden;
+    }
+    .pricing-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+    .pricing-badge {
+      display: inline-block;
+      background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.3);
+      color: var(--gold); font-size: 0.75rem; letter-spacing: 0.08em;
+      padding: 5px 16px; text-transform: uppercase; margin-bottom: 28px;
+    }
+    .pricing-name { font-size: 1.05rem; color: var(--silver); margin-bottom: 28px; }
+
+    /* Value stack */
+    .value-stack { margin-bottom: 28px; text-align: right; }
+    .value-stack-item {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 11px 0; border-bottom: 1px solid #141414;
+      font-size: 0.88rem; color: var(--silver); line-height: 1.5;
+    }
+    .value-stack-item:last-child { border-bottom: none; }
+    .value-stack-item .item-val { color: var(--grey); font-size: 0.82rem; white-space: nowrap; padding-right: 16px; flex-shrink: 0; }
+    .value-stack-item::before { content: '✓'; color: var(--gold); font-weight: 700; margin-left: 10px; flex-shrink: 0; }
+
+    /* Price table */
+    .price-table {
+      width: 100%; border-collapse: collapse;
+      margin: 28px 0; font-size: 0.85rem; text-align: right;
+    }
+    .price-table td { padding: 10px 0; border-bottom: 1px solid #141414; color: var(--silver); }
+    .price-table td:last-child { text-align: left; color: var(--grey); white-space: nowrap; }
+    .price-table tr:last-child td { border-bottom: none; }
+    .price-table .total-row td { padding-top: 16px; font-size: 0.9rem; }
+    .price-table .total-row td:first-child { color: var(--ivory); font-weight: 600; }
+    .price-table .total-row td:last-child { color: var(--grey); text-decoration: line-through; }
+    .price-table .you-pay-row td:first-child { color: var(--gold); font-weight: 700; font-size: 1rem; }
+    .price-table .you-pay-row td:last-child {
+      color: var(--gold); font-weight: 700; font-size: 1.4rem;
+      text-decoration: none;
+    }
+
+    .pricing-deadline-note {
+      font-size: 0.8rem; color: #e07b3a;
+      margin-bottom: 24px; font-weight: 600;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #050505;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      padding: 40px 24px 28px; text-align: center;
+    }
+    .footer-logo img { height: 26px; margin: 0 auto 18px; display: block; opacity: 0.7; }
+    .footer-links {
+      display: flex; justify-content: center; gap: 20px;
+      flex-wrap: wrap; margin-bottom: 10px;
+    }
+    .footer-links a {
+      color: var(--grey); text-decoration: none; font-size: 0.72rem;
+      font-family: 'Cairo', sans-serif; transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--silver); }
+    .footer-contact {
+      font-size: 0.7rem; color: #444; direction: ltr; margin-bottom: 18px;
+    }
+    .footer-payments {
+      display: flex; align-items: center; justify-content: center;
+      gap: 8px; flex-wrap: wrap; margin-bottom: 20px;
+    }
+    .footer-payments-label { font-size: 0.65rem; color: #555; margin-left: 4px; }
+    .footer-badges {
+      display: inline-flex; align-items: center; gap: 12px;
+      flex-wrap: wrap; justify-content: center; margin-bottom: 16px;
+    }
+    .footer-badge-link {
+      display: inline-flex; align-items: center; gap: 12px;
+      background: #fff; border-radius: 10px; padding: 10px 16px;
+      direction: rtl; text-decoration: none;
+    }
+    .footer-badge-link img { height: 44px; width: auto; display: block; }
+    .footer-badge-info { border-right: 1px solid #ddd; padding-right: 12px; text-align: right; }
+    .footer-badge-label { font-size: 0.55rem; color: #888; margin: 0 0 3px 0; font-family: Cairo,Arial,sans-serif; line-height: 1; }
+    .footer-badge-num { font-size: 0.75rem; font-weight: 700; color: #222; margin: 0; font-family: Arial,sans-serif; letter-spacing: 0.5px; line-height: 1; }
+    .footer-copy { font-size: 0.72rem; color: var(--grey); margin-top: 6px; }
+
+    /* ── STICKY BAR ── */
+    .sticky-bar {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(8,8,8,0.97);
+      border-top: 1px solid #1e1e1e;
+      padding: 14px 24px;
+      display: flex; align-items: center; justify-content: space-between; gap: 14px;
+      transform: translateY(100%); transition: transform 0.4s ease;
+    }
+    .sticky-bar.visible { transform: translateY(0); }
+    .sticky-bar-text { font-size: 0.88rem; color: var(--silver); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .sticky-price-was { color: var(--grey); text-decoration: line-through; font-size: 0.82rem; }
+    .sticky-price-now { color: var(--gold); font-weight: 700; }
+    .sticky-bar-btn {
+      background: var(--gold); color: #000;
+      font-family: 'Gumela', 'Cairo', sans-serif; font-weight: 700;
+      font-size: 0.88rem; padding: 11px 28px;
+      border: none; cursor: pointer; text-decoration: none;
+      white-space: nowrap; flex-shrink: 0;
+    }
+    .sticky-bar-btn:hover { background: var(--gold-lum); }
+    @media (max-width: 480px) {
+      .sticky-bar { flex-direction: column; text-align: center; }
+      .sticky-bar-btn { width: 100%; text-align: center; display: block; }
+    }
+
+    /* ── UTILS ── */
+    @media (max-width: 640px) {
+      section { padding: 68px 20px; }
+      .pricing-card { padding: 34px 22px; }
+      .bonus-card { padding: 28px 22px; }
+      .instructor-inner { gap: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══ NAV ══════════════════════════════════════════ -->
+  <nav id="nav">
+    <div class="nav-inner">
+      <div class="nav-logo">
+        <img src="../brand_assets/logo-malearn-white.png" alt="MA Learn"
+             onerror="this.style.display='none'">
+      </div>
+      <div class="nav-links">
+        <a href="https://malearnsa.com">الرئيسية</a>
+        <a href="https://malearnsa.com/#courses">الدورات</a>
+        <a href="https://malearnsa.com/refund-policy.html">سياسة الاسترجاع</a>
+        <a href="https://malearnsa.com/privacy-policy.html">الخصوصية</a>
+      </div>
+      <a href="#pricing" class="nav-cta">سجّل الآن — ٧٩٩ ر.س</a>
+    </div>
+  </nav>
+
+  <!-- ══ HERO ═════════════════════════════════════════ -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-content">
+      <div class="hero-label">ورشة مباشرة أونلاين · ٣ جلسات · ٣٠ أبريل — ٢ مايو</div>
+
+      <h1 class="hero-title">
+        كل الناس من حولك بدأت تشتغل بالذكاء الاصطناعي.<br>
+        <span style="color:var(--gold);">وأنت لسه مو عارف من وين تبدأ.</span>
+      </h1>
+
+      <p class="hero-subtitle">
+        ٣ أيام. بريف حقيقي. نتيجة احترافية بالكامل.<br>
+        من إنشاء الفكرة، إلى التسليم، بالذكاء الاصطناعي، من عملك إنت!
+      </p>
+
+      <div class="hero-dates">
+        <div class="hero-date-item">
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+          ٣٠ أبريل — ٢ مايو ٢٠٢٦
+        </div>
+        <div class="hero-date-item">
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          ٧–١٠ مساءً (توقيت جدة)
+        </div>
+        <div class="hero-date-item">
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+          مقاعد محدودة — أونلاين
+        </div>
+      </div>
+
+      <div class="hero-price-block">
+        <div class="price-original">السعر الأصلي ٩٩٩ ر.س</div>
+        <div class="price-early">٧٩٩ <span>ر.س — سعر الإطلاق</span></div>
+        <div class="price-deadline">العرض حتى ١٩ أبريل فقط</div>
+      </div>
+
+      <a href="#pricing" class="btn-primary">سجّل الآن — ٧٩٩ ر.س</a>
+      <div class="hero-seats">المقاعد المتبقية محدودة</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ══ PROBLEM ══════════════════════════════════════ -->
+  <section class="problem">
+    <div class="container">
+      <div class="section-label">المشكلة</div>
+      <h2 class="section-title">تفتح إنستقرام وتشوف أداة جديدة كل يوم.</h2>
+      <p class="section-body">
+        ترند جديد. "ثورة" جديدة. وبعد ساعة من التصفح تحس إنك متأخر، مشوش، وما عملت شيء.
+      </p>
+
+      <div class="problem-quote">
+        <p>
+          هذا مو ذنبك. هذي طبيعة المحتوى اللي يُصنع يخليك محتاج… ما يعطيك حلول.<br><br>
+          المشكلة الحقيقية مو إنك ما تعرف الأدوات.<br>
+          المشكلة إنك ما عندك <strong>إطار تفكير</strong> قبل ما تفتح أي واحدة منها.
+          وبدون هذا الإطار، كل أداة جديدة تشوفها تزيدك ضياع، مو قوة.
+        </p>
+      </div>
+
+      <p class="section-body">
+        الورشة ما تعلمك أدوات.<br>
+        تبني معك الطريقة اللي تفكر فيها — على بريف حقيقي، في ٣ أيام بمخرج احترافي تخرج فيه.
+      </p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ══ DAYS ═════════════════════════════════════════ -->
+  <section class="days">
+    <div class="container">
+      <div class="section-label">برنامج الورشة</div>
+      <h2 class="section-title">٣ جلسات. كل واحدة تبني على اللي قبلها.</h2>
+      <p class="section-body">
+        ما تنتهي الورشة وتمشي بأفكار. تمشي بمشروع كامل… بنيته أنت، بيدك، أمامك.
+      </p>
+
+      <div class="days-grid">
+        <div class="day-card">
+          <div class="day-number">اليوم الأول — ٣٠ أبريل</div>
+          <div class="day-title">كيف تستقبل البريف وتحوله لتوجه إبداعي واضح</div>
+          <p class="day-desc">نبني الإطار الذهني اللي يحول أي فكرة ضبابية لتوجه بصري واضح قبل ما تفتح أي أداة.</p>
+        </div>
+        <div class="day-card">
+          <div class="day-number">اليوم الثاني — ١ مايو</div>
+          <div class="day-title">الأدوات الصح — بالترتيب الصح</div>
+          <p class="day-desc">Higgsfield، Weavy، Midjourney وغيرها. تطبيق فعلي على البريف اللي بنيناه في اليوم الأول.</p>
+        </div>
+        <div class="day-card">
+          <div class="day-number">اليوم الثالث — ٢ مايو</div>
+          <div class="day-title">من الصفر للتسليم — أمامك، مباشر</div>
+          <p class="day-desc">نبني مشروع كامل من الصفر في الجلسة. تخرج وفي يدك مشروع جاهز… صنعته أنت.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ══ GIFT ══════════════════════════════════════════ -->
+  <section class="gift">
+    <div class="container">
+
+      <!-- Gift -->
+      <div class="section-label">مع الورشة</div>
+      <h2 class="section-title">هدية الدفعة الأولى — دورة كاملة مجاناً قيمتها ٤٩٩ ريال.</h2>
+
+      <div class="gift-card">
+        <div class="gift-icon">🎁</div>
+        <div>
+          <div class="gift-title">دورة "مدخل إلى الذكاء الاصطناعي الإبداعي"</div>
+          <p class="gift-desc">
+            ١٢ درساً مسجلاً. وصول مدى الحياة. شوفها قبل الورشة تدخل بأساس قوي.<br><br>
+            هذي الهدية للدفعة الأولى فقط — ٣٠ مقعداً. بعدها تنتهي ولا راح ترجع.
+          </p>
+          <div class="gift-value">قيمتها ٤٩٩ ر.س — لك مجاناً مع الورشة</div>
+        </div>
+      </div>
+
+      <!-- Bonus -->
+      <div class="bonus-section">
+        <div class="section-label">بعد الورشة</div>
+        <h2 class="section-title">ما ينتهي التعلم بانتهاء اليوم الثالث.</h2>
+        <p class="section-body">
+          بعد أسبوع من الورشة — جلسة نقد مباشرة.<br>
+          تجي بالمشروع اللي بنيته. تعرضه. وتاخذ تغذية راجعة شخصية على شغلك،
+          وتستلهم من أعمال المبدعين الآخرين.
+        </p>
+
+        <div class="bonus-card">
+          <div class="bonus-card-title">جلسة النقد المباشر</div>
+          <div class="bonus-card-date">بعد أسبوع من انتهاء الورشة</div>
+          <ul class="bonus-includes">
+            <li>عرض مشروعك</li>
+            <li>تغذية راجعة شخصية ومباشرة</li>
+            <li>توجيهات لتحسين أعمالك الإبداعية أو نظام العمل اللي اتبعته</li>
+          </ul>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ══ FOR WHO ════════════════════════════════════════ -->
+  <section class="for-who">
+    <div class="container">
+      <div class="section-label">لمين هذي الورشة؟</div>
+      <h2 class="section-title">مو لكل أحد… وهذا قصد.</h2>
+
+      <div class="who-grid">
+        <div class="who-card">
+          <div class="who-card-title">الورشة لك لو</div>
+          <ul class="who-list">
+            <li><span class="icon-yes">✓</span> أنت مصور، مصمم، أو مبدع بصري وحاسس إن الذكاء الاصطناعي فات عليك</li>
+            <li><span class="icon-yes">✓</span> تبي تشتغل بسرعة وتنافس بدون ما تضيع سنة تجرب أدوات</li>
+            <li><span class="icon-yes">✓</span> ما عندك وقت للضوضاء — تبي الطريق الصح من أول مرة</li>
+            <li><span class="icon-yes">✓</span> عندك مشروع إبداعي وتبغاه يوصل لمستوى ثاني</li>
+          </ul>
+        </div>
+        <div class="who-card">
+          <div class="who-card-title">الورشة مو لك لو</div>
+          <ul class="who-list">
+            <li><span class="icon-no">✗</span> تدور تتعلم أكواد أو برمجة</li>
+            <li><span class="icon-no">✗</span> تبي موسوعة في كل أداة ذكاء اصطناعي موجودة</li>
+            <li><span class="icon-no">✗</span> تبي نتائج بدون ما تشتغل خلال الجلسات</li>
+            <li><span class="icon-no">✗</span> هدفك تجمع أدوات مو تبني أسلوب شغل</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ══ INSTRUCTOR ═════════════════════════════════════ -->
+  <section class="instructor">
+    <div class="container">
+      <div class="section-label">المدرب</div>
+      <div class="instructor-inner">
+        <img src="../brand_assets/profile.jpg" alt="ماجد عنقاوي" class="instructor-photo"
+             onerror="this.style.display='none'">
+        <div>
+          <div class="instructor-name">ماجد عنقاوي</div>
+          <div class="instructor-role">مصور أزياء · مدير إبداعي · مؤسس MA Learn</div>
+          <p class="instructor-bio">
+            اللي تتعلمه في هذي الورشة مو من يوتيوب. هو من شغل حقيقي، مع عملاء حقيقيين.<br><br>
+            ١٦ سنة في الإنتاج البصري. مصور أزياء ومدير إبداعي شغل مع برندات في السعودية وخارجها.
+            سفير Fujifilm في السعودية. مؤسس MA Learn — منصة التعليم الإبداعي العربي.<br><br>
+            كل أداة وكل سير عمل تشوفه في الورشة — ماجد يستخدمه فعلياً في مشاريع العملاء.
+            مو تنظير، شغل عملي.
+          </p>
+          <div class="instructor-tags">
+            <span class="instructor-tag">تصوير أزياء</span>
+            <span class="instructor-tag">إدارة إبداعية</span>
+            <span class="instructor-tag">ذكاء اصطناعي إبداعي</span>
+            <span class="instructor-tag">سفير Fujifilm KSA</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ══ FAQ ═══════════════════════════════════════════ -->
+  <section class="faq">
+    <div class="container">
+      <div class="section-label">أسئلة شائعة</div>
+      <h2 class="section-title">أسئلة ممكن تخطر على بالك.</h2>
+
+      <div class="faq-list">
+        <div class="faq-item">
+          <div class="faq-q">ما عندي خبرة بالذكاء الاصطناعي، هل الورشة مناسبة؟</div>
+          <p class="faq-a">هذا بالضبط المكان الصح اللي تبدأ منه. الورشة مبنية من الصفر — الإطار الذهني قبل الأدوات.</p>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">مشغول وما عندي وقت، كيف أكمل الورشة؟</div>
+          <p class="faq-a">الورشة ٣ أيام فقط. ٧–١٠ مساءً، في الويكند. مصممة تناسب الجدول الحقيقي لأغلب الناس. ومسجلة تقدر ترجع لها لاحقاً.</p>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">الذكاء الاصطناعي يسرق الشغل الإبداعي؟</div>
+          <p class="faq-a">الأداة تنفذ. أنت اللي تفكر. اللي راح يخسر مو اللي يستخدم الذكاء الاصطناعي — اللي راح يخسر هو اللي ما يتعلم كيف يوجهه. الورشة تعلمك تكون أنت المخرج.</p>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">وين تنعقد الورشة؟</div>
+          <p class="faq-a">أونلاين عبر Google Meet. تحضرها من أي مكان في العالم — كل اللي تحتاجه جهاز وإنترنت.</p>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">ماذا لو فاتني جلسة؟</div>
+          <p class="faq-a">التسجيل يوصلك بعد نهاية أيام الورشة. تقدر تشوفه في وقتك.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ══ PRICING ════════════════════════════════════════ -->
+  <section class="pricing" id="pricing">
+    <div class="container">
+      <div class="section-label" style="text-align:center;">احجز مكانك الآن</div>
+      <h2 class="section-title" style="text-align:center;">استثمر في عقلك، مو بس في أدواتك.</h2>
+
+      <div class="pricing-card">
+        <div class="pricing-badge">⚡ عرض الإطلاق — وفّر ٢٠٠ ر.س (ينتهي ١٩ أبريل)</div>
+        <div class="pricing-name">ورشة الذكاء الاصطناعي الإبداعي (Live)</div>
+
+        <!-- Value stack -->
+        <div class="value-stack">
+          <div class="value-stack-item">
+            <span>الإطار الذهني الشامل: كيف تفكر قبل ما تفتح أي أداة</span>
+          </div>
+          <div class="value-stack-item">
+            <span>تطبيق حي على بريف حقيقي — تبني مشروعك من الصفر للتسليم</span>
+          </div>
+          <div class="value-stack-item">
+            <span>جلسة نقد مباشر — تغذية راجعة شخصية من ماجد على شغلك</span>
+          </div>
+          <div class="value-stack-item">
+            <span>سير العمل الاحترافي — Seedance، Higgsfield، Midjourney في منظومة واحدة</span>
+          </div>
+          <div class="value-stack-item">
+            <span>هدية مجانية — دورة المدخل، ١٢ درس مسجل (قيمتها ٤٩٩ ر.س)</span>
+          </div>
+        </div>
+
+        <!-- Price table -->
+        <table class="price-table">
+          <tr>
+            <td>الورشة المباشرة (٩ ساعات)</td>
+            <td>٩٩٩ ر.س</td>
+          </tr>
+          <tr>
+            <td>دورة "مدخل للذكاء الاصطناعي"</td>
+            <td>٤٩٩ ر.س</td>
+          </tr>
+          <tr>
+            <td>حقيبة الأدوات والملفات الحصرية</td>
+            <td>٢٩٩ ر.س</td>
+          </tr>
+          <tr class="total-row">
+            <td>إجمالي القيمة الفعلية</td>
+            <td>١٧٩٧ ر.س</td>
+          </tr>
+          <tr class="you-pay-row">
+            <td>استثمارك اليوم فقط</td>
+            <td>٧٩٩ ر.س</td>
+          </tr>
+        </table>
+
+        <div class="pricing-deadline-note">⚠️ السعر يرتفع لـ ٩٩٩ ر.س بعد ١٩ أبريل.</div>
+
+        <a href="https://checkout.malearnsa.com/creative-ai-workshop/" class="btn-primary"
+           style="width:100%;display:block;text-align:center;">
+          انضم للورشة الآن — ٧٩٩ ر.س
+        </a>
+
+        <div style="margin-top:16px;font-size:0.78rem;color:var(--grey);">المقاعد المتبقية محدودة</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ FOOTER ═════════════════════════════════════════ -->
+  <footer>
+    <div class="footer-logo">
+      <img src="../brand_assets/logo-malearn-white.png" alt="MA Learn"
+           onerror="this.style.display='none'">
+    </div>
+
+    <div class="footer-links">
+      <a href="https://malearnsa.com">الرئيسية</a>
+      <a href="https://malearnsa.com/#courses">الدورات</a>
+      <a href="https://malearnsa.com/refund-policy.html">سياسة الاسترجاع</a>
+      <a href="https://malearnsa.com/privacy-policy.html">الخصوصية</a>
+      <a href="https://instagram.com/majidangawi" target="_blank">Instagram</a>
+    </div>
+
+    <div class="footer-contact">support@malearnsa.com &nbsp;·&nbsp; +966 560 440 113</div>
+
+    <div class="footer-payments">
+      <span class="footer-payments-label">الدفع عبر:</span>
+      <svg xmlns="http://www.w3.org/2000/svg" width="64" height="36" viewBox="0 0 64 36"><rect width="64" height="36" rx="4" fill="white"/><rect x="6" y="6" width="17" height="10" rx="1" fill="#29ABE2"/><rect x="6" y="20" width="17" height="10" rx="1" fill="#78BE20"/><text x="42" y="23" text-anchor="middle" font-family="Arial Black,Arial,sans-serif" font-size="11" font-weight="900" fill="#222">mada</text></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" width="54" height="36" viewBox="0 0 54 36"><rect width="54" height="36" rx="4" fill="#1A1F71"/><text x="27" y="25" text-anchor="middle" font-family="Arial,sans-serif" font-size="17" font-weight="700" font-style="italic" fill="white">VISA</text></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" width="58" height="36" viewBox="0 0 58 36"><circle cx="20" cy="16" r="11" fill="#EB001B"/><circle cx="38" cy="16" r="11" fill="#F79E1B"/><path d="M29,9.68 A11,11 0 0,1 29,22.32 A11,11 0 0,0 29,9.68Z" fill="#FF5F00"/><text x="29" y="35" text-anchor="middle" font-family="Arial,sans-serif" font-size="5" fill="#bbb" letter-spacing="0.5">mastercard</text></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" width="74" height="36" viewBox="0 0 74 36"><rect width="74" height="36" rx="4" fill="#111111"/><rect width="74" height="36" rx="4" fill="none" stroke="#383838" stroke-width="1"/><text x="37" y="22" text-anchor="middle" font-family="Helvetica Neue,Helvetica,Arial,sans-serif" font-size="12" font-weight="300" fill="white" letter-spacing="-0.2">Apple Pay</text></svg>
+    </div>
+
+    <div class="footer-badges">
+      <a href="https://malearnsa.com/brand_assets/Freelance-certificate-2026.pdf" target="_blank" rel="noopener" class="footer-badge-link">
+        <img src="/brand_assets/Freelance.jpg" alt="وثيقة العمل الحر">
+        <div class="footer-badge-info">
+          <p class="footer-badge-label">رقم الوثيقة</p>
+          <p class="footer-badge-num">FL-163949047</p>
+        </div>
+      </a>
+      <a href="https://malearnsa.com/brand_assets/SCBC-Certificate-2026.pdf" target="_blank" rel="noopener" class="footer-badge-link">
+        <img src="/brand_assets/SCBC.png" alt="SCBC">
+        <div class="footer-badge-info">
+          <p class="footer-badge-label">رقم الترخيص</p>
+          <p class="footer-badge-num">0000276647</p>
+        </div>
+      </a>
+    </div>
+
+    <div class="footer-copy">© 2026 MA Learn · جميع الحقوق محفوظة</div>
+  </footer>
+
+  <!-- ══ STICKY BAR ═════════════════════════════════════ -->
+  <div class="sticky-bar" id="stickyBar">
+    <div class="sticky-bar-text">
+      ورشة الذكاء الاصطناعي الإبداعي —
+      <span class="sticky-price-was">٩٩٩ ر.س</span>
+      <span class="sticky-price-now">٧٩٩ ر.س</span>
+      حتى ١٩ أبريل
+    </div>
+    <a href="#pricing" class="sticky-bar-btn">احجز مقعدك الآن</a>
+  </div>
+
+  <script>
+    const nav = document.getElementById('nav');
+    const stickyBar = document.getElementById('stickyBar');
+    const heroH = document.querySelector('.hero').offsetHeight;
+
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+      stickyBar.classList.toggle('visible', window.scrollY > heroH * 0.7);
+    });
+
+    // Scroll reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(el => {
+        if (el.isIntersecting) {
+          el.target.style.opacity = '1';
+          el.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, { threshold: 0.08 });
+
+    document.querySelectorAll('.day-card, .who-card, .faq-item, .gift-card, .bonus-card').forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(20px)';
+      el.style.transition = 'opacity 0.55s ease, transform 0.55s ease';
+      observer.observe(el);
+    });
+  </script>
+</body>
+</html>
