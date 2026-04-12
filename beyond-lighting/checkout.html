@@ -202,6 +202,40 @@
       display: flex; align-items: center; gap: 6px;
     }
 
+    /* Payment method divider */
+    .co-or-divider {
+      display: flex; align-items: center; gap: 10px;
+      margin: 14px 0;
+      color: #555; font-size: 0.78rem;
+    }
+    .co-or-divider::before, .co-or-divider::after {
+      content: ''; flex: 1;
+      height: 1px; background: rgba(255,255,255,0.07);
+    }
+
+    /* Tamara button */
+    .co-tamara-btn {
+      width: 100%;
+      background: #3E2A7E;
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.12);
+      padding: 14px 16px;
+      font-family: 'Gumela', 'Cairo', sans-serif;
+      font-size: 0.9rem; font-weight: 700;
+      cursor: pointer; border-radius: 10px;
+      transition: background 0.2s, transform 0.1s;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+    }
+    .co-tamara-btn:hover { background: #4e35a0; }
+    .co-tamara-btn:active { transform: scale(0.98); }
+    .co-tamara-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .co-tamara-badge {
+      background: rgba(255,255,255,0.15);
+      border-radius: 4px;
+      padding: 2px 7px;
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.03em;
+    }
+
     /* ─── DESKTOP: two-column ───────────────────── */
     @media (min-width: 640px) {
       .co-outer { padding: 44px 24px 80px; }
@@ -300,12 +334,24 @@
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
           دفع آمن عبر Moyasar — mada · Visa · Mastercard · Apple Pay
         </p>
-        <!-- Proceed button: shown until user clicks, then replaced by Moyasar form -->
+        <!-- Moyasar proceed button -->
         <button id="proceed-btn" class="co-proceed-btn" onclick="proceedToPayment()">
           المتابعة للدفع
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
         </button>
         <div id="moyasar-form" class="mysr-form" style="display:none;"></div>
+
+        <!-- Tamara option -->
+        <div id="tamara-section">
+          <div class="co-or-divider">أو</div>
+          <button id="tamara-btn" class="co-tamara-btn" onclick="proceedWithTamara()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+            ادفع بالتقسيط مع تمارا
+            <span class="co-tamara-badge">٣ أقساط</span>
+          </button>
+          <p style="text-align:center;font-size:0.72rem;color:#666;margin-top:8px;">بدون فوائد · متاح لسكان المملكة العربية السعودية</p>
+          <div id="tamara-msg" style="display:none;font-size:0.8rem;margin-top:10px;text-align:center;padding:10px;border-radius:8px;background:rgba(231,76,60,0.1);color:#e74c3c;"></div>
+        </div>
       </div>
 
     </div>
@@ -385,7 +431,7 @@
 
 <!-- Footer -->
 <footer style="padding:28px 32px 20px;text-align:center;border-top:1px solid rgba(255,255,255,0.05);background:rgba(8,8,8,0.6);position:relative;z-index:1;">
-  <p style="font-size:0.78rem;color:#555;font-weight:300;margin-bottom:12px;">© MA Learn 2026 — جميع الحقوق محفوظة · Powered by Moyasar</p>
+  <p style="font-size:0.78rem;color:#555;font-weight:300;margin-bottom:12px;">© MA Learn 2026 — جميع الحقوق محفوظة · Powered by Moyasar & Tamara</p>
 
   <!-- Payment logos -->
   <div style="display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;">
@@ -454,10 +500,11 @@
   // ─────────────────────────────────────────────
   // CONFIG
   // ─────────────────────────────────────────────
-  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzXC4Ef5WxNX0aPov7Q1Kdn2DiXuODd74w3iOCtovrw86o9grwVREqNsRdhlyQkoBnQ/exec';
-  const BASE_AMOUNT     = 65000; // halalas — 650 SAR
-  const PRODUCT_ID      = 'beyond-lighting';
-  const SUCCESS_URL     = 'https://malearnsa.com/beyond-lighting/success.html';
+  const APPS_SCRIPT_URL   = 'https://script.google.com/macros/s/AKfycbzXC4Ef5WxNX0aPov7Q1Kdn2DiXuODd74w3iOCtovrw86o9grwVREqNsRdhlyQkoBnQ/exec';
+  const TAMARA_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwoHKusESjdfxSYaL8VdH5YlUEHArLwcWK-_IJ2cL5knN6UK0jsxlV2pRQySRePGyBT7w/exec';
+  const BASE_AMOUNT       = 65000; // halalas — 650 SAR
+  const PRODUCT_ID        = 'beyond-lighting';
+  const SUCCESS_URL       = 'https://malearnsa.com/beyond-lighting/success.html';
 
   let appliedCoupon = null;
 
@@ -583,6 +630,71 @@
 
     // Scroll payment card into view on mobile
     document.getElementById('payment-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  // ─────────────────────────────────────────────
+  // TAMARA — Create order and redirect to Tamara checkout
+  // ─────────────────────────────────────────────
+  async function proceedWithTamara() {
+    const name  = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+
+    // Validate required fields
+    if (!name || !email || !phone) {
+      const el = !name ? document.getElementById('name') : !email ? document.getElementById('email') : document.getElementById('phone');
+      el.style.borderColor = 'rgba(231,76,60,0.8)';
+      el.focus();
+      setTimeout(() => el.style.borderColor = 'rgba(201,168,76,0.2)', 2500);
+      return;
+    }
+
+    const btn = document.getElementById('tamara-btn');
+    const msg = document.getElementById('tamara-msg');
+    btn.disabled = true;
+    btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg> جارٍ الاتصال بتمارا...';
+    msg.style.display = 'none';
+
+    const finalAmount  = appliedCoupon ? appliedCoupon.finalAmount : BASE_AMOUNT;
+    const couponCode   = appliedCoupon ? appliedCoupon.code : '';
+
+    try {
+      const res = await fetch(TAMARA_SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'create_order',
+          name, email, phone,
+          product:  PRODUCT_ID,
+          amount:   finalAmount,  // halalas
+          coupon:   couponCode
+        })
+      });
+
+      const data = await res.json();
+
+      if (data.success && data.checkout_url) {
+        // Save purchase context for success page
+        localStorage.setItem('bl_purchase', JSON.stringify({
+          name, email, phone,
+          product: PRODUCT_ID,
+          coupon: couponCode,
+          amount: (finalAmount / 100).toFixed(2),
+          payment_method: 'tamara'
+        }));
+        window.location.href = data.checkout_url;
+      } else {
+        msg.style.display = 'block';
+        msg.textContent = data.error || 'حدث خطأ عند الاتصال بتمارا — حاول مرة ثانية';
+        btn.disabled = false;
+        btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg> ادفع بالتقسيط مع تمارا <span class="co-tamara-badge">٣ أقساط</span>';
+      }
+    } catch (err) {
+      msg.style.display = 'block';
+      msg.textContent = 'تعذّر الاتصال بالخادم — تحقق من اتصالك وحاول مرة ثانية';
+      btn.disabled = false;
+      btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg> ادفع بالتقسيط مع تمارا <span class="co-tamara-badge">٣ أقساط</span>';
+    }
   }
 
   window.addEventListener('DOMContentLoaded', () => {

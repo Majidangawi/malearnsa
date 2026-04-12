@@ -1,7 +1,18 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TZ9839RVDJ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TZ9839RVDJ');
+  </script>
   <meta charset="UTF-8">
+  <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>إتمام الشراء — أبعد من إمكانيات الإضاءة | MA Learn</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -50,6 +61,202 @@
     .mysr-form .mysr-pay-button { background: #C9A84C !important; color: #000 !important; font-weight: 700 !important; border-radius: 8px !important; font-size: 1rem !important; padding: 14px !important; }
     .mysr-form .mysr-pay-button:hover { background: #E8D08A !important; }
     .mysr-form .mysr-apple-pay-button { border-radius: 8px !important; }
+
+    /* ─── RESPONSIVE CHECKOUT LAYOUT ───────────── */
+    .co-outer {
+      position: relative; z-index: 1;
+      max-width: 820px; margin: 0 auto;
+      padding: 24px 16px 72px;
+    }
+    .co-header { text-align: center; margin-bottom: 24px; }
+    .co-header .eyebrow {
+      color: var(--gold); font-size: 0.72rem; letter-spacing: 0.15em;
+      text-transform: uppercase; margin-bottom: 10px;
+    }
+    .co-header h1 {
+      font-size: clamp(1.35rem, 5vw, 2rem); font-weight: 700;
+      line-height: 1.3; margin-bottom: 8px;
+    }
+    .co-header .sub { color: var(--silver); font-size: 0.85rem; font-weight: 300; }
+
+    /* Grid: single column on mobile, two-column on desktop */
+    .co-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      align-items: start;
+    }
+    .co-form-col { display: flex; flex-direction: column; gap: 16px; order: 2; }
+    .co-summary-col { order: 1; }
+
+    /* Form inputs */
+    .co-input {
+      width: 100%;
+      background: #181818;
+      border: 1px solid rgba(201,168,76,0.2);
+      color: var(--ivory);
+      padding: 13px 14px;
+      font-family: 'Gumela', 'Cairo', sans-serif;
+      font-size: 1rem;
+      border-radius: 10px;
+      outline: none;
+      transition: border-color 0.2s;
+      -webkit-appearance: none;
+    }
+    .co-input:focus { border-color: rgba(201,168,76,0.6); }
+    .co-label {
+      display: block; font-size: 0.78rem;
+      color: var(--grey); margin-bottom: 7px;
+    }
+    .co-field { margin-bottom: 14px; }
+    .co-field:last-child { margin-bottom: 0; }
+
+    /* Coupon row */
+    .co-coupon-row { display: flex; gap: 8px; }
+    .co-coupon-btn {
+      background: transparent;
+      border: 1px solid rgba(201,168,76,0.4);
+      color: var(--gold);
+      padding: 13px 18px;
+      font-family: 'Gumela', 'Cairo', sans-serif;
+      font-size: 0.9rem; font-weight: 700;
+      cursor: pointer; border-radius: 10px;
+      white-space: nowrap;
+      transition: background 0.2s, border-color 0.2s;
+      -webkit-appearance: none;
+    }
+    .co-coupon-btn:hover { background: rgba(201,168,76,0.08); border-color: rgba(201,168,76,0.7); }
+
+    /* Mobile summary accordion */
+    .co-summary-toggle {
+      display: flex; justify-content: space-between; align-items: center;
+      padding: 15px 18px;
+      background: rgba(201,168,76,0.05);
+      border: 1px solid rgba(201,168,76,0.2);
+      border-radius: 12px;
+      cursor: pointer;
+      user-select: none;
+      gap: 12px;
+      transition: background 0.2s;
+    }
+    .co-summary-toggle:hover { background: rgba(201,168,76,0.09); }
+    .co-summary-toggle-info { display: flex; flex-direction: column; gap: 2px; }
+    .co-summary-toggle-label { font-size: 0.8rem; color: var(--silver); }
+    .co-summary-toggle-course { font-size: 0.88rem; font-weight: 700; color: var(--ivory); }
+    .co-summary-toggle-right { display: flex; align-items: center; gap: 10px; }
+    .co-summary-toggle-price { color: var(--gold); font-weight: 700; font-size: 1.05rem; }
+    .co-summary-chevron {
+      color: var(--gold); font-size: 0.65rem;
+      transition: transform 0.25s; line-height: 1;
+    }
+    .co-summary-chevron.open { transform: rotate(180deg); }
+    .co-summary-body {
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 0.35s cubic-bezier(0.4,0,0.2,1);
+    }
+    .co-summary-body.open { max-height: 600px; }
+    .co-summary-inner {
+      padding: 20px;
+      border: 1px solid rgba(201,168,76,0.15);
+      border-top: none;
+      border-radius: 0 0 12px 12px;
+      background: rgba(255,255,255,0.02);
+    }
+
+    /* Step badge */
+    .co-step-badge {
+      background: var(--gold); color: #000;
+      width: 22px; height: 22px; border-radius: 50%;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 0.72rem; font-weight: 700; flex-shrink: 0;
+    }
+    .co-section-title {
+      font-size: 0.95rem; font-weight: 700;
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    /* Proceed button */
+    .co-proceed-btn {
+      width: 100%;
+      background: var(--gold);
+      color: #000;
+      border: none;
+      padding: 16px;
+      font-family: 'Gumela', 'Cairo', sans-serif;
+      font-size: 1rem; font-weight: 700;
+      cursor: pointer; border-radius: 10px;
+      transition: background 0.2s, transform 0.1s;
+      letter-spacing: 0.03em;
+      display: flex; align-items: center; justify-content: center; gap: 8px;
+    }
+    .co-proceed-btn:hover { background: var(--gold-lum); }
+    .co-proceed-btn:active { transform: scale(0.98); }
+    .co-proceed-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    /* Security note */
+    .co-secure-note {
+      font-size: 0.78rem; color: #4caf82;
+      margin-bottom: 16px;
+      display: flex; align-items: center; gap: 6px;
+    }
+
+    /* Payment method divider */
+    .co-or-divider {
+      display: flex; align-items: center; gap: 10px;
+      margin: 14px 0;
+      color: #555; font-size: 0.78rem;
+    }
+    .co-or-divider::before, .co-or-divider::after {
+      content: ''; flex: 1;
+      height: 1px; background: rgba(255,255,255,0.07);
+    }
+
+    /* Tamara button */
+    .co-tamara-btn {
+      width: 100%;
+      background: #3E2A7E;
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.12);
+      padding: 14px 16px;
+      font-family: 'Gumela', 'Cairo', sans-serif;
+      font-size: 0.9rem; font-weight: 700;
+      cursor: pointer; border-radius: 10px;
+      transition: background 0.2s, transform 0.1s;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+    }
+    .co-tamara-btn:hover { background: #4e35a0; }
+    .co-tamara-btn:active { transform: scale(0.98); }
+    .co-tamara-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .co-tamara-badge {
+      background: rgba(255,255,255,0.15);
+      border-radius: 4px;
+      padding: 2px 7px;
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.03em;
+    }
+
+    /* ─── DESKTOP: two-column ───────────────────── */
+    @media (min-width: 640px) {
+      .co-outer { padding: 44px 24px 80px; }
+      .co-header { margin-bottom: 36px; }
+      .co-grid { grid-template-columns: 1fr 300px; gap: 24px; }
+      .co-form-col { order: 1; }
+      .co-summary-col { order: 2; position: sticky; top: 24px; }
+      /* On desktop, show summary card directly — no accordion */
+      .co-summary-toggle { display: none; }
+      .co-summary-body {
+        max-height: none !important;
+        overflow: visible;
+        transition: none;
+      }
+      .co-summary-inner {
+        border: 1px solid rgba(201,168,76,0.18);
+        border-radius: 16px;
+        padding: 24px;
+        background: rgba(255,255,255,0.03);
+      }
+    }
   </style>
 </head>
 <body>
@@ -71,131 +278,160 @@
   </div>
 </nav>
 
-<div style="position:relative;z-index:1;max-width:820px;margin:0 auto;padding:48px 24px 80px;">
+<div class="co-outer">
 
   <!-- Header -->
-  <div style="text-align:center;margin-bottom:40px;">
-    <p style="color:var(--gold);font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:12px;">إتمام الشراء</p>
-    <h1 style="font-size:clamp(1.6rem,4vw,2.2rem);font-weight:700;line-height:1.3;margin-bottom:10px;">دورة أبعد من إمكانيات الإضاءة</h1>
-    <p style="color:var(--silver);font-size:0.9rem;font-weight:300;">دورة احترافية في الإضاءة الإبداعية للتصوير</p>
+  <div class="co-header">
+    <p class="eyebrow">إتمام الشراء</p>
+    <h1>دورة أبعد من إمكانيات الإضاءة</h1>
+    <p class="sub">دورة احترافية في الإضاءة الإبداعية للتصوير</p>
   </div>
 
-  <div style="display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:start;">
+  <div class="co-grid">
 
-    <!-- Right: Form -->
-    <div style="display:flex;flex-direction:column;gap:20px;">
+    <!-- ── FORM COLUMN ─────────────────────────── -->
+    <div class="co-form-col">
 
       <!-- Step 1: Contact info -->
-      <div class="card" style="padding:28px;">
-        <h2 style="font-size:1rem;font-weight:700;margin-bottom:20px;display:flex;align-items:center;gap:10px;">
-          <span style="background:var(--gold);color:#000;width:24px;height:24px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;">١</span>
+      <div class="card" style="padding:22px 20px;">
+        <div class="co-section-title">
+          <span class="co-step-badge">١</span>
           بياناتك
-        </h2>
-        <div style="display:flex;flex-direction:column;gap:14px;">
-          <div>
-            <label style="display:block;font-size:0.78rem;color:var(--grey);margin-bottom:6px;">الاسم الكامل</label>
-            <input id="name" type="text" placeholder="ماجد عنقاوي" style="width:100%;background:#181818;border:1px solid rgba(201,168,76,0.2);color:var(--ivory);padding:12px 14px;font-family:'Gumela','Cairo',sans-serif;font-size:0.9rem;border-radius:8px;outline:none;" onfocus="this.style.borderColor='rgba(201,168,76,0.6)'" onblur="this.style.borderColor='rgba(201,168,76,0.2)'">
-          </div>
-          <div>
-            <label style="display:block;font-size:0.78rem;color:var(--grey);margin-bottom:6px;">البريد الإلكتروني</label>
-            <input id="email" type="email" placeholder="you@example.com" dir="ltr" style="width:100%;background:#181818;border:1px solid rgba(201,168,76,0.2);color:var(--ivory);padding:12px 14px;font-family:'Gumela','Cairo',sans-serif;font-size:0.9rem;border-radius:8px;outline:none;text-align:right;" onfocus="this.style.borderColor='rgba(201,168,76,0.6)'" onblur="this.style.borderColor='rgba(201,168,76,0.2)'">
-          </div>
-          <div>
-            <label style="display:block;font-size:0.78rem;color:var(--grey);margin-bottom:6px;">رقم الجوال</label>
-            <input id="phone" type="tel" placeholder="05xxxxxxxx" dir="ltr" style="width:100%;background:#181818;border:1px solid rgba(201,168,76,0.2);color:var(--ivory);padding:12px 14px;font-family:'Gumela','Cairo',sans-serif;font-size:0.9rem;border-radius:8px;outline:none;text-align:right;" onfocus="this.style.borderColor='rgba(201,168,76,0.6)'" onblur="this.style.borderColor='rgba(201,168,76,0.2)'">
-          </div>
+        </div>
+
+        <div class="co-field">
+          <label class="co-label" for="name">الاسم الكامل</label>
+          <input id="name" class="co-input" type="text" placeholder="ماجد عنقاوي" autocomplete="name">
+        </div>
+        <div class="co-field">
+          <label class="co-label" for="email">البريد الإلكتروني</label>
+          <input id="email" class="co-input" type="email" placeholder="you@example.com" dir="ltr" style="text-align:right;" autocomplete="email">
+        </div>
+        <div class="co-field">
+          <label class="co-label" for="phone">رقم الجوال</label>
+          <input id="phone" class="co-input" type="tel" placeholder="05xxxxxxxx" dir="ltr" style="text-align:right;" autocomplete="tel">
         </div>
 
         <!-- Coupon -->
-        <div style="margin-top:20px;padding-top:20px;border-top:1px solid rgba(255,255,255,0.05);">
-          <label style="display:block;font-size:0.78rem;color:var(--grey);margin-bottom:6px;">كود خصم (اختياري)</label>
-          <div style="display:flex;gap:8px;">
-            <input id="coupon-input" type="text" placeholder="MABL20" dir="ltr"
-              style="flex:1;background:#181818;border:1px solid rgba(201,168,76,0.2);color:var(--ivory);padding:11px 14px;font-family:monospace;font-size:0.88rem;border-radius:8px;outline:none;text-transform:uppercase;">
-            <button onclick="applyCoupon()" id="coupon-btn"
-              style="background:transparent;border:1px solid rgba(201,168,76,0.4);color:var(--gold);padding:11px 18px;font-family:'Gumela','Cairo',sans-serif;font-size:0.85rem;font-weight:700;cursor:pointer;border-radius:8px;white-space:nowrap;">
-              تطبيق
-            </button>
+        <div style="margin-top:18px;padding-top:18px;border-top:1px solid rgba(255,255,255,0.05);">
+          <label class="co-label">كود خصم (اختياري)</label>
+          <div class="co-coupon-row">
+            <input id="coupon-input" class="co-input" type="text" placeholder="MABL20" dir="ltr"
+              style="font-family:monospace;font-size:0.95rem;text-transform:uppercase;flex:1;">
+            <button onclick="applyCoupon()" id="coupon-btn" class="co-coupon-btn">تطبيق</button>
           </div>
           <p id="coupon-msg" style="display:none;font-size:0.8rem;margin-top:8px;"></p>
         </div>
       </div>
 
       <!-- Step 2: Payment -->
-      <div class="card" style="padding:28px;" id="payment-card">
-        <h2 style="font-size:1rem;font-weight:700;margin-bottom:20px;display:flex;align-items:center;gap:10px;">
-          <span style="background:var(--gold);color:#000;width:24px;height:24px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:0.75rem;font-weight:700;">٢</span>
+      <div class="card" style="padding:22px 20px;" id="payment-card">
+        <div class="co-section-title">
+          <span class="co-step-badge">٢</span>
           الدفع
-        </h2>
-        <p style="font-size:0.8rem;color:#4caf82;margin-bottom:16px;">
-          <span style="color:var(--gold);">✓</span> دفع آمن عبر Moyasar — mada · Visa · Mastercard · Apple Pay
+        </div>
+        <p class="co-secure-note">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          دفع آمن عبر Moyasar — mada · Visa · Mastercard · Apple Pay
         </p>
-        <div id="moyasar-form" class="mysr-form"></div>
+        <!-- Moyasar proceed button -->
+        <button id="proceed-btn" class="co-proceed-btn" onclick="proceedToPayment()">
+          المتابعة للدفع
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+        </button>
+        <div id="moyasar-form" class="mysr-form" style="display:none;"></div>
+
+        <!-- Tamara option -->
+        <div id="tamara-section">
+          <div class="co-or-divider">أو</div>
+          <button id="tamara-btn" class="co-tamara-btn" onclick="proceedWithTamara()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+            ادفع بالتقسيط مع تمارا
+            <span class="co-tamara-badge">٣ أقساط</span>
+          </button>
+          <p style="text-align:center;font-size:0.72rem;color:#666;margin-top:8px;">بدون فوائد · متاح لسكان المملكة العربية السعودية</p>
+          <div id="tamara-msg" style="display:none;font-size:0.8rem;margin-top:10px;text-align:center;padding:10px;border-radius:8px;background:rgba(231,76,60,0.1);color:#e74c3c;"></div>
+        </div>
       </div>
 
     </div>
 
-    <!-- Left: Summary -->
-    <div style="position:sticky;top:24px;">
-      <div class="card" style="padding:24px;">
-        <h3 style="font-size:0.85rem;font-weight:700;margin-bottom:16px;color:var(--grey);letter-spacing:0.08em;">ملخص الطلب</h3>
+    <!-- ── SUMMARY COLUMN ──────────────────────── -->
+    <div class="co-summary-col">
 
-        <div style="display:flex;gap:14px;align-items:flex-start;margin-bottom:16px;">
-          <div style="width:60px;height:60px;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.2);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.5"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
-          </div>
-          <div>
-            <p style="font-size:0.9rem;font-weight:700;margin-bottom:4px;">أبعد من إمكانيات الإضاءة</p>
-            <p style="font-size:0.78rem;color:var(--grey);font-weight:300;">دورة مسجلة — وصول مدى الحياة</p>
-          </div>
+      <!-- Mobile: collapsible accordion trigger -->
+      <div class="co-summary-toggle" onclick="toggleSummary()" id="summary-toggle">
+        <div class="co-summary-toggle-info">
+          <span class="co-summary-toggle-label">ملخص الطلب</span>
+          <span class="co-summary-toggle-course">أبعد من إمكانيات الإضاءة</span>
         </div>
-
-        <div class="divider" style="margin-bottom:16px;"></div>
-
-        <div style="display:flex;flex-direction:column;gap:8px;font-size:0.85rem;">
-          <div style="display:flex;justify-content:space-between;">
-            <span style="color:var(--grey);">السعر</span>
-            <span id="original-price">299 ر.س</span>
-          </div>
-          <div id="discount-row" style="display:none;justify-content:space-between;">
-            <span style="color:var(--grey);">الخصم</span>
-            <span style="color:#4caf82;" id="discount-amount">-0 ر.س</span>
-          </div>
+        <div class="co-summary-toggle-right">
+          <span class="co-summary-toggle-price" id="toggle-total">650 ر.س</span>
+          <span class="co-summary-chevron" id="summary-chevron">▼</span>
         </div>
+      </div>
 
-        <div class="divider" style="margin:16px 0;"></div>
-        <div style="display:flex;justify-content:space-between;font-weight:700;">
-          <span>الإجمالي</span>
-          <span id="total-price" style="color:var(--gold);font-size:1.1rem;">299 ر.س</span>
-        </div>
+      <!-- Summary body (accordion on mobile, always open on desktop) -->
+      <div class="co-summary-body" id="summary-body">
+        <div class="co-summary-inner">
 
-        <p id="summary-coupon" style="display:none;font-size:0.8rem;color:#4caf82;margin-top:8px;text-align:center;"></p>
-
-        <div style="margin-top:20px;padding-top:16px;border-top:1px solid rgba(255,255,255,0.05);">
-          <div style="display:flex;flex-direction:column;gap:8px;font-size:0.78rem;color:var(--grey);">
-            <div style="display:flex;align-items:center;gap:8px;">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-              وصول فوري بعد الدفع
+          <div style="display:flex;gap:12px;align-items:flex-start;margin-bottom:16px;">
+            <div style="width:52px;height:52px;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.2);border-radius:8px;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="1.5"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
             </div>
-            <div style="display:flex;align-items:center;gap:8px;">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-              رابط الدورة يصلك على الإيميل
+            <div>
+              <p style="font-size:0.88rem;font-weight:700;margin-bottom:3px;">أبعد من إمكانيات الإضاءة</p>
+              <p style="font-size:0.76rem;color:var(--grey);font-weight:300;">دورة مسجلة — وصول مدى الحياة</p>
             </div>
-            <div style="display:flex;align-items:center;gap:8px;">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
-              وصول مدى الحياة من أي جهاز
+          </div>
+
+          <div class="divider" style="margin-bottom:14px;"></div>
+
+          <div style="display:flex;flex-direction:column;gap:8px;font-size:0.85rem;">
+            <div style="display:flex;justify-content:space-between;">
+              <span style="color:var(--grey);">السعر</span>
+              <span id="original-price">650 ر.س</span>
+            </div>
+            <div id="discount-row" style="display:none;justify-content:space-between;">
+              <span style="color:var(--grey);">الخصم</span>
+              <span style="color:#4caf82;" id="discount-amount">-0 ر.س</span>
+            </div>
+          </div>
+
+          <div class="divider" style="margin:14px 0;"></div>
+          <div style="display:flex;justify-content:space-between;font-weight:700;">
+            <span>الإجمالي</span>
+            <span id="total-price" style="color:var(--gold);font-size:1.05rem;">650 ر.س</span>
+          </div>
+
+          <p id="summary-coupon" style="display:none;font-size:0.78rem;color:#4caf82;margin-top:8px;text-align:center;"></p>
+
+          <div style="margin-top:16px;padding-top:14px;border-top:1px solid rgba(255,255,255,0.05);">
+            <div style="display:flex;flex-direction:column;gap:8px;font-size:0.78rem;color:var(--grey);">
+              <div style="display:flex;align-items:center;gap:8px;">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                وصول فوري بعد الدفع
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                رابط الدورة يصلك على الإيميل
+              </div>
+              <div style="display:flex;align-items:center;gap:8px;">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                وصول مدى الحياة من أي جهاز
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </div>
 
+    </div>
   </div>
 </div>
 
 <!-- Footer -->
 <footer style="padding:28px 32px 20px;text-align:center;border-top:1px solid rgba(255,255,255,0.05);background:rgba(8,8,8,0.6);position:relative;z-index:1;">
-  <p style="font-size:0.78rem;color:#555;font-weight:300;margin-bottom:12px;">© MA Learn 2026 — جميع الحقوق محفوظة · Powered by Moyasar</p>
+  <p style="font-size:0.78rem;color:#555;font-weight:300;margin-bottom:12px;">© MA Learn 2026 — جميع الحقوق محفوظة · Powered by Moyasar & Tamara</p>
 
   <!-- Payment logos -->
   <div style="display:flex;justify-content:center;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:14px;">
@@ -264,12 +500,23 @@
   // ─────────────────────────────────────────────
   // CONFIG
   // ─────────────────────────────────────────────
-  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzXC4Ef5WxNX0aPov7Q1Kdn2DiXuODd74w3iOCtovrw86o9grwVREqNsRdhlyQkoBnQ/exec';
-  const BASE_AMOUNT     = 29900; // halalas — 299 SAR (UPDATE price here if needed)
-  const PRODUCT_ID      = 'beyond-lighting';
-  const SUCCESS_URL     = 'https://malearnsa.com/beyond-lighting/success.html';
+  const APPS_SCRIPT_URL   = 'https://script.google.com/macros/s/AKfycbzXC4Ef5WxNX0aPov7Q1Kdn2DiXuODd74w3iOCtovrw86o9grwVREqNsRdhlyQkoBnQ/exec';
+  const TAMARA_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwoHKusESjdfxSYaL8VdH5YlUEHArLwcWK-_IJ2cL5knN6UK0jsxlV2pRQySRePGyBT7w/exec';
+  const BASE_AMOUNT       = 65000; // halalas — 650 SAR
+  const PRODUCT_ID        = 'beyond-lighting';
+  const SUCCESS_URL       = 'https://malearnsa.com/beyond-lighting/success.html';
 
   let appliedCoupon = null;
+
+  // ─────────────────────────────────────────────
+  // SUMMARY ACCORDION (mobile only)
+  // ─────────────────────────────────────────────
+  function toggleSummary() {
+    const body    = document.getElementById('summary-body');
+    const chevron = document.getElementById('summary-chevron');
+    const isOpen  = body.classList.toggle('open');
+    chevron.classList.toggle('open', isOpen);
+  }
 
   // ─────────────────────────────────────────────
   // COUPON
@@ -297,10 +544,13 @@
         document.getElementById('discount-row').style.display = 'flex';
         document.getElementById('discount-amount').textContent = `-${data.discountSAR} ر.س`;
         document.getElementById('total-price').textContent = `${data.finalSAR} ر.س`;
+        document.getElementById('toggle-total').textContent = `${data.finalSAR} ر.س`;
         document.getElementById('summary-coupon').style.display = 'block';
         document.getElementById('summary-coupon').textContent = `✓ كود الخصم "${code}" مفعّل`;
         btn.textContent = '✓';
         document.getElementById('coupon-input').disabled = true;
+        // Reinit Moyasar with the discounted amount so payment reflects the new price
+        // No Moyasar reinit needed — coupon is captured at proceedToPayment() time
       } else {
         appliedCoupon = null;
         msg.style.color = '#e74c3c';
@@ -318,21 +568,27 @@
   }
 
   // ─────────────────────────────────────────────
-  // INIT MOYASAR
+  // PROCEED TO PAYMENT
+  // Called once when user clicks the button — Moyasar is initialized
+  // exactly once with the correct final amount (coupon already applied or not).
   // ─────────────────────────────────────────────
-  function initMoyasar() {
+  function proceedToPayment() {
     const name  = document.getElementById('name').value.trim();
     const email = document.getElementById('email').value.trim();
     const phone = document.getElementById('phone').value.trim();
 
     if (!name || !email) {
-      alert('الرجاء إدخال الاسم والبريد الإلكتروني أولاً');
+      // Scroll to first empty field and highlight it
+      const el = !name ? document.getElementById('name') : document.getElementById('email');
+      el.style.borderColor = 'rgba(231,76,60,0.8)';
+      el.focus();
+      setTimeout(() => el.style.borderColor = 'rgba(201,168,76,0.2)', 2500);
       return;
     }
 
     const finalAmount = appliedCoupon ? appliedCoupon.finalAmount : BASE_AMOUNT;
 
-    // Save to localStorage for success page
+    // Save customer data for success page
     localStorage.setItem('bl_purchase', JSON.stringify({
       name, email, phone,
       product: PRODUCT_ID,
@@ -340,8 +596,14 @@
       amount: (finalAmount / 100).toFixed(2)
     }));
 
+    // Hide button, show form
+    document.getElementById('proceed-btn').style.display = 'none';
+    const formEl = document.getElementById('moyasar-form');
+    formEl.style.display = 'block';
+
+    // Init Moyasar once with the correct amount
     Moyasar.init({
-      element: document.getElementById('moyasar-form'),
+      element: formEl,
       amount: finalAmount,
       currency: 'SAR',
       description: 'أبعد من إمكانيات الإضاءة — MA Learn',
@@ -354,53 +616,89 @@
         validate_merchant_url: 'https://api.moyasar.com/v1/applepay/initiate',
       },
       on_initiating: () => {
-        // Store coupon for success page to read
-        localStorage.setItem('bl_coupon', appliedCoupon ? appliedCoupon.code : '');
+        // Refresh localStorage in case user changed fields after clicking proceed
+        localStorage.setItem('bl_purchase', JSON.stringify({
+          name: document.getElementById('name').value.trim(),
+          email: document.getElementById('email').value.trim(),
+          phone: document.getElementById('phone').value.trim(),
+          product: PRODUCT_ID,
+          coupon: appliedCoupon ? appliedCoupon.code : '',
+          amount: (finalAmount / 100).toFixed(2)
+        }));
       }
     });
 
-    // Hide init button, show payment form
-    document.getElementById('moyasar-form').innerHTML = '';
+    // Scroll payment card into view on mobile
+    document.getElementById('payment-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
-  // Auto-init Moyasar on page load
-  window.addEventListener('DOMContentLoaded', () => {
-    // Delay slightly so fonts load
-    setTimeout(() => {
-      const finalAmount = BASE_AMOUNT;
-      localStorage.removeItem('bl_purchase');
+  // ─────────────────────────────────────────────
+  // TAMARA — Create order and redirect to Tamara checkout
+  // ─────────────────────────────────────────────
+  async function proceedWithTamara() {
+    const name  = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const phone = document.getElementById('phone').value.trim();
 
-      Moyasar.init({
-        element: document.getElementById('moyasar-form'),
-        amount: finalAmount,
-        currency: 'SAR',
-        description: 'أبعد من إمكانيات الإضاءة — MA Learn',
-        publishable_api_key: 'pk_live_ciyD54kvT4b6bWev3RNzEjzLXpJPC8DmnbgcW47H',
-        callback_url: SUCCESS_URL,
-        methods: ['creditcard', 'applepay'],
-        apple_pay: {
-          country: 'SA',
-          label: 'MA Learn — Beyond Lighting',
-          validate_merchant_url: 'https://api.moyasar.com/v1/applepay/initiate',
-        },
-        on_initiating: () => {
-          const name  = document.getElementById('name').value.trim();
-          const email = document.getElementById('email').value.trim();
-          const phone = document.getElementById('phone').value.trim();
-          const finalAmt = appliedCoupon ? appliedCoupon.finalAmount : BASE_AMOUNT;
-          localStorage.setItem('bl_purchase', JSON.stringify({
-            name, email, phone,
-            product: PRODUCT_ID,
-            coupon: appliedCoupon ? appliedCoupon.code : '',
-            amount: (finalAmt / 100).toFixed(2)
-          }));
-        }
+    // Validate required fields
+    if (!name || !email || !phone) {
+      const el = !name ? document.getElementById('name') : !email ? document.getElementById('email') : document.getElementById('phone');
+      el.style.borderColor = 'rgba(231,76,60,0.8)';
+      el.focus();
+      setTimeout(() => el.style.borderColor = 'rgba(201,168,76,0.2)', 2500);
+      return;
+    }
+
+    const btn = document.getElementById('tamara-btn');
+    const msg = document.getElementById('tamara-msg');
+    btn.disabled = true;
+    btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg> جارٍ الاتصال بتمارا...';
+    msg.style.display = 'none';
+
+    const finalAmount  = appliedCoupon ? appliedCoupon.finalAmount : BASE_AMOUNT;
+    const couponCode   = appliedCoupon ? appliedCoupon.code : '';
+
+    try {
+      const res = await fetch(TAMARA_SCRIPT_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          action: 'create_order',
+          name, email, phone,
+          product:  PRODUCT_ID,
+          amount:   finalAmount,  // halalas
+          coupon:   couponCode
+        })
       });
-    }, 300);
-  });
 
-  // Coupon input: uppercase
-  document.addEventListener('DOMContentLoaded', () => {
+      const data = await res.json();
+
+      if (data.success && data.checkout_url) {
+        // Save purchase context for success page
+        localStorage.setItem('bl_purchase', JSON.stringify({
+          name, email, phone,
+          product: PRODUCT_ID,
+          coupon: couponCode,
+          amount: (finalAmount / 100).toFixed(2),
+          payment_method: 'tamara'
+        }));
+        window.location.href = data.checkout_url;
+      } else {
+        msg.style.display = 'block';
+        msg.textContent = data.error || 'حدث خطأ عند الاتصال بتمارا — حاول مرة ثانية';
+        btn.disabled = false;
+        btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg> ادفع بالتقسيط مع تمارا <span class="co-tamara-badge">٣ أقساط</span>';
+      }
+    } catch (err) {
+      msg.style.display = 'block';
+      msg.textContent = 'تعذّر الاتصال بالخادم — تحقق من اتصالك وحاول مرة ثانية';
+      btn.disabled = false;
+      btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg> ادفع بالتقسيط مع تمارا <span class="co-tamara-badge">٣ أقساط</span>';
+    }
+  }
+
+  window.addEventListener('DOMContentLoaded', () => {
+    localStorage.removeItem('bl_purchase');
     const ci = document.getElementById('coupon-input');
     if (ci) ci.addEventListener('input', () => { ci.value = ci.value.toUpperCase(); });
   });
