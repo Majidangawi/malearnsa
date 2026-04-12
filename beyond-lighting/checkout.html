@@ -710,7 +710,7 @@
         window.location.href = data.checkout_url;
       } else {
         msg.style.display = 'block';
-        msg.textContent = data.error || 'حدث خطأ عند الاتصال بتمارا — حاول مرة ثانية';
+        msg.textContent = (data.error || 'حدث خطأ') + (data.details ? ' — ' + JSON.stringify(data.details) : '');
         btn.disabled = false;
         btn.innerHTML = TAMARA_BTN_DEFAULT;
       }
