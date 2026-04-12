@@ -1,0 +1,602 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ورشة صناعة الإلهام — قائمة الانتظار | MA Learn</title>
+  <meta name="description" content="ورشة صناعة الإلهام — أنتج عملك الإبداعي بأدوات الذكاء الاصطناعي من البريف إلى التسليم. سجّل في قائمة الانتظار للحصول على سعر الإطلاق.">
+
+  <!--
+  ═══════════════════════════════════════════════════════
+  DEPLOYMENT NOTES:
+  1. Put ciw-cover.png in the same folder as this file (projects/ma-learn-launch/)
+     Source: Courses/Crafting Inspiration Workshop/ — renamed to ciw-cover.png
+  2. Set SCRIPT_URL in the <script> block below to the deployed
+     Google Apps Script web app URL (from ciw-waitlist-apps-script.js)
+  3. Image (ciw-cover.jpg) goes in the same folder as this HTML file
+  4. Deploy this file as /ciw-waitlist or /ciw-waitlist/index.html
+  ═══════════════════════════════════════════════════════
+  -->
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    @font-face { font-family:'Gumela'; src:url('/brand_assets/gumela-arabic-bold.otf') format('opentype'); font-weight:700; }
+    @font-face { font-family:'Gumela'; src:url('/brand_assets/gumela-arabic-regular.otf') format('opentype'); font-weight:400; }
+    @font-face { font-family:'Gumela'; src:url('/brand_assets/gumela-arabic-light.otf') format('opentype'); font-weight:300; }
+
+    :root {
+      --gold:       #C9A84C;
+      --gold-lum:   #E8D08A;
+      --gold-dim:   rgba(201,168,76,0.18);
+      --ivory:      #F5F0E8;
+      --silver:     #BBBBBB;
+      --grey:       #666666;
+      --bg:         #080808;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Gumela', 'Cairo', sans-serif;
+      background: var(--bg);
+      color: var(--ivory);
+      direction: rtl;
+      overflow-x: hidden;
+    }
+
+    /* ── GRAIN ── */
+    body::after {
+      content: '';
+      position: fixed; inset: 0;
+      pointer-events: none; z-index: 9999; opacity: 0.028;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+    }
+
+    /* ══ NAV ══ (identical to main site) */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      padding: 14px 32px;
+      background: rgba(8,8,8,0.55);
+      border-bottom: 1px solid transparent;
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      transition: background 0.45s ease, border-color 0.45s ease;
+    }
+    nav.scrolled {
+      background: rgba(8,8,8,0.96);
+      border-bottom-color: rgba(201,168,76,0.12);
+    }
+    .nav-inner {
+      max-width: 1060px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    }
+    .nav-logo img { height: 28px; width: auto; display: block; }
+    .nav-links {
+      display: flex; align-items: center; gap: 20px;
+    }
+    .nav-links a {
+      font-size: 0.78rem; color: var(--grey); text-decoration: none;
+      font-family: 'Cairo', sans-serif; transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-cta {
+      background: var(--gold); color: #000;
+      font-family: 'Gumela', 'Cairo', sans-serif; font-weight: 700; font-size: 0.78rem;
+      padding: 9px 20px; border: none; cursor: pointer; text-decoration: none;
+      transition: background 0.2s; white-space: nowrap; flex-shrink: 0;
+    }
+    .nav-cta:hover { background: var(--gold-lum); }
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      nav { padding: 14px 20px; }
+      .nav-cta { font-size: 0.72rem; padding: 8px 16px; }
+    }
+
+    /* ══ HERO ══ */
+    .hero {
+      position: relative;
+      min-height: 100svh;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      overflow: hidden;
+    }
+
+    .hero-img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center 15%;
+      will-change: transform;
+    }
+
+    /* Cinematic gradient: nav-safe top fade + dramatic bottom pull */
+    .hero-veil {
+      position: absolute; inset: 0;
+      background:
+        linear-gradient(to bottom,
+          rgba(8,8,8,0.45) 0%,
+          rgba(8,8,8,0)    18%,
+          rgba(8,8,8,0)    38%,
+          rgba(8,8,8,0.55) 62%,
+          rgba(8,8,8,0.88) 78%,
+          rgba(8,8,8,0.98) 92%,
+          rgba(8,8,8,1)    100%
+        );
+    }
+
+    /* Side vignette — deepens edges for focus */
+    .hero-vignette {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 90% 100% at 50% 50%, transparent 55%, rgba(8,8,8,0.55) 100%);
+    }
+
+    /* ══ CONTENT ══ */
+    .hero-content {
+      position: relative; z-index: 10;
+      padding: 0 24px 68px;
+      width: 100%; max-width: 640px;
+      margin: 0 auto;
+      text-align: center;
+
+      /* Entrance: stagger via custom props on children */
+      --stagger: 0.1s;
+    }
+
+    /* LABEL */
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 10px;
+      border: 1px solid rgba(201,168,76,0.35);
+      color: rgba(201,168,76,0.9);
+      font-size: 0.68rem; letter-spacing: 0.14em;
+      padding: 6px 18px; margin-bottom: 22px;
+      font-family: 'Cairo', sans-serif;
+      opacity: 0; animation: rise 0.7s ease forwards;
+      animation-delay: calc(var(--stagger) * 1);
+    }
+    .badge-pulse {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--gold); flex-shrink: 0;
+      animation: glow 2.2s ease-in-out infinite;
+    }
+    @keyframes glow { 0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(201,168,76,0.6)} 50%{opacity:0.4;box-shadow:0 0 0 4px rgba(201,168,76,0)} }
+
+    /* WORKSHOP NAME */
+    .hero-kicker {
+      font-family: 'Cairo', sans-serif;
+      font-size: 0.78rem; font-weight: 300;
+      color: var(--silver); letter-spacing: 0.22em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      opacity: 0; animation: rise 0.7s ease forwards;
+      animation-delay: calc(var(--stagger) * 2);
+    }
+
+    .hero-title {
+      font-family: 'Gumela', sans-serif;
+      font-weight: 700;
+      font-size: clamp(2.6rem, 7vw, 5rem);
+      color: var(--ivory);
+      line-height: 1.15;
+      margin-bottom: 20px;
+      letter-spacing: -0.015em;
+      opacity: 0; animation: rise 0.75s ease forwards;
+      animation-delay: calc(var(--stagger) * 3);
+    }
+    .hero-title em {
+      font-style: normal;
+      color: var(--gold);
+    }
+
+    .hero-headline {
+      font-family: 'Cairo', sans-serif;
+      font-size: clamp(0.85rem, 1.8vw, 1rem);
+      color: var(--silver); line-height: 1.95;
+      font-weight: 300;
+      margin-bottom: 28px;
+      opacity: 0; animation: rise 0.7s ease forwards;
+      animation-delay: calc(var(--stagger) * 4);
+    }
+
+    /* Gold line separator */
+    .hero-sep {
+      display: flex; align-items: center; justify-content: center; gap: 14px;
+      margin-bottom: 32px;
+      opacity: 0; animation: rise 0.7s ease forwards;
+      animation-delay: calc(var(--stagger) * 5);
+    }
+    .hero-sep-line { flex: 1; max-width: 80px; height: 1px; background: rgba(201,168,76,0.3); }
+    .hero-sep-dates {
+      font-family: 'Cairo', sans-serif;
+      font-size: 0.75rem; color: var(--gold);
+      letter-spacing: 0.1em; white-space: nowrap;
+    }
+
+    /* ══ FORM ══ */
+    #formWrapper {
+      opacity: 0; animation: rise 0.75s ease forwards;
+      animation-delay: calc(var(--stagger) * 6);
+    }
+
+    .waitlist-form { display: flex; flex-direction: column; gap: 10px; }
+
+    .form-row {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 10px;
+    }
+    @media (max-width: 480px) { .form-row { grid-template-columns: 1fr; } }
+
+    .field {
+      position: relative;
+    }
+
+    .field input {
+      width: 100%;
+      background: rgba(8,8,8,0.72);
+      border: 1px solid rgba(255,255,255,0.08);
+      color: var(--ivory);
+      font-family: 'Cairo', sans-serif;
+      font-size: 0.9rem;
+      padding: 13px 16px;
+      outline: none;
+      transition: border-color 0.25s, background 0.25s;
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      text-align: right;
+      border-radius: 0;
+      -webkit-appearance: none;
+    }
+    .field input::placeholder { color: #4a4a4a; font-family: 'Cairo', sans-serif; }
+    .field input:focus {
+      border-color: rgba(201,168,76,0.55);
+      background: rgba(8,8,8,0.88);
+    }
+    .field input:valid:not(:placeholder-shown) {
+      border-color: rgba(201,168,76,0.25);
+    }
+
+    /* Phone / email direction */
+    .field input[type="email"],
+    .field input[type="tel"] { direction: ltr; text-align: right; }
+
+    .btn-join {
+      display: block; width: 100%;
+      background: var(--gold); color: #000;
+      font-family: 'Gumela', 'Cairo', sans-serif; font-weight: 700;
+      font-size: 1rem; padding: 16px 32px;
+      border: none; cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+      margin-top: 4px;
+      letter-spacing: 0.01em;
+      position: relative; overflow: hidden;
+    }
+    .btn-join::after {
+      content: '';
+      position: absolute; inset: 0;
+      background: rgba(255,255,255,0);
+      transition: background 0.2s;
+    }
+    .btn-join:hover { background: var(--gold-lum); transform: translateY(-1px); }
+    .btn-join:active { transform: translateY(0); }
+    .btn-join:disabled { opacity: 0.55; cursor: not-allowed; transform: none; }
+
+    .form-micro {
+      font-family: 'Cairo', sans-serif;
+      font-size: 0.7rem; color: #555;
+      text-align: center; margin-top: 10px;
+      line-height: 1.65;
+    }
+    .form-micro span { color: rgba(201,168,76,0.6); }
+
+    /* ══ SUCCESS ══ */
+    .success-state {
+      display: none;
+      text-align: center;
+      padding: 36px 0 16px;
+      animation: rise 0.55s ease;
+    }
+    .success-ring {
+      width: 56px; height: 56px;
+      border: 1px solid rgba(201,168,76,0.45);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 20px;
+      color: var(--gold);
+    }
+    .success-title {
+      font-size: 1.45rem; font-weight: 700; color: var(--ivory);
+      margin-bottom: 12px;
+    }
+    .success-body {
+      font-family: 'Cairo', sans-serif;
+      font-size: 0.88rem; color: var(--silver); line-height: 1.9;
+    }
+
+    /* ══ ENTRANCE KEYFRAME ══ */
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ══ FOOTER (identical to main site) ══ */
+    footer {
+      background: #050505;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      padding: 40px 24px 28px; text-align: center;
+    }
+    .footer-logo img { height: 26px; margin: 0 auto 18px; display: block; opacity: 0.7; }
+    .footer-links {
+      display: flex; justify-content: center; gap: 20px;
+      flex-wrap: wrap; margin-bottom: 10px;
+    }
+    .footer-links a {
+      color: var(--grey); text-decoration: none; font-size: 0.72rem;
+      font-family: 'Cairo', sans-serif; transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--silver); }
+    .footer-contact {
+      font-size: 0.7rem; color: #444; direction: ltr; margin-bottom: 18px;
+    }
+    .footer-payments {
+      display: flex; align-items: center; justify-content: center;
+      gap: 8px; flex-wrap: wrap; margin-bottom: 20px;
+    }
+    .footer-payments-label { font-size: 0.65rem; color: #555; margin-left: 4px; }
+    .footer-badges {
+      display: inline-flex; align-items: center; gap: 12px;
+      flex-wrap: wrap; justify-content: center; margin-bottom: 16px;
+    }
+    .footer-badge-link {
+      display: inline-flex; align-items: center; gap: 12px;
+      background: #fff; border-radius: 10px; padding: 10px 16px;
+      direction: rtl; text-decoration: none;
+    }
+    .footer-badge-link img { height: 44px; width: auto; display: block; }
+    .footer-badge-info { border-right: 1px solid #ddd; padding-right: 12px; text-align: right; }
+    .footer-badge-label { font-size: 0.55rem; color: #888; margin: 0 0 3px 0; font-family: Cairo,Arial,sans-serif; line-height: 1; }
+    .footer-badge-num { font-size: 0.75rem; font-weight: 700; color: #222; margin: 0; font-family: Arial,sans-serif; letter-spacing: 0.5px; line-height: 1; }
+    .footer-copy { font-size: 0.72rem; color: var(--grey); margin-top: 6px; }
+
+    /* ══ RESPONSIVE ══ */
+    @media (max-width: 640px) {
+      .hero-content { padding-bottom: 56px; }
+      .hero-title { font-size: clamp(2.2rem, 10vw, 3rem); }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══ NAV (identical to main site) ═════════════════════════════════════ -->
+  <nav id="nav">
+    <div class="nav-inner">
+      <div class="nav-logo">
+        <img src="/brand_assets/logo-malearn-white.png" alt="MA Learn"
+             onerror="this.style.display='none'">
+      </div>
+      <div class="nav-links">
+        <a href="https://malearnsa.com">الرئيسية</a>
+        <a href="https://malearnsa.com/#courses">الدورات</a>
+        <a href="https://malearnsa.com/refund-policy.html">سياسة الاسترجاع</a>
+        <a href="https://malearnsa.com/privacy-policy.html">الخصوصية</a>
+      </div>
+      <a href="#form-anchor" class="nav-cta">سجّل في قائمة الانتظار</a>
+    </div>
+  </nav>
+
+  <!-- ══ HERO / COVER ══════════════════════════════════════════════════════ -->
+  <section class="hero">
+
+    <!-- Cover image — ciw-cover.png lives in the same folder as this file -->
+    <img
+      class="hero-img"
+      src="ciw-cover.png"
+      alt="ورشة صناعة الإلهام"
+      loading="eager"
+    >
+
+    <!-- Cinematic gradient overlay -->
+    <div class="hero-veil"></div>
+    <div class="hero-vignette"></div>
+
+    <!-- Content block -->
+    <div class="hero-content" id="form-anchor">
+
+      <!-- Live badge -->
+      <div class="hero-badge">
+        <span class="badge-pulse"></span>
+        ورشة مباشرة أونلاين &nbsp;·&nbsp; ٣٠ أبريل — ٢ مايو
+      </div>
+
+      <!-- Kicker -->
+      <p class="hero-kicker">MA LEARN</p>
+
+      <!-- Title -->
+      <h1 class="hero-title">
+        ورشة <em>صناعة&nbsp;الإلهام</em>
+      </h1>
+
+      <!-- Headline -->
+      <p class="hero-headline">
+        أنتج عملك الإبداعي بإستخدام أدوات الذكاء الإصطناعي<br>
+        من البريف إلى التسليم
+      </p>
+
+      <!-- Date separator -->
+      <div class="hero-sep">
+        <span class="hero-sep-line"></span>
+        <span class="hero-sep-dates">٣٠ أبريل — ٢ مايو ٢٠٢٦</span>
+        <span class="hero-sep-line"></span>
+      </div>
+
+      <!-- ══ FORM ══ -->
+      <div id="formWrapper">
+        <form class="waitlist-form" id="waitlistForm" novalidate>
+
+          <div class="form-row">
+            <div class="field">
+              <input
+                type="text" id="fname" name="name"
+                placeholder="الاسم الكامل"
+                required autocomplete="name"
+              >
+            </div>
+            <div class="field">
+              <input
+                type="tel" id="fphone" name="phone"
+                placeholder="رقم الجوال"
+                required autocomplete="tel"
+                inputmode="tel"
+              >
+            </div>
+          </div>
+
+          <div class="field">
+            <input
+              type="email" id="femail" name="email"
+              placeholder="البريد الإلكتروني"
+              required autocomplete="email"
+              inputmode="email"
+            >
+          </div>
+
+          <button type="submit" class="btn-join" id="submitBtn">
+            سجّل في قائمة الانتظار — للوصول المبكر بسعر الإطلاق
+          </button>
+
+        </form>
+
+        <p class="form-micro">
+          مقاعد محدودة &nbsp;·&nbsp; <span>سعر الإطلاق لقائمة الانتظار فقط</span> &nbsp;·&nbsp; لا رسائل مزعجة
+        </p>
+      </div>
+
+      <!-- ══ SUCCESS STATE ══ -->
+      <div class="success-state" id="successState">
+        <div class="success-ring">
+          <svg width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <polyline points="20 6 9 17 4 12"/>
+          </svg>
+        </div>
+        <div class="success-title">تم تسجيلك ✓</div>
+        <p class="success-body">
+          أنت الآن على قائمة الانتظار.<br>
+          سنتواصل معك مباشرة بسعر الإطلاق الحصري قبل الجميع.
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══ FOOTER (identical to main site) ══════════════════════════════════ -->
+  <footer>
+    <div class="footer-logo">
+      <img src="/brand_assets/logo-malearn-white.png" alt="MA Learn"
+           onerror="this.style.display='none'">
+    </div>
+
+    <div class="footer-links">
+      <a href="https://malearnsa.com">الرئيسية</a>
+      <a href="https://malearnsa.com/#courses">الدورات</a>
+      <a href="https://malearnsa.com/refund-policy.html">سياسة الاسترجاع</a>
+      <a href="https://malearnsa.com/privacy-policy.html">الخصوصية</a>
+      <a href="https://instagram.com/majidangawi" target="_blank">Instagram</a>
+    </div>
+
+    <div class="footer-contact">support@malearnsa.com &nbsp;·&nbsp; +966 560 440 113</div>
+
+    <div class="footer-payments">
+      <span class="footer-payments-label">الدفع عبر:</span>
+      <svg xmlns="http://www.w3.org/2000/svg" width="64" height="36" viewBox="0 0 64 36"><rect width="64" height="36" rx="4" fill="white"/><rect x="6" y="6" width="17" height="10" rx="1" fill="#29ABE2"/><rect x="6" y="20" width="17" height="10" rx="1" fill="#78BE20"/><text x="42" y="23" text-anchor="middle" font-family="Arial Black,Arial,sans-serif" font-size="11" font-weight="900" fill="#222">mada</text></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" width="54" height="36" viewBox="0 0 54 36"><rect width="54" height="36" rx="4" fill="#1A1F71"/><text x="27" y="25" text-anchor="middle" font-family="Arial,sans-serif" font-size="17" font-weight="700" font-style="italic" fill="white">VISA</text></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" width="58" height="36" viewBox="0 0 58 36"><circle cx="20" cy="16" r="11" fill="#EB001B"/><circle cx="38" cy="16" r="11" fill="#F79E1B"/><path d="M29,9.68 A11,11 0 0,1 29,22.32 A11,11 0 0,0 29,9.68Z" fill="#FF5F00"/><text x="29" y="35" text-anchor="middle" font-family="Arial,sans-serif" font-size="5" fill="#bbb" letter-spacing="0.5">mastercard</text></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" width="74" height="36" viewBox="0 0 74 36"><rect width="74" height="36" rx="4" fill="#111111"/><rect width="74" height="36" rx="4" fill="none" stroke="#383838" stroke-width="1"/><text x="37" y="22" text-anchor="middle" font-family="Helvetica Neue,Helvetica,Arial,sans-serif" font-size="12" font-weight="300" fill="white" letter-spacing="-0.2">Apple Pay</text></svg>
+    </div>
+
+    <div class="footer-badges">
+      <a href="https://malearnsa.com/brand_assets/Freelance-certificate-2026.pdf" target="_blank" rel="noopener" class="footer-badge-link">
+        <img src="/brand_assets/Freelance.jpg" alt="وثيقة العمل الحر">
+        <div class="footer-badge-info">
+          <p class="footer-badge-label">رقم الوثيقة</p>
+          <p class="footer-badge-num">FL-163949047</p>
+        </div>
+      </a>
+      <a href="https://malearnsa.com/brand_assets/SCBC-Certificate-2026.pdf" target="_blank" rel="noopener" class="footer-badge-link">
+        <img src="/brand_assets/SCBC.png" alt="SCBC">
+        <div class="footer-badge-info">
+          <p class="footer-badge-label">رقم الترخيص</p>
+          <p class="footer-badge-num">0000276647</p>
+        </div>
+      </a>
+    </div>
+
+    <div class="footer-copy">© 2026 MA Learn · جميع الحقوق محفوظة</div>
+  </footer>
+
+  <script>
+    // ══ REPLACE THIS with your deployed Apps Script Web App URL ══
+    const SCRIPT_URL = 'YOUR_APPS_SCRIPT_WEB_APP_URL_HERE';
+
+    // Nav scroll state
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+    }, { passive: true });
+
+    // Form submission
+    const form = document.getElementById('waitlistForm');
+    const btn  = document.getElementById('submitBtn');
+
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      // Basic validation
+      const name  = document.getElementById('fname').value.trim();
+      const email = document.getElementById('femail').value.trim();
+      const phone = document.getElementById('fphone').value.trim();
+
+      if (!name || !email || !phone) {
+        // Shake empty fields
+        [document.getElementById('fname'), document.getElementById('femail'), document.getElementById('fphone')]
+          .forEach(el => {
+            if (!el.value.trim()) {
+              el.style.borderColor = 'rgba(220,80,60,0.6)';
+              setTimeout(() => el.style.borderColor = '', 2000);
+            }
+          });
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'جاري التسجيل...';
+
+      const payload = {
+        name,
+        email,
+        phone,
+        workshop: 'Crafting Inspiration Workshop'
+      };
+
+      try {
+        // no-cors: avoids preflight, Apps Script receives the POST
+        await fetch(SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'text/plain' },
+          body: JSON.stringify(payload)
+        });
+      } catch (_) {
+        // With no-cors we cannot read the response; treat any result as success
+      }
+
+      // Show success state
+      document.getElementById('formWrapper').style.display = 'none';
+      const successEl = document.getElementById('successState');
+      successEl.style.display = 'block';
+    });
+  </script>
+
+</body>
+</html>
