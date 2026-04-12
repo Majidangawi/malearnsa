@@ -690,7 +690,7 @@
           action: 'create_order',
           name, email, phone,
           product:  PRODUCT_ID,
-          amount:   finalAmount,  // halalas
+          amount:   finalAmount / 100,  // convert halalas → SAR for Tamara
           coupon:   couponCode
         })
       });
