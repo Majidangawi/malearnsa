@@ -661,7 +661,6 @@
     try {
       const res = await fetch(TAMARA_SCRIPT_URL, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           action: 'create_order',
           name, email, phone,
