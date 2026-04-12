@@ -143,16 +143,45 @@
 </footer>
 
 <script>
-  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzXC4Ef5WxNX0aPov7Q1Kdn2DiXuODd74w3iOCtovrw86o9grwVREqNsRdhlyQkoBnQ/exec';
+  const APPS_SCRIPT_URL   = 'https://script.google.com/macros/s/AKfycbzXC4Ef5WxNX0aPov7Q1Kdn2DiXuODd74w3iOCtovrw86o9grwVREqNsRdhlyQkoBnQ/exec';
+  const TAMARA_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwoHKusESjdfxSYaL8VdH5YlUEHArLwcWK-_IJ2cL5knN6UK0jsxlV2pRQySRePGyBT7w/exec';
 
   async function handleSuccess() {
-    // Read purchase data saved before Moyasar redirect
     let purchaseData = {};
     try { purchaseData = JSON.parse(localStorage.getItem('bl_purchase') || '{}'); } catch(e) {}
 
-    // Get Moyasar payment ID from URL
-    const params    = new URLSearchParams(window.location.search);
-    const status    = params.get('status');
+    const params        = new URLSearchParams(window.location.search);
+    const status        = params.get('status');
+    const method        = purchaseData.payment_method || 'moyasar';
+
+    // ── TAMARA FLOW ──────────────────────────────────────────────
+    if (method === 'tamara') {
+      const tamaraOrderId = purchaseData.tamara_order_id || '';
+
+      if (!tamaraOrderId) {
+        // No order ID — show success anyway (capture may have been triggered by webhook)
+        localStorage.removeItem('bl_purchase');
+        document.getElementById('processing').style.display = 'none';
+        document.getElementById('success-view').style.display = 'block';
+        return;
+      }
+
+      try {
+        await fetch(TAMARA_SCRIPT_URL, {
+          method: 'POST',
+          body: JSON.stringify({ action: 'capture_payment', order_id: tamaraOrderId })
+        });
+      } catch(e) {
+        console.warn('Tamara capture failed (non-blocking):', e);
+      }
+
+      localStorage.removeItem('bl_purchase');
+      document.getElementById('processing').style.display = 'none';
+      document.getElementById('success-view').style.display = 'block';
+      return;
+    }
+
+    // ── MOYASAR FLOW ─────────────────────────────────────────────
     const paymentId = params.get('id') || params.get('payment_id') || '';
 
     if (status === 'failed' || status === 'canceled') {
@@ -161,7 +190,6 @@
       return;
     }
 
-    // Call Apps Script to complete purchase
     try {
       const url = `${APPS_SCRIPT_URL}?action=complete_purchase` +
         `&product=beyond-lighting` +
@@ -177,10 +205,7 @@
       console.warn('Apps Script call failed (non-blocking):', e);
     }
 
-    // Clear localStorage
     localStorage.removeItem('bl_purchase');
-
-    // Show success
     document.getElementById('processing').style.display = 'none';
     document.getElementById('success-view').style.display = 'block';
   }
