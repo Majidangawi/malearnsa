@@ -698,13 +698,14 @@
       const data = await res.json();
 
       if (data.success && data.checkout_url) {
-        // Save purchase context for success page
+        // Save purchase context for success page (tamara_order_id needed for capture)
         localStorage.setItem('bl_purchase', JSON.stringify({
           name, email, phone,
           product: PRODUCT_ID,
           coupon: couponCode,
           amount: (finalAmount / 100).toFixed(2),
-          payment_method: 'tamara'
+          payment_method: 'tamara',
+          tamara_order_id: data.order_id || ''
         }));
         window.location.href = data.checkout_url;
       } else {
