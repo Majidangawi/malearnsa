@@ -564,7 +564,7 @@
   // Called once when user clicks the button — Moyasar is initialized
   // exactly once with the correct final amount (coupon already applied or not).
   // ─────────────────────────────────────────────
-  function proceedToPayment() {
+  async function proceedToPayment() {
     const name  = document.getElementById('name').value.trim();
     const email = document.getElementById('email').value.trim();
     const phone = document.getElementById('phone').value.trim();
