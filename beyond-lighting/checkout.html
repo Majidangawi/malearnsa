@@ -525,13 +525,14 @@
       msg.style.display = 'block';
 
       if (data.valid) {
-        appliedCoupon = { code, discountHalalas: data.discountHalalas, finalAmount: data.finalAmount, message: data.message };
+        appliedCoupon = { code, discountHalalas: data.discountHalalas, finalAmount: data.finalAmount, isFree: data.isFree, message: data.message };
         msg.style.color = '#4caf82';
-        msg.textContent = data.message;
+        msg.textContent = data.isFree ? 'وصول مجاني ✓' : data.message;
         document.getElementById('discount-row').style.display = 'flex';
         document.getElementById('discount-amount').textContent = `-${data.discountSAR} ر.س`;
-        document.getElementById('total-price').textContent = `${data.finalSAR} ر.س`;
-        document.getElementById('toggle-total').textContent = `${data.finalSAR} ر.س`;
+        const totalLabel = data.isFree ? 'مجاني' : `${data.finalSAR} ر.س`;
+        document.getElementById('total-price').textContent = totalLabel;
+        document.getElementById('toggle-total').textContent = totalLabel;
         document.getElementById('summary-coupon').style.display = 'block';
         document.getElementById('summary-coupon').textContent = `✓ كود الخصم "${code}" مفعّل`;
         btn.textContent = '✓';
@@ -582,6 +583,31 @@
       coupon: appliedCoupon ? appliedCoupon.code : '',
       amount: (finalAmount / 100).toFixed(2)
     }));
+
+    // FREE ACCESS — bypass Moyasar, complete purchase directly
+    if (finalAmount === 0) {
+      const btn = document.getElementById('proceed-btn');
+      btn.disabled = true;
+      btn.textContent = 'جارٍ تفعيل الوصول...';
+      try {
+        const freePaymentId = 'FREE-' + Date.now();
+        const params = new URLSearchParams({
+          action: 'complete_purchase_bl',
+          name, email, phone,
+          product: PRODUCT_ID,
+          amount: '0',
+          coupon: appliedCoupon ? appliedCoupon.code : '',
+          payment_id: freePaymentId
+        });
+        await fetch(`${APPS_SCRIPT_URL}?${params.toString()}`);
+        window.location.href = SUCCESS_URL + '?status=paid&id=' + freePaymentId + '&message=free';
+      } catch (err) {
+        btn.disabled = false;
+        btn.textContent = 'المتابعة للدفع';
+        alert('حدث خطأ — حاول مرة ثانية');
+      }
+      return;
+    }
 
     // Hide button, show form
     document.getElementById('proceed-btn').style.display = 'none';
