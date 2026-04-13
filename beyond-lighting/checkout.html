@@ -145,10 +145,14 @@
       font-size: 0.9rem; font-weight: 700;
       cursor: pointer; border-radius: 10px;
       white-space: nowrap;
+      min-height: 48px; min-width: 72px;
+      touch-action: manipulation;
+      -webkit-tap-highlight-color: transparent;
       transition: background 0.2s, border-color 0.2s;
       -webkit-appearance: none;
     }
     .co-coupon-btn:hover { background: rgba(201,168,76,0.08); border-color: rgba(201,168,76,0.7); }
+    .co-coupon-btn:active { background: rgba(201,168,76,0.15); border-color: rgba(201,168,76,0.9); }
 
     /* Mobile summary accordion */
     .co-summary-toggle {
