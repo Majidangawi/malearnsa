@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <!-- Meta Pixel Code -->
+  <script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '961157069802409');
+  fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=961157069802409&ev=PageView&noscript=1"
+  /></noscript>
+  <!-- End Meta Pixel Code -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>حزمة البرومبتات الإبداعية — MA Learn</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Moyasar -->
+  <link rel="stylesheet" href="https://cdn.moyasar.com/mpf/1.14.0/moyasar.css" />
+  <script src="https://cdn.moyasar.com/mpf/1.14.0/moyasar.js"></script>
+  <style>
+    @font-face { font-family: 'Gumela'; src: url('../brand_assets/gumela-arabic-bold.otf') format('opentype'); font-weight: 700; }
+    @font-face { font-family: 'Gumela'; src: url('../brand_assets/gumela-arabic-regular.otf') format('opentype'); font-weight: 400; }
+    @font-face { font-family: 'Gumela'; src: url('../brand_assets/gumela-arabic-light.otf') format('opentype'); font-weight: 300; }
+
+    :root {
+      --bg: #080808; --card-bg: #0E0E0E; --gold: #C9A84C;
+      --gold-lum: #E8D08A; --ivory: #F5F0E8; --silver: #BBBBBB; --grey: #888888;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Gumela', 'Cairo', sans-serif;
+      background: var(--bg); color: var(--ivory);
+      min-height: 100vh; direction: rtl;
+    }
+    body::after {
+      content: ''; position: fixed; inset: 0; pointer-events: none; z-index: 9999;
+      opacity: 0.04;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+    .orb {
+      position: fixed; border-radius: 50%; filter: blur(120px);
+      pointer-events: none; z-index: 0;
+      animation: orb-pulse 7s ease-in-out infinite;
+    }
+    @keyframes orb-pulse { 0%,100%{opacity:.18;transform:scale(1)} 50%{opacity:.30;transform:scale(1.08)} }
+    .card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(201,168,76,0.18);
+      border-radius: 16px;
+    }
+    .divider { height: 1px; background: linear-gradient(to left, transparent, rgba(201,168,76,0.2), transparent); }
+
+    /* Moyasar dark theme overrides */
+    .mysr-form { direction: ltr; }
+    .mysr-form .mysr-payment-form { background: transparent !important; border: none !important; padding: 0 !important; box-shadow: none !important; }
+    .mysr-form input, .mysr-form select {
+      background: rgba(255,255,255,0.10) !important;
+      border: 1px solid rgba(201,168,76,0.35) !important;
+      border-radius: 8px !important;
+      color: #ffffff !important;
+      font-family: 'Cairo', sans-serif !important;
+    }
+    .mysr-form input::placeholder { color: rgba(255,255,255,0.45) !important; }
+    .mysr-form input:focus { border-color: rgba(201,168,76,0.7) !important; outline: none !important; box-shadow: 0 0 0 3px rgba(201,168,76,0.15) !important; }
+    .mysr-form label, .mysr-form p, .mysr-form span:not(.mysr-tab) { color: #D0C8B8 !important; font-family: 'Cairo', sans-serif !important; font-size: 0.85rem !important; }
+    .mysr-form .mysr-field-label { color: #D0C8B8 !important; font-weight: 500 !important; margin-bottom: 6px !important; }
+    .mysr-form .mysr-creditcard-field,
+    .mysr-form [class*="field"],
+    .mysr-form [class*="input"] {
+      background: rgba(255,255,255,0.10) !important;
+      border: 1px solid rgba(201,168,76,0.35) !important;
+      border-radius: 8px !important;
+    }
+    .mysr-form button[type=submit] {
+      background: var(--gold) !important;
+      color: #000 !important;
+      font-family: 'Gumela', 'Cairo', sans-serif !important;
+      font-weight: 700 !important;
+      border-radius: 0 !important;
+      font-size: 1rem !important;
+      padding: 14px !important;
+      border: none !important;
+      cursor: pointer !important;
+      transition: background 0.25s !important;
+      width: 100% !important;
+    }
+    .mysr-form button[type=submit]:hover { background: var(--gold-lum) !important; }
+    .mysr-form .mysr-tabs { border-bottom: 1px solid rgba(201,168,76,0.2) !important; }
+    .mysr-form .mysr-tab { color: rgba(255,255,255,0.5) !important; }
+    .mysr-form .mysr-tab.active { color: var(--gold) !important; border-bottom-color: var(--gold) !important; }
+    .mysr-form .mysr-separator, .mysr-form [class*="separator"] { color: rgba(255,255,255,0.4) !important; }
+    .mysr-form .mysr-separator::before, .mysr-form .mysr-separator::after { background: rgba(255,255,255,0.15) !important; }
+
+    /* Or divider */
+    .co-or-divider {
+      display: flex; align-items: center; gap: 14px;
+      margin: 20px 0; font-size: 0.8rem; color: var(--grey);
+    }
+    .co-or-divider::before, .co-or-divider::after {
+      content: ''; flex: 1;
+      height: 1px; background: rgba(255,255,255,0.07);
+    }
+
+    /* Tamara button */
+    .co-tamara-btn {
+      width: 100%;
+      background: #3E2A7E;
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.12);
+      padding: 14px 16px;
+      font-family: 'Gumela', 'Cairo', sans-serif;
+      font-size: 0.9rem; font-weight: 700;
+      cursor: pointer; border-radius: 10px;
+      transition: background 0.2s, transform 0.1s;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+    }
+    .co-tamara-btn:hover { background: #4e35a0; }
+    .co-tamara-btn:active { transform: scale(0.98); }
+    .co-tamara-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .co-tamara-badge {
+      background: rgba(255,255,255,0.15);
+      border-radius: 4px;
+      padding: 2px 7px;
+      font-size: 0.72rem; font-weight: 600; letter-spacing: 0.03em;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Orbs -->
+  <div class="orb" style="width:500px;height:500px;background:radial-gradient(circle,rgba(201,168,76,0.18) 0%,transparent 70%);top:-100px;right:-100px;"></div>
+  <div class="orb" style="width:400px;height:400px;background:radial-gradient(circle,rgba(201,168,76,0.12) 0%,transparent 70%);bottom:-80px;left:-80px;animation-delay:3.5s;"></div>
+
+  <!-- Nav -->
+<nav style="padding:14px 32px;border-bottom:1px solid rgba(201,168,76,0.08);position:relative;z-index:10;background:rgba(8,8,8,0.92);backdrop-filter:blur(10px);">
+  <div style="max-width:1000px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;">
+    <img src="../brand_assets/logo-malearn-white.png" alt="MA Learn" style="height:28px;width:auto;" onerror="this.style.display='none'">
+    <div style="display:flex;gap:18px;align-items:center;flex-wrap:wrap;">
+      <a href="https://malearnsa.com" style="font-size:0.8rem;color:#666;text-decoration:none;font-family:Cairo,sans-serif;" onmouseover="this.style.color='#C9A84C'" onmouseout="this.style.color='#666'">الرئيسية</a>
+      <a href="https://malearnsa.com/#courses" style="font-size:0.8rem;color:#666;text-decoration:none;font-family:Cairo,sans-serif;" onmouseover="this.style.color='#C9A84C'" onmouseout="this.style.color='#666'">الدورات</a>
+      <a href="https://malearnsa.com/refund-policy.html" style="font-size:0.8rem;color:#666;text-decoration:none;font-family:Cairo,sans-serif;" onmouseover="this.style.color='#C9A84C'" onmouseout="this.style.color='#666'">سياسة الاسترجاع</a>
+      <a href="https://malearnsa.com/privacy-policy.html" style="font-size:0.8rem;color:#666;text-decoration:none;font-family:Cairo,sans-serif;" onmouseover="this.style.color='#C9A84C'" onmouseout="this.style.color='#666'">الخصوصية</a>
+    </div>
+  </div>
+</nav>
+
+  <!-- Main -->
+  <main style="max-width:1000px;margin:0 auto;padding:48px 24px 80px;position:relative;z-index:1;">
+    <div style="display:grid;grid-template-columns:1fr;gap:40px;" class="lg:grid-cols-[1fr,420px]">
+
+      <!-- ═══════════════════════════════════
+           LEFT — Product details
+      ════════════════════════════════════ -->
+      <div>
+
+        <!-- Badge -->
+        <div style="display:inline-flex;align-items:center;gap:8px;background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.3);border-radius:24px;padding:6px 14px;margin-bottom:20px;">
+          <span style="width:7px;height:7px;border-radius:50%;background:var(--gold);display:inline-block;animation:orb-pulse 2s ease-in-out infinite;"></span>
+          <span style="font-size:0.75rem;color:var(--gold);letter-spacing:0.05em;">منتج رقمي — وصول فوري</span>
+        </div>
+
+        <h1 style="font-size:clamp(1.8rem,4.5vw,2.8rem);font-weight:700;line-height:1.2;margin-bottom:16px;">
+          حزمة البرومبتات<br>
+          <span style="color:var(--gold);">الإبداعية</span>
+        </h1>
+
+        <p style="font-size:1rem;color:var(--silver);font-weight:300;line-height:1.8;margin-bottom:8px;">
+          +50 برومبت احترافي جاهز للاستخدام في Midjourney.<br>
+          مصممة للمبدعين — من أزياء وجمال لمنتجات وطعام وأكثر.
+        </p>
+
+        <div class="divider" style="margin:24px 0;"></div>
+
+        <!-- What's included -->
+        <p style="font-size:0.7rem;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:14px;">تشمل الحزمة</p>
+        <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:32px;">
+          <div style="display:flex;align-items:center;gap:10px;font-size:0.85rem;color:var(--silver);font-weight:300;">
+            <span style="color:var(--gold);font-weight:700;">✓</span> +50 برومبت إبداعي احترافي
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:0.85rem;color:var(--silver);font-weight:300;">
+            <span style="color:var(--gold);font-weight:700;">✓</span> تصنيفات: أزياء، جمال، منتجات، طعام، وأكثر
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:0.85rem;color:var(--silver);font-weight:300;">
+            <span style="color:var(--gold);font-weight:700;">✓</span> نسخ فوري بضغطة زر
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:0.85rem;color:var(--silver);font-weight:300;">
+            <span style="color:var(--gold);font-weight:700;">✓</span> وصول دائم عبر كود خاص
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:0.85rem;color:var(--silver);font-weight:300;">
+            <span style="color:var(--gold);font-weight:700;">✓</span> تحديثات مجانية
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;font-size:0.85rem;color:var(--silver);font-weight:300;">
+            <span style="color:var(--gold);font-weight:700;">✓</span> دفع آمن عبر Moyasar — mada · Visa · Mastercard · Apple Pay
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ═══════════════════════════════════
+           RIGHT — Checkout form
+      ════════════════════════════════════ -->
+      <div>
+
+        <!-- Price display -->
+        <div style="margin-bottom:20px;">
+          <div style="background:rgba(201,168,76,0.07);border:1px solid rgba(201,168,76,0.25);border-radius:10px;padding:14px 16px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <span style="font-size:0.75rem;color:var(--gold);font-weight:700;letter-spacing:0.05em;">السعر</span>
+              <div style="display:flex;align-items:baseline;gap:6px;">
+                <span id="current-price-display" style="font-size:1.8rem;font-weight:700;color:var(--gold);">99</span>
+                <span style="font-size:0.8rem;color:var(--grey);">ر.س</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <p style="font-size:0.7rem;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:16px;">بيانات الشراء</p>
+        <div class="card" style="padding:28px;">
+
+          <!-- Step 1: Contact info -->
+          <div id="step-contact">
+            <div style="margin-bottom:16px;">
+              <label style="display:block;font-size:0.8rem;color:var(--silver);margin-bottom:8px;">الاسم *</label>
+              <input id="customer-name" type="text" placeholder="الاسم الكامل"
+                style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(201,168,76,0.25);border-radius:8px;padding:12px 14px;color:var(--ivory);font-family:'Cairo',sans-serif;font-size:0.9rem;outline:none;direction:rtl;"
+                onfocus="this.style.borderColor='rgba(201,168,76,0.6)'" onblur="this.style.borderColor='rgba(201,168,76,0.25)'">
+            </div>
+            <div style="margin-bottom:16px;">
+              <label style="display:block;font-size:0.8rem;color:var(--silver);margin-bottom:8px;">الإيميل *</label>
+              <input id="customer-email" type="email" placeholder="example@email.com"
+                style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(201,168,76,0.25);border-radius:8px;padding:12px 14px;color:var(--ivory);font-family:'Cairo',sans-serif;font-size:0.9rem;outline:none;direction:ltr;"
+                onfocus="this.style.borderColor='rgba(201,168,76,0.6)'" onblur="this.style.borderColor='rgba(201,168,76,0.25)'">
+            </div>
+            <div style="margin-bottom:20px;">
+              <label style="display:block;font-size:0.8rem;color:var(--silver);margin-bottom:8px;">رقم الجوال *</label>
+              <input id="customer-phone" type="tel" placeholder="05xxxxxxxx"
+                style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(201,168,76,0.25);border-radius:8px;padding:12px 14px;color:var(--ivory);font-family:'Cairo',sans-serif;font-size:0.9rem;outline:none;direction:ltr;"
+                onfocus="this.style.borderColor='rgba(201,168,76,0.6)'" onblur="this.style.borderColor='rgba(201,168,76,0.25)'">
+            </div>
+
+            <!-- Coupon -->
+            <div style="margin-bottom:20px;">
+              <label style="display:block;font-size:0.8rem;color:var(--silver);margin-bottom:8px;">كود الخصم (اختياري)</label>
+              <div style="display:flex;gap:8px;">
+                <input id="coupon-input" type="text" placeholder="MALEARN20"
+                  style="flex:1;background:rgba(255,255,255,0.06);border:1px solid rgba(201,168,76,0.25);border-radius:8px;padding:12px 14px;color:var(--ivory);font-family:'Cairo',sans-serif;font-size:0.9rem;outline:none;direction:ltr;text-transform:uppercase;"
+                  onfocus="this.style.borderColor='rgba(201,168,76,0.6)'" onblur="this.style.borderColor='rgba(201,168,76,0.25)'"
+                  oninput="this.value=this.value.toUpperCase();resetCoupon()">
+                <button onclick="applyCoupon()"
+                  style="background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.35);border-radius:8px;color:var(--gold);font-family:'Cairo',sans-serif;font-size:0.85rem;padding:0 16px;cursor:pointer;white-space:nowrap;transition:background 0.2s;"
+                  onmouseover="this.style.background='rgba(201,168,76,0.22)'" onmouseout="this.style.background='rgba(201,168,76,0.12)'">
+                  تطبيق
+                </button>
+              </div>
+              <p id="coupon-msg" style="display:none;font-size:0.8rem;margin-top:8px;"></p>
+            </div>
+
+            <!-- Price summary -->
+            <div style="margin-bottom:20px;padding:14px;background:rgba(255,255,255,0.02);border-radius:8px;border:1px solid rgba(255,255,255,0.06);">
+              <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+                <span style="font-size:0.8rem;color:var(--silver);">سعر الحزمة</span>
+                <span style="font-size:0.8rem;" id="price-original-label">99 ر.س</span>
+              </div>
+              <div id="discount-row" style="display:none;justify-content:space-between;margin-bottom:6px;">
+                <span style="font-size:0.8rem;color:#4caf82;" id="discount-label">خصم</span>
+                <span style="font-size:0.8rem;color:#4caf82;" id="discount-amount">-0 ر.س</span>
+              </div>
+              <div style="height:1px;background:rgba(255,255,255,0.06);margin:8px 0;"></div>
+              <div style="display:flex;justify-content:space-between;">
+                <span style="font-size:0.9rem;font-weight:700;">الإجمالي</span>
+                <span style="font-size:0.9rem;font-weight:700;color:var(--gold);" id="price-final-label">99 ر.س</span>
+              </div>
+            </div>
+
+            <p id="contact-error" style="display:none;font-size:0.8rem;color:#e05252;margin-bottom:12px;">يرجى إدخال الاسم والإيميل ورقم الجوال بشكل صحيح</p>
+            <button onclick="showPaymentForm()"
+              style="width:100%;background:var(--gold);color:#000;font-family:'Gumela','Cairo',sans-serif;font-weight:700;padding:14px;border:none;cursor:pointer;font-size:1rem;transition:background 0.25s;"
+              onmouseover="this.style.background='var(--gold-lum)'" onmouseout="this.style.background='var(--gold)'">
+              متابعة للدفع ←
+            </button>
+          </div>
+
+          <!-- Step 2: Payment -->
+          <div id="step-payment" style="display:none;">
+            <div style="margin-bottom:20px;padding:12px 14px;background:rgba(201,168,76,0.06);border-radius:8px;border:1px solid rgba(201,168,76,0.15);">
+              <p style="font-size:0.8rem;color:var(--ivory);margin-bottom:4px;font-weight:400;" id="summary-name"></p>
+              <p style="font-size:0.8rem;color:var(--silver);margin-bottom:4px;" id="summary-email"></p>
+              <p style="font-size:0.8rem;color:var(--silver);margin-bottom:4px;" id="summary-phone"></p>
+              <p style="font-size:0.8rem;color:#4caf82;display:none;" id="summary-coupon"></p>
+              <button onclick="editContact()" style="background:none;border:none;color:var(--gold);font-size:0.75rem;cursor:pointer;padding:0;margin-top:6px;">تعديل</button>
+            </div>
+            <div id="moyasar-form" class="mysr-form"></div>
+
+            <!-- Tamara option -->
+            <div id="tamara-section">
+              <div class="co-or-divider">أو</div>
+              <button id="tamara-btn" class="co-tamara-btn" onclick="proceedWithTamara()">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
+                ادفع بالتقسيط مع تمارا
+                <span class="co-tamara-badge">٣ أقساط</span>
+              </button>
+              <p style="text-align:center;font-size:0.72rem;color:#666;margin-top:8px;">بدون فوائد · متاح لسكان المملكة العربية السعودية</p>
+              <div id="tamara-msg" style="display:none;font-size:0.8rem;margin-top:10px;text-align:center;padding:10px;border-radius:8px;background:rgba(231,76,60,0.1);color:#e74c3c;"></div>
+            </div>
+          </div>
+
+        </div>
+
+        <p style="font-size:0.75rem;color:var(--grey);font-weight:300;margin-top:16px;text-align:center;line-height:1.8;">
+          🔒 جميع بيانات الدفع محمية ومشفرة<br>
+          لن يتم حفظ بيانات بطاقتك
+        </p>
+      </div>
+      <!-- end right column -->
+    </div>
+  </main>
+
+<footer style="padding:28px 32px 20px;text-align:center;border-top:1px solid rgba(255,255,255,0.05);position:relative;z-index:1;">
+  <p style="font-size:0.75rem;color:#666;font-weight:300;margin-bottom:12px;">© MA Learn 2026 — جميع الحقوق محفوظة · Powered by Moyasar & Tamara</p>
+  <div style="display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;margin-bottom:12px;">
+    <span style="font-size:0.65rem;color:#555;margin-left:4px;">الدفع عبر:</span>
+    <svg xmlns="http://www.w3.org/2000/svg" width="64" height="36" viewBox="0 0 64 36"><rect width="64" height="36" rx="4" fill="white"/><rect x="6" y="6" width="17" height="10" rx="1" fill="#29ABE2"/><rect x="6" y="20" width="17" height="10" rx="1" fill="#78BE20"/><text x="42" y="23" text-anchor="middle" font-family="Arial Black,Arial,sans-serif" font-size="11" font-weight="900" fill="#222">mada</text></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" width="54" height="36" viewBox="0 0 54 36"><rect width="54" height="36" rx="4" fill="#1A1F71"/><text x="27" y="25" text-anchor="middle" font-family="Arial,sans-serif" font-size="17" font-weight="700" font-style="italic" fill="white">VISA</text></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" width="58" height="36" viewBox="0 0 58 36"><circle cx="20" cy="16" r="11" fill="#EB001B"/><circle cx="38" cy="16" r="11" fill="#F79E1B"/><path d="M29,9.68 A11,11 0 0,1 29,22.32 A11,11 0 0,0 29,9.68Z" fill="#FF5F00"/><text x="29" y="35" text-anchor="middle" font-family="Arial,sans-serif" font-size="5" fill="#bbb" letter-spacing="0.5">mastercard</text></svg>
+    <svg xmlns="http://www.w3.org/2000/svg" width="74" height="36" viewBox="0 0 74 36"><rect width="74" height="36" rx="4" fill="#111111"/><rect width="74" height="36" rx="4" fill="none" stroke="#383838" stroke-width="1"/><text x="37" y="22" text-anchor="middle" font-family="Helvetica Neue,Helvetica,Arial,sans-serif" font-size="12" font-weight="300" fill="white" letter-spacing="-0.2">Apple Pay</text></svg>
+  </div>
+  <div style="display:flex;gap:16px;flex-wrap:wrap;justify-content:center;margin-bottom:8px;">
+    <a href="https://malearnsa.com" style="font-size:0.7rem;color:#555;text-decoration:none;" onmouseover="this.style.color='#C9A84C'" onmouseout="this.style.color='#555'">الرئيسية</a>
+    <a href="https://malearnsa.com/refund-policy.html" style="font-size:0.7rem;color:#555;text-decoration:none;" onmouseover="this.style.color='#C9A84C'" onmouseout="this.style.color='#555'">سياسة الاسترجاع</a>
+    <a href="https://malearnsa.com/privacy-policy.html" style="font-size:0.7rem;color:#555;text-decoration:none;" onmouseover="this.style.color='#C9A84C'" onmouseout="this.style.color='#555'">الخصوصية</a>
+    <a href="https://instagram.com/majidangawi" style="font-size:0.7rem;color:#555;text-decoration:none;" onmouseover="this.style.color='#C9A84C'" onmouseout="this.style.color='#555'" target="_blank">Instagram</a>
+  </div>
+  <p style="font-size:0.7rem;color:#444;direction:ltr;margin-bottom:14px;">support@malearnsa.com &nbsp;·&nbsp; +966 560 440 113</p>
+  <div style="display:inline-flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:8px;">
+  <a href="https://malearnsa.com/brand_assets/Freelance-certificate-2026.pdf" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:12px;background:#ffffff;border-radius:10px;padding:10px 16px;direction:rtl;text-decoration:none;">
+    <img src="/brand_assets/Freelance.jpg" alt="وثيقة العمل الحر" style="height:44px;width:auto;display:block;">
+    <div style="border-right:1px solid #ddd;padding-right:12px;text-align:right;">
+      <p style="font-size:0.55rem;color:#888;margin:0 0 3px 0;font-family:Cairo,Arial,sans-serif;line-height:1;">رقم الوثيقة</p>
+      <p style="font-size:0.75rem;font-weight:700;color:#222;margin:0;font-family:Arial,sans-serif;letter-spacing:0.5px;line-height:1;">FL-163949047</p>
+    </div>
+  </a>
+  <a href="https://malearnsa.com/brand_assets/SCBC-Certificate-2026.pdf" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:12px;background:#ffffff;border-radius:10px;padding:10px 16px;direction:rtl;text-decoration:none;">
+    <img src="/brand_assets/SCBC.png" alt="SCBC" style="height:44px;width:auto;display:block;">
+    <div style="border-right:1px solid #ddd;padding-right:12px;text-align:right;">
+      <p style="font-size:0.55rem;color:#888;margin:0 0 3px 0;font-family:Cairo,Arial,sans-serif;line-height:1;">رقم الترخيص</p>
+      <p style="font-size:0.75rem;font-weight:700;color:#222;margin:0;font-family:Arial,sans-serif;letter-spacing:0.5px;line-height:1;">0000276647</p>
+    </div>
+  </a>
+</div>
+</footer>
+
+  <script>
+    const APPS_SCRIPT_URL   = 'https://script.google.com/macros/s/AKfycbzXC4Ef5WxNX0aPov7Q1Kdn2DiXuODd74w3iOCtovrw86o9grwVREqNsRdhlyQkoBnQ/exec';
+    const TAMARA_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwoHKusESjdfxSYaL8VdH5YlUEHArLwcWK-_IJ2cL5knN6UK0jsxlV2pRQySRePGyBT7w/exec';
+    const MOYASAR_KEY       = 'pk_live_TnwNBaVGNp6VcZ95rGXqFKD7LrYe1dGNndDo6Eod';
+    const BASE_AMOUNT       = 9900;   // halalas — 99 SAR
+    const PRODUCT_ID        = 'prompt-pack';
+    const SUCCESS_URL       = 'https://malearnsa.com/prompt-pack/success.html';
+    const CANCEL_URL        = 'https://malearnsa.com/prompt-pack/';
+
+    let appliedCoupon = null;
+
+    // ── Coupon ────────────────────────────────────────────
+    async function applyCoupon() {
+      const code = document.getElementById('coupon-input').value.trim();
+      if (!code) return;
+
+      const msg = document.getElementById('coupon-msg');
+      msg.style.display = 'block';
+      msg.style.color   = 'var(--silver)';
+      msg.textContent   = 'جاري التحقق...';
+
+      try {
+        const url  = `${APPS_SCRIPT_URL}?action=validate_coupon&code=${encodeURIComponent(code)}&amount=${BASE_AMOUNT}`;
+        const res  = await fetch(url);
+        const data = await res.json();
+
+        if (data.valid) {
+          appliedCoupon = { code, discountHalalas: data.discountHalalas, finalAmount: data.finalAmount, message: data.message };
+          msg.style.color = '#4caf82';
+          msg.textContent = `✓ ${data.message} — تم تطبيق الكود`;
+          updatePriceSummary(data.discountSAR, data.finalSAR, data.message);
+        } else {
+          appliedCoupon = null;
+          msg.style.color = '#e05252';
+          msg.textContent = data.message || 'كود غير صحيح';
+          resetPriceSummary();
+        }
+      } catch (err) {
+        msg.style.color = '#e05252';
+        msg.textContent = 'تعذر التحقق — حاول مجدداً';
+      }
+    }
+
+    function resetCoupon() {
+      appliedCoupon = null;
+      const msg = document.getElementById('coupon-msg');
+      msg.style.display = 'none';
+      resetPriceSummary();
+    }
+
+    function updatePriceSummary(discountSAR, finalSAR, label) {
+      document.getElementById('discount-row').style.display  = 'flex';
+      document.getElementById('discount-label').textContent  = label;
+      document.getElementById('discount-amount').textContent = `-${discountSAR} ر.س`;
+      document.getElementById('price-final-label').textContent = `${finalSAR} ر.س`;
+    }
+
+    function resetPriceSummary() {
+      document.getElementById('discount-row').style.display    = 'none';
+      document.getElementById('price-final-label').textContent = '99 ر.س';
+    }
+
+    // ── Checkout flow ─────────────────────────────────────
+    function showPaymentForm() {
+      const name  = document.getElementById('customer-name').value.trim();
+      const email = document.getElementById('customer-email').value.trim();
+      const phone = document.getElementById('customer-phone').value.trim();
+
+      if (name.length < 2 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || phone.length < 9) {
+        document.getElementById('contact-error').style.display = 'block';
+        return;
+      }
+
+      document.getElementById('contact-error').style.display = 'none';
+      document.getElementById('step-contact').style.display  = 'none';
+      document.getElementById('step-payment').style.display  = 'block';
+
+      document.getElementById('summary-name').textContent  = name;
+      document.getElementById('summary-email').textContent = email;
+      document.getElementById('summary-phone').textContent = phone;
+
+      const couponEl = document.getElementById('summary-coupon');
+      if (appliedCoupon) {
+        couponEl.textContent   = `كود الخصم: ${appliedCoupon.code} — ${appliedCoupon.message}`;
+        couponEl.style.display = 'block';
+      } else {
+        couponEl.style.display = 'none';
+      }
+
+      const finalAmount = appliedCoupon ? appliedCoupon.finalAmount : BASE_AMOUNT;
+      const priceSAR    = (BASE_AMOUNT / 100).toFixed(0);
+
+      localStorage.setItem('ma_customer', JSON.stringify({
+        name, email, phone,
+        coupon:  appliedCoupon ? appliedCoupon.code : '',
+        amount:  (finalAmount / 100).toFixed(2),
+        product: PRODUCT_ID
+      }));
+
+      // Handle free coupon (0 SAR)
+      if (finalAmount <= 0) {
+        (async function() {
+          try {
+            const url = new URL(APPS_SCRIPT_URL);
+            url.searchParams.set('action',     'complete_purchase');
+            url.searchParams.set('name',       name);
+            url.searchParams.set('email',      email);
+            url.searchParams.set('phone',      phone);
+            url.searchParams.set('product',    PRODUCT_ID);
+            url.searchParams.set('amount',     '0');
+            url.searchParams.set('coupon',     appliedCoupon ? appliedCoupon.code : '');
+            url.searchParams.set('payment_id', 'FREE_COUPON');
+            await fetch(url.toString());
+          } catch(e) {}
+          window.location.href = SUCCESS_URL + '?status=paid&id=FREE_COUPON';
+        })();
+        return;
+      }
+
+      Moyasar.init({
+        element:              document.getElementById('moyasar-form'),
+        amount:               finalAmount,
+        currency:             'SAR',
+        description:          `حزمة البرومبتات الإبداعية — MA Learn (${priceSAR} ر.س)`,
+        publishable_api_key:  MOYASAR_KEY,
+        callback_url:         SUCCESS_URL,
+        metadata:             { email, phone, coupon: appliedCoupon ? appliedCoupon.code : '' },
+        supported_networks:   ['mada', 'visa', 'mastercard'],
+        methods:              ['creditcard', 'applepay'],
+        apple_pay: {
+          country:                'SA',
+          label:                  'MA Learn',
+          validate_merchant_url:  'https://api.moyasar.com/v1/applepay/initiate',
+          supported_networks:     ['mada', 'visa', 'mastercard']
+        }
+      });
+    }
+
+    function editContact() {
+      document.getElementById('step-payment').style.display  = 'none';
+      document.getElementById('step-contact').style.display  = 'block';
+      document.getElementById('moyasar-form').innerHTML      = '';
+    }
+
+    // ── Tamara — Create order and redirect ────────────────
+    async function proceedWithTamara() {
+      const name  = document.getElementById('customer-name').value.trim();
+      const email = document.getElementById('customer-email').value.trim();
+      const phone = document.getElementById('customer-phone').value.trim();
+
+      // Validate required fields
+      const el = !name ? document.getElementById('customer-name') : !email ? document.getElementById('customer-email') : !phone ? document.getElementById('customer-phone') : null;
+      if (el) {
+        el.style.borderColor = 'rgba(220,80,60,0.6)';
+        el.focus();
+        setTimeout(() => el.style.borderColor = 'rgba(201,168,76,0.25)', 2500);
+        return;
+      }
+
+      const btn = document.getElementById('tamara-btn');
+      const msg = document.getElementById('tamara-msg');
+      btn.disabled = true;
+      btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg> جارٍ الاتصال بتمارا...';
+      msg.style.display = 'none';
+
+      const finalAmount  = appliedCoupon ? appliedCoupon.finalAmount : BASE_AMOUNT;
+      const couponCode   = appliedCoupon ? appliedCoupon.code : '';
+
+      try {
+        const res = await fetch(TAMARA_SCRIPT_URL, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            action: 'create_order',
+            name, email, phone,
+            product: PRODUCT_ID,
+            amount: finalAmount,
+            coupon: couponCode
+          })
+        });
+        const data = await res.json();
+
+        if (data.success && data.checkout_url) {
+          localStorage.setItem('ma_customer', JSON.stringify({
+            name, email, phone,
+            product: PRODUCT_ID,
+            coupon: couponCode,
+            amount: (finalAmount / 100).toFixed(2),
+            payment_method: 'tamara'
+          }));
+          window.location.href = data.checkout_url;
+        } else {
+          msg.style.display = 'block';
+          msg.textContent = data.error || 'حدث خطأ عند الاتصال بتمارا — حاول مرة ثانية';
+          btn.disabled = false;
+          btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg> ادفع بالتقسيط مع تمارا <span class="co-tamara-badge">٣ أقساط</span>';
+        }
+      } catch (err) {
+        msg.style.display = 'block';
+        msg.textContent = 'تعذّر الاتصال بالخادم — تحقق من اتصالك وحاول مرة ثانية';
+        btn.disabled = false;
+        btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg> ادفع بالتقسيط مع تمارا <span class="co-tamara-badge">٣ أقساط</span>';
+      }
+    }
+  </script>
+
+</body>
+</html>

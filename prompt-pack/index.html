@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <!-- Meta Pixel Code -->
+  <script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '961157069802409');
+  fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=961157069802409&ev=PageView&noscript=1"
+  /></noscript>
+  <!-- End Meta Pixel Code -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>حزمة البرومبتات الإبداعية — MA Learn</title>
+  <meta name="description" content="حزمة البرومبتات الإبداعية — +٥٠ برومبت احترافي لـ Midjourney جاهز للنسخ والاستخدام. أزياء، جمال، منتجات، طعام، عمارة، تجريدي.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    @font-face { font-family:'Gumela'; src:url('/brand_assets/gumela-arabic-bold.otf') format('opentype'); font-weight:700; }
+    @font-face { font-family:'Gumela'; src:url('/brand_assets/gumela-arabic-regular.otf') format('opentype'); font-weight:400; }
+    @font-face { font-family:'Gumela'; src:url('/brand_assets/gumela-arabic-light.otf') format('opentype'); font-weight:300; }
+
+    :root {
+      --gold:       #C9A84C;
+      --gold-lum:   #E8D08A;
+      --gold-dim:   rgba(201,168,76,0.18);
+      --ivory:      #F5F0E8;
+      --silver:     #BBBBBB;
+      --grey:       #666666;
+      --bg:         #080808;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Gumela', 'Cairo', sans-serif;
+      background: var(--bg);
+      color: var(--ivory);
+      direction: rtl;
+      overflow-x: hidden;
+    }
+
+    /* ── GRAIN ── */
+    body::after {
+      content: '';
+      position: fixed; inset: 0;
+      pointer-events: none; z-index: 9999; opacity: 0.028;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes glow {
+      0%,100% { opacity:1; box-shadow:0 0 0 0 rgba(201,168,76,0.6); }
+      50% { opacity:0.4; box-shadow:0 0 0 4px rgba(201,168,76,0); }
+    }
+    @keyframes orbPulse {
+      0%,100% { transform: scale(1); opacity: 0.12; }
+      50% { transform: scale(1.15); opacity: 0.06; }
+    }
+
+    /* ══ NAV ══ */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      padding: 14px 32px;
+      background: rgba(8,8,8,0.55);
+      border-bottom: 1px solid transparent;
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      transition: background 0.45s ease, border-color 0.45s ease;
+    }
+    nav.scrolled {
+      background: rgba(8,8,8,0.96);
+      border-bottom-color: rgba(201,168,76,0.12);
+    }
+    .nav-inner {
+      max-width: 1060px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    }
+    .nav-logo img { height: 28px; width: auto; display: block; }
+    .nav-links {
+      display: flex; align-items: center; gap: 20px;
+    }
+    .nav-links a {
+      font-size: 0.78rem; color: var(--grey); text-decoration: none;
+      font-family: 'Cairo', sans-serif; transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-cta {
+      background: var(--gold); color: #000;
+      font-family: 'Gumela', 'Cairo', sans-serif; font-weight: 700; font-size: 0.78rem;
+      padding: 9px 20px; border: none; cursor: pointer; text-decoration: none;
+      transition: background 0.2s; white-space: nowrap; flex-shrink: 0;
+    }
+    .nav-cta:hover { background: var(--gold-lum); }
+    .nav-login {
+      color: var(--silver); font-family: 'Cairo', sans-serif; font-weight: 400;
+      font-size: 0.78rem; text-decoration: none; margin-left: 16px;
+      border: 1px solid rgba(201,168,76,0.35); padding: 8px 16px;
+      transition: all 0.2s; white-space: nowrap; flex-shrink: 0;
+    }
+    .nav-login:hover { color: var(--gold); border-color: var(--gold); }
+    .nav-right { display: flex; align-items: center; gap: 8px; }
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      nav { padding: 14px 20px; }
+      .nav-cta { font-size: 0.72rem; padding: 8px 16px; }
+      .nav-login { font-size: 0.7rem; padding: 7px 12px; margin-left: 8px; }
+    }
+
+    /* ══ HERO ══ */
+    .hero {
+      position: relative;
+      min-height: 100svh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+      padding: 130px 24px 90px;
+    }
+
+    /* Animated gold orbs */
+    .hero-orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      will-change: transform;
+      pointer-events: none;
+    }
+    .hero-orb-1 {
+      width: 420px; height: 420px;
+      top: 10%; right: -8%;
+      background: radial-gradient(circle, rgba(201,168,76,0.14) 0%, transparent 70%);
+      animation: orbPulse 7s ease-in-out infinite;
+    }
+    .hero-orb-2 {
+      width: 350px; height: 350px;
+      bottom: 8%; left: -5%;
+      background: radial-gradient(circle, rgba(201,168,76,0.10) 0%, transparent 70%);
+      animation: orbPulse 7s ease-in-out infinite 2.5s;
+    }
+    .hero-orb-3 {
+      width: 260px; height: 260px;
+      top: 35%; left: 30%;
+      background: radial-gradient(circle, rgba(201,168,76,0.06) 0%, transparent 70%);
+      animation: orbPulse 7s ease-in-out infinite 4.5s;
+    }
+
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 55% at 50% 38%, rgba(201,168,76,0.07) 0%, transparent 68%);
+    }
+
+    .hero-content {
+      position: relative; z-index: 10;
+      max-width: 700px;
+      --stagger: 0.1s;
+    }
+
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 10px;
+      border: 1px solid rgba(201,168,76,0.35);
+      color: rgba(201,168,76,0.9);
+      font-size: 0.68rem; letter-spacing: 0.14em;
+      padding: 6px 18px; margin-bottom: 22px;
+      font-family: 'Cairo', sans-serif;
+      opacity: 0; animation: rise 0.7s ease forwards;
+      animation-delay: calc(var(--stagger) * 1);
+    }
+    .badge-pulse {
+      width: 5px; height: 5px; border-radius: 50%;
+      background: var(--gold); flex-shrink: 0;
+      animation: glow 2.2s ease-in-out infinite;
+    }
+
+    .hero-kicker {
+      font-family: 'Cairo', sans-serif;
+      font-size: 0.78rem; font-weight: 300;
+      color: var(--silver); letter-spacing: 0.22em;
+      text-transform: uppercase;
+      margin-bottom: 10px;
+      opacity: 0; animation: rise 0.7s ease forwards;
+      animation-delay: calc(var(--stagger) * 2);
+    }
+
+    .hero-title {
+      font-family: 'Gumela', sans-serif;
+      font-weight: 700;
+      font-size: clamp(2.4rem, 7vw, 4.2rem);
+      color: var(--ivory);
+      line-height: 1.15;
+      margin-bottom: 20px;
+      letter-spacing: -0.015em;
+      opacity: 0; animation: rise 0.75s ease forwards;
+      animation-delay: calc(var(--stagger) * 3);
+    }
+    .hero-title em {
+      font-style: normal;
+      color: var(--gold);
+    }
+
+    .hero-subtitle {
+      font-family: 'Cairo', sans-serif;
+      font-size: clamp(0.88rem, 1.8vw, 1.05rem);
+      color: var(--silver); line-height: 1.95;
+      font-weight: 300;
+      margin-bottom: 28px;
+      opacity: 0; animation: rise 0.7s ease forwards;
+      animation-delay: calc(var(--stagger) * 4);
+    }
+
+    .hero-sep {
+      display: flex; align-items: center; justify-content: center; gap: 14px;
+      margin-bottom: 36px;
+      opacity: 0; animation: rise 0.7s ease forwards;
+      animation-delay: calc(var(--stagger) * 5);
+    }
+    .hero-sep-line { flex: 1; max-width: 80px; height: 1px; background: rgba(201,168,76,0.3); }
+
+    .hero-cta-wrap {
+      opacity: 0; animation: rise 0.75s ease forwards;
+      animation-delay: calc(var(--stagger) * 6);
+    }
+
+    .btn-primary {
+      display: inline-block;
+      background: var(--gold); color: #000;
+      font-family: 'Gumela', 'Cairo', sans-serif; font-weight: 700;
+      font-size: 1.05rem; padding: 17px 52px;
+      text-decoration: none; border: none; cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .btn-primary:hover { background: var(--gold-lum); transform: translateY(-1px); }
+    .btn-primary:active { transform: translateY(0); }
+
+    .hero-micro {
+      font-family: 'Cairo', sans-serif;
+      font-size: 0.72rem; color: #555;
+      margin-top: 14px; line-height: 1.65;
+    }
+    .hero-micro span { color: rgba(201,168,76,0.6); }
+
+    /* ══ SECTIONS BASE ══ */
+    section { padding: 96px 24px; }
+    .container { max-width: 900px; margin: 0 auto; }
+    .section-label {
+      font-size: 0.68rem; letter-spacing: 0.15em;
+      color: var(--gold); text-transform: uppercase; margin-bottom: 14px;
+    }
+    .section-title {
+      font-weight: 700;
+      font-size: clamp(1.55rem, 3.8vw, 2.3rem);
+      color: var(--ivory); line-height: 1.35; margin-bottom: 18px;
+    }
+    .section-body {
+      font-size: 1rem; color: var(--silver); line-height: 1.9;
+    }
+    .divider { border: none; border-top: 1px solid #1a1a1a; margin: 0; }
+
+    /* ══ CATEGORY CARDS ══ */
+    .categories { background: #0A0A0A; }
+    .cat-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px; margin-top: 48px;
+    }
+    @media (max-width: 768px) { .cat-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 480px) { .cat-grid { grid-template-columns: 1fr; } }
+
+    .cat-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(201,168,76,0.18);
+      border-radius: 16px;
+      padding: 36px 28px;
+      text-align: center;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    .cat-card:hover {
+      border-color: rgba(201,168,76,0.45);
+      box-shadow: 0 0 28px rgba(201,168,76,0.08);
+    }
+    .cat-icon {
+      font-size: 2rem; margin-bottom: 14px;
+      display: block;
+    }
+    .cat-name {
+      font-family: 'Gumela', sans-serif;
+      font-size: 1.1rem; font-weight: 700;
+      color: var(--gold); margin-bottom: 8px;
+    }
+    .cat-desc {
+      font-family: 'Cairo', sans-serif;
+      font-size: 0.82rem; color: var(--silver); line-height: 1.7;
+    }
+
+    /* ══ STEPS ══ */
+    .steps { background: var(--bg); }
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 36px; margin-top: 48px;
+    }
+    @media (max-width: 768px) { .steps-grid { grid-template-columns: 1fr; gap: 28px; } }
+
+    .step-item { text-align: center; }
+    .step-num {
+      width: 48px; height: 48px;
+      border: 2px solid var(--gold);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 18px;
+      font-family: 'Gumela', sans-serif;
+      font-size: 1.1rem; font-weight: 700;
+      color: var(--gold);
+    }
+    .step-title {
+      font-family: 'Gumela', sans-serif;
+      font-size: 1rem; font-weight: 700;
+      color: var(--ivory); margin-bottom: 8px;
+    }
+    .step-desc {
+      font-family: 'Cairo', sans-serif;
+      font-size: 0.88rem; color: var(--silver); line-height: 1.75;
+    }
+
+    /* ══ WHAT YOU GET ══ */
+    .features { background: #0A0A0A; }
+    .features-list {
+      list-style: none; margin-top: 40px;
+    }
+    .features-list li {
+      display: flex; align-items: flex-start; gap: 14px;
+      font-size: 1rem; color: var(--silver); line-height: 1.7;
+      padding: 14px 0;
+      border-bottom: 1px solid #141414;
+    }
+    .features-list li:last-child { border-bottom: none; }
+    .features-list li::before {
+      content: '✓';
+      color: var(--gold); font-weight: 700;
+      flex-shrink: 0; font-size: 1rem;
+      margin-top: 2px;
+    }
+
+    /* ══ WHO IS THIS FOR ══ */
+    .for-who { background: var(--bg); }
+    .who-list {
+      list-style: none; margin-top: 40px;
+    }
+    .who-list li {
+      display: flex; align-items: flex-start; gap: 14px;
+      font-size: 0.95rem; color: var(--silver); line-height: 1.7;
+      padding: 14px 0;
+      border-bottom: 1px solid #141414;
+    }
+    .who-list li:last-child { border-bottom: none; }
+    .who-icon {
+      width: 28px; height: 28px;
+      border: 1px solid rgba(201,168,76,0.35);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; margin-top: 2px;
+      color: var(--gold); font-size: 0.72rem;
+    }
+
+    /* ══ INSTRUCTOR ══ */
+    .instructor { background: #0A0A0A; }
+    .instructor-inner {
+      display: grid; grid-template-columns: 160px 1fr;
+      gap: 44px; align-items: start; margin-top: 44px;
+    }
+    @media (max-width: 640px) {
+      .instructor-inner { grid-template-columns: 1fr; gap: 28px; }
+      .instructor-photo { width: 120px; }
+    }
+    .instructor-photo {
+      width: 100%; aspect-ratio: 3/4; object-fit: cover;
+      object-position: top; filter: grayscale(15%);
+    }
+    .instructor-name { font-size: 1.45rem; font-weight: 700; color: var(--ivory); margin-bottom: 5px; }
+    .instructor-role { font-size: 0.82rem; color: var(--gold); letter-spacing: 0.07em; margin-bottom: 22px; }
+    .instructor-bio { font-size: 0.92rem; color: var(--silver); line-height: 1.9; }
+    .instructor-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
+    .instructor-tag {
+      border: 1px solid #2a2a2a; color: var(--silver);
+      font-size: 0.72rem; padding: 5px 13px;
+    }
+
+    /* ══ FINAL CTA ══ */
+    .final-cta {
+      background: var(--bg);
+      text-align: center;
+      padding: 96px 24px;
+      position: relative; overflow: hidden;
+    }
+    .final-cta-orb {
+      position: absolute;
+      width: 320px; height: 320px;
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+      background: radial-gradient(circle, rgba(201,168,76,0.10) 0%, transparent 70%);
+      animation: orbPulse 7s ease-in-out infinite;
+      top: 50%; left: 50%; transform: translate(-50%, -50%);
+    }
+    .final-cta .container { position: relative; z-index: 1; }
+    .final-cta .section-title { margin-bottom: 12px; }
+    .final-guarantee {
+      font-family: 'Cairo', sans-serif;
+      font-size: 0.85rem; color: var(--silver); line-height: 1.8;
+      margin-top: 20px;
+    }
+    .final-guarantee span { color: var(--gold); }
+
+    /* ══ FOOTER ══ */
+    footer {
+      background: #050505;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      padding: 40px 24px 28px; text-align: center;
+    }
+    .footer-logo img { height: 26px; margin: 0 auto 18px; display: block; opacity: 0.7; }
+    .footer-links {
+      display: flex; justify-content: center; gap: 20px;
+      flex-wrap: wrap; margin-bottom: 10px;
+    }
+    .footer-links a {
+      color: var(--grey); text-decoration: none; font-size: 0.72rem;
+      font-family: 'Cairo', sans-serif; transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--silver); }
+    .footer-contact {
+      font-size: 0.7rem; color: #444; direction: ltr; margin-bottom: 18px;
+    }
+    .footer-payments {
+      display: flex; align-items: center; justify-content: center;
+      gap: 8px; flex-wrap: wrap; margin-bottom: 20px;
+    }
+    .footer-payments-label { font-size: 0.65rem; color: #555; margin-left: 4px; }
+    .footer-badges {
+      display: inline-flex; align-items: center; gap: 12px;
+      flex-wrap: wrap; justify-content: center; margin-bottom: 16px;
+    }
+    .footer-badge-link {
+      display: inline-flex; align-items: center; gap: 12px;
+      background: #fff; border-radius: 10px; padding: 10px 16px;
+      direction: rtl; text-decoration: none;
+    }
+    .footer-badge-link img { height: 44px; width: auto; display: block; }
+    .footer-badge-info { border-right: 1px solid #ddd; padding-right: 12px; text-align: right; }
+    .footer-badge-label { font-size: 0.55rem; color: #888; margin: 0 0 3px 0; font-family: Cairo,Arial,sans-serif; line-height: 1; }
+    .footer-badge-num { font-size: 0.75rem; font-weight: 700; color: #222; margin: 0; font-family: Arial,sans-serif; letter-spacing: 0.5px; line-height: 1; }
+    .footer-copy { font-size: 0.72rem; color: var(--grey); margin-top: 6px; }
+
+    /* ══ SCROLL REVEAL ══ */
+    .reveal {
+      opacity: 0; transform: translateY(18px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .reveal.visible {
+      opacity: 1; transform: translateY(0);
+    }
+
+    /* ══ RESPONSIVE ══ */
+    @media (max-width: 640px) {
+      section { padding: 68px 20px; }
+      .hero { padding: 120px 20px 70px; }
+      .hero-title { font-size: clamp(2rem, 10vw, 2.8rem); }
+      .cat-grid { gap: 12px; }
+      .cat-card { padding: 28px 20px; }
+      .final-cta { padding: 68px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══ NAV ═════════════════════════════════════════════════════════════ -->
+  <nav id="nav">
+    <div class="nav-inner">
+      <div class="nav-logo">
+        <img src="/brand_assets/logo-malearn-white.png" alt="MA Learn"
+             onerror="this.style.display='none'">
+      </div>
+      <div class="nav-links">
+        <a href="https://malearnsa.com">الرئيسية</a>
+        <a href="https://malearnsa.com/#courses">الدورات</a>
+        <a href="https://malearnsa.com/refund-policy.html">سياسة الاسترجاع</a>
+        <a href="https://malearnsa.com/privacy-policy.html">الخصوصية</a>
+      </div>
+      <div class="nav-right">
+        <a href="https://malearnsa.com/prompt-pack/library/" class="nav-login">تسجيل الدخول</a>
+        <a href="https://malearnsa.com/prompt-pack/checkout.html" class="nav-cta">اطلبها الآن</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ══ HERO ════════════════════════════════════════════════════════════ -->
+  <section class="hero">
+
+    <!-- Animated orbs -->
+    <div class="hero-orb hero-orb-1"></div>
+    <div class="hero-orb hero-orb-2"></div>
+    <div class="hero-orb hero-orb-3"></div>
+    <div class="hero-bg"></div>
+
+    <div class="hero-content">
+
+      <!-- Badge -->
+      <div class="hero-badge">
+        <span class="badge-pulse"></span>
+        منتج رقمي &nbsp;·&nbsp; وصول فوري
+      </div>
+
+      <!-- Kicker -->
+      <p class="hero-kicker">MA LEARN</p>
+
+      <!-- Title -->
+      <h1 class="hero-title">
+        حزمة البرومبتات <em>الإبداعية</em>
+      </h1>
+
+      <!-- Subtitle -->
+      <p class="hero-subtitle">
+        +٥٠ برومبت احترافي لـ Midjourney — جاهز للنسخ والاستخدام
+      </p>
+
+      <!-- Gold separator -->
+      <div class="hero-sep">
+        <span class="hero-sep-line"></span>
+        <span class="hero-sep-line"></span>
+      </div>
+
+      <!-- CTA -->
+      <div class="hero-cta-wrap">
+        <a href="https://malearnsa.com/prompt-pack/checkout.html" class="btn-primary">
+          اطلبها الآن — ٩٩ ر.س
+        </a>
+        <p class="hero-micro">
+          تقسيط عبر تمارا &nbsp;·&nbsp; <span>ضمان ٧ أيام</span>
+        </p>
+      </div>
+
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ══ WHAT'S INSIDE ═══════════════════════════════════════════════════ -->
+  <section class="categories">
+    <div class="container reveal">
+      <div class="section-label">وش فيها؟</div>
+      <h2 class="section-title">٦ تصنيفات تغطي أهم مجالات التصوير الإبداعي.</h2>
+      <p class="section-body">
+        كل برومبت مجرّب ومختبر — مع الصورة الناتجة عنه. انسخ واستخدم مباشرة.
+      </p>
+
+      <div class="cat-grid">
+        <div class="cat-card">
+          <span class="cat-icon">👗</span>
+          <div class="cat-name">أزياء</div>
+          <p class="cat-desc">تصوير أزياء تحريري، لوكبوك، وكاتالوج</p>
+        </div>
+        <div class="cat-card">
+          <span class="cat-icon">✨</span>
+          <div class="cat-name">جمال</div>
+          <p class="cat-desc">تصوير جمال، عناية بالبشرة، ومستحضرات تجميل</p>
+        </div>
+        <div class="cat-card">
+          <span class="cat-icon">📦</span>
+          <div class="cat-name">منتجات</div>
+          <p class="cat-desc">تصوير منتجات احترافي وفلات لاي</p>
+        </div>
+        <div class="cat-card">
+          <span class="cat-icon">🍽️</span>
+          <div class="cat-name">طعام</div>
+          <p class="cat-desc">تصوير طعام ومحتوى مطاعم</p>
+        </div>
+        <div class="cat-card">
+          <span class="cat-icon">🏛️</span>
+          <div class="cat-name">عمارة</div>
+          <p class="cat-desc">تصوير معماري وتصميم داخلي</p>
+        </div>
+        <div class="cat-card">
+          <span class="cat-icon">🎨</span>
+          <div class="cat-name">تجريدي</div>
+          <p class="cat-desc">فن تجريدي وتكستشرات إبداعية</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ══ HOW IT WORKS ════════════════════════════════════════════════════ -->
+  <section class="steps">
+    <div class="container reveal">
+      <div class="section-label">كيف تشتغل؟</div>
+      <h2 class="section-title">٣ خطوات وتبدأ.</h2>
+
+      <div class="steps-grid">
+        <div class="step-item">
+          <div class="step-num">١</div>
+          <div class="step-title">اشترِ الحزمة</div>
+          <p class="step-desc">تدفع ٩٩ ر.س — دفع آمن عبر مدى، فيزا، ماستركارد، أو تمارا</p>
+        </div>
+        <div class="step-item">
+          <div class="step-num">٢</div>
+          <div class="step-title">استلم كود الوصول</div>
+          <p class="step-desc">يوصلك على إيميلك فوراً بعد الدفع</p>
+        </div>
+        <div class="step-item">
+          <div class="step-num">٣</div>
+          <div class="step-title">انسخ واستخدم</div>
+          <p class="step-desc">ادخل المكتبة وانسخ أي برومبت بضغطة واحدة</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ══ WHAT YOU GET ════════════════════════════════════════════════════ -->
+  <section class="features">
+    <div class="container reveal">
+      <div class="section-label">وش تحصل؟</div>
+      <h2 class="section-title">كل اللي تحتاجه في مكتبة واحدة.</h2>
+
+      <ul class="features-list">
+        <li>+٥٠ برومبت إبداعي مجرّب ومختبر</li>
+        <li>تصنيفات متعددة: أزياء، جمال، منتجات، طعام، عمارة، تجريدي</li>
+        <li>كل برومبت مع الصورة الناتجة</li>
+        <li>نسخ فوري بضغطة زر من المكتبة</li>
+        <li>وصول دائم — ادخل في أي وقت بكودك الخاص</li>
+        <li>تحديثات مجانية مع كل إضافة جديدة</li>
+      </ul>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ══ WHO IS THIS FOR ═════════════════════════════════════════════════ -->
+  <section class="for-who">
+    <div class="container reveal">
+      <div class="section-label">لمين هذي الحزمة؟</div>
+      <h2 class="section-title">لو أنت واحد من هذول — هذي لك.</h2>
+
+      <ul class="who-list">
+        <li>
+          <span class="who-icon">✓</span>
+          المصور اللي يبي يطور أسلوبه بأدوات AI
+        </li>
+        <li>
+          <span class="who-icon">✓</span>
+          المصمم اللي يحتاج إلهام سريع لمشاريعه
+        </li>
+        <li>
+          <span class="who-icon">✓</span>
+          صانع المحتوى اللي يبي صور احترافية بدون استوديو
+        </li>
+        <li>
+          <span class="who-icon">✓</span>
+          أي مبدع يبي يوفر وقت ويرفع جودة شغله
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ══ INSTRUCTOR ══════════════════════════════════════════════════════ -->
+  <section class="instructor">
+    <div class="container reveal">
+      <div class="section-label">من ماجد عنقاوي</div>
+
+      <div class="instructor-inner">
+        <img src="/brand_assets/profile.jpg" alt="ماجد عنقاوي" class="instructor-photo"
+             onerror="this.style.display='none'">
+        <div>
+          <div class="instructor-name">ماجد عنقاوي</div>
+          <div class="instructor-role">مصور أزياء · مدير إبداعي · مؤسس MA Learn</div>
+          <p class="instructor-bio">
+            البرومبتات اللي في هذي الحزمة مو منسوخة من الإنترنت. كلها مبنية من خبرة ١٦ سنة في التوجيه الإبداعي والتصوير الاحترافي.<br><br>
+            سفير Fujifilm في السعودية. مؤسس MA Learn — منصة التعليم الإبداعي العربي.<br><br>
+            كل برومبت مصمم يعطيك نتيجة احترافية — مو عشوائي.
+          </p>
+          <div class="instructor-tags">
+            <span class="instructor-tag">١٦ سنة خبرة</span>
+            <span class="instructor-tag">سفير Fujifilm KSA</span>
+            <span class="instructor-tag">مدرب ذكاء اصطناعي إبداعي</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ══ FINAL CTA ═══════════════════════════════════════════════════════ -->
+  <section class="final-cta">
+    <div class="final-cta-orb"></div>
+    <div class="container reveal">
+      <div class="section-label">جاهز؟</div>
+      <h2 class="section-title">ابدأ الآن — وخلّ الذكاء الاصطناعي يشتغل لصالحك.</h2>
+
+      <a href="https://malearnsa.com/prompt-pack/checkout.html" class="btn-primary">
+        اطلبها الآن — ٩٩ ر.س
+      </a>
+
+      <p class="final-guarantee">
+        <span>ضمان ٧ أيام</span> — إذا ما عجبتك، نرجّع لك فلوسك. بدون أسئلة.
+      </p>
+    </div>
+  </section>
+
+  <!-- ══ FOOTER ══════════════════════════════════════════════════════════ -->
+  <footer>
+    <div class="footer-logo">
+      <img src="/brand_assets/logo-malearn-white.png" alt="MA Learn"
+           onerror="this.style.display='none'">
+    </div>
+
+    <div class="footer-links">
+      <a href="https://malearnsa.com">الرئيسية</a>
+      <a href="https://malearnsa.com/#courses">الدورات</a>
+      <a href="https://malearnsa.com/refund-policy.html">سياسة الاسترجاع</a>
+      <a href="https://malearnsa.com/privacy-policy.html">الخصوصية</a>
+      <a href="https://instagram.com/majidangawi" target="_blank">Instagram</a>
+    </div>
+
+    <div class="footer-contact">support@malearnsa.com &nbsp;·&nbsp; +966 560 440 113</div>
+
+    <div class="footer-payments">
+      <span class="footer-payments-label">الدفع عبر:</span>
+      <svg xmlns="http://www.w3.org/2000/svg" width="64" height="36" viewBox="0 0 64 36"><rect width="64" height="36" rx="4" fill="white"/><rect x="6" y="6" width="17" height="10" rx="1" fill="#29ABE2"/><rect x="6" y="20" width="17" height="10" rx="1" fill="#78BE20"/><text x="42" y="23" text-anchor="middle" font-family="Arial Black,Arial,sans-serif" font-size="11" font-weight="900" fill="#222">mada</text></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" width="54" height="36" viewBox="0 0 54 36"><rect width="54" height="36" rx="4" fill="#1A1F71"/><text x="27" y="25" text-anchor="middle" font-family="Arial,sans-serif" font-size="17" font-weight="700" font-style="italic" fill="white">VISA</text></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" width="58" height="36" viewBox="0 0 58 36"><circle cx="20" cy="16" r="11" fill="#EB001B"/><circle cx="38" cy="16" r="11" fill="#F79E1B"/><path d="M29,9.68 A11,11 0 0,1 29,22.32 A11,11 0 0,0 29,9.68Z" fill="#FF5F00"/><text x="29" y="35" text-anchor="middle" font-family="Arial,sans-serif" font-size="5" fill="#bbb" letter-spacing="0.5">mastercard</text></svg>
+      <svg xmlns="http://www.w3.org/2000/svg" width="74" height="36" viewBox="0 0 74 36"><rect width="74" height="36" rx="4" fill="#111111"/><rect width="74" height="36" rx="4" fill="none" stroke="#383838" stroke-width="1"/><text x="37" y="22" text-anchor="middle" font-family="Helvetica Neue,Helvetica,Arial,sans-serif" font-size="12" font-weight="300" fill="white" letter-spacing="-0.2">Apple Pay</text></svg>
+    </div>
+
+    <div class="footer-badges">
+      <a href="https://malearnsa.com/brand_assets/Freelance-certificate-2026.pdf" target="_blank" rel="noopener" class="footer-badge-link">
+        <img src="/brand_assets/Freelance.jpg" alt="وثيقة العمل الحر">
+        <div class="footer-badge-info">
+          <p class="footer-badge-label">رقم الوثيقة</p>
+          <p class="footer-badge-num">FL-163949047</p>
+        </div>
+      </a>
+      <a href="https://malearnsa.com/brand_assets/SCBC-Certificate-2026.pdf" target="_blank" rel="noopener" class="footer-badge-link">
+        <img src="/brand_assets/SCBC.png" alt="SCBC">
+        <div class="footer-badge-info">
+          <p class="footer-badge-label">رقم الترخيص</p>
+          <p class="footer-badge-num">0000276647</p>
+        </div>
+      </a>
+    </div>
+
+    <div class="footer-copy">© 2026 MA Learn · جميع الحقوق محفوظة</div>
+  </footer>
+
+  <script>
+    // Nav scroll state
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+    }, { passive: true });
+
+    // Scroll reveal
+    const reveals = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    reveals.forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>

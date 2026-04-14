@@ -1,0 +1,1049 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <!-- Meta Pixel Code -->
+  <script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '961157069802409');
+  fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=961157069802409&ev=PageView&noscript=1"
+  /></noscript>
+  <!-- End Meta Pixel Code -->
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>مكتبة البرومبتات الإبداعية | MA Learn</title>
+  <meta name="description" content="مكتبة برومبتات Midjourney احترافية — أزياء، جمال، منتجات، طعام، عمارة. انسخ واستخدم فوراً.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    @font-face { font-family:'Gumela'; src:url('/brand_assets/gumela-arabic-bold.otf') format('opentype'); font-weight:700; }
+    @font-face { font-family:'Gumela'; src:url('/brand_assets/gumela-arabic-regular.otf') format('opentype'); font-weight:400; }
+    @font-face { font-family:'Gumela'; src:url('/brand_assets/gumela-arabic-light.otf') format('opentype'); font-weight:300; }
+
+    :root {
+      --gold:     #C9A84C;
+      --gold-lum: #E8D08A;
+      --gold-dim: rgba(201,168,76,0.18);
+      --ivory:    #F5F0E8;
+      --silver:   #BBBBBB;
+      --grey:     #888888;
+      --bg:       #080808;
+      --surface:  #111111;
+      --surface2: #181818;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Gumela', 'Cairo', sans-serif;
+      background: var(--bg);
+      color: var(--ivory);
+      direction: rtl;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+
+    /* Grain */
+    body::after {
+      content: '';
+      position: fixed; inset: 0;
+      pointer-events: none; z-index: 9999; opacity: 0.028;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+    }
+
+    /* ══ NAV ══ */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      padding: 14px 32px;
+      background: rgba(8,8,8,0.55);
+      border-bottom: 1px solid transparent;
+      backdrop-filter: blur(18px);
+      -webkit-backdrop-filter: blur(18px);
+      transition: background 0.45s ease, border-color 0.45s ease;
+    }
+    nav.scrolled {
+      background: rgba(8,8,8,0.96);
+      border-bottom-color: rgba(201,168,76,0.12);
+    }
+    .nav-inner {
+      max-width: 1060px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    }
+    .nav-logo img { height: 28px; width: auto; display: block; }
+    .nav-links { display: flex; align-items: center; gap: 20px; }
+    .nav-links a {
+      font-size: 0.78rem; color: var(--grey); text-decoration: none;
+      font-family: 'Cairo', sans-serif; transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      nav { padding: 14px 20px; }
+    }
+
+    /* ══ GATE SCREEN ══ */
+    #gate-screen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 80px 24px 60px;
+      position: relative;
+    }
+
+    .gate-orb {
+      position: fixed; border-radius: 50%; filter: blur(120px);
+      pointer-events: none; z-index: 0;
+      animation: orb-pulse 7s ease-in-out infinite;
+    }
+    @keyframes orb-pulse { 0%,100%{opacity:.15} 50%{opacity:.28} }
+
+    .gate-card {
+      position: relative; z-index: 10;
+      max-width: 440px; width: 100%;
+      text-align: center;
+      opacity: 0; animation: rise 0.75s ease forwards;
+    }
+
+    .gate-icon {
+      width: 64px; height: 64px;
+      border: 1px solid rgba(201,168,76,0.35);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 24px;
+      font-size: 24px;
+    }
+
+    .gate-title {
+      font-size: clamp(1.6rem, 4vw, 2.2rem);
+      font-weight: 700;
+      color: var(--ivory);
+      margin-bottom: 10px;
+      line-height: 1.3;
+    }
+
+    .gate-sub {
+      font-family: 'Cairo', sans-serif;
+      font-size: 0.9rem;
+      color: var(--silver);
+      line-height: 1.8;
+      margin-bottom: 32px;
+    }
+
+    .gate-input-wrap {
+      display: flex;
+      gap: 0;
+      margin-bottom: 12px;
+    }
+
+    .gate-input {
+      flex: 1;
+      background: var(--surface2);
+      border: 1px solid rgba(201,168,76,0.25);
+      border-left: none;
+      color: var(--ivory);
+      font-family: 'SF Mono', SFMono-Regular, Menlo, monospace;
+      font-size: 1rem;
+      padding: 14px 18px;
+      outline: none;
+      transition: border-color 0.25s, background 0.25s;
+      direction: ltr;
+      text-align: center;
+      letter-spacing: 0.15em;
+      border-radius: 0;
+      -webkit-appearance: none;
+    }
+    .gate-input::placeholder {
+      color: #4a4a4a;
+      font-family: 'Cairo', sans-serif;
+      letter-spacing: 0;
+      font-size: 0.85rem;
+    }
+    .gate-input:focus {
+      border-color: rgba(201,168,76,0.6);
+      background: rgba(8,8,8,0.88);
+    }
+
+    .gate-btn {
+      background: var(--gold);
+      color: #000;
+      font-family: 'Gumela', 'Cairo', sans-serif;
+      font-weight: 700;
+      font-size: 0.9rem;
+      padding: 14px 28px;
+      border: 1px solid var(--gold);
+      cursor: pointer;
+      transition: background 0.2s;
+      white-space: nowrap;
+    }
+    .gate-btn:hover { background: var(--gold-lum); }
+    .gate-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+
+    .gate-error {
+      font-family: 'Cairo', sans-serif;
+      font-size: 0.8rem;
+      color: #FF3B30;
+      margin-top: 8px;
+      min-height: 20px;
+    }
+
+    .gate-buy-link {
+      margin-top: 24px;
+      font-family: 'Cairo', sans-serif;
+      font-size: 0.8rem;
+      color: var(--grey);
+    }
+    .gate-buy-link a {
+      color: var(--gold);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .gate-buy-link a:hover { color: var(--gold-lum); }
+
+    /* ══ LIBRARY SCREEN ══ */
+    #library-screen {
+      display: none;
+      padding: 80px 24px 60px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .lib-header {
+      text-align: center;
+      margin-bottom: 36px;
+      opacity: 0;
+      animation: rise 0.6s ease forwards;
+    }
+
+    .lib-kicker {
+      font-family: 'Cairo', sans-serif;
+      font-size: 0.72rem;
+      color: var(--grey);
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .lib-title {
+      font-size: clamp(1.4rem, 3.5vw, 2rem);
+      font-weight: 700;
+      color: var(--ivory);
+      margin-bottom: 6px;
+    }
+
+    .lib-count {
+      font-family: 'Cairo', sans-serif;
+      font-size: 0.85rem;
+      color: var(--silver);
+    }
+    .lib-count span { color: var(--gold); font-weight: 600; }
+
+    /* Category Tabs */
+    .cat-tabs {
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 32px;
+      opacity: 0;
+      animation: rise 0.6s ease forwards;
+      animation-delay: 0.1s;
+    }
+
+    .cat-tab {
+      font-family: 'Cairo', sans-serif;
+      font-size: 0.78rem;
+      font-weight: 600;
+      color: var(--grey);
+      background: transparent;
+      border: 1px solid rgba(255,255,255,0.08);
+      padding: 8px 18px;
+      cursor: pointer;
+      transition: all 0.25s;
+    }
+    .cat-tab:hover {
+      border-color: rgba(201,168,76,0.3);
+      color: var(--silver);
+    }
+    .cat-tab.active {
+      background: rgba(201,168,76,0.12);
+      border-color: rgba(201,168,76,0.4);
+      color: var(--gold);
+    }
+
+    /* Prompt Grid */
+    .prompt-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 16px;
+      opacity: 0;
+      animation: rise 0.6s ease forwards;
+      animation-delay: 0.2s;
+    }
+
+    .prompt-card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 12px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: border-color 0.25s, transform 0.2s;
+    }
+    .prompt-card:hover {
+      border-color: rgba(201,168,76,0.35);
+      transform: translateY(-2px);
+    }
+
+    .prompt-card-img {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      display: block;
+      background: var(--surface);
+    }
+
+    /* Placeholder image (gradient) for prompts without images yet */
+    .prompt-card-placeholder {
+      width: 100%;
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+    }
+
+    .prompt-card-body {
+      padding: 14px 16px;
+    }
+
+    .prompt-card-cat {
+      font-family: 'Cairo', sans-serif;
+      font-size: 0.65rem;
+      font-weight: 600;
+      color: var(--gold);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .prompt-card-title {
+      font-family: 'Cairo', sans-serif;
+      font-size: 0.85rem;
+      color: var(--ivory);
+      font-weight: 600;
+      line-height: 1.5;
+    }
+
+    /* ══ MODAL ══ */
+    .modal-overlay {
+      display: none;
+      position: fixed; inset: 0;
+      z-index: 500;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+    .modal-overlay.active { display: flex; }
+
+    .modal-backdrop {
+      position: absolute; inset: 0;
+      background: rgba(0,0,0,0.85);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
+
+    .modal-content {
+      position: relative;
+      background: #0e0e0e;
+      border: 1px solid rgba(201,168,76,0.2);
+      border-radius: 16px;
+      max-width: 600px;
+      width: 100%;
+      max-height: 90vh;
+      overflow-y: auto;
+      animation: rise 0.35s ease;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 16px;
+      left: 16px;
+      width: 36px; height: 36px;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 50%;
+      color: var(--silver);
+      font-size: 18px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      z-index: 10;
+    }
+    .modal-close:hover {
+      background: rgba(255,255,255,0.12);
+      color: var(--ivory);
+    }
+
+    .modal-img {
+      width: 100%;
+      aspect-ratio: 1;
+      object-fit: cover;
+      display: block;
+      border-radius: 16px 16px 0 0;
+      background: var(--surface);
+    }
+
+    .modal-placeholder {
+      width: 100%;
+      aspect-ratio: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 4rem;
+      border-radius: 16px 16px 0 0;
+    }
+
+    .modal-body {
+      padding: 24px;
+    }
+
+    .modal-cat {
+      font-family: 'Cairo', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--gold);
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .modal-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--ivory);
+      margin-bottom: 16px;
+      line-height: 1.4;
+    }
+
+    .modal-prompt-label {
+      font-family: 'Cairo', sans-serif;
+      font-size: 0.7rem;
+      color: var(--grey);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .modal-prompt-text {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 8px;
+      padding: 16px;
+      font-family: 'SF Mono', SFMono-Regular, Menlo, 'Courier New', monospace;
+      font-size: 0.82rem;
+      color: #ddd;
+      line-height: 1.8;
+      direction: ltr;
+      text-align: left;
+      word-break: break-word;
+      margin-bottom: 12px;
+    }
+
+    .modal-params {
+      font-family: 'Cairo', sans-serif;
+      font-size: 0.78rem;
+      color: var(--grey);
+      margin-bottom: 20px;
+      direction: ltr;
+      text-align: left;
+    }
+    .modal-params span {
+      color: var(--gold);
+      font-weight: 600;
+    }
+
+    .copy-btn {
+      display: block;
+      width: 100%;
+      background: var(--gold);
+      color: #000;
+      font-family: 'Gumela', 'Cairo', sans-serif;
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 16px;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s;
+      position: relative;
+    }
+    .copy-btn:hover { background: var(--gold-lum); }
+    .copy-btn.copied {
+      background: #4CAF82;
+      color: #fff;
+    }
+
+    /* ══ ANIMATIONS ══ */
+    @keyframes rise {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ══ FOOTER ══ */
+    footer {
+      background: #050505;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      padding: 40px 24px 28px; text-align: center;
+    }
+    .footer-logo img { height: 26px; margin: 0 auto 18px; display: block; opacity: 0.7; }
+    .footer-links {
+      display: flex; justify-content: center; gap: 20px;
+      flex-wrap: wrap; margin-bottom: 10px;
+    }
+    .footer-links a {
+      color: var(--grey); text-decoration: none; font-size: 0.72rem;
+      font-family: 'Cairo', sans-serif; transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--silver); }
+    .footer-contact {
+      font-size: 0.7rem; color: #444; direction: ltr; margin-bottom: 18px;
+    }
+    .footer-copy { font-size: 0.72rem; color: var(--grey); margin-top: 6px; }
+
+    /* ══ RESPONSIVE ══ */
+    @media (max-width: 640px) {
+      .prompt-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+      .modal-content { max-height: 95vh; border-radius: 12px; }
+      .gate-input-wrap { flex-direction: column; }
+      .gate-input { border-left: 1px solid rgba(201,168,76,0.25); }
+      .gate-btn { width: 100%; }
+    }
+    @media (max-width: 380px) {
+      .prompt-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ══ NAV ══ -->
+  <nav id="nav">
+    <div class="nav-inner">
+      <div class="nav-logo">
+        <img src="/brand_assets/logo-malearn-white.png" alt="MA Learn" onerror="this.style.display='none'">
+      </div>
+      <div class="nav-links">
+        <a href="https://malearnsa.com">الرئيسية</a>
+        <a href="https://malearnsa.com/#courses">الدورات</a>
+        <a href="https://malearnsa.com/refund-policy.html">سياسة الاسترجاع</a>
+        <a href="https://malearnsa.com/privacy-policy.html">الخصوصية</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- ══ GATE SCREEN ══ -->
+  <section id="gate-screen">
+    <!-- Orbs -->
+    <div class="gate-orb" style="width:500px;height:500px;background:radial-gradient(circle,rgba(201,168,76,0.12) 0%,transparent 70%);top:30%;left:50%;transform:translate(-50%,-50%);"></div>
+    <div class="gate-orb" style="width:300px;height:300px;background:radial-gradient(circle,rgba(100,80,200,0.08) 0%,transparent 70%);bottom:20%;right:10%;"></div>
+
+    <div class="gate-card">
+      <div class="gate-icon">🎨</div>
+      <h1 class="gate-title">مكتبة البرومبتات الإبداعية</h1>
+      <p class="gate-sub">أدخل كود الوصول الخاص بك لتصفّح جميع البرومبتات</p>
+
+      <div class="gate-input-wrap">
+        <input
+          type="text"
+          id="accessCode"
+          class="gate-input"
+          placeholder="أدخل كود الوصول"
+          autocomplete="off"
+          spellcheck="false"
+        >
+        <button class="gate-btn" id="gateBtn" onclick="validateAccessCode()">دخول</button>
+      </div>
+      <p class="gate-error" id="gateError"></p>
+
+      <p class="gate-buy-link">
+        ما عندك كود؟ <a href="https://malearnsa.com/prompt-pack/checkout.html">اطلب الحزمة الآن</a>
+      </p>
+    </div>
+  </section>
+
+  <!-- ══ LIBRARY SCREEN ══ -->
+  <section id="library-screen">
+    <div class="lib-header">
+      <p class="lib-kicker">MA LEARN · PROMPT LIBRARY</p>
+      <h1 class="lib-title">مكتبة البرومبتات الإبداعية</h1>
+      <p class="lib-count"><span id="promptCount">0</span> برومبت جاهز للنسخ</p>
+    </div>
+
+    <!-- Category Tabs -->
+    <div class="cat-tabs" id="catTabs">
+      <button class="cat-tab active" data-cat="all">الكل</button>
+      <button class="cat-tab" data-cat="fashion">أزياء</button>
+      <button class="cat-tab" data-cat="beauty">جمال</button>
+      <button class="cat-tab" data-cat="products">منتجات</button>
+      <button class="cat-tab" data-cat="food">طعام</button>
+      <button class="cat-tab" data-cat="architecture">عمارة</button>
+      <button class="cat-tab" data-cat="abstract">تجريدي</button>
+    </div>
+
+    <!-- Prompt Grid -->
+    <div class="prompt-grid" id="promptGrid"></div>
+  </section>
+
+  <!-- ══ MODAL ══ -->
+  <div class="modal-overlay" id="modal">
+    <div class="modal-backdrop" onclick="closeModal()"></div>
+    <div class="modal-content">
+      <button class="modal-close" onclick="closeModal()">✕</button>
+      <div id="modalImgWrap"></div>
+      <div class="modal-body">
+        <p class="modal-cat" id="modalCat"></p>
+        <h2 class="modal-title" id="modalTitle"></h2>
+        <p class="modal-prompt-label">PROMPT</p>
+        <div class="modal-prompt-text" id="modalPrompt"></div>
+        <p class="modal-params" id="modalParams"></p>
+        <button class="copy-btn" id="copyBtn" onclick="copyPrompt()">نسخ البرومبت</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══ FOOTER ══ -->
+  <footer>
+    <div class="footer-logo">
+      <img src="/brand_assets/logo-malearn-white.png" alt="MA Learn" onerror="this.style.display='none'">
+    </div>
+    <div class="footer-links">
+      <a href="https://malearnsa.com">الرئيسية</a>
+      <a href="https://malearnsa.com/#courses">الدورات</a>
+      <a href="https://malearnsa.com/refund-policy.html">سياسة الاسترجاع</a>
+      <a href="https://malearnsa.com/privacy-policy.html">الخصوصية</a>
+    </div>
+    <div class="footer-contact">support@malearnsa.com</div>
+    <div class="footer-copy">© 2026 MA Learn · جميع الحقوق محفوظة</div>
+  </footer>
+
+<script>
+// ═══════════════════════════════════════════════════════════════
+// CONFIG
+// ═══════════════════════════════════════════════════════════════
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzXC4Ef5WxNX0aPov7Q1Kdn2DiXuODd74w3iOCtovrw86o9grwVREqNsRdhlyQkoBnQ/exec';
+const PRODUCT_ID = 'prompt-pack';
+
+// ═══════════════════════════════════════════════════════════════
+// PROMPT DATA
+// Replace placeholder images with real Midjourney outputs.
+// Each prompt: { id, category, catLabel, title, image (URL or null),
+//                gradient (fallback bg), emoji (fallback icon),
+//                prompt (full text), params }
+// ═══════════════════════════════════════════════════════════════
+const PROMPTS = [
+  // ── FASHION ──
+  {
+    id: 1, category: 'fashion', catLabel: 'أزياء',
+    title: 'تصوير أزياء تحريري — إضاءة استوديو',
+    image: null,
+    gradient: 'linear-gradient(135deg, #1a1520 0%, #2a1f30 100%)',
+    emoji: '👗',
+    prompt: 'Editorial fashion photograph of a model wearing a flowing silk gown, dramatic studio lighting with a single key light from the upper left, deep shadows, high contrast, luxury fashion magazine aesthetic, shot on medium format digital camera, 85mm lens, f/2.8, clean background with subtle gradient --ar 3:4 --style raw --v 6.1',
+    params: '--ar 3:4 · --style raw · --v 6.1'
+  },
+  {
+    id: 2, category: 'fashion', catLabel: 'أزياء',
+    title: 'لوك بوك — ملابس شارع',
+    image: null,
+    gradient: 'linear-gradient(135deg, #1a1a25 0%, #252030 100%)',
+    emoji: '🧥',
+    prompt: 'Street style lookbook photography, model walking through a modern urban environment, natural golden hour light, candid movement, contemporary streetwear outfit, shallow depth of field, editorial composition, fashion week backstage energy --ar 3:4 --style raw --v 6.1',
+    params: '--ar 3:4 · --style raw · --v 6.1'
+  },
+  {
+    id: 3, category: 'fashion', catLabel: 'أزياء',
+    title: 'أزياء سعودية — عباية معاصرة',
+    image: null,
+    gradient: 'linear-gradient(135deg, #1a1818 0%, #2a2520 100%)',
+    emoji: '✨',
+    prompt: 'Contemporary Saudi fashion editorial, model wearing a modern embellished abaya with gold thread details, shot in a minimalist desert-inspired setting, warm directional light, elegant pose, luxury fashion photography, medium format quality, rich tonal range --ar 3:4 --style raw --v 6.1',
+    params: '--ar 3:4 · --style raw · --v 6.1'
+  },
+  {
+    id: 4, category: 'fashion', catLabel: 'أزياء',
+    title: 'كاتالوج أزياء — خلفية بيضاء',
+    image: null,
+    gradient: 'linear-gradient(135deg, #1e1e1e 0%, #2a2a2a 100%)',
+    emoji: '📸',
+    prompt: 'Clean fashion catalog photography, model in a tailored blazer on pure white seamless background, even soft lighting, commercial e-commerce style, full body shot, natural standing pose, crisp details, high-key lighting setup --ar 3:4 --v 6.1',
+    params: '--ar 3:4 · --v 6.1'
+  },
+  {
+    id: 5, category: 'fashion', catLabel: 'أزياء',
+    title: 'تصوير مجوهرات — كلوز أب دراماتيكي',
+    image: null,
+    gradient: 'linear-gradient(135deg, #15131a 0%, #201825 100%)',
+    emoji: '💍',
+    prompt: 'Dramatic close-up of luxury gold jewelry on dark skin, single focused light creating golden reflections, deep black background, macro photography style, extreme detail on metal texture and gemstone facets, editorial luxury aesthetic --ar 1:1 --style raw --v 6.1',
+    params: '--ar 1:1 · --style raw · --v 6.1'
+  },
+  // ── BEAUTY ──
+  {
+    id: 6, category: 'beauty', catLabel: 'جمال',
+    title: 'بيوتي بورتريه — بشرة متوهجة',
+    image: null,
+    gradient: 'linear-gradient(135deg, #1a1520 0%, #251a25 100%)',
+    emoji: '💄',
+    prompt: 'Beauty portrait photography, close-up of a woman with glowing dewy skin, soft ring light illumination, clean beauty makeup, natural brows, glossy lips, shot on 100mm macro lens, creamy bokeh background, high-end skincare campaign aesthetic --ar 4:5 --style raw --v 6.1',
+    params: '--ar 4:5 · --style raw · --v 6.1'
+  },
+  {
+    id: 7, category: 'beauty', catLabel: 'جمال',
+    title: 'حملة عطر — مود سينمائي',
+    image: null,
+    gradient: 'linear-gradient(135deg, #1a1518 0%, #251820 100%)',
+    emoji: '🌸',
+    prompt: 'Cinematic perfume campaign photograph, elegant glass perfume bottle with golden liquid, surrounded by fresh roses and water droplets, dramatic side lighting, dark moody atmosphere, luxury advertising photography, shallow depth of field --ar 4:5 --style raw --v 6.1',
+    params: '--ar 4:5 · --style raw · --v 6.1'
+  },
+  {
+    id: 8, category: 'beauty', catLabel: 'جمال',
+    title: 'مكياج فني — ألوان جريئة',
+    image: null,
+    gradient: 'linear-gradient(135deg, #1a151f 0%, #25182a 100%)',
+    emoji: '🎨',
+    prompt: 'Avant-garde beauty editorial, model with bold artistic makeup featuring geometric color blocks in electric blue and gold, extreme close-up face shot, ring light with colored gels, high fashion beauty magazine cover quality, perfect skin texture --ar 1:1 --style raw --v 6.1',
+    params: '--ar 1:1 · --style raw · --v 6.1'
+  },
+  {
+    id: 9, category: 'beauty', catLabel: 'جمال',
+    title: 'عناية بالبشرة — فلات لاي',
+    image: null,
+    gradient: 'linear-gradient(135deg, #181a18 0%, #1f251f 100%)',
+    emoji: '🧴',
+    prompt: 'Flat lay skincare product photography, minimalist arrangement of luxury cream jars and serum bottles on a marble surface, soft overhead natural light, clean editorial composition, neutral tones with gold accents, beauty brand campaign --ar 1:1 --v 6.1',
+    params: '--ar 1:1 · --v 6.1'
+  },
+  // ── PRODUCTS ──
+  {
+    id: 10, category: 'products', catLabel: 'منتجات',
+    title: 'تصوير منتج — خلفية نظيفة',
+    image: null,
+    gradient: 'linear-gradient(135deg, #18181a 0%, #222225 100%)',
+    emoji: '📦',
+    prompt: 'Clean product photography of a premium matte black bottle on a white surface, soft studio lighting with gentle shadows, commercial e-commerce aesthetic, sharp focus throughout, minimalist composition, high-end brand catalog quality --ar 1:1 --v 6.1',
+    params: '--ar 1:1 · --v 6.1'
+  },
+  {
+    id: 11, category: 'products', catLabel: 'منتجات',
+    title: 'ساعة فاخرة — تفاصيل دقيقة',
+    image: null,
+    gradient: 'linear-gradient(135deg, #151518 0%, #1a1a20 100%)',
+    emoji: '⌚',
+    prompt: 'Luxury watch product photography, premium timepiece on dark reflective surface, dramatic rim lighting highlighting metal details, deep black background, macro lens capturing dial texture and sapphire crystal reflections, advertising quality --ar 1:1 --style raw --v 6.1',
+    params: '--ar 1:1 · --style raw · --v 6.1'
+  },
+  {
+    id: 12, category: 'products', catLabel: 'منتجات',
+    title: 'حذاء رياضي — زاوية ديناميكية',
+    image: null,
+    gradient: 'linear-gradient(135deg, #1a181a 0%, #252025 100%)',
+    emoji: '👟',
+    prompt: 'Dynamic sneaker product shot, athletic shoe floating at a 45-degree angle, motion blur particles around it, dramatic colored lighting from below in teal and orange, dark studio background, sportswear advertising aesthetic, hyper-detailed texture --ar 16:9 --v 6.1',
+    params: '--ar 16:9 · --v 6.1'
+  },
+  // ── FOOD ──
+  {
+    id: 13, category: 'food', catLabel: 'طعام',
+    title: 'تصوير طعام — إفطار فاخر',
+    image: null,
+    gradient: 'linear-gradient(135deg, #1a1815 0%, #252018 100%)',
+    emoji: '🥐',
+    prompt: 'Overhead food photography of a luxury breakfast spread on a marble table, fresh croissants, artisan coffee in ceramic cup, fresh berries, golden honey drizzle, warm natural morning light from a side window, editorial food styling, rich warm tones --ar 4:5 --v 6.1',
+    params: '--ar 4:5 · --v 6.1'
+  },
+  {
+    id: 14, category: 'food', catLabel: 'طعام',
+    title: 'قهوة سعودية — مود دافئ',
+    image: null,
+    gradient: 'linear-gradient(135deg, #1a1612 0%, #25201a 100%)',
+    emoji: '☕',
+    prompt: 'Saudi Arabic coffee ceremony photography, traditional dallah pouring into small cups, dates arranged beside it, warm amber side lighting, dark wood surface, cultural heritage meets modern editorial, rich warm color palette, shallow depth of field --ar 3:4 --style raw --v 6.1',
+    params: '--ar 3:4 · --style raw · --v 6.1'
+  },
+  {
+    id: 15, category: 'food', catLabel: 'طعام',
+    title: 'حلويات — كلوز أب شهي',
+    image: null,
+    gradient: 'linear-gradient(135deg, #1a1518 0%, #251a20 100%)',
+    emoji: '🍰',
+    prompt: 'Close-up food photography of an artisan chocolate dessert, molten center flowing out, dusted with gold leaf, dark moody restaurant lighting, shallow depth of field, luxury dining experience, food magazine editorial quality, rich dark tones --ar 1:1 --style raw --v 6.1',
+    params: '--ar 1:1 · --style raw · --v 6.1'
+  },
+  // ── ARCHITECTURE ──
+  {
+    id: 16, category: 'architecture', catLabel: 'عمارة',
+    title: 'عمارة حديثة — خطوط نظيفة',
+    image: null,
+    gradient: 'linear-gradient(135deg, #15181a 0%, #1a2025 100%)',
+    emoji: '🏛️',
+    prompt: 'Modern minimalist architecture photography, clean geometric building facade with repeating window patterns, strong directional sunlight creating dramatic shadows, blue sky, shot from low angle with ultra-wide lens, architectural digest quality --ar 16:9 --v 6.1',
+    params: '--ar 16:9 · --v 6.1'
+  },
+  {
+    id: 17, category: 'architecture', catLabel: 'عمارة',
+    title: 'تصميم داخلي — فخامة معاصرة',
+    image: null,
+    gradient: 'linear-gradient(135deg, #1a1815 0%, #201e1a 100%)',
+    emoji: '🛋️',
+    prompt: 'Luxury contemporary interior design photography, spacious living room with floor-to-ceiling windows, natural light flooding in, neutral palette with gold accents, marble and wood materials, designer furniture, Architectural Digest cover quality, wide-angle composition --ar 16:9 --v 6.1',
+    params: '--ar 16:9 · --v 6.1'
+  },
+  {
+    id: 18, category: 'architecture', catLabel: 'عمارة',
+    title: 'عمارة إسلامية — تفاصيل هندسية',
+    image: null,
+    gradient: 'linear-gradient(135deg, #181518 0%, #201a20 100%)',
+    emoji: '🕌',
+    prompt: 'Islamic geometric architecture detail, intricate arabesque pattern carved in stone, golden hour light raking across the surface revealing depth and texture, mosque interior, spiritual atmosphere, architectural photography, symmetrical composition --ar 1:1 --style raw --v 6.1',
+    params: '--ar 1:1 · --style raw · --v 6.1'
+  },
+  // ── ABSTRACT ──
+  {
+    id: 19, category: 'abstract', catLabel: 'تجريدي',
+    title: 'تكسترات ذهبية — خلفية فنية',
+    image: null,
+    gradient: 'linear-gradient(135deg, #1a1815 0%, #252018 100%)',
+    emoji: '🌀',
+    prompt: 'Abstract golden texture background, flowing liquid gold ribbons intertwining with deep black space, organic fluid dynamics, luxury brand visual identity asset, high resolution detail, metallic reflections, dark and moody atmosphere --ar 16:9 --style raw --v 6.1',
+    params: '--ar 16:9 · --style raw · --v 6.1'
+  },
+  {
+    id: 20, category: 'abstract', catLabel: 'تجريدي',
+    title: 'أنماط هندسية — فن رقمي',
+    image: null,
+    gradient: 'linear-gradient(135deg, #151520 0%, #1a1a2a 100%)',
+    emoji: '◆',
+    prompt: 'Abstract digital art with geometric patterns, sacred geometry shapes floating in dark space, subtle neon glow edges in gold and teal, futuristic and spiritual mood, clean vector-like precision with organic elements, 8K resolution, dark background --ar 1:1 --v 6.1',
+    params: '--ar 1:1 · --v 6.1'
+  },
+  {
+    id: 21, category: 'abstract', catLabel: 'تجريدي',
+    title: 'دخان ملوّن — حركة سائلة',
+    image: null,
+    gradient: 'linear-gradient(135deg, #151518 0%, #201520 100%)',
+    emoji: '💨',
+    prompt: 'Colorful smoke art photography, swirling wisps of gold and deep purple smoke against a pure black background, high-speed capture freezing the motion, studio flash lighting, fine art print quality, abstract expressionism, organic flowing shapes --ar 3:4 --style raw --v 6.1',
+    params: '--ar 3:4 · --style raw · --v 6.1'
+  },
+];
+
+// Category labels in Arabic
+const CAT_LABELS = {
+  fashion: 'أزياء',
+  beauty: 'جمال',
+  products: 'منتجات',
+  food: 'طعام',
+  architecture: 'عمارة',
+  abstract: 'تجريدي'
+};
+
+// ═══════════════════════════════════════════════════════════════
+// GATE — ACCESS CODE VALIDATION
+// ═══════════════════════════════════════════════════════════════
+const codeInput = document.getElementById('accessCode');
+const gateError = document.getElementById('gateError');
+const gateBtn   = document.getElementById('gateBtn');
+
+// Allow Enter key
+codeInput.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter') validateAccessCode();
+});
+
+// Check if already validated (session)
+if (sessionStorage.getItem('pp_validated') === 'true') {
+  showLibrary();
+}
+
+// Check URL param for token
+const urlToken = new URLSearchParams(window.location.search).get('token');
+if (urlToken) {
+  codeInput.value = urlToken;
+  validateAccessCode();
+}
+
+async function validateAccessCode() {
+  const code = codeInput.value.trim();
+  if (!code) {
+    gateError.textContent = 'الرجاء إدخال كود الوصول';
+    return;
+  }
+
+  gateBtn.disabled = true;
+  gateBtn.textContent = '...';
+  gateError.textContent = '';
+
+  try {
+    const res = await fetch(
+      `${APPS_SCRIPT_URL}?action=validate_token&token=${encodeURIComponent(code)}&course=${PRODUCT_ID}`
+    );
+    const data = await res.json();
+
+    if (data.valid) {
+      sessionStorage.setItem('pp_validated', 'true');
+      showLibrary();
+    } else {
+      gateError.textContent = 'كود الوصول غير صالح — تأكد من الكود وحاول مرة ثانية';
+      gateBtn.disabled = false;
+      gateBtn.textContent = 'دخول';
+    }
+  } catch (err) {
+    // On network error, try simple local check (fallback)
+    gateError.textContent = 'حدث خطأ — حاول مرة ثانية';
+    gateBtn.disabled = false;
+    gateBtn.textContent = 'دخول';
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// LIBRARY — SHOW / FILTER / RENDER
+// ═══════════════════════════════════════════════════════════════
+function showLibrary() {
+  document.getElementById('gate-screen').style.display = 'none';
+  document.getElementById('library-screen').style.display = 'block';
+  document.getElementById('promptCount').textContent = PROMPTS.length;
+  renderPrompts('all');
+  setupCategoryTabs();
+}
+
+function setupCategoryTabs() {
+  const tabs = document.querySelectorAll('.cat-tab');
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      renderPrompts(tab.dataset.cat);
+    });
+  });
+}
+
+function renderPrompts(category) {
+  const grid = document.getElementById('promptGrid');
+  const filtered = category === 'all'
+    ? PROMPTS
+    : PROMPTS.filter(p => p.category === category);
+
+  grid.innerHTML = filtered.map(p => `
+    <div class="prompt-card" onclick="openModal(${p.id})">
+      ${p.image
+        ? `<img class="prompt-card-img" src="${p.image}" alt="${p.title}" loading="lazy">`
+        : `<div class="prompt-card-placeholder" style="background:${p.gradient}">${p.emoji}</div>`
+      }
+      <div class="prompt-card-body">
+        <p class="prompt-card-cat">${p.catLabel}</p>
+        <p class="prompt-card-title">${p.title}</p>
+      </div>
+    </div>
+  `).join('');
+
+  // Update count
+  document.getElementById('promptCount').textContent = filtered.length;
+}
+
+// ═══════════════════════════════════════════════════════════════
+// MODAL
+// ═══════════════════════════════════════════════════════════════
+let currentPrompt = null;
+
+function openModal(id) {
+  const p = PROMPTS.find(x => x.id === id);
+  if (!p) return;
+  currentPrompt = p;
+
+  document.getElementById('modalCat').textContent = p.catLabel;
+  document.getElementById('modalTitle').textContent = p.title;
+  document.getElementById('modalPrompt').textContent = p.prompt;
+  document.getElementById('modalParams').innerHTML = 'Parameters: <span>' + p.params + '</span>';
+
+  const imgWrap = document.getElementById('modalImgWrap');
+  if (p.image) {
+    imgWrap.innerHTML = `<img class="modal-img" src="${p.image}" alt="${p.title}">`;
+  } else {
+    imgWrap.innerHTML = `<div class="modal-placeholder" style="background:${p.gradient}">${p.emoji}</div>`;
+  }
+
+  // Reset copy button
+  const copyBtn = document.getElementById('copyBtn');
+  copyBtn.textContent = 'نسخ البرومبت';
+  copyBtn.classList.remove('copied');
+
+  document.getElementById('modal').classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('modal').classList.remove('active');
+  document.body.style.overflow = '';
+  currentPrompt = null;
+}
+
+// Close on Escape
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape') closeModal();
+});
+
+async function copyPrompt() {
+  if (!currentPrompt) return;
+  const btn = document.getElementById('copyBtn');
+
+  try {
+    await navigator.clipboard.writeText(currentPrompt.prompt);
+    btn.textContent = 'تم النسخ ✓';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = 'نسخ البرومبت';
+      btn.classList.remove('copied');
+    }, 2000);
+  } catch (err) {
+    // Fallback: select text
+    const textarea = document.createElement('textarea');
+    textarea.value = currentPrompt.prompt;
+    textarea.style.position = 'fixed';
+    textarea.style.opacity = '0';
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    document.body.removeChild(textarea);
+    btn.textContent = 'تم النسخ ✓';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = 'نسخ البرومبت';
+      btn.classList.remove('copied');
+    }, 2000);
+  }
+}
+
+// ═══════════════════════════════════════════════════════════════
+// NAV SCROLL
+// ═══════════════════════════════════════════════════════════════
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+}, { passive: true });
+</script>
+
+</body>
+</html>

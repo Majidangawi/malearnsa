@@ -38,8 +38,9 @@ const LESSON_CONTENT_SHEET  = 'LessonContent';
 // Change this if you suspect it's been compromised.
 const ADMIN_TOKEN     = 'MAL-ADMIN-2026';
 
-const FROM_NAME  = 'MA Learn';
-const FROM_EMAIL = 'info@malearnsa.com';
+const FROM_NAME    = 'MA Learn';
+const FROM_EMAIL   = 'info@malearnsa.com';
+const NOTIFY_EMAIL = 'info@malearnsa.com';
 
 // T2 product
 const T2_PRODUCT          = 'intro-to-creative-ai';
@@ -56,6 +57,11 @@ const T3_ORIGINAL_PRICE    = 999;
 const BL_PRODUCT           = 'beyond-lighting';
 const BL_DAFTRA_PRODUCT_ID = 40; // UPDATE: create in Daftra → use that product ID
 const BL_ORIGINAL_PRICE    = 299; // UPDATE: match actual checkout price
+
+// Prompt Pack product
+const PP_PRODUCT           = 'prompt-pack';
+const PP_DAFTRA_PRODUCT_ID = 41; // UPDATE: create in Daftra → use that product ID
+const PP_ORIGINAL_PRICE    = 99;
 
 // Daftra
 const DAFTRA_API_KEY  = '641fb01dbafdb03000f2658ab3196d5795308ffa';
@@ -177,6 +183,7 @@ function completePurchase(params) {
   const product = params.product || T2_PRODUCT;
   if (product === T3_PRODUCT) return completeT3Purchase(params);
   if (product === BL_PRODUCT)  return completeBLPurchase(params);
+  if (product === PP_PRODUCT)  return completePPPurchase(params);
   return completeT2Purchase(params);
 }
 
@@ -256,6 +263,9 @@ function completeT2Purchase(params) {
   const amountSAR = parseFloat(amount) || 0;
   createDaftraInvoice(name, email, phone, amountSAR, coupon, paymentId, T2_PRODUCT);
 
+  // 6. Notify Majid
+  sendPurchaseNotification(name, email, phone, product, amount, coupon, paymentId);
+
   return { success: true, token: assignedToken };
 }
 
@@ -325,6 +335,9 @@ function completeT3Purchase(params) {
     createDaftraInvoice(name, email, phone, amountSAR, coupon, paymentId, T3_PRODUCT);
   }
 
+  // 6. Notify Majid
+  sendPurchaseNotification(name, email, phone, T3_PRODUCT, amount, coupon, paymentId);
+
   return { success: true };
 }
 
@@ -387,7 +400,133 @@ function completeBLPurchase(params) {
   const amountSAR = parseFloat(amount) || 0;
   createDaftraInvoice(name, email, phone, amountSAR, coupon, paymentId, BL_PRODUCT);
 
+  // 6. Notify Majid
+  sendPurchaseNotification(name, email, phone, BL_PRODUCT, amount, coupon, paymentId);
+
   return { success: true, token: assignedToken };
+}
+
+// ─────────────────────────────────────────────
+// PROMPT PACK PURCHASE
+// Token assignment + access email + Daftra invoice + notification
+// ─────────────────────────────────────────────
+function completePPPurchase(params) {
+  const name      = params.name       || '';
+  const email     = params.email      || '';
+  const phone     = params.phone      || '';
+  const amount    = params.amount     || '';
+  const coupon    = params.coupon     || '';
+  const paymentId = params.payment_id || '';
+
+  if (!email) return { success: false, reason: 'no_email' };
+  if (paymentAlreadyProcessed(paymentId)) return { success: true, reason: 'already_processed' };
+
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+
+  // 1. Log to Customers sheet
+  const customersSheet = ss.getSheetByName(CUSTOMERS_SHEET);
+  if (customersSheet) {
+    const dateStr = Utilities.formatDate(new Date(), 'Asia/Riyadh', 'yyyy-MM-dd HH:mm:ss');
+    customersSheet.appendRow([dateStr, email, name, phone, PP_PRODUCT, amount, coupon, paymentId]);
+  }
+
+  // 2. Find and assign a prompt-pack token
+  const tokensSheet = ss.getSheetByName(TOKENS_SHEET);
+  if (!tokensSheet) return { success: false, reason: 'no_tokens_sheet' };
+
+  const data = tokensSheet.getDataRange().getValues();
+  let assignedToken = null;
+  let tokenRow      = -1;
+
+  for (let i = 1; i < data.length; i++) {
+    const rowCourse = String(data[i][1]).trim();
+    const rowStatus = String(data[i][2]).trim();
+    if (rowCourse === PP_PRODUCT && rowStatus === 'available') {
+      assignedToken = String(data[i][0]).trim();
+      tokenRow      = i + 1;
+      break;
+    }
+  }
+
+  if (!assignedToken) return { success: false, reason: 'no_tokens_available' };
+
+  // 3. Mark token as used
+  tokensSheet.getRange(tokenRow, 3).setValue('used');
+  tokensSheet.getRange(tokenRow, 4).setValue(email);
+
+  // 4. Send access email
+  const libraryUrl = `https://malearnsa.com/prompt-pack/library/?token=${assignedToken}`;
+  const subject    = 'وصلك كود الوصول — حزمة البرومبتات الإبداعية';
+  const body       = buildPPEmail(name, libraryUrl, assignedToken);
+
+  GmailApp.sendEmail(email, subject, '', { htmlBody: body, name: FROM_NAME, from: FROM_EMAIL });
+
+  // 5. ZATCA invoice via Daftra
+  const amountSAR = parseFloat(amount) || 0;
+  createDaftraInvoice(name, email, phone, amountSAR, coupon, paymentId, PP_PRODUCT);
+
+  // 6. Notify Majid
+  sendPurchaseNotification(name, email, phone, PP_PRODUCT, amount, coupon, paymentId);
+
+  return { success: true, token: assignedToken };
+}
+
+// ─────────────────────────────────────────────
+// PURCHASE NOTIFICATION (to Majid)
+// ─────────────────────────────────────────────
+function sendPurchaseNotification(name, email, phone, product, amount, coupon, paymentId) {
+  const timestamp = Utilities.formatDate(new Date(), 'Asia/Riyadh', 'dd/MM/yyyy — hh:mm a');
+
+  const productNames = {
+    'intro-to-creative-ai':      'مدخل إلى الذكاء الاصطناعي الإبداعي',
+    'creative-ai-workshop-t3':   'ورشة الذكاء الاصطناعي الإبداعي',
+    'beyond-lighting':           'أبعد من إمكانيات الإضاءة',
+    'prompt-pack':               'حزمة البرومبتات الإبداعية',
+  };
+  const productName = productNames[product] || product;
+
+  MailApp.sendEmail({
+    to:      NOTIFY_EMAIL,
+    subject: '🟢 عملية شراء جديدة — ' + productName,
+    htmlBody: `
+      <div style="font-family:Arial,sans-serif;direction:rtl;padding:24px;max-width:480px;">
+        <p style="font-size:13px;color:#888;margin-bottom:16px;">${timestamp}</p>
+        <table style="width:100%;border-collapse:collapse;font-size:14px;">
+          <tr style="border-bottom:1px solid #eee;">
+            <td style="padding:10px 0;color:#888;width:90px;">الاسم</td>
+            <td style="padding:10px 0;font-weight:bold;color:#111;">${name}</td>
+          </tr>
+          <tr style="border-bottom:1px solid #eee;">
+            <td style="padding:10px 0;color:#888;">البريد</td>
+            <td style="padding:10px 0;color:#111;">${email}</td>
+          </tr>
+          <tr style="border-bottom:1px solid #eee;">
+            <td style="padding:10px 0;color:#888;">الجوال</td>
+            <td style="padding:10px 0;color:#111;">${phone}</td>
+          </tr>
+          <tr style="border-bottom:1px solid #eee;">
+            <td style="padding:10px 0;color:#888;">المنتج</td>
+            <td style="padding:10px 0;color:#111;">${productName}</td>
+          </tr>
+          <tr style="border-bottom:1px solid #eee;">
+            <td style="padding:10px 0;color:#888;">المبلغ</td>
+            <td style="padding:10px 0;font-weight:bold;color:#111;">${amount} ر.س</td>
+          </tr>
+          <tr style="border-bottom:1px solid #eee;">
+            <td style="padding:10px 0;color:#888;">الكوبون</td>
+            <td style="padding:10px 0;color:#111;">${coupon || '—'}</td>
+          </tr>
+          <tr>
+            <td style="padding:10px 0;color:#888;">طريقة الدفع</td>
+            <td style="padding:10px 0;color:#2e7d32;font-weight:bold;">Moyasar (بطاقة)</td>
+          </tr>
+        </table>
+        <div style="margin-top:20px;padding:12px 16px;background:#f0faf0;border-right:3px solid #2e7d32;">
+          <p style="margin:0;font-size:13px;color:#555;">Payment ID: <span style="direction:ltr;unicode-bidi:embed;">${paymentId || '—'}</span></p>
+        </div>
+      </div>
+    `,
+  });
 }
 
 // ─────────────────────────────────────────────
@@ -490,6 +629,35 @@ function buildBLEmail(name, courseUrl) {
 </div>`;
 }
 
+function buildPPEmail(name, libraryUrl, token) {
+  const firstName = name ? name.split(' ')[0] : '';
+  return `
+<div dir="rtl" style="font-family:Arial,sans-serif;max-width:600px;color:#222;line-height:1.7;">
+  <p>السلام عليكم${firstName ? ' ' + firstName : ''}،</p>
+  <p>شكراً لك على شرائك <strong>حزمة البرومبتات الإبداعية</strong>.</p>
+  <p>هذا كود الوصول الخاص بك:</p>
+  <div style="text-align:center;margin:24px 0;padding:16px;background:#f9f6ef;border:2px dashed #C9A84C;font-size:1.3rem;font-weight:bold;letter-spacing:2px;direction:ltr;">
+    ${token}
+  </div>
+  <p>ادخل الكود في الرابط التالي للوصول لمكتبة البرومبتات:</p>
+  <p style="text-align:center;margin:32px 0;">
+    <a href="${libraryUrl}"
+       style="background:#C9A84C;color:#000;padding:14px 32px;text-decoration:none;font-weight:bold;font-size:1rem;">
+      افتح مكتبة البرومبتات
+    </a>
+  </p>
+  <p style="color:#888;font-size:0.85rem;">
+    هذا الكود خاص بك — لا تشاركه مع أحد.
+  </p>
+  <hr style="border:none;border-top:1px solid #eee;margin:32px 0;">
+  <p style="font-size:0.85rem;color:#888;">
+    أي استفسار؟ راسلنا على:
+    <a href="mailto:support@malearnsa.com">support@malearnsa.com</a>
+  </p>
+  <p>— Majid Angawi | MA Learn</p>
+</div>`;
+}
+
 // ─────────────────────────────────────────────
 // DAFTRA — Create ZATCA-compliant invoice
 // product param determines Daftra product ID and base price.
@@ -498,8 +666,9 @@ function createDaftraInvoice(name, email, phone, amountSAR, coupon, paymentId, p
   try {
     const isBL          = (product === BL_PRODUCT);
     const isT3          = (product === T3_PRODUCT);
-    const daftraId      = isBL ? BL_DAFTRA_PRODUCT_ID : (isT3 ? T3_DAFTRA_PRODUCT_ID : T2_DAFTRA_PRODUCT_ID);
-    const originalPrice = isBL ? BL_ORIGINAL_PRICE     : (isT3 ? T3_ORIGINAL_PRICE    : T2_ORIGINAL_PRICE);
+    const isPP          = (product === PP_PRODUCT);
+    const daftraId      = isPP ? PP_DAFTRA_PRODUCT_ID : (isBL ? BL_DAFTRA_PRODUCT_ID : (isT3 ? T3_DAFTRA_PRODUCT_ID : T2_DAFTRA_PRODUCT_ID));
+    const originalPrice = isPP ? PP_ORIGINAL_PRICE     : (isBL ? BL_ORIGINAL_PRICE     : (isT3 ? T3_ORIGINAL_PRICE    : T2_ORIGINAL_PRICE));
     const discountSAR   = coupon ? Math.max(0, originalPrice - amountSAR) : 0;
 
     const clientId = daftraCreateClient(name, email, phone);
