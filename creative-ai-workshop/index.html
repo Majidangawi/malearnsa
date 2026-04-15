@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
+  <meta charset="UTF-8">
   <!-- Meta Pixel Code -->
   <script>
   !function(f,b,e,v,n,t,s)
@@ -26,7 +27,6 @@
     gtag('js', new Date());
     gtag('config', 'G-TZ9839RVDJ');
   </script>
-  <meta charset="UTF-8">
   <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta name="referrer" content="strict-origin-when-cross-origin">
@@ -460,6 +460,100 @@
       .bonus-card { padding: 28px 22px; }
       .instructor-inner { gap: 24px; }
     }
+
+    /* ── HERO PHOTO ── */
+    .hero-photo {
+      position: absolute; inset: 0; z-index: 0;
+      display: block; width: 100%; height: 100%;
+    }
+    .hero-photo img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+    .hero-overlay {
+      position: absolute; inset: 0; z-index: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 50% 45%, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.75) 60%, rgba(8,8,8,0.92) 100%),
+        linear-gradient(180deg, rgba(8,8,8,0.55) 0%, rgba(8,8,8,0.25) 40%, rgba(8,8,8,0.92) 100%);
+    }
+    .hero-content { position: relative; z-index: 2; }
+
+    /* ── DAY CARD IMAGE ── */
+    .day-card { padding: 0; }
+    .day-card-image {
+      width: 100%; aspect-ratio: 4/3;
+      overflow: hidden; background: #0a0a0a;
+    }
+    .day-card-image img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center;
+      display: block;
+      filter: grayscale(5%) brightness(0.95);
+      transition: transform 0.5s ease, filter 0.3s ease;
+    }
+    .day-card:hover .day-card-image img {
+      transform: scale(1.04);
+      filter: grayscale(0%) brightness(1);
+    }
+    .day-card-body { padding: 32px 30px 36px; }
+
+    /* ── GIFT CARD WITH IMAGE ── */
+    .gift-card {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      gap: 36px; align-items: center;
+      padding: 36px;
+    }
+    .gift-card-image {
+      width: 100%; aspect-ratio: 4/5;
+      overflow: hidden;
+      border: 1px solid rgba(201,168,76,0.25);
+    }
+    .gift-card-image img {
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+    }
+    @media (max-width: 720px) {
+      .gift-card { grid-template-columns: 1fr; gap: 24px; padding: 26px 22px; text-align: center; }
+      .gift-card-image { max-width: 240px; margin: 0 auto; }
+      .gift-value { margin-left: auto; margin-right: auto; }
+    }
+
+    /* ── INSTRUCTOR WORK SAMPLES ── */
+    .instructor-work {
+      margin-top: 48px;
+    }
+    .instructor-work-label {
+      font-size: 0.68rem; letter-spacing: 0.15em;
+      color: var(--gold); text-transform: uppercase;
+      margin-bottom: 20px; text-align: center;
+    }
+    .work-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+    }
+    .work-grid picture {
+      display: block; width: 100%;
+      aspect-ratio: 4/5;
+      overflow: hidden;
+      background: #0a0a0a;
+    }
+    .work-grid img {
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+      filter: grayscale(8%);
+      transition: filter 0.3s ease, transform 0.5s ease;
+    }
+    .work-grid picture:hover img {
+      filter: grayscale(0%);
+      transform: scale(1.03);
+    }
+    @media (max-width: 640px) {
+      .work-grid { gap: 8px; }
+    }
   </style>
 </head>
 <body>
@@ -483,7 +577,11 @@
 
   <!-- ══ HERO ═════════════════════════════════════════ -->
   <section class="hero">
-    <div class="hero-bg"></div>
+    <picture class="hero-photo">
+      <source media="(min-width: 768px)" srcset="images/hero-desktop.jpg">
+      <img src="images/hero-mobile.jpg" alt="" fetchpriority="high" decoding="async">
+    </picture>
+    <div class="hero-overlay"></div>
     <div class="hero-content">
       <div style="font-family:'Gumela','Cairo',sans-serif;font-weight:700;font-size:clamp(1.1rem,2.5vw,1.5rem);color:var(--gold);letter-spacing:0.02em;margin-bottom:14px;">ورشة صناعة الإلهام</div>
       <div class="hero-label">ورشة مباشرة أونلاين · ٣ جلسات · ٣٠ أبريل — ٢ مايو</div>
@@ -564,19 +662,28 @@
 
       <div class="days-grid">
         <div class="day-card">
-          <div class="day-number">اليوم الأول — ٣٠ أبريل</div>
-          <div class="day-title">كيف تستقبل البريف وتحوله لتوجه إبداعي واضح</div>
-          <p class="day-desc">نبني الإطار الذهني اللي يحول أي فكرة ضبابية لتوجه بصري واضح قبل ما تفتح أي أداة.</p>
+          <div class="day-card-image"><img src="images/day-1.jpg" alt="اليوم الأول — البريف والتوجه الإبداعي" loading="lazy" decoding="async"></div>
+          <div class="day-card-body">
+            <div class="day-number">اليوم الأول — ٣٠ أبريل</div>
+            <div class="day-title">كيف تستقبل البريف وتحوله لتوجه إبداعي واضح</div>
+            <p class="day-desc">نبني الإطار الذهني اللي يحول أي فكرة ضبابية لتوجه بصري واضح قبل ما تفتح أي أداة.</p>
+          </div>
         </div>
         <div class="day-card">
-          <div class="day-number">اليوم الثاني — ١ مايو</div>
-          <div class="day-title">الأدوات الصح — بالترتيب الصح</div>
-          <p class="day-desc">Higgsfield، Weavy، Midjourney وغيرها. تطبيق فعلي على البريف اللي بنيناه في اليوم الأول.</p>
+          <div class="day-card-image"><img src="images/day-2.jpg" alt="اليوم الثاني — الأدوات الصح" loading="lazy" decoding="async"></div>
+          <div class="day-card-body">
+            <div class="day-number">اليوم الثاني — ١ مايو</div>
+            <div class="day-title">الأدوات الصح — بالترتيب الصح</div>
+            <p class="day-desc">Higgsfield، Weavy، Midjourney وغيرها. تطبيق فعلي على البريف اللي بنيناه في اليوم الأول.</p>
+          </div>
         </div>
         <div class="day-card">
-          <div class="day-number">اليوم الثالث — ٢ مايو</div>
-          <div class="day-title">من الصفر للتسليم — أمامك، مباشر</div>
-          <p class="day-desc">نبني مشروع كامل من الصفر في الجلسة. تخرج وفي يدك مشروع جاهز… صنعته أنت.</p>
+          <div class="day-card-image"><img src="images/day-3.jpg" alt="اليوم الثالث — من الصفر للتسليم" loading="lazy" decoding="async"></div>
+          <div class="day-card-body">
+            <div class="day-number">اليوم الثالث — ٢ مايو</div>
+            <div class="day-title">من الصفر للتسليم — أمامك، مباشر</div>
+            <p class="day-desc">نبني مشروع كامل من الصفر في الجلسة. تخرج وفي يدك مشروع جاهز… صنعته أنت.</p>
+          </div>
         </div>
       </div>
     </div>
@@ -593,7 +700,7 @@
       <h2 class="section-title">هدية الدفعة الأولى — دورة كاملة مجاناً قيمتها ٤٩٩ ريال.</h2>
 
       <div class="gift-card">
-        <div class="gift-icon">🎁</div>
+        <div class="gift-card-image"><img src="images/gift.jpg" alt="دورة مدخل إلى الذكاء الاصطناعي الإبداعي" loading="lazy" decoding="async"></div>
         <div>
           <div class="gift-title">دورة "مدخل إلى الذكاء الاصطناعي الإبداعي"</div>
           <p class="gift-desc">
@@ -684,6 +791,15 @@
             <span class="instructor-tag">ذكاء اصطناعي إبداعي</span>
             <span class="instructor-tag">سفير Fujifilm KSA</span>
           </div>
+        </div>
+      </div>
+
+      <div class="instructor-work">
+        <div class="instructor-work-label">أعمال مختارة</div>
+        <div class="work-grid">
+          <picture><img src="images/work-1.jpg" alt="عمل إبداعي — ماجد عنقاوي" loading="lazy" decoding="async"></picture>
+          <picture><img src="images/work-2.jpg" alt="عمل إبداعي — ماجد عنقاوي" loading="lazy" decoding="async"></picture>
+          <picture><img src="images/work-3.jpg" alt="عمل إبداعي — ماجد عنقاوي" loading="lazy" decoding="async"></picture>
         </div>
       </div>
     </div>
