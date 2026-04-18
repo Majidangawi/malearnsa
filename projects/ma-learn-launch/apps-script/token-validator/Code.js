@@ -27,6 +27,11 @@
 // ─────────────────────────────────────────────
 // CONSTANTS
 // ─────────────────────────────────────────────
+// MA Learn Token Pool spreadsheet — read by ID so this script can run as a
+// standalone project (not sheet-bound). Required for the Workspace migration
+// so we inherit the 1500/day Gmail quota instead of consumer 100/day.
+const MAIN_SHEET_ID = '1nkrwK-KJ7nD2kv_8zdYiLqot6RFoH-v67VpmjCzvYi0';
+
 const TOKENS_SHEET          = 'Tokens';
 const COUPONS_SHEET         = 'Coupons';
 const CUSTOMERS_SHEET       = 'Customers';
@@ -40,7 +45,7 @@ const ADMIN_TOKEN     = 'MAL-ADMIN-2026';
 
 const FROM_NAME    = 'MA Learn';
 const FROM_EMAIL   = 'info@malearnsa.com';
-const NOTIFY_EMAIL = 'info@malearnsa.com';
+const NOTIFY_EMAIL = 'angawi.majid@gmail.com'; // Majid's separate Google account for sale notifications — fully decoupled from the malearnsa.com domain
 
 // T2 product
 const T2_PRODUCT          = 'intro-to-creative-ai';
@@ -131,7 +136,7 @@ function doGet(e) {
  */
 function isTestMode() {
   try {
-    const ss     = SpreadsheetApp.getActiveSpreadsheet();
+    const ss     = SpreadsheetApp.openById(MAIN_SHEET_ID);
     const config = ss.getSheetByName(CONFIG_SHEET);
     if (!config) return false;
     const data = config.getDataRange().getValues();
@@ -152,7 +157,7 @@ function isTestMode() {
 
 /** Counts confirmed T3 registrations (exact product match — test rows excluded). */
 function getT3SeatsTaken() {
-  const ss    = SpreadsheetApp.getActiveSpreadsheet();
+  const ss    = SpreadsheetApp.openById(MAIN_SHEET_ID);
   const sheet = ss.getSheetByName(CUSTOMERS_SHEET);
   if (!sheet) return 0;
   const data = sheet.getDataRange().getValues();
@@ -193,7 +198,7 @@ function completePurchase(params) {
 // ─────────────────────────────────────────────
 function paymentAlreadyProcessed(paymentId) {
   if (!paymentId) return false;
-  const ss    = SpreadsheetApp.getActiveSpreadsheet();
+  const ss    = SpreadsheetApp.openById(MAIN_SHEET_ID);
   const sheet = ss.getSheetByName(CUSTOMERS_SHEET);
   if (!sheet) return false;
   const data = sheet.getDataRange().getValues();
@@ -219,7 +224,7 @@ function completeT2Purchase(params) {
   if (!email) return { success: false, reason: 'no_email' };
   if (paymentAlreadyProcessed(paymentId)) return { success: true, reason: 'already_processed' };
 
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const ss = SpreadsheetApp.openById(MAIN_SHEET_ID);
 
   // 1. Log to Customers sheet
   const customersSheet = ss.getSheetByName(CUSTOMERS_SHEET);
@@ -259,9 +264,11 @@ function completeT2Purchase(params) {
 
   GmailApp.sendEmail(email, subject, '', { htmlBody: body, name: FROM_NAME, from: FROM_EMAIL });
 
-  // 5. Create ZATCA-compliant invoice via Daftra
+  // 5. Create ZATCA-compliant invoice via Daftra (skip for free purchases — 0 SAR)
   const amountSAR = parseFloat(amount) || 0;
-  createDaftraInvoice(name, email, phone, amountSAR, coupon, paymentId, T2_PRODUCT);
+  if (amountSAR > 0) {
+    createDaftraInvoice(name, email, phone, amountSAR, coupon, paymentId, T2_PRODUCT);
+  }
 
   // 6. Notify Majid
   sendPurchaseNotification(name, email, phone, product, amount, coupon, paymentId);
@@ -294,7 +301,7 @@ function completeT3Purchase(params) {
     }
   }
 
-  const ss          = SpreadsheetApp.getActiveSpreadsheet();
+  const ss          = SpreadsheetApp.openById(MAIN_SHEET_ID);
   const loggedProduct = testMode ? T3_PRODUCT + '-test' : T3_PRODUCT;
 
   // 2. Log to Customers sheet
@@ -324,14 +331,14 @@ function completeT3Purchase(params) {
 
   // 4. Send T3 confirmation email (includes T2 gift link if token assigned)
   const t2CourseUrl = t2Token ? `https://player.malearnsa.com/watch.html?token=${t2Token}&course=intro-to-creative-ai` : null;
-  const subject     = 'تم تسجيلك — ورشة الذكاء الاصطناعي الإبداعي';
+  const subject     = 'تم تسجيلك — ورشة صناعة الإلهام';
   const body        = buildT3Email(name, t2CourseUrl);
 
   GmailApp.sendEmail(email, subject, '', { htmlBody: body, name: FROM_NAME, from: FROM_EMAIL });
 
-  // 5. Daftra invoice (LIVE only)
-  if (!testMode) {
-    const amountSAR = parseFloat(amount) || 0;
+  // 5. Daftra invoice (LIVE only, skip for free purchases — 0 SAR)
+  const amountSAR = parseFloat(amount) || 0;
+  if (!testMode && amountSAR > 0) {
     createDaftraInvoice(name, email, phone, amountSAR, coupon, paymentId, T3_PRODUCT);
   }
 
@@ -356,7 +363,7 @@ function completeBLPurchase(params) {
   if (!email) return { success: false, reason: 'no_email' };
   if (paymentAlreadyProcessed(paymentId)) return { success: true, reason: 'already_processed' };
 
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const ss = SpreadsheetApp.openById(MAIN_SHEET_ID);
 
   // 1. Log to Customers sheet
   const customersSheet = ss.getSheetByName(CUSTOMERS_SHEET);
@@ -396,9 +403,11 @@ function completeBLPurchase(params) {
 
   GmailApp.sendEmail(email, subject, '', { htmlBody: body, name: FROM_NAME, from: FROM_EMAIL });
 
-  // 5. ZATCA invoice via Daftra
+  // 5. ZATCA invoice via Daftra (skip for free purchases — 0 SAR)
   const amountSAR = parseFloat(amount) || 0;
-  createDaftraInvoice(name, email, phone, amountSAR, coupon, paymentId, BL_PRODUCT);
+  if (amountSAR > 0) {
+    createDaftraInvoice(name, email, phone, amountSAR, coupon, paymentId, BL_PRODUCT);
+  }
 
   // 6. Notify Majid
   sendPurchaseNotification(name, email, phone, BL_PRODUCT, amount, coupon, paymentId);
@@ -421,7 +430,7 @@ function completePPPurchase(params) {
   if (!email) return { success: false, reason: 'no_email' };
   if (paymentAlreadyProcessed(paymentId)) return { success: true, reason: 'already_processed' };
 
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const ss = SpreadsheetApp.openById(MAIN_SHEET_ID);
 
   // 1. Log to Customers sheet
   const customersSheet = ss.getSheetByName(CUSTOMERS_SHEET);
@@ -461,9 +470,11 @@ function completePPPurchase(params) {
 
   GmailApp.sendEmail(email, subject, '', { htmlBody: body, name: FROM_NAME, from: FROM_EMAIL });
 
-  // 5. ZATCA invoice via Daftra
+  // 5. ZATCA invoice via Daftra (skip for free purchases — 0 SAR)
   const amountSAR = parseFloat(amount) || 0;
-  createDaftraInvoice(name, email, phone, amountSAR, coupon, paymentId, PP_PRODUCT);
+  if (amountSAR > 0) {
+    createDaftraInvoice(name, email, phone, amountSAR, coupon, paymentId, PP_PRODUCT);
+  }
 
   // 6. Notify Majid
   sendPurchaseNotification(name, email, phone, PP_PRODUCT, amount, coupon, paymentId);
@@ -479,16 +490,18 @@ function sendPurchaseNotification(name, email, phone, product, amount, coupon, p
 
   const productNames = {
     'intro-to-creative-ai':      'مدخل إلى الذكاء الاصطناعي الإبداعي',
-    'creative-ai-workshop-t3':   'ورشة الذكاء الاصطناعي الإبداعي',
+    'creative-ai-workshop-t3':   'ورشة صناعة الإلهام',
     'beyond-lighting':           'أبعد من إمكانيات الإضاءة',
     'prompt-pack':               'حزمة البرومبتات الإبداعية',
   };
   const productName = productNames[product] || product;
 
-  MailApp.sendEmail({
-    to:      NOTIFY_EMAIL,
-    subject: '🟢 عملية شراء جديدة — ' + productName,
-    htmlBody: `
+  const subject = decodeURIComponent('%E2%9C%A8%20%D8%B9%D9%85%D9%84%D9%8A%D8%A9%20%D8%B4%D8%B1%D8%A7%D8%A1%20%D8%AC%D8%AF%D9%8A%D8%AF%D8%A9%20%E2%80%94%20') + productName;
+  try {
+    GmailApp.sendEmail(NOTIFY_EMAIL, subject, '', {
+      name:     FROM_NAME,
+      from:     FROM_EMAIL,
+      htmlBody: `
       <div style="font-family:Arial,sans-serif;direction:rtl;padding:24px;max-width:480px;">
         <p style="font-size:13px;color:#888;margin-bottom:16px;">${timestamp}</p>
         <table style="width:100%;border-collapse:collapse;font-size:14px;">
@@ -526,7 +539,28 @@ function sendPurchaseNotification(name, email, phone, product, amount, coupon, p
         </div>
       </div>
     `,
-  });
+    });
+    Logger.log('Purchase notification sent to ' + NOTIFY_EMAIL + ' for ' + email);
+  } catch (err) {
+    Logger.log('Purchase notification FAILED for ' + email + ': ' + err.message);
+  }
+}
+
+// ─────────────────────────────────────────────
+// TEST — fires a fake purchase notification to verify Majid's inbox receives it
+// Run from the Apps Script editor: select testNotification → Run
+// ─────────────────────────────────────────────
+function testNotification() {
+  sendPurchaseNotification(
+    'ماجد عنقاوي (اختبار)',
+    'test@example.com',
+    '0501234567',
+    T3_PRODUCT,
+    '799',
+    '',
+    'pay_test_notification_' + new Date().getTime()
+  );
+  Logger.log('Test notification sent — check ' + NOTIFY_EMAIL);
 }
 
 // ─────────────────────────────────────────────
@@ -564,21 +598,28 @@ function buildT3Email(name, t2CourseUrl) {
   const giftSection = t2CourseUrl ? `
   <hr style="border:none;border-top:1px solid #eee;margin:32px 0;">
   <p style="font-size:1rem;font-weight:bold;">هديتك الخاصة &mdash; دورة مدخل إلى الذكاء الاصطناعي الإبداعي</p>
-  <p style="color:#555;font-size:0.9rem;margin:8px 0 20px;">
-    كجزء من المجموعة الأولى، حصلت على هذه الدورة المسجلة مجاناً — وصول فوري الآن.
+  <p style="color:#555;font-size:0.9rem;margin:8px 0 16px;">
+    كجزء من المجموعة الأولى، حصلت على هذه الدورة المسجلة مجاناً — مقسّمة على ٦ محاور، تفتحلك تباعاً قبل الورشة المباشرة عشان تجي جاهز.
   </p>
+  <div style="background:#faf8f3;border:1px solid #eee3c4;padding:14px 18px;margin:16px 0 20px;border-radius:4px;font-size:0.88rem;line-height:1.9;">
+    <p style="margin:0 0 6px;color:#333;"><strong style="color:#8a6f1e;">✓ المحور 1 + 2 + 3</strong> &mdash; مفتوحة لك الآن</p>
+    <p style="margin:0 0 6px;color:#666;">المحور 4 &mdash; يُفتح الأحد ١٩ أبريل</p>
+    <p style="margin:0 0 6px;color:#666;">المحور 5 &mdash; يُفتح الثلاثاء ٢١ أبريل (كل محاور التعليم جاهزة قبل بداية ورشتك)</p>
+    <p style="margin:0;color:#888;font-size:0.82rem;">المحور 6 (التطبيق العملي) &mdash; يُفتح بعد انتهاء الورشة المباشرة، كهدية التخرّج</p>
+  </div>
   <p style="text-align:center;margin:24px 0;">
     <a href="${t2CourseUrl}"
        style="background:#C9A84C;color:#000;padding:14px 32px;text-decoration:none;font-weight:bold;font-size:1rem;">
-      ابدأ الدورة المسجلة الآن
+      ابدأ بالمحور الأول الآن
     </a>
   </p>
-  <p style="color:#888;font-size:0.8rem;">الرابط خاص بك — لا تشاركه مع أحد.</p>` : '';
+  <p style="color:#888;font-size:0.8rem;">الرابط خاص بك — لا تشاركه مع أحد. كل محور جديد رح يوصلك إشعار على نفس الإيميل لما يُفتح.</p>` : '';
 
   return `
 <div dir="rtl" style="font-family:Arial,sans-serif;max-width:600px;color:#222;line-height:1.7;">
   <p>السلام عليكم${firstName ? ' ' + firstName : ''}،</p>
-  <p>تم تسجيلك بنجاح في <strong>ورشة الذكاء الاصطناعي الإبداعي</strong></p>
+  <p>تم تسجيلك بنجاح في <strong>ورشة صناعة الإلهام</strong></p>
+  <p style="color:#666;font-size:0.95rem;margin-top:-8px;">أنتج عملك الإبداعي باستخدام أدوات الذكاء الاصطناعي — من البريف إلى التسليم</p>
 
   <div style="background:#f9f6f0;border-right:3px solid #C9A84C;padding:16px 20px;margin:24px 0;border-radius:4px;">
     <p style="font-weight:bold;margin-bottom:8px;">تفاصيل الورشة:</p>
@@ -669,7 +710,11 @@ function createDaftraInvoice(name, email, phone, amountSAR, coupon, paymentId, p
     const isPP          = (product === PP_PRODUCT);
     const daftraId      = isPP ? PP_DAFTRA_PRODUCT_ID : (isBL ? BL_DAFTRA_PRODUCT_ID : (isT3 ? T3_DAFTRA_PRODUCT_ID : T2_DAFTRA_PRODUCT_ID));
     const originalPrice = isPP ? PP_ORIGINAL_PRICE     : (isBL ? BL_ORIGINAL_PRICE     : (isT3 ? T3_ORIGINAL_PRICE    : T2_ORIGINAL_PRICE));
-    const discountSAR   = coupon ? Math.max(0, originalPrice - amountSAR) : 0;
+    // Discount is computed from the difference between original price and actual amount paid,
+    // regardless of whether a coupon was used. This covers early-bird pricing (799 vs 999)
+    // where there's no coupon code but the price is still lower than the listed original.
+    // Without this, Daftra would show outstanding balance = originalPrice - amountPaid.
+    const discountSAR   = Math.max(0, originalPrice - amountSAR);
 
     const clientId = daftraCreateClient(name, email, phone);
     if (!clientId) {
@@ -819,6 +864,40 @@ function daftraCacheClientId(email, clientId) {
 }
 
 // ─────────────────────────────────────────────
+// DAFTRA — Bulk-cache all existing Daftra clients
+// Run ONCE on a fresh Apps Script project to prevent the
+// "duplicate email + broken search API" failure when an
+// existing customer buys again. Source: Daftra clients.json dump
+// at 2026-04-15. Re-run to refresh, or add new entries manually
+// via daftraCacheClientId(email, id) as new clients appear.
+// ─────────────────────────────────────────────
+function bulkCacheAllClients() {
+  const clients = {
+    'hessahdahdoh@gmail.com':    '4',
+    'noura.alfehaid@gmail.com':  '6',
+    'e@e.com':                   '13',
+    'wkk@wkk.com':               '14',
+    'asmaalfawzan@gmail.com':    '51',
+    'reham.a.z@hotmail.com':     '56',
+    'majed.engawi@gmail.com':    '57',
+    'lameesjenaid97@gmail.com':  '58',
+    'salemphoto4@gmail.com':     '59',
+    'yara.kadasa@gmail.com':     '60',
+    'aayman.rhmani@gmail.com':   '61'
+  };
+
+  const props = PropertiesService.getScriptProperties();
+  let count = 0;
+  for (const email in clients) {
+    props.setProperty('daftra_' + email.toLowerCase(), clients[email]);
+    Logger.log('Cached: ' + email + ' → ' + clients[email]);
+    count++;
+  }
+  Logger.log('Bulk cache complete — ' + count + ' clients stored in PropertiesService');
+  return count;
+}
+
+// ─────────────────────────────────────────────
 // COURSE LESSON MANAGEMENT
 // ─────────────────────────────────────────────
 
@@ -830,7 +909,7 @@ function daftraCacheClientId(email, clientId) {
  *   F: Title | G: Description | H: Video ID | I: PDF URL | J: Active
  */
 function getCourseLessons(courseId) {
-  const ss    = SpreadsheetApp.getActiveSpreadsheet();
+  const ss    = SpreadsheetApp.openById(MAIN_SHEET_ID);
   const sheet = ss.getSheetByName(LESSONS_SHEET);
   if (!sheet) return { error: 'no_lessons_sheet', lessons: [] };
 
@@ -873,7 +952,7 @@ function saveLessonMedia(params) {
   const lessonId = String(params.lesson_id || '').trim();
   if (!lessonId) return { success: false, reason: 'no_lesson_id' };
 
-  const ss    = SpreadsheetApp.getActiveSpreadsheet();
+  const ss    = SpreadsheetApp.openById(MAIN_SHEET_ID);
   const sheet = ss.getSheetByName(LESSONS_SHEET);
   if (!sheet) return { success: false, reason: 'no_lessons_sheet' };
 
@@ -915,7 +994,7 @@ function adminGetLessons(params) {
   if ((params.admin_token || '') !== ADMIN_TOKEN) return { error: 'unauthorized', lessons: [] };
 
   const courseId = params.course || T2_PRODUCT;
-  const ss       = SpreadsheetApp.getActiveSpreadsheet();
+  const ss       = SpreadsheetApp.openById(MAIN_SHEET_ID);
   const sheet    = ss.getSheetByName(LESSONS_SHEET);
   if (!sheet) return { error: 'no_lessons_sheet', lessons: [] };
 
@@ -949,7 +1028,7 @@ function adminGetLessons(params) {
 function addLesson(params) {
   if ((params.admin_token || '') !== ADMIN_TOKEN) return { success: false, reason: 'unauthorized' };
 
-  const ss    = SpreadsheetApp.getActiveSpreadsheet();
+  const ss    = SpreadsheetApp.openById(MAIN_SHEET_ID);
   const sheet = ss.getSheetByName(LESSONS_SHEET);
   if (!sheet) return { success: false, reason: 'no_lessons_sheet' };
 
@@ -980,7 +1059,7 @@ function deleteLesson(params) {
   const lessonId = String(params.lesson_id || '').trim();
   if (!lessonId) return { success: false, reason: 'no_lesson_id' };
 
-  const ss    = SpreadsheetApp.getActiveSpreadsheet();
+  const ss    = SpreadsheetApp.openById(MAIN_SHEET_ID);
   const sheet = ss.getSheetByName(LESSONS_SHEET);
   if (!sheet) return { success: false, reason: 'no_lessons_sheet' };
 
@@ -1028,7 +1107,7 @@ function saveLessonContent(params) {
   const content  = String(params.content  || '').trim();
   if (!lessonId) return { success: false, reason: 'no_lesson_id' };
 
-  const ss    = SpreadsheetApp.getActiveSpreadsheet();
+  const ss    = SpreadsheetApp.openById(MAIN_SHEET_ID);
   const sheet = ss.getSheetByName(LESSON_CONTENT_SHEET);
   if (!sheet) return { success: false, reason: 'no_content_sheet' };
 
@@ -1052,7 +1131,7 @@ function saveLessonContent(params) {
  */
 function readLessonContent(lessonId) {
   try {
-    const ss    = SpreadsheetApp.getActiveSpreadsheet();
+    const ss    = SpreadsheetApp.openById(MAIN_SHEET_ID);
     const sheet = ss.getSheetByName(LESSON_CONTENT_SHEET);
     if (!sheet) return '';
     const data = sheet.getDataRange().getValues();
@@ -1069,7 +1148,7 @@ function readLessonContent(lessonId) {
 function validateToken(token, course) {
   if (!token) return { valid: false, reason: 'no_token' };
 
-  const ss    = SpreadsheetApp.getActiveSpreadsheet();
+  const ss    = SpreadsheetApp.openById(MAIN_SHEET_ID);
   const sheet = ss.getSheetByName(TOKENS_SHEET);
   if (!sheet) return { valid: true, reason: 'sheet_not_found_fail_open' };
 
@@ -1094,7 +1173,7 @@ function validateToken(token, course) {
 function validateCoupon(code, amountHalalas) {
   if (!code) return { valid: false, reason: 'no_code', message: 'أدخل كود الخصم' };
 
-  const ss    = SpreadsheetApp.getActiveSpreadsheet();
+  const ss    = SpreadsheetApp.openById(MAIN_SHEET_ID);
   const sheet = ss.getSheetByName(COUPONS_SHEET);
   if (!sheet) return { valid: false, reason: 'no_coupons_sheet', message: 'كود غير صحيح' };
 
@@ -1151,6 +1230,364 @@ function validateCoupon(code, amountHalalas) {
   }
 
   return { valid: false, reason: 'not_found', message: 'كود الخصم غير صحيح' };
+}
+
+// ═══════════════════════════════════════════════════════════════
+// ─────────────────────────────────────────────
+// DRIP UNLOCK SYSTEM — M3/M4/M5/M6 for T2 course (gift for T3 buyers)
+// ─────────────────────────────────────────────
+//
+// HOW IT WORKS:
+//   1. Record + edit M3/M4/M5/M6 videos, upload to Bunny library 637491
+//   2. Paste each video's GUID into column K ("Video ID (Staging)") of the
+//      Lessons sheet on the matching lesson row
+//   3. On the scheduled date + time (13:00 Jeddah), the trigger fires
+//      unlockModule(n) which:
+//        a. Copies column K → column H (video_id) for all lessons in module n
+//        b. Marks column K as DONE so re-runs are no-ops
+//        c. Sends a personalized "المحور مفتوح" email to every T3 customer
+//           with their own T2 gift-course player URL
+//   4. If column K is empty on trigger day, unlockModule does nothing (safe)
+//
+// AUDIENCE: only customers with product=T3_PRODUCT in the Customers sheet.
+//           T2 is not sold directly yet — T3 buyers get T2 as a free gift.
+//
+// ONE-TIME SETUP (run from the Apps Script editor once):
+//   1. setupDripSystem()      — adds the "Video ID (Staging)" header to col K
+//   2. installDripTriggers()  — schedules all 4 auto-unlock triggers
+//
+// MANUAL OVERRIDE:
+//   You can always run unlockModule(3) / (4) / (5) / (6) directly from the
+//   editor instead of waiting for the scheduled time.
+// ─────────────────────────────────────────────
+
+const STAGING_COL = 11; // column K — Video ID (Staging)
+
+/**
+ * One-time setup — adds the Video ID (Staging) header to column K of Lessons.
+ * Expands the sheet if column K doesn't exist yet.
+ */
+function setupDripSystem() {
+  const ss    = SpreadsheetApp.openById(MAIN_SHEET_ID);
+  const sheet = ss.getSheetByName(LESSONS_SHEET);
+  if (!sheet) throw new Error('Lessons sheet not found');
+
+  const maxCols = sheet.getMaxColumns();
+  if (maxCols < STAGING_COL) {
+    sheet.insertColumnsAfter(maxCols, STAGING_COL - maxCols);
+    Logger.log('Expanded Lessons sheet from ' + maxCols + ' to ' + STAGING_COL + ' columns');
+  }
+
+  const headerCell = sheet.getRange(1, STAGING_COL);
+  if (!headerCell.getValue()) {
+    headerCell.setValue('Video ID (Staging)');
+    headerCell.setFontWeight('bold');
+    Logger.log('Added "Video ID (Staging)" header at column K');
+  } else {
+    Logger.log('Column K header already set: ' + headerCell.getValue());
+  }
+
+  return { success: true };
+}
+
+/**
+ * Unlock one module for the T2 course.
+ * - Copies staging video IDs (col K) to live video_id (col H) for that module
+ * - Sends drip email to all T3 customers with their player URL
+ * - Idempotent: re-running after unlock does nothing (staging marked DONE)
+ */
+function unlockModule(moduleOrder) {
+  const ss    = SpreadsheetApp.openById(MAIN_SHEET_ID);
+  const sheet = ss.getSheetByName(LESSONS_SHEET);
+  if (!sheet) throw new Error('Lessons sheet not found');
+
+  const data = sheet.getDataRange().getValues();
+  const unlocked = []; // {title, order}
+  let rowsUpdated = 0;
+
+  for (let i = 1; i < data.length; i++) {
+    const row = data[i];
+    const course    = String(row[1] || '').trim();
+    const mo        = parseInt(row[3]) || 0;
+    const lessonOrd = parseInt(row[4]) || 0;
+    const title     = String(row[5] || '').trim();
+    const liveVid   = String(row[7] || '').trim();
+    const stagingVid = row.length > STAGING_COL - 1 ? String(row[STAGING_COL - 1] || '').trim() : '';
+
+    if (course !== T2_PRODUCT) continue;
+    if (mo !== moduleOrder)    continue;
+    if (!stagingVid || stagingVid === 'DONE') continue;
+    if (liveVid)               continue; // already live, don't overwrite
+
+    sheet.getRange(i + 1, 8).setValue(stagingVid);
+    sheet.getRange(i + 1, STAGING_COL).setValue('DONE');
+    rowsUpdated++;
+    unlocked.push({ title: title, order: lessonOrd });
+  }
+
+  if (rowsUpdated === 0) {
+    Logger.log('unlockModule(' + moduleOrder + '): no staging IDs found — nothing to unlock');
+    try {
+      GmailApp.sendEmail(NOTIFY_EMAIL,
+        'Drip Unlock M' + moduleOrder + ' — SKIPPED',
+        'unlockModule(' + moduleOrder + ') ran but found no video IDs in the staging column (K) of the Lessons sheet. Nothing was sent.\n\nTo fix: paste the Bunny GUIDs into column K for the module ' + moduleOrder + ' rows, then run unlockModule(' + moduleOrder + ') manually.',
+        { name: FROM_NAME, from: FROM_EMAIL });
+    } catch(e) {}
+    return { success: false, reason: 'no_staging_ids', moduleOrder: moduleOrder };
+  }
+
+  Logger.log('unlockModule(' + moduleOrder + '): flipped ' + rowsUpdated + ' lessons live');
+  unlocked.sort(function(a, b) { return a.order - b.order; });
+
+  // Send drip blast to T3 customers
+  const emailResult = sendT2DripEmail(moduleOrder, unlocked);
+
+  return { success: true, moduleOrder: moduleOrder, rowsUpdated: rowsUpdated, email: emailResult };
+}
+
+/**
+ * Send the drip unlock email to every T3 customer, personalized with
+ * their own T2 gift token so the CTA link opens their player directly.
+ */
+function sendT2DripEmail(moduleOrder, unlockedLessons) {
+  const ss = SpreadsheetApp.openById(MAIN_SHEET_ID);
+
+  // 1. Find all T3 customers (dedupe by email)
+  const customersSheet = ss.getSheetByName(CUSTOMERS_SHEET);
+  if (!customersSheet) return { error: 'no_customers_sheet' };
+  const cData = customersSheet.getDataRange().getValues();
+
+  const t3Customers = [];
+  const seenEmails  = {};
+  for (let i = 1; i < cData.length; i++) {
+    const product = String(cData[i][4] || '').trim();
+    if (product !== T3_PRODUCT) continue;
+    const email = String(cData[i][1] || '').trim().toLowerCase();
+    if (!email || seenEmails[email]) continue;
+    seenEmails[email] = true;
+    t3Customers.push({ email: email, name: String(cData[i][2] || '').trim() });
+  }
+
+  if (t3Customers.length === 0) {
+    Logger.log('sendT2DripEmail M' + moduleOrder + ': no T3 customers found');
+    return { sent: 0, skipped: 0, failed: 0 };
+  }
+
+  // 2. Build email → T2 token lookup
+  const tokensSheet = ss.getSheetByName(TOKENS_SHEET);
+  const tData       = tokensSheet.getDataRange().getValues();
+  const emailToToken = {};
+  for (let i = 1; i < tData.length; i++) {
+    const course    = String(tData[i][1] || '').trim();
+    const status    = String(tData[i][2] || '').trim();
+    const custEmail = String(tData[i][3] || '').trim().toLowerCase();
+    if (course !== T2_PRODUCT || status !== 'used' || !custEmail) continue;
+    if (!emailToToken[custEmail]) emailToToken[custEmail] = String(tData[i][0] || '').trim();
+  }
+
+  // 3. Send personalized email per customer
+  const subject = 'المحور ' + arabicNumber(moduleOrder) + ' مفتوح الآن — مدخل إلى الذكاء الاصطناعي الإبداعي';
+  let sent = 0, skipped = 0, failed = 0;
+
+  for (let c = 0; c < t3Customers.length; c++) {
+    const cust = t3Customers[c];
+    const token = emailToToken[cust.email];
+    if (!token) {
+      Logger.log('No T2 token for ' + cust.email + ' — skipping drip');
+      skipped++;
+      continue;
+    }
+
+    try {
+      const firstName = cust.name ? cust.name.split(/\s+/)[0] : '';
+      const playerUrl = 'https://player.malearnsa.com/watch.html?token=' + token + '&course=' + T2_PRODUCT;
+      const html      = buildDripEmailHtml(firstName, moduleOrder, unlockedLessons, playerUrl);
+      GmailApp.sendEmail(cust.email, subject, '', {
+        name:     FROM_NAME,
+        from:     FROM_EMAIL,
+        htmlBody: html
+      });
+      sent++;
+      Logger.log('✓ drip M' + moduleOrder + ' → ' + cust.email);
+      Utilities.sleep(1200);
+    } catch (err) {
+      Logger.log('✗ drip M' + moduleOrder + ' FAILED for ' + cust.email + ': ' + err.message);
+      failed++;
+    }
+  }
+
+  Logger.log('Drip M' + moduleOrder + ' complete — Sent: ' + sent + ' · Skipped: ' + skipped + ' · Failed: ' + failed);
+
+  // Notify Majid
+  try {
+    GmailApp.sendEmail(NOTIFY_EMAIL,
+      'Drip M' + moduleOrder + ' — ' + sent + ' sent',
+      'Module ' + moduleOrder + ' drip complete.\nSent: ' + sent + '\nSkipped: ' + skipped + '\nFailed: ' + failed,
+      { name: FROM_NAME, from: FROM_EMAIL });
+  } catch(e) {}
+
+  return { sent: sent, skipped: skipped, failed: failed };
+}
+
+/**
+ * Render Latin digits as Arabic-Indic digits (for subject + module labels).
+ */
+function arabicNumber(n) {
+  const map = ['٠','١','٢','٣','٤','٥','٦','٧','٨','٩'];
+  return String(n).split('').map(function(d) { return map[parseInt(d)] || d; }).join('');
+}
+
+function buildDripEmailHtml(firstName, moduleOrder, unlockedLessons, playerUrl) {
+  const moduleNames = {
+    3: 'الفئة الأولى: شريك التفكير',
+    4: 'الفئة الثانية: الإستديو — توليد الصور والفيديو',
+    5: 'الفئة الثالثة: بناء أنظمة سير العمل',
+    6: 'التطبيق العملي'
+  };
+  const moduleName = moduleNames[moduleOrder] || ('المحور ' + arabicNumber(moduleOrder));
+
+  let lessonsList = '';
+  for (let i = 0; i < unlockedLessons.length; i++) {
+    lessonsList += '<li style="padding:6px 0;color:#444;">' + unlockedLessons[i].title + '</li>';
+  }
+
+  const greeting = firstName
+    ? 'السلام عليكم ' + firstName + '،'
+    : 'السلام عليكم،';
+
+  return '' +
+'<div dir="rtl" style="font-family:Arial,sans-serif;max-width:600px;color:#222;line-height:1.8;">' +
+'  <p>' + greeting + '</p>' +
+'  <p>المحور <strong>' + arabicNumber(moduleOrder) + '</strong> من دورة <strong>"مدخل إلى الذكاء الاصطناعي الإبداعي"</strong> مفتوح لك الآن — هديتك كأحد طلاب ورشة صناعة الإلهام.</p>' +
+'  <p style="font-size:1.1rem;font-weight:bold;color:#222;margin:22px 0 12px;">' +
+'    المحور ' + arabicNumber(moduleOrder) + ' — <span style="color:#C9A84C;">' + moduleName + '</span>' +
+'  </p>' +
+'  <div style="background:#f9f6f0;border-right:3px solid #C9A84C;padding:18px 22px;margin:22px 0;border-radius:4px;">' +
+'    <p style="margin:0 0 10px;font-weight:bold;color:#222;">الدروس المفتوحة:</p>' +
+'    <ul style="margin:0;padding-right:22px;list-style:disc;">' +
+       lessonsList +
+'    </ul>' +
+'  </div>' +
+'  <p style="color:#444;">' +
+'    شاهدها قبل جلسة الورشة المباشرة — كل محور يعطيك أساس تدخل الورشة فيه جاهز.' +
+'  </p>' +
+'  <p style="text-align:center;margin:34px 0 28px;">' +
+'    <a href="' + playerUrl + '"' +
+'       style="background:#C9A84C;color:#000;padding:16px 38px;text-decoration:none;font-weight:bold;font-size:1rem;display:inline-block;">' +
+'      ابدأ المحور الآن' +
+'    </a>' +
+'  </p>' +
+'  <p style="color:#888;font-size:0.85rem;text-align:center;">' +
+'    هذا الرابط خاص بك — لا تشاركه مع أحد.' +
+'  </p>' +
+'  <hr style="border:none;border-top:1px solid #eee;margin:32px 0 20px;">' +
+'  <p style="margin:0;">' +
+'    أشوفك في الورشة،<br>' +
+'    <strong>ماجد عنقاوي</strong><br>' +
+'    <span style="color:#888;font-size:0.85rem;">صناعة الإلهام · MA Learn</span>' +
+'  </p>' +
+'</div>';
+}
+
+// ─────────────────────────────────────────────
+// AUTO-TRIGGERS — wrapper functions for the time-based triggers
+// ─────────────────────────────────────────────
+function autoUnlockM3() { unlockModule(3); }
+function autoUnlockM4() { unlockModule(4); }
+function autoUnlockM5() { unlockModule(5); }
+function autoUnlockM6() { unlockModule(6); }
+
+// ─────────────────────────────────────────────
+// MANUAL DRIP TRIGGERS — for when videos were placed directly in column H
+// (bypassing the staging system). These only send the email, don't modify
+// the Lessons sheet. Run from the editor after videos are already live.
+// ─────────────────────────────────────────────
+function sendDripM3Now() {
+  return sendT2DripEmail(3, [
+    { title: 'Claude',         order: 1 },
+    { title: 'Gemini',         order: 2 },
+    { title: 'Firefly Boards', order: 3 }
+  ]);
+}
+function sendDripM4Now() {
+  return sendT2DripEmail(4, [
+    { title: 'Midjourney',                      order: 1 },
+    { title: 'Higgsfield',                      order: 2 },
+    { title: 'Upscalers — مكبرات الصور',        order: 3 },
+    { title: 'Image Retouching — معالجة الصور', order: 4 },
+    { title: 'أسعار البرامج والاشتراكات',       order: 5 }
+  ]);
+}
+function sendDripM5Now() {
+  return sendT2DripEmail(5, [
+    { title: 'Figmaweave (Weavy AI)', order: 1 }
+  ]);
+}
+function sendDripM6Now() {
+  return sendT2DripEmail(6, [
+    { title: 'Fashion Lookbook + Lifestyle Shoot', order: 1 }
+  ]);
+}
+
+/**
+ * Install all 4 drip triggers — run ONCE from the Apps Script editor.
+ * Fires at 13:00 Jeddah time (10:00 UTC, Riyadh has no DST).
+ * Safe to re-run: removes existing drip triggers before creating new ones.
+ */
+function installDripTriggers() {
+  // Remove any existing drip triggers
+  const existing = ScriptApp.getProjectTriggers();
+  const names = ['autoUnlockM3', 'autoUnlockM4', 'autoUnlockM5', 'autoUnlockM6'];
+  for (let i = 0; i < existing.length; i++) {
+    if (names.indexOf(existing[i].getHandlerFunction()) >= 0) {
+      ScriptApp.deleteTrigger(existing[i]);
+    }
+  }
+
+  // 13:00 Jeddah = 10:00 UTC (Riyadh = UTC+3, no DST)
+  const schedule = [
+    { fn: 'autoUnlockM3', date: new Date('2026-04-17T10:00:00Z') }, // Thu Apr 17
+    { fn: 'autoUnlockM4', date: new Date('2026-04-19T10:00:00Z') }, // Sat Apr 19
+    { fn: 'autoUnlockM5', date: new Date('2026-04-21T10:00:00Z') }, // Mon Apr 21
+    { fn: 'autoUnlockM6', date: new Date('2026-05-05T10:00:00Z') }  // Mon May 5
+  ];
+
+  const now = new Date();
+  const created = [];
+  for (let i = 0; i < schedule.length; i++) {
+    const s = schedule[i];
+    if (s.date > now) {
+      ScriptApp.newTrigger(s.fn).timeBased().at(s.date).create();
+      created.push(s.fn + ' at ' + s.date.toISOString());
+    } else {
+      Logger.log('Skipped ' + s.fn + ' — date already passed');
+    }
+  }
+
+  Logger.log('Installed ' + created.length + ' drip triggers:\n' + created.join('\n'));
+  return created;
+}
+
+/**
+ * Test the drip email for one module using fake "unlocked lessons" — does NOT
+ * modify the Lessons sheet. Sends only to NOTIFY_EMAIL for visual verification.
+ */
+function testDripEmail(moduleOrder) {
+  moduleOrder = moduleOrder || 3;
+  const fake = [
+    { title: 'Claude',         order: 1 },
+    { title: 'Gemini',         order: 2 },
+    { title: 'Firefly Boards', order: 3 }
+  ];
+  const playerUrl = 'https://player.malearnsa.com/watch.html?token=MAL-TEST1234&course=' + T2_PRODUCT;
+  const html = buildDripEmailHtml('Majid', moduleOrder, fake, playerUrl);
+  const subject = '[TEST] المحور ' + arabicNumber(moduleOrder) + ' مفتوح الآن — مدخل إلى الذكاء الاصطناعي الإبداعي';
+  GmailApp.sendEmail(NOTIFY_EMAIL, subject, '', {
+    name:     FROM_NAME,
+    from:     FROM_EMAIL,
+    htmlBody: html
+  });
+  Logger.log('Test drip email sent to ' + NOTIFY_EMAIL);
 }
 
 // ─────────────────────────────────────────────
