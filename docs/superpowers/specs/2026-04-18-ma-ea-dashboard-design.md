@@ -1,28 +1,82 @@
-# MA EA Control Dashboard — Design Spec
+# MA Learn Store Ops Dashboard — Design Spec
 
 **Date:** 2026-04-18
 **Status:** Design approved, awaiting implementation plan
 **Author:** Noor (with Majid)
+**Scope boundary:** This dashboard covers MA Learn store operations only. Creative/content ops (social posts, portfolio, partnerships, financial reports) is explicitly out of scope and will live in a separate future dashboard attached to `majidangawi.com`.
 
 ## Overview
 
-A private admin dashboard at `admin.malearnsa.com` that consolidates operation of the entire MA Learn business into a single interface. Claude (Noor) serves as the reasoning layer — drafting emails in Majid's brand voice, reasoning over data, and proposing actions. Every write action requires Majid's explicit approval before execution. The dashboard is built on a staging copy of the production infrastructure and promoted to production only after staging has proven stable.
+A private admin dashboard at `admin.malearnsa.com` that consolidates operation of the MA Learn e-commerce and education platform into a single interface. Claude (Noor) serves as the reasoning layer — drafting emails in Majid's brand voice, reasoning over data, and proposing actions. Every write action requires Majid's explicit approval before execution. The dashboard is built on a staging copy of the production infrastructure and promoted to production only after staging has proven stable.
 
 ## Goals
 
-- One control surface for Majid's daily operations: insights, lesson toggles, drip emails, coupons, link-in-bio
+- One control surface for Majid's MA Learn daily operations: insights, lessons, course player, drip emails, coupons, link-in-bio, tokens, customers
 - AI-assisted drafting and reasoning using the existing brand context (`CLAUDE.md`, `context/*.md`, `.claude/rules/*.md`)
 - Human-in-the-loop safety: no write action executes without approval
 - Zero disruption to the live Moyasar checkout, token validation, and email flows while the dashboard is built
 - Clean migration path to Phase 2 LMS (Next.js + Supabase) in May without UI rework
+- Absorb the existing standalone `player-admin.html` (797 lines) into the unified dashboard so course player management stops being a separate tool
 
-## Non-Goals (explicitly out of scope for Week 1)
+## Non-Goals (explicitly out of scope)
 
-- Full page WYSIWYG editor for malearnsa.com
-- Customer-facing portal, student dashboards, or the LMS student experience (that's Phase 2)
-- Checkout/product configuration UI (Week 3)
+- **Creative/content ops surface** — social media posts (Instagram Content Machine), reel/carousel production, AI tools research, brand photography portfolio, partnership management, financial reports, contact management. These belong in a future `majidangawi.com`-anchored dashboard.
+- Full page WYSIWYG editor for malearnsa.com (Phase 2)
+- Customer-facing portal, student dashboards, or the LMS student experience (Phase 2)
 - Broadcasts to more than 500 recipients (separate approval path)
 - Multi-admin roles — single admin: majed.engawi@gmail.com
+
+## Business Surface Coverage
+
+This section exists to make scope explicit and prevent ambiguity. Majid operates across several business surfaces; this dashboard targets one of them.
+
+### Surfaces this dashboard covers (MA Learn store ops)
+
+| Surface | Coverage | Where in plan |
+|---|---|---|
+| Insights / KPIs | ✅ Full | Week 1 home page — 9 KPIs |
+| Lessons CRUD + activation | ✅ Full | Week 1 toggles + Week 2 player admin extends to full edit |
+| Course player admin | ✅ Full | Week 2 (absorbs existing `player-admin.html`) |
+| Tokens (MAL-XXXXXXXX access codes) | ✅ Full | Week 2 view / revoke / reissue |
+| Customers | ✅ Full | Week 2 list + search + resend |
+| Coupons | ✅ Full | Week 1 |
+| Email drafting + drip sends | ✅ Full | Week 1 drip sender, Week 2 broadcast |
+| Reminders / scheduled automations | ✅ Full | Week 2 |
+| Link-in-bio (live at link.malearnsa.com) | ✅ Full | Week 1 |
+| Homepage editor (malearnsa.com hero) | ✅ Full | Week 3 |
+| Checkout / product config | ✅ Partial | Week 3 — prices + LIVE/TEST toggle + product on/off; full page editor = Phase 2 |
+| Audit log + Noor actions | ✅ Full | Week 1 |
+| Noor (AI) reasoning layer | ✅ Full | Week 1 |
+
+### Surfaces this dashboard does NOT cover (belong to a future dashboard)
+
+| Surface | Rationale | Where it lives |
+|---|---|---|
+| Instagram Content Machine (posts, reels, carousels) | Creative ops, not store ops. Different cadence, different audience, different tooling. | Future creative-ops dashboard at `majidangawi.com` |
+| AI tools research logbook | Personal knowledge work, not a shared operational surface | Future creative-ops dashboard |
+| Photography + AI portfolio | Pitching MA brand creative services; separate audience (brands, not students) | Future creative-ops dashboard or portfolio site |
+| Brand partnerships (Fujifilm, committees) | Sponsorship/partnership pipeline, not e-commerce | Future creative-ops dashboard |
+| Financial reports (weekly income + expenses) | Personal + business finance, spans multiple entities | Future creative-ops dashboard or dedicated finance tool |
+| Contacts management | Relationship tool, not operational | Future creative-ops dashboard |
+| Meeting prep + follow-up | Already has a `meeting-prep` skill; no dashboard need identified yet | Standalone skill |
+| Invoice/estimate drafting for Majid Angawi clients | Creative services billing (separate from MA Learn's Daftra flow) | Future creative-ops dashboard |
+| Workshop delivery ops (Jeddah Apr 4, Riyadh May 7) | Event-based, different lifecycle than e-commerce | Future creative-ops dashboard |
+
+### Coverage scorecard
+
+- **MA Learn store ops coverage after W1+W2+W3:** ~95%
+- **Total business surface coverage (both brands, all ops):** ~50% — because half of Majid's operational load lives outside MA Learn store ops
+- **Alignment with "inspire 1M people" north star:** this dashboard serves the north star **indirectly** by freeing ops time. The creative-ops dashboard is where audience-growth metrics (IG reach, content performance, workshop reach) will live — that's where direct north-star measurement belongs.
+
+### Signal this surface is mis-sized
+
+If Majid finds himself wanting to do any of the following inside this dashboard, that's a signal the creative-ops dashboard needs to be started:
+- Draft an Instagram caption
+- Log an expense receipt
+- Update a brand pitch deck
+- Check portfolio inquiry status
+
+When 3+ of those happen in one week, move to designing the creative-ops dashboard.
 
 ## Architecture
 
@@ -292,6 +346,7 @@ No real data migration occurs. Production data is already where it needs to be.
 - Days 8–9: promotion to production + smoke test
 
 ### Week 2 (Apr 27 – May 3)
+- **Player admin integration** — fold existing [player-admin.html](projects/ma-learn-launch/player-admin.html) into the unified dashboard as the "Player" sidebar section. Capabilities: view all courses + modules + lessons in a tree; per-lesson edit of title (AR/EN), video URL (Bunny.net), duration, order, active toggle, description, thumbnail; upload/replace video via Bunny.net API; inline preview in an embedded player; drag-to-reorder lessons within a module. Replaces the standalone tool.
 - Customer list + token management
 - Reminders / scheduler
 - Broadcast sender
