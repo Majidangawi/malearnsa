@@ -119,6 +119,7 @@ function doGet(e) {
     else if (action === 'admin_toggle_lesson')         result = adminToggleLesson(e.parameter);
     else if (action === 'admin_create_coupon')         result = adminCreateCoupon(e.parameter);
     else if (action === 'admin_update_coupon')         result = adminUpdateCoupon(e.parameter);
+    else if (action === 'admin_delete_coupon')         result = adminDeleteCoupon(e.parameter);
     else if (action === 'admin_add_linkbio')           result = adminAddLinkbio(e.parameter);
     else if (action === 'admin_update_linkbio')        result = adminUpdateLinkbio(e.parameter);
     else if (action === 'admin_delete_linkbio')        result = adminDeleteLinkbio(e.parameter);
@@ -1780,6 +1781,22 @@ function adminUpdateCoupon(params) {
           sh.getRange(r + 1, info.idx[h] + 1).setValue(_couponValue(p, params[p]));
         }
       });
+      return { ok: true, code: code };
+    }
+  }
+  return { ok: false, error: 'code_not_found' };
+}
+
+function adminDeleteCoupon(params) {
+  if (params.admin_token !== ADMIN_TOKEN) return { ok: false, error: 'unauthorized' };
+  const code = String(params.code || '').toUpperCase().trim();
+  if (!code) return { ok: false, error: 'code required' };
+  const ss = SpreadsheetApp.openById(MAIN_SHEET_ID);
+  const sh = ss.getSheetByName(COUPONS_SHEET);
+  const data = sh.getDataRange().getValues();
+  for (let r = 1; r < data.length; r++) {
+    if (String(data[r][0]).toUpperCase().trim() === code) {
+      sh.deleteRow(r + 1);
       return { ok: true, code: code };
     }
   }
