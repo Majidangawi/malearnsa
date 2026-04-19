@@ -1695,6 +1695,36 @@ function adminToggleLesson(params) {
   return { ok: false, error: 'lesson_not_found' };
 }
 
+// Map API param name → Coupons sheet header name. Header-driven, so extra columns
+// like "Allowed Courses", "Excluded Courses", "Allowed Methods" are untouched.
+const COUPON_PARAM_TO_HEADER = {
+  code: 'Code',
+  type: 'Type',
+  value: 'Value',
+  min_sar: 'Min Amount (SAR)',
+  uses_left: 'Uses Left',
+  start_date: 'Start Date',
+  end_date: 'End Date',
+  active: 'Active',
+  products: 'Products',
+  created_at: 'CreatedAt',
+  created_by: 'CreatedBy',
+};
+
+function _couponHeaderIndex(sh) {
+  const header = sh.getRange(1, 1, 1, sh.getLastColumn()).getValues()[0];
+  const idx = {};
+  for (let i = 0; i < header.length; i++) idx[String(header[i])] = i;
+  return { header: header, idx: idx };
+}
+
+function _couponValue(param, raw) {
+  if (param === 'active') return String(raw).toUpperCase();
+  if (param === 'value' || param === 'min_sar') return Number(raw);
+  if (param === 'uses_left') return raw === '' ? '' : Number(raw);
+  return raw;
+}
+
 function adminCreateCoupon(params) {
   if (params.admin_token !== ADMIN_TOKEN) return { ok: false, error: 'unauthorized' };
   const code = String(params.code || '').toUpperCase().trim();
@@ -1708,20 +1738,26 @@ function adminCreateCoupon(params) {
       return { ok: false, error: 'code_exists' };
     }
   }
-  const row = [
-    code,
-    String(params.type || 'percentage'),
-    Number(params.value || 0),
-    Number(params.min_sar || 0),
-    params.uses_left === '' ? '' : Number(params.uses_left),
-    params.start_date || '',
-    params.end_date || '',
-    'TRUE',
-    String(params.products || 'all'),
-    new Date().toISOString(),
-    String(params.created_by || 'majid'),
-    '',
-  ];
+
+  const info = _couponHeaderIndex(sh);
+  const row = new Array(info.header.length).fill('');
+  const values = {
+    code: code,
+    type: String(params.type || 'percentage'),
+    value: Number(params.value || 0),
+    min_sar: Number(params.min_sar || 0),
+    uses_left: params.uses_left === '' || params.uses_left === undefined ? '' : Number(params.uses_left),
+    start_date: params.start_date || '',
+    end_date: params.end_date || '',
+    active: 'TRUE',
+    products: String(params.products || 'all'),
+    created_at: new Date().toISOString(),
+    created_by: String(params.created_by || 'majid'),
+  };
+  Object.keys(values).forEach(function (p) {
+    const h = COUPON_PARAM_TO_HEADER[p];
+    if (h !== undefined && info.idx[h] !== undefined) row[info.idx[h]] = values[p];
+  });
   sh.appendRow(row);
   return { ok: true, code: code, row: row };
 }
@@ -1732,18 +1768,15 @@ function adminUpdateCoupon(params) {
   const ss = SpreadsheetApp.openById(MAIN_SHEET_ID);
   const sh = ss.getSheetByName(COUPONS_SHEET);
   const data = sh.getDataRange().getValues();
-  const allowed = ['value', 'min_sar', 'uses_left', 'start_date', 'end_date', 'active', 'products'];
-  const map = { value: 3, min_sar: 4, uses_left: 5, start_date: 6, end_date: 7, active: 8, products: 9 };
+  const info = _couponHeaderIndex(sh);
+  const mutable = ['value', 'min_sar', 'uses_left', 'start_date', 'end_date', 'active', 'products'];
   for (let r = 1; r < data.length; r++) {
     if (String(data[r][0]).toUpperCase().trim() === code) {
-      allowed.forEach(function (k) {
-        if (params[k] !== undefined) {
-          var v;
-          if (k === 'active') v = String(params[k]).toUpperCase();
-          else if (k === 'value' || k === 'min_sar') v = Number(params[k]);
-          else if (k === 'uses_left' && params[k] !== '') v = Number(params[k]);
-          else v = params[k];
-          sh.getRange(r + 1, map[k]).setValue(v);
+      mutable.forEach(function (p) {
+        if (params[p] !== undefined) {
+          const h = COUPON_PARAM_TO_HEADER[p];
+          if (h === undefined || info.idx[h] === undefined) return;
+          sh.getRange(r + 1, info.idx[h] + 1).setValue(_couponValue(p, params[p]));
         }
       });
       return { ok: true, code: code };
