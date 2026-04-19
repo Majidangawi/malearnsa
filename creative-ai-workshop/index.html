@@ -571,7 +571,7 @@
         <a href="https://malearnsa.com/refund-policy.html">سياسة الاسترجاع</a>
         <a href="https://malearnsa.com/privacy-policy.html">الخصوصية</a>
       </div>
-      <a href="#pricing" class="nav-cta">سجّل الآن — ٧٩٩ ر.س</a>
+      <a href="#pricing" class="nav-cta" id="nav-cta">سجّل الآن — ٧٩٩ ر.س</a>
     </div>
   </nav>
 
@@ -617,7 +617,7 @@
         <div class="price-deadline">العرض حتى ١٩ أبريل فقط</div>
       </div>
 
-      <a href="#pricing" class="btn-primary">سجّل الآن — ٧٩٩ ر.س</a>
+      <a href="#pricing" class="btn-primary" id="hero-cta">سجّل الآن — ٧٩٩ ر.س</a>
       <div class="hero-seats">المقاعد المتبقية محدودة</div>
     </div>
   </section>
@@ -895,12 +895,26 @@
 
         <div class="pricing-deadline-note">⚠️ السعر يرتفع لـ ٩٩٩ ر.س بعد ١٩ أبريل.</div>
 
-        <a href="https://checkout.malearnsa.com/creative-ai-workshop/" class="btn-primary"
+        <a href="https://checkout.malearnsa.com/creative-ai-workshop/" class="btn-primary" id="pricing-cta"
            style="width:100%;display:block;text-align:center;">
           انضم للورشة الآن — ٧٩٩ ر.س
         </a>
 
-        <div style="margin-top:16px;font-size:0.78rem;color:var(--grey);">المقاعد المتبقية محدودة</div>
+        <div id="pricing-soldout" style="display:none;text-align:center;padding:32px 20px;border:1px solid rgba(201,168,76,0.35);border-radius:12px;background:rgba(201,168,76,0.05);">
+          <div style="display:inline-block;border:3px solid rgba(201,168,76,0.5);border-radius:8px;padding:10px 26px;transform:rotate(-4deg);margin-bottom:18px;">
+            <span style="font-size:1.4rem;font-weight:700;color:var(--gold);letter-spacing:0.05em;">بيعت جميع المقاعد</span>
+          </div>
+          <p style="font-size:0.9rem;color:var(--silver);line-height:1.8;margin-bottom:20px;">
+            المجموعة الأولى اكتملت.<br>
+            سجّل اهتمامك في المجموعة القادمة.
+          </p>
+          <a href="mailto:support@malearnsa.com?subject=قائمة الانتظار — ورشة صناعة الإلهام"
+             style="display:inline-block;background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.35);color:var(--gold);padding:12px 28px;border-radius:8px;text-decoration:none;font-size:0.9rem;font-weight:700;">
+            سجّل في قائمة الانتظار
+          </a>
+        </div>
+
+        <div id="pricing-seats-note" style="margin-top:16px;font-size:0.78rem;color:var(--grey);">المقاعد المتبقية محدودة</div>
       </div>
     </div>
   </section>
@@ -958,7 +972,7 @@
       <span class="sticky-price-now">٧٩٩ ر.س</span>
       حتى ١٩ أبريل
     </div>
-    <a href="#pricing" class="sticky-bar-btn">احجز مقعدك الآن</a>
+    <a href="#pricing" class="sticky-bar-btn" id="sticky-cta">احجز مقعدك الآن</a>
   </div>
 
   <script>
@@ -987,6 +1001,31 @@
       el.style.transition = 'opacity 0.55s ease, transform 0.55s ease';
       observer.observe(el);
     });
+
+    // Sold-out detection — swaps all CTAs when T3 hits 30/30
+    (async () => {
+      const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzt5pyO7CpSVFRgH-CaCT-N5G6m-NBXiU6RA_0xXU5vl3IRSP_i3zFNdc0p3saXCwpcIg/exec';
+      const WAITLIST_HREF = 'mailto:support@malearnsa.com?subject=' + encodeURIComponent('قائمة الانتظار — ورشة صناعة الإلهام');
+      try {
+        const res = await fetch(APPS_SCRIPT_URL + '?action=get_seats_left');
+        const data = await res.json();
+        if (!data || !data.sold_out) return;
+        ['nav-cta', 'hero-cta', 'sticky-cta'].forEach(id => {
+          const el = document.getElementById(id);
+          if (!el) return;
+          el.textContent = 'نفدت المقاعد — قائمة الانتظار';
+          el.href = WAITLIST_HREF;
+        });
+        const buy = document.getElementById('pricing-cta');
+        const stamp = document.getElementById('pricing-soldout');
+        const seatsNote = document.getElementById('pricing-seats-note');
+        if (buy) buy.style.display = 'none';
+        if (stamp) stamp.style.display = 'block';
+        if (seatsNote) seatsNote.style.display = 'none';
+      } catch (err) {
+        // Fail open — keep normal CTAs if the API is unreachable
+      }
+    })();
   </script>
 </body>
 </html>

@@ -207,20 +207,6 @@ function sendReminderBlast() {
   if (!header.getValue()) header.setValue('Reminder Status');
 
   const data = sheet.getDataRange().getValues();
-  let pending = 0; const seenCheck = {};
-  for (let i = 1; i < data.length; i++) {
-    const email = String(data[i][2]||'').trim().toLowerCase();
-    const purchase = String(data[i][PURCHASE_COL-1]||'').trim();
-    const reminder = String(data[i][REMINDER_COL-1]||'').trim();
-    if (!email || seenCheck[email]) continue;
-    seenCheck[email] = true;
-    if (purchase === 'PURCHASED') continue;
-    if (reminder.indexOf('REMINDED') === 0) continue;
-    pending++;
-  }
-  const quota = MailApp.getRemainingDailyQuota();
-  Logger.log('Pre-flight: ' + pending + ' reminders · ' + quota + ' quota remaining');
-  if (pending > quota) throw new Error('ABORTED — ' + pending + ' to send but only ' + quota + ' quota left');
 
   let sent = 0, skipped = 0, failed = 0; const seen = {};
   for (let i = 1; i < data.length; i++) {
@@ -238,7 +224,7 @@ function sendReminderBlast() {
     try {
       const firstName = extractFirstName(name);
       const html = buildReminderEmailHtml(firstName);
-      GmailApp.sendEmail(email, REMINDER_SUBJECT, '', { htmlBody: html, name: FROM_NAME, from: FROM_EMAIL });
+      sendViaGmailApi(email, REMINDER_SUBJECT, html);
       sheet.getRange(i+1, REMINDER_COL).setValue('REMINDED ' + Utilities.formatDate(new Date(), 'Asia/Riyadh', 'yyyy-MM-dd HH:mm'));
       sent++;
       Logger.log('✓ [' + sent + '] ' + firstName + ' <' + email + '>');
@@ -252,6 +238,25 @@ function sendReminderBlast() {
   const summary = 'Reminder blast complete — Sent: ' + sent + ' · Skipped: ' + skipped + ' · Failed: ' + failed;
   Logger.log(summary);
   return summary;
+}
+
+// Uses Gmail Advanced Service — separate quota bucket (2,000/day Workspace)
+// instead of GmailApp's 100-1,500/day Apps Script quota.
+// Requires: Services (+) → Gmail API → Add, in the Apps Script editor.
+function sendViaGmailApi(to, subject, htmlBody) {
+  const subjectB64 = '=?UTF-8?B?' + Utilities.base64Encode(subject, Utilities.Charset.UTF_8) + '?=';
+  const raw = [
+    'From: "' + FROM_NAME + '" <' + FROM_EMAIL + '>',
+    'To: ' + to,
+    'Subject: ' + subjectB64,
+    'MIME-Version: 1.0',
+    'Content-Type: text/html; charset=UTF-8',
+    'Content-Transfer-Encoding: base64',
+    '',
+    Utilities.base64Encode(htmlBody, Utilities.Charset.UTF_8)
+  ].join('\r\n');
+  const encoded = Utilities.base64EncodeWebSafe(raw).replace(/=+$/, '');
+  Gmail.Users.Messages.send({ raw: encoded }, 'me');
 }
 
 function buildReminderEmailHtml(firstName) {
@@ -326,4 +331,161 @@ function scheduleReminderAt8pm() {
 }
 function checkQuota() {
   Logger.log('Remaining: ' + MailApp.getRemainingDailyQuota());
+}
+
+// ═══════════════════════════════════════════════════════════════
+// FINAL REMINDER BLAST — 6 hours left, 5 seats remaining (Apr 19)
+// Uses the waitlist sheet's existing PURCHASE_COL (G) to skip buyers,
+// same pattern as sendReminderBlast above.
+// ═══════════════════════════════════════════════════════════════
+
+// Subject: باقي ٥ مقاعد و باقي ٦ ساعات فقط على نهاية التسجيل المبكر
+const FINAL_SUBJECT = decodeURIComponent('%D8%A8%D8%A7%D9%82%D9%8A%20%D9%A5%20%D9%85%D9%82%D8%A7%D8%B9%D8%AF%20%D9%88%20%D8%A8%D8%A7%D9%82%D9%8A%20%D9%A6%20%D8%B3%D8%A7%D8%B9%D8%A7%D8%AA%20%D9%81%D9%82%D8%B7%20%D8%B9%D9%84%D9%89%20%D9%86%D9%87%D8%A7%D9%8A%D8%A9%20%D8%A7%D9%84%D8%AA%D8%B3%D8%AC%D9%8A%D9%84%20%D8%A7%D9%84%D9%85%D8%A8%D9%83%D8%B1');
+const FINAL_COL     = 9; // column I — "Final Reminder Status"
+
+function testFinalReminderEmail() {
+  const html = buildFinalReminderEmailHtml('Majid');
+  GmailApp.sendEmail(TEST_EMAIL, '[TEST] ' + FINAL_SUBJECT, '', {
+    htmlBody: html, name: FROM_NAME, from: FROM_EMAIL
+  });
+  Logger.log('Test final reminder sent to ' + TEST_EMAIL);
+}
+
+// Dry run — logs counts and a 5-row sample WITHOUT sending anything.
+function previewFinalReminder() {
+  const ss = SpreadsheetApp.openById(SHEET_ID);
+  const sheet = ss.getSheetByName(SHEET_NAME);
+  const data = sheet.getDataRange().getValues();
+  let pending = 0, buyersSkipped = 0, dupes = 0, empty = 0, alreadySent = 0;
+  const sample = [];
+  const seen = {};
+  for (let i = 1; i < data.length; i++) {
+    const row = data[i];
+    const name = String(row[1] || '').trim();
+    const email = String(row[2] || '').trim();
+    const eLower = email.toLowerCase();
+    const purchase = String(row[PURCHASE_COL - 1] || '').trim();
+    const final = String(row[FINAL_COL - 1] || '').trim();
+    if (!email) { empty++; continue; }
+    if (seen[eLower]) { dupes++; continue; }
+    seen[eLower] = true;
+    if (purchase === 'PURCHASED') { buyersSkipped++; continue; }
+    if (final.indexOf('SENT') === 0) { alreadySent++; continue; }
+    pending++;
+    if (sample.length < 5) sample.push(name + ' <' + email + '>');
+  }
+  Logger.log('Pending to send: ' + pending);
+  Logger.log('Skipped — already bought (col G = PURCHASED): ' + buyersSkipped);
+  Logger.log('Skipped — duplicates: ' + dupes);
+  Logger.log('Skipped — no email: ' + empty);
+  Logger.log('Skipped — already reminded: ' + alreadySent);
+  Logger.log('Sample of first 5 recipients:');
+  sample.forEach(function(s) { Logger.log('  - ' + s); });
+  Logger.log('GmailApp quota remaining (separate bucket from Gmail API): ' + MailApp.getRemainingDailyQuota());
+  return { pending: pending, buyersSkipped: buyersSkipped, sample: sample };
+}
+
+function sendFinalReminderBlast() {
+  const ss = SpreadsheetApp.openById(SHEET_ID);
+  const sheet = ss.getSheetByName(SHEET_NAME);
+  if (!sheet) throw new Error('Sheet "' + SHEET_NAME + '" not found');
+  const header = sheet.getRange(1, FINAL_COL);
+  if (!header.getValue()) header.setValue('Final Reminder Status');
+
+  const data = sheet.getDataRange().getValues();
+  let sent = 0, skipped = 0, failed = 0, skippedBuyers = 0, skippedDupes = 0;
+  const seen = {};
+
+  for (let i = 1; i < data.length; i++) {
+    const row   = data[i];
+    const name  = String(row[1] || '').trim();
+    const email = String(row[2] || '').trim();
+    const eLower = email.toLowerCase();
+    const purchase = String(row[PURCHASE_COL - 1] || '').trim();
+    const final = String(row[FINAL_COL - 1] || '').trim();
+
+    if (!email) { skipped++; continue; }
+    if (seen[eLower]) { skippedDupes++; skipped++; continue; }
+    seen[eLower] = true;
+    if (purchase === 'PURCHASED') { skippedBuyers++; skipped++; continue; }
+    if (final.indexOf('SENT') === 0) { skipped++; continue; }
+
+    try {
+      const firstName = extractFirstName(name);
+      const html = buildFinalReminderEmailHtml(firstName);
+      sendViaGmailApi(email, FINAL_SUBJECT, html);
+      sheet.getRange(i + 1, FINAL_COL).setValue('SENT ' + Utilities.formatDate(new Date(), 'Asia/Riyadh', 'yyyy-MM-dd HH:mm'));
+      sent++;
+      Logger.log('✓ [' + sent + '] ' + firstName + ' <' + email + '>');
+      Utilities.sleep(RATE_DELAY_MS);
+    } catch (err) {
+      sheet.getRange(i + 1, FINAL_COL).setValue('FAILED: ' + err.message);
+      failed++;
+      Logger.log('✗ ' + email + ' — ' + err.message);
+    }
+  }
+
+  const summary = 'Final reminder complete — Sent: ' + sent +
+                  ' · Skipped: ' + skipped + ' (buyers: ' + skippedBuyers +
+                  ', dupes: ' + skippedDupes + ')' +
+                  ' · Failed: ' + failed;
+  Logger.log(summary);
+  return summary;
+}
+
+function buildFinalReminderEmailHtml(firstName) {
+  const greeting = firstName
+    ? 'السلام عليكم ورحمة الله وبركاته ' + firstName + '،'
+    : 'السلام عليكم ورحمة الله وبركاته،';
+
+  return '' +
+'<div dir="rtl" style="font-family:Arial,sans-serif;max-width:600px;color:#222;line-height:1.8;">' +
+'  <p>' + greeting + '</p>' +
+'' +
+'  <p style="color:#222;font-size:1.05rem;margin:18px 0 14px;">' +
+'    ورشة <span style="color:#C9A84C;">صناعة الإلهام</span> سعرها <strong>٩٩٩ ريال</strong>.' +
+'  </p>' +
+'' +
+'  <p style="color:#444;">' +
+'    الذكاء الاصطناعي يتحرك بسرعة، والناس حولك تتعلم وتسبق كل يوم. في نقطة، القرار يصير واضح: إما تستثمر في نفسك وتتحرك، أو تنتظر وتتفرج على غيرك يسبقك.' +
+'  </p>' +
+'' +
+'  <p style="color:#444;">' +
+'    لأنك من أهل القائمة، سعرك <strong style="color:#8a6f1e;">٧٩٩ ريال</strong> — حصرياً للمسجلين في قائمة الانتظار — مع هدية دورة "مدخل إلى الذكاء الاصطناعي الإبداعي" كاملة (قيمتها ٤٩٩ ريال) مجاناً.' +
+'  </p>' +
+'' +
+'  <p style="font-size:1.1rem;font-weight:bold;color:#222;line-height:1.5;margin:26px 0 10px;">' +
+'    باقي <span style="color:#C9302C;">٥ مقاعد فقط</span> من أصل ٣٠. و<span style="color:#C9302C;">٦ ساعات</span> على السعر يرجع ٩٩٩ وتنتهي الهدية.' +
+'  </p>' +
+'' +
+'  <p style="color:#666;font-style:italic;margin:0 0 22px;">' +
+'    لو المقعد راح، راح. ولو السعر راح، راح.' +
+'  </p>' +
+'' +
+'  <div style="background:#f9f6f0;border-right:3px solid #C9A84C;padding:20px 24px;margin:28px 0;border-radius:4px;">' +
+'    <p style="margin:0 0 12px;font-weight:bold;color:#222;">تفاصيل الورشة:</p>' +
+'    <p style="margin:6px 0;color:#444;">&#x1F4C5; <strong>التاريخ:</strong> ٣٠ أبريل، ١ مايو، ٢ مايو</p>' +
+'    <p style="margin:6px 0;color:#444;">&#x1F556; <strong>الوقت:</strong> ٧–١٠ مساءً بتوقيت جدة</p>' +
+'    <p style="margin:6px 0;color:#444;">&#x1F465; <strong>المقاعد:</strong> ٥ مقاعد باقية</p>' +
+'    <p style="margin:6px 0 0;color:#8a6f1e;font-weight:bold;">&#x1F4B0; <strong>الاستثمار:</strong> <s>٩٩٩</s> <strong>٧٩٩ ريال</strong> (حصري لأهل القائمة — حتى منتصف الليل)</p>' +
+'  </div>' +
+'' +
+'  <p style="text-align:center;margin:36px 0 28px;">' +
+'    <a href="https://malearnsa.com/creative-ai-workshop/"' +
+'       style="background:#C9A84C;color:#000;padding:16px 38px;text-decoration:none;font-weight:bold;font-size:1rem;display:inline-block;line-height:1.3;">' +
+'      احجز مقعدك الآن' +
+'    </a>' +
+'  </p>' +
+'' +
+'  <p style="color:#666;font-size:0.9rem;text-align:center;">' +
+'    لو عندك سؤال قبل ما تقرر، رد على الإيميل.' +
+'  </p>' +
+'' +
+'  <hr style="border:none;border-top:1px solid #eee;margin:36px 0 24px;">' +
+'  <p style="margin:0;">' +
+'    أشوفك في الورشة،<br>' +
+'    <strong>ماجد عنقاوي</strong><br>' +
+'    <span style="color:#888;font-size:0.85rem;">صناعة الإلهام · MA Learn</span>' +
+'  </p>' +
+'</div>';
 }
