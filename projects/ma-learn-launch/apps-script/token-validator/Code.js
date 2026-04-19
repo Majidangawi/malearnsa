@@ -126,6 +126,7 @@ function doGet(e) {
     else if (action === 'admin_update_linkbio_header') result = adminUpdateLinkbioHeader(e.parameter);
     else if (action === 'admin_increment_linkbio_click') result = adminIncrementLinkbioClick(e.parameter);
     else if (action === 'admin_send_email')            result = adminSendEmail(e.parameter);
+    else if (action === 'admin_add_email_template')    result = adminAddEmailTemplate(e.parameter);
     else                                      result = { error: 'unknown_action' };
 
     output.setContent(JSON.stringify(result));
@@ -1894,6 +1895,28 @@ function adminIncrementLinkbioClick(params) {
     }
   }
   return { ok: false, error: 'link_not_found' };
+}
+
+function adminAddEmailTemplate(params) {
+  if (params.admin_token !== ADMIN_TOKEN) return { ok: false, error: 'unauthorized' };
+  const ss = SpreadsheetApp.openById(MAIN_SHEET_ID);
+  const sh = ss.getSheetByName('EmailTemplates');
+  if (!sh) return { ok: false, error: 'no EmailTemplates tab' };
+  const templateId = String(params.template_id || ('tpl-' + Utilities.getUuid().slice(0, 8).toLowerCase()));
+  const data = sh.getDataRange().getValues();
+  for (let r = 1; r < data.length; r++) {
+    if (String(data[r][0]) === templateId) return { ok: false, error: 'template_id_exists' };
+  }
+  sh.appendRow([
+    templateId,
+    String(params.name || 'Untitled'),
+    String(params.subject_ar || ''),
+    String(params.subject_en || ''),
+    String(params.body_ar || ''),
+    String(params.body_en || ''),
+    String(params.variables || 'name'),
+  ]);
+  return { ok: true, templateId: templateId };
 }
 
 function adminSendEmail(params) {
