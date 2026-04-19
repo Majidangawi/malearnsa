@@ -1682,7 +1682,8 @@ function adminToggleLesson(params) {
   const sh = ss.getSheetByName(LESSONS_SHEET);
   const data = sh.getDataRange().getValues();
   const header = data[0];
-  const iId = header.indexOf('LessonID');
+  let iId = header.indexOf('LessonID');
+  if (iId === -1) iId = header.indexOf('ID');
   const iActive = header.indexOf('Active');
   if (iId === -1 || iActive === -1) return { ok: false, error: 'schema mismatch' };
 
