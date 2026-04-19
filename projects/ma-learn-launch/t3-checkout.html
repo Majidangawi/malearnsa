@@ -1,9 +1,26 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
+  <!-- Meta Pixel Code -->
+  <script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '961157069802409');
+  fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=961157069802409&ev=PageView&noscript=1"
+  /></noscript>
+  <!-- End Meta Pixel Code -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ورشة الذكاء الاصطناعي الإبداعي — MA Learn</title>
+  <title>ورشة صناعة الإلهام | MA Learn</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700&display=swap" rel="stylesheet">
   <script src="https://cdn.tailwindcss.com"></script>
@@ -191,13 +208,11 @@
         </div>
 
         <h1 style="font-size:clamp(1.8rem,4.5vw,2.8rem);font-weight:700;line-height:1.2;margin-bottom:16px;">
-          ورشة الذكاء الاصطناعي<br>
-          <span style="color:var(--gold);">الإبداعي</span>
+          ورشة <span style="color:var(--gold);">صناعة الإلهام</span>
         </h1>
 
         <p style="font-size:1rem;color:var(--silver);font-weight:300;line-height:1.8;margin-bottom:8px;">
-          مو ورشة عن أدوات.<br>
-          ورشة عن كيف تفكر، تبني فكرة من الصفر، وتسلّم شغل احترافي — بالذكاء الاصطناعي.
+          أنتج عملك الإبداعي باستخدام أدوات الذكاء الاصطناعي — من البريف إلى التسليم.
         </p>
 
         <!-- Dates strip -->
@@ -260,8 +275,8 @@
             </div>
           </div>
           <p style="font-size:0.85rem;color:var(--silver);font-weight:300;line-height:1.8;">
-            مع التسجيل في الورشة، تحصل فوراً على الدورة المسجلة الكاملة — ١٩ درس، وصول مدى الحياة.
-            <br>هديتك من اليوم الأول.
+            مع التسجيل في الورشة، تحصل على الدورة المسجلة الكاملة — ٦ محاور، وصول مدى الحياة.
+            <br>المحاور تفتحلك تباعاً قبل ورشتك عشان تجي جاهز.
           </p>
           <div style="display:flex;align-items:center;gap:8px;margin-top:14px;">
             <span style="text-decoration:line-through;font-size:0.85rem;color:var(--grey);">٤٩٩ ر.س</span>
@@ -307,7 +322,7 @@
             المجموعة الأولى اكتملت.<br>
             سجّل اهتمامك للمجموعة القادمة.
           </p>
-          <a href="mailto:support@malearnsa.com?subject=قائمة الانتظار — ورشة الذكاء الاصطناعي"
+          <a href="mailto:support@malearnsa.com?subject=قائمة الانتظار — ورشة صناعة الإلهام"
              style="display:inline-block;background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.35);color:var(--gold);padding:12px 28px;border-radius:8px;text-decoration:none;font-size:0.9rem;font-weight:700;">
             سجّل في قائمة الانتظار
           </a>
@@ -327,29 +342,16 @@
             </div>
           </div>
 
-          <!-- Early bird countdown + price -->
+          <!-- Workshop price -->
           <div style="margin-bottom:20px;">
-            <div id="early-bird-block" style="background:rgba(201,168,76,0.07);border:1px solid rgba(201,168,76,0.25);border-radius:10px;padding:14px 16px;">
-              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
-                <span style="font-size:0.75rem;color:var(--gold);font-weight:700;letter-spacing:0.05em;">⚡ سعر Early Bird</span>
+            <div style="background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.08);border-radius:10px;padding:14px 16px;">
+              <div style="display:flex;justify-content:space-between;align-items:center;">
+                <span style="font-size:0.75rem;color:var(--silver);font-weight:700;letter-spacing:0.05em;">سعر الورشة</span>
                 <div style="display:flex;align-items:baseline;gap:6px;">
                   <span id="current-price-display" style="font-size:1.8rem;font-weight:700;color:var(--gold);"></span>
                   <span style="font-size:0.8rem;color:var(--grey);">ر.س</span>
                 </div>
               </div>
-              <div id="countdown-wrapper" style="display:none;">
-                <p style="font-size:0.7rem;color:var(--grey);margin-bottom:8px;">ينتهي العرض خلال:</p>
-                <div style="display:flex;align-items:center;gap:4px;" id="countdown-display">
-                  <div class="countdown-unit"><span class="countdown-num" id="cd-days">0</span><span class="countdown-label">يوم</span></div>
-                  <span class="countdown-sep">:</span>
-                  <div class="countdown-unit"><span class="countdown-num" id="cd-hours">00</span><span class="countdown-label">ساعة</span></div>
-                  <span class="countdown-sep">:</span>
-                  <div class="countdown-unit"><span class="countdown-num" id="cd-mins">00</span><span class="countdown-label">دقيقة</span></div>
-                  <span class="countdown-sep">:</span>
-                  <div class="countdown-unit"><span class="countdown-num" id="cd-secs">00</span><span class="countdown-label">ثانية</span></div>
-                </div>
-              </div>
-              <p id="regular-price-note" style="display:none;font-size:0.75rem;color:var(--grey);"></p>
             </div>
           </div>
 
@@ -462,14 +464,14 @@
   <p style="font-size:0.7rem;color:#444;direction:ltr;margin-bottom:14px;">support@malearnsa.com &nbsp;·&nbsp; +966 560 440 113</p>
   <div style="display:inline-flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:8px;">
   <a href="https://malearnsa.com/brand_assets/Freelance-certificate-2026.pdf" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:12px;background:#ffffff;border-radius:10px;padding:10px 16px;direction:rtl;text-decoration:none;">
-    <img src="/brand_assets/Freelance.jpg" alt="وثيقة العمل الحر" style="height:44px;width:auto;display:block;">
+    <img src="https://malearnsa.com/brand_assets/Freelance.jpg" alt="وثيقة العمل الحر" style="height:44px;width:auto;display:block;">
     <div style="border-right:1px solid #ddd;padding-right:12px;text-align:right;">
       <p style="font-size:0.55rem;color:#888;margin:0 0 3px 0;font-family:Cairo,Arial,sans-serif;line-height:1;">رقم الوثيقة</p>
       <p style="font-size:0.75rem;font-weight:700;color:#222;margin:0;font-family:Arial,sans-serif;letter-spacing:0.5px;line-height:1;">FL-163949047</p>
     </div>
   </a>
   <a href="https://malearnsa.com/brand_assets/SCBC-Certificate-2026.pdf" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:12px;background:#ffffff;border-radius:10px;padding:10px 16px;direction:rtl;text-decoration:none;">
-    <img src="/brand_assets/SCBC.png" alt="SCBC" style="height:44px;width:auto;display:block;">
+    <img src="https://malearnsa.com/brand_assets/SCBC.png" alt="SCBC" style="height:44px;width:auto;display:block;">
     <div style="border-right:1px solid #ddd;padding-right:12px;text-align:right;">
       <p style="font-size:0.55rem;color:#888;margin:0 0 3px 0;font-family:Cairo,Arial,sans-serif;line-height:1;">رقم الترخيص</p>
       <p style="font-size:0.75rem;font-weight:700;color:#222;margin:0;font-family:Arial,sans-serif;letter-spacing:0.5px;line-height:1;">0000276647</p>
@@ -479,16 +481,13 @@
 </footer>
 
   <script>
-    const APPS_SCRIPT_URL   = 'https://script.google.com/macros/s/AKfycbzXC4Ef5WxNX0aPov7Q1Kdn2DiXuODd74w3iOCtovrw86o9grwVREqNsRdhlyQkoBnQ/exec';
+    const APPS_SCRIPT_URL   = 'https://script.google.com/macros/s/AKfycbzt5pyO7CpSVFRgH-CaCT-N5G6m-NBXiU6RA_0xXU5vl3IRSP_i3zFNdc0p3saXCwpcIg/exec';
     const MOYASAR_KEY       = 'pk_live_ciyD54kvT4b6bWev3RNzEjzLXpJPC8DmnbgcW47H';
-    const EARLY_BIRD_END    = new Date('2026-04-19T23:59:59+03:00'); // KSA time
-    const PRICE_EARLY       = 79900;  // halalas
-    const PRICE_REGULAR     = 99900;
+    const PRICE_REGULAR     = 99900;  // halalas
     const PRODUCT_ID        = 'creative-ai-workshop-t3';
 
-    let currentBaseAmount   = PRICE_EARLY;
+    let currentBaseAmount   = PRICE_REGULAR;
     let appliedCoupon       = null;
-    let countdownInterval   = null;
 
     // ── On load: check seats + init pricing ──────────────
     (async function init() {
@@ -497,50 +496,13 @@
     })();
 
     function initPricing() {
-      const now      = new Date();
-      const isEarly  = now < EARLY_BIRD_END;
-      currentBaseAmount = isEarly ? PRICE_EARLY : PRICE_REGULAR;
-
       const priceDisplay = document.getElementById('current-price-display');
       const origLabel    = document.getElementById('price-original-label');
       const finalLabel   = document.getElementById('price-final-label');
-      const eb           = document.getElementById('early-bird-block');
 
       priceDisplay.textContent = (currentBaseAmount / 100).toFixed(0);
       origLabel.textContent    = (currentBaseAmount / 100).toFixed(0) + ' ر.س';
       finalLabel.textContent   = (currentBaseAmount / 100).toFixed(0) + ' ر.س';
-
-      if (isEarly) {
-        document.getElementById('countdown-wrapper').style.display = 'block';
-        startCountdown();
-      } else {
-        eb.style.borderColor = 'rgba(255,255,255,0.08)';
-        eb.style.background  = 'rgba(255,255,255,0.02)';
-        document.getElementById('regular-price-note').style.display = 'block';
-        document.getElementById('regular-price-note').textContent   = 'السعر الأصلي للورشة';
-      }
-    }
-
-    function startCountdown() {
-      function update() {
-        const diff = EARLY_BIRD_END - new Date();
-        if (diff <= 0) {
-          clearInterval(countdownInterval);
-          // Price expired — reload to show regular price
-          location.reload();
-          return;
-        }
-        const days  = Math.floor(diff / 86400000);
-        const hours = Math.floor((diff % 86400000) / 3600000);
-        const mins  = Math.floor((diff % 3600000) / 60000);
-        const secs  = Math.floor((diff % 60000) / 1000);
-        document.getElementById('cd-days').textContent  = days;
-        document.getElementById('cd-hours').textContent = String(hours).padStart(2, '0');
-        document.getElementById('cd-mins').textContent  = String(mins).padStart(2, '0');
-        document.getElementById('cd-secs').textContent  = String(secs).padStart(2, '0');
-      }
-      update();
-      countdownInterval = setInterval(update, 1000);
     }
 
     async function checkSeats() {
@@ -667,11 +629,21 @@
         product: PRODUCT_ID
       }));
 
+      // Free-purchase branch — Moyasar rejects 0 SAR amounts, so we skip the
+      // payment gateway entirely and redirect straight to the success page
+      // with a synthetic payment_id. The success page fires complete_purchase,
+      // which logs the customer, assigns a token, sends the email, and notifies.
+      if (finalAmount === 0) {
+        const freeId = 'free_' + Date.now() + '_' + Math.random().toString(36).substr(2, 8);
+        window.location.href = 'https://checkout.malearnsa.com/creative-ai-workshop/success.html?id=' + freeId + '&status=paid';
+        return;
+      }
+
       Moyasar.init({
         element:              document.getElementById('moyasar-form'),
         amount:               finalAmount,
         currency:             'SAR',
-        description:          `ورشة الذكاء الاصطناعي الإبداعي — MA Learn (${priceSAR} ر.س)`,
+        description:          `ورشة صناعة الإلهام — MA Learn (${priceSAR} ر.س)`,
         publishable_api_key:  MOYASAR_KEY,
         callback_url:         'https://checkout.malearnsa.com/creative-ai-workshop/success.html',
         metadata:             { email, phone, coupon: appliedCoupon ? appliedCoupon.code : '' },
@@ -697,14 +669,14 @@
 <div style="text-align:center;padding:20px 24px 28px;position:relative;z-index:1;">
   <div style="display:inline-flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:center;">
   <a href="https://malearnsa.com/brand_assets/Freelance-certificate-2026.pdf" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:12px;background:#ffffff;border-radius:10px;padding:10px 16px;direction:rtl;text-decoration:none;">
-    <img src="/brand_assets/Freelance.jpg" alt="وثيقة العمل الحر" style="height:44px;width:auto;display:block;">
+    <img src="https://malearnsa.com/brand_assets/Freelance.jpg" alt="وثيقة العمل الحر" style="height:44px;width:auto;display:block;">
     <div style="border-right:1px solid #ddd;padding-right:12px;text-align:right;">
       <p style="font-size:0.55rem;color:#888;margin:0 0 3px 0;font-family:Cairo,Arial,sans-serif;line-height:1;">رقم الوثيقة</p>
       <p style="font-size:0.75rem;font-weight:700;color:#222;margin:0;font-family:Arial,sans-serif;letter-spacing:0.5px;line-height:1;">FL-163949047</p>
     </div>
   </a>
   <a href="https://malearnsa.com/brand_assets/SCBC-Certificate-2026.pdf" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:12px;background:#ffffff;border-radius:10px;padding:10px 16px;direction:rtl;text-decoration:none;">
-    <img src="/brand_assets/SCBC.png" alt="SCBC" style="height:44px;width:auto;display:block;">
+    <img src="https://malearnsa.com/brand_assets/SCBC.png" alt="SCBC" style="height:44px;width:auto;display:block;">
     <div style="border-right:1px solid #ddd;padding-right:12px;text-align:right;">
       <p style="font-size:0.55rem;color:#888;margin:0 0 3px 0;font-family:Cairo,Arial,sans-serif;line-height:1;">رقم الترخيص</p>
       <p style="font-size:0.75rem;font-weight:700;color:#222;margin:0;font-family:Arial,sans-serif;letter-spacing:0.5px;line-height:1;">0000276647</p>
