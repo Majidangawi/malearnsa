@@ -101,6 +101,22 @@ function doPost(e) {
       sheet.getRange(lastRow, 1, 1, 5).setBackground('#f9f6ef');
     }
 
+    // 1b. Auto-add to newsletter Subscribers (via token-validator admin endpoint).
+    // Requires Script Properties: TOKEN_VALIDATOR_URL + ADMIN_TOKEN set via File → Project settings → Script properties.
+    try {
+      const tvUrl = PropertiesService.getScriptProperties().getProperty('TOKEN_VALIDATOR_URL');
+      const adminToken = PropertiesService.getScriptProperties().getProperty('ADMIN_TOKEN');
+      if (tvUrl && adminToken && email) {
+        const qs = 'action=admin_upsert_subscriber'
+          + '&admin_token=' + encodeURIComponent(adminToken)
+          + '&email=' + encodeURIComponent(email)
+          + '&name=' + encodeURIComponent(name || '')
+          + '&source=waitlist'
+          + '&language=AR';
+        UrlFetchApp.fetch(tvUrl + '?' + qs, { method: 'get', muteHttpExceptions: true, followRedirects: true });
+      }
+    } catch (_) { /* never block the waitlist submit */ }
+
     // 2. Notify Majid
     sendNotification(name, email, phone);
 

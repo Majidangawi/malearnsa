@@ -251,6 +251,9 @@ function completeT2Purchase(params) {
     customersSheet.appendRow([dateStr, email, name, phone, product, amount, coupon, paymentId]);
   }
 
+  // 1b. Auto-add to Subscribers list (fire-and-forget — never blocks purchase).
+  try { _admin_upsert_subscriber({ admin_token: ADMIN_TOKEN, email: email, name: name, source: 'buyer', language: 'AR' }); } catch (e) {}
+
   // 2. Find and assign token
   const tokensSheet = ss.getSheetByName(TOKENS_SHEET);
   if (!tokensSheet) return { success: false, reason: 'no_tokens_sheet' };
@@ -329,6 +332,9 @@ function completeT3Purchase(params) {
     customersSheet.appendRow([dateStr, email, name, phone, loggedProduct, amount, coupon, paymentId]);
   }
 
+  // 2b. Auto-add to Subscribers list.
+  try { _admin_upsert_subscriber({ admin_token: ADMIN_TOKEN, email: email, name: name, source: 'buyer', language: 'AR' }); } catch (e) {}
+
   // 3. Find and assign T2 gift token
   const tokensSheet = ss.getSheetByName(TOKENS_SHEET);
   let t2Token = null;
@@ -389,6 +395,9 @@ function completeBLPurchase(params) {
     const dateStr = Utilities.formatDate(new Date(), 'Asia/Riyadh', 'yyyy-MM-dd HH:mm:ss');
     customersSheet.appendRow([dateStr, email, name, phone, BL_PRODUCT, amount, coupon, paymentId]);
   }
+
+  // 1b. Auto-add to Subscribers list.
+  try { _admin_upsert_subscriber({ admin_token: ADMIN_TOKEN, email: email, name: name, source: 'buyer', language: 'AR' }); } catch (e) {}
 
   // 2. Find and assign a beyond-lighting token
   const tokensSheet = ss.getSheetByName(TOKENS_SHEET);
@@ -456,6 +465,9 @@ function completePPPurchase(params) {
     const dateStr = Utilities.formatDate(new Date(), 'Asia/Riyadh', 'yyyy-MM-dd HH:mm:ss');
     customersSheet.appendRow([dateStr, email, name, phone, PP_PRODUCT, amount, coupon, paymentId]);
   }
+
+  // 1b. Auto-add to Subscribers list.
+  try { _admin_upsert_subscriber({ admin_token: ADMIN_TOKEN, email: email, name: name, source: 'buyer', language: 'AR' }); } catch (e) {}
 
   // 2. Find and assign a prompt-pack token
   const tokensSheet = ss.getSheetByName(TOKENS_SHEET);
