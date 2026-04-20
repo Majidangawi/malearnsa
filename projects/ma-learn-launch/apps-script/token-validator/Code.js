@@ -1914,15 +1914,33 @@ function adminAddEmailTemplate(params) {
   for (let r = 1; r < data.length; r++) {
     if (String(data[r][0]) === templateId) return { ok: false, error: 'template_id_exists' };
   }
-  sh.appendRow([
-    templateId,
-    String(params.name || 'Untitled'),
-    String(params.subject_ar || ''),
-    String(params.subject_en || ''),
-    String(params.body_ar || ''),
-    String(params.body_en || ''),
-    String(params.variables || 'name'),
-  ]);
+
+  // Build header map so we can write columns by name (and only touch Blocks if present).
+  const headers = data.length > 0 ? data[0] : [];
+  const headerMap = {};
+  for (let c = 0; c < headers.length; c++) headerMap[String(headers[c])] = c;
+  const width = headers.length > 0 ? headers.length : 7;
+  const row = new Array(width).fill('');
+
+  function setCol(name, value, fallbackIdx) {
+    if (headerMap[name] !== undefined) row[headerMap[name]] = value;
+    else if (typeof fallbackIdx === 'number' && fallbackIdx < row.length) row[fallbackIdx] = value;
+  }
+
+  // Canonical column layout (v1): TemplateID, Name, SubjectAR, SubjectEN, BodyAR, BodyEN, Variables, (Blocks).
+  setCol('TemplateID', templateId, 0);
+  setCol('Name', String(params.name || 'Untitled'), 1);
+  setCol('SubjectAR', String(params.subject_ar || ''), 2);
+  setCol('SubjectEN', String(params.subject_en || ''), 3);
+  setCol('BodyAR', String(params.body_ar || ''), 4);
+  setCol('BodyEN', String(params.body_en || ''), 5);
+  setCol('Variables', String(params.variables || 'name'), 6);
+  // Blocks column is optional — only written if the header exists.
+  if (headerMap['Blocks'] !== undefined) {
+    row[headerMap['Blocks']] = String(params.blocks || '');
+  }
+
+  sh.appendRow(row);
   return { ok: true, templateId: templateId };
 }
 
