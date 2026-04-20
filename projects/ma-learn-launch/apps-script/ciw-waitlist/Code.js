@@ -102,17 +102,19 @@ function doPost(e) {
     }
 
     // 1b. Auto-add to newsletter Subscribers (via token-validator admin endpoint).
-    // Requires Script Properties: TOKEN_VALIDATOR_URL + ADMIN_TOKEN set via File → Project settings → Script properties.
+    // Hardcoded like token-validator's ADMIN_TOKEN. Update both in sync if rotated.
     try {
-      const tvUrl = PropertiesService.getScriptProperties().getProperty('TOKEN_VALIDATOR_URL');
-      const adminToken = PropertiesService.getScriptProperties().getProperty('ADMIN_TOKEN');
-      if (tvUrl && adminToken && email) {
+      const tvUrl = 'https://script.google.com/macros/s/AKfycbznjcsYu8gLDZqFJGededAQaATad_L8vlhRQV04pOqh57HB5nFVRy9zUHAcg6goyj8DKA/exec';
+      const adminToken = 'MAL-ADMIN-2026';
+      const subscribersSheetId = '17OXBVq8XBXDWUY7Zh88MTycqMYJA8zYRtGSk9WE08QI'; // staging; change to prod sheet ID when prod dashboard ships
+      if (email) {
         const qs = 'action=admin_upsert_subscriber'
           + '&admin_token=' + encodeURIComponent(adminToken)
           + '&email=' + encodeURIComponent(email)
           + '&name=' + encodeURIComponent(name || '')
           + '&source=waitlist'
-          + '&language=AR';
+          + '&language=AR'
+          + '&sheetId=' + encodeURIComponent(subscribersSheetId);
         UrlFetchApp.fetch(tvUrl + '?' + qs, { method: 'get', muteHttpExceptions: true, followRedirects: true });
       }
     } catch (_) { /* never block the waitlist submit */ }
