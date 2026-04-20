@@ -1984,7 +1984,13 @@ function adminSendEmail(params) {
 // ---------- helpers (prefixed with _nl to avoid collisions) ----------
 function _nl_lc(s) { return String(s || '').trim().toLowerCase(); }
 function _nl_now() { return Utilities.formatDate(new Date(), 'Asia/Riyadh', "yyyy-MM-dd'T'HH:mm:ss"); }
-function _nl_sheet(name) { return SpreadsheetApp.openById(MAIN_SHEET_ID).getSheetByName(name); }
+function _nl_sheet(name, sheetId) {
+  // Newsletter ops accept an optional sheetId override from the caller so the
+  // staging dashboard (pointing at the STAGING sheet) can write newsletters
+  // separate from the prod sheet where purchases land.
+  var id = sheetId ? String(sheetId).trim() : MAIN_SHEET_ID;
+  return SpreadsheetApp.openById(id).getSheetByName(name);
+}
 function _nl_rndToken(n) {
   var a = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
   var s = '';
@@ -2006,7 +2012,7 @@ function _admin_upsert_subscriber(p) {
   var src = String(p.source || '').trim();
   if (!src) return { ok: false, error: 'missing_source' };
 
-  var sh = _nl_sheet('Subscribers');
+  var sh = _nl_sheet('Subscribers', p.sheetId);
   if (!sh) return { ok: false, error: 'Subscribers_tab_missing' };
   var headers = _nl_headerMap(sh);
   var last = sh.getLastRow();
@@ -2062,7 +2068,7 @@ function _admin_mark_unsubscribed(p) {
   var token = String(p.token || '').trim();
   if (!email && !token) return { ok: false, error: 'missing_email_or_token' };
 
-  var sh = _nl_sheet('Subscribers');
+  var sh = _nl_sheet('Subscribers', p.sheetId);
   if (!sh) return { ok: false, error: 'Subscribers_tab_missing' };
   var headers = _nl_headerMap(sh);
   var last = sh.getLastRow();
@@ -2085,7 +2091,7 @@ function _admin_mark_unsubscribed(p) {
 // ---------- admin_create_newsletter ----------
 function _admin_create_newsletter(p) {
   if (p.admin_token !== ADMIN_TOKEN) return { ok: false, error: 'unauthorized' };
-  var sh = _nl_sheet('Newsletters');
+  var sh = _nl_sheet('Newsletters', p.sheetId);
   if (!sh) return { ok: false, error: 'Newsletters_tab_missing' };
   var headers = _nl_headerMap(sh);
   var id = 'nl_' + _nl_rndToken(12);
@@ -2112,7 +2118,7 @@ function _admin_update_newsletter(p) {
   var id = String(p.newsletterId || '').trim();
   if (!id) return { ok: false, error: 'missing_newsletterId' };
 
-  var sh = _nl_sheet('Newsletters');
+  var sh = _nl_sheet('Newsletters', p.sheetId);
   if (!sh) return { ok: false, error: 'Newsletters_tab_missing' };
   var headers = _nl_headerMap(sh);
   var data = sh.getRange(2, 1, sh.getLastRow() - 1, sh.getLastColumn()).getValues();
@@ -2139,7 +2145,7 @@ function _admin_mark_newsletter_status(p) {
   var fromStatus = String(p.fromStatus || '').trim();
   if (!id || !toStatus) return { ok: false, error: 'missing' };
 
-  var sh = _nl_sheet('Newsletters');
+  var sh = _nl_sheet('Newsletters', p.sheetId);
   if (!sh) return { ok: false, error: 'Newsletters_tab_missing' };
   var headers = _nl_headerMap(sh);
   var data = sh.getRange(2, 1, sh.getLastRow() - 1, sh.getLastColumn()).getValues();
@@ -2164,7 +2170,7 @@ function _admin_mark_newsletter_status(p) {
 // ---------- admin_append_newsletter_event ----------
 function _admin_append_newsletter_event(p) {
   if (p.admin_token !== ADMIN_TOKEN) return { ok: false, error: 'unauthorized' };
-  var sh = _nl_sheet('NewsletterEvents');
+  var sh = _nl_sheet('NewsletterEvents', p.sheetId);
   if (!sh) return { ok: false, error: 'NewsletterEvents_tab_missing' };
   var headers = _nl_headerMap(sh);
   var row = new Array(sh.getLastColumn()).fill('');
@@ -2177,18 +2183,18 @@ function _admin_append_newsletter_event(p) {
   row[headers['UserAgent']]     = String(p.userAgent || '').slice(0, 200);
   sh.appendRow(row);
 
-  if (p.newsletterId) _nl_incrementCounter(p.newsletterId, p.event);
+  if (p.newsletterId) _nl_incrementCounter(p.newsletterId, p.event, p.sheetId);
   return { ok: true };
 }
 
-function _nl_incrementCounter(newsletterId, event) {
+function _nl_incrementCounter(newsletterId, event, sheetId) {
   var map = {
     delivered: 'DeliveredCount', opened: 'OpenCount', clicked: 'ClickCount',
     unsubscribed: 'UnsubCount',  hard_bounce: 'BounceCount', soft_bounce: 'BounceCount',
   };
   var col = map[event];
   if (!col) return;
-  var sh = _nl_sheet('Newsletters');
+  var sh = _nl_sheet('Newsletters', sheetId);
   if (!sh) return;
   var headers = _nl_headerMap(sh);
   var data = sh.getRange(2, 1, sh.getLastRow() - 1, sh.getLastColumn()).getValues();
