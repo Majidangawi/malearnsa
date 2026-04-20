@@ -127,6 +127,13 @@ function doGet(e) {
     else if (action === 'admin_increment_linkbio_click') result = adminIncrementLinkbioClick(e.parameter);
     else if (action === 'admin_send_email')            result = adminSendEmail(e.parameter);
     else if (action === 'admin_add_email_template')    result = adminAddEmailTemplate(e.parameter);
+    else if (action === 'admin_upsert_subscriber')       result = _admin_upsert_subscriber(e.parameter);
+    else if (action === 'admin_mark_unsubscribed')       result = _admin_mark_unsubscribed(e.parameter);
+    else if (action === 'admin_create_newsletter')       result = _admin_create_newsletter(e.parameter);
+    else if (action === 'admin_update_newsletter')       result = _admin_update_newsletter(e.parameter);
+    else if (action === 'admin_mark_newsletter_status')  result = _admin_mark_newsletter_status(e.parameter);
+    else if (action === 'admin_append_newsletter_event') result = _admin_append_newsletter_event(e.parameter);
+    else if (action === 'admin_upload_email_image')      result = _admin_upload_email_image(e.parameter);
     else                                      result = { error: 'unknown_action' };
 
     output.setContent(JSON.stringify(result));
@@ -1935,4 +1942,257 @@ function adminSendEmail(params) {
   } catch (err) {
     return { ok: false, error: String(err) };
   }
+}
+
+// ═════════════════════════════════════════════════════════════════════
+// NEWSLETTER + SUBSCRIBERS — admin endpoints (2026-04-20 rollout)
+// ═════════════════════════════════════════════════════════════════════
+// Writes to: Subscribers, Newsletters, NewsletterEvents tabs.
+// Every action checks admin_token against ADMIN_TOKEN constant.
+// Schema reference: docs/sheet-schema.md in ma-learn-dashboard repo.
+
+// ---------- helpers (prefixed with _nl to avoid collisions) ----------
+function _nl_lc(s) { return String(s || '').trim().toLowerCase(); }
+function _nl_now() { return Utilities.formatDate(new Date(), 'Asia/Riyadh', "yyyy-MM-dd'T'HH:mm:ss"); }
+function _nl_sheet(name) { return SpreadsheetApp.openById(MAIN_SHEET_ID).getSheetByName(name); }
+function _nl_rndToken(n) {
+  var a = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+  var s = '';
+  for (var i = 0; i < (n || 24); i++) s += a.charAt(Math.floor(Math.random() * a.length));
+  return s;
+}
+function _nl_headerMap(sheet) {
+  var row = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+  var map = {};
+  row.forEach(function (h, i) { map[String(h).trim()] = i; });
+  return map;
+}
+
+// ---------- admin_upsert_subscriber ----------
+function _admin_upsert_subscriber(p) {
+  if (p.admin_token !== ADMIN_TOKEN) return { ok: false, error: 'unauthorized' };
+  var email = _nl_lc(p.email);
+  if (!email) return { ok: false, error: 'missing_email' };
+  var src = String(p.source || '').trim();
+  if (!src) return { ok: false, error: 'missing_source' };
+
+  var sh = _nl_sheet('Subscribers');
+  if (!sh) return { ok: false, error: 'Subscribers_tab_missing' };
+  var headers = _nl_headerMap(sh);
+  var last = sh.getLastRow();
+  var data = last > 1 ? sh.getRange(2, 1, last - 1, sh.getLastColumn()).getValues() : [];
+
+  var rowIndex = -1;
+  for (var i = 0; i < data.length; i++) {
+    if (_nl_lc(data[i][headers['Email']]) === email) { rowIndex = i + 2; break; }
+  }
+
+  if (rowIndex > 0) {
+    var sources = String(sh.getRange(rowIndex, headers['Sources'] + 1).getValue() || '')
+      .split(',').map(function (s) { return s.trim(); }).filter(Boolean);
+    if (sources.indexOf(src) === -1) sources.push(src);
+    sh.getRange(rowIndex, headers['Sources'] + 1).setValue(sources.join(','));
+    sh.getRange(rowIndex, headers['LastSourceAt'] + 1).setValue(_nl_now());
+    if (p.name) sh.getRange(rowIndex, headers['Name'] + 1).setValue(p.name);
+    return { ok: true, action: 'updated', email: email };
+  }
+
+  var newRow = new Array(sh.getLastColumn()).fill('');
+  newRow[headers['Email']]            = email;
+  newRow[headers['Name']]             = p.name || '';
+  newRow[headers['Sources']]          = src;
+  newRow[headers['Language']]         = (p.language === 'EN' ? 'EN' : 'AR');
+  newRow[headers['AddedAt']]          = _nl_now();
+  newRow[headers['LastSourceAt']]     = _nl_now();
+  newRow[headers['Status']]           = 'active';
+  newRow[headers['UnsubscribeToken']] = _nl_rndToken(24);
+  sh.appendRow(newRow);
+
+  // Fire-and-forget welcome email (backend handles; won't fail subscribe on error).
+  try {
+    var backendUrl = PropertiesService.getScriptProperties().getProperty('BACKEND_URL');
+    if (backendUrl) {
+      UrlFetchApp.fetch(backendUrl + '/api/writes/newsletter/send_welcome', {
+        method: 'post',
+        contentType: 'application/json',
+        muteHttpExceptions: true,
+        headers: { 'x-admin-token': ADMIN_TOKEN },
+        payload: JSON.stringify({ email: email, name: p.name || '', language: newRow[headers['Language']] }),
+      });
+    }
+  } catch (e) { /* swallow */ }
+
+  return { ok: true, action: 'inserted', email: email };
+}
+
+// ---------- admin_mark_unsubscribed ----------
+function _admin_mark_unsubscribed(p) {
+  if (p.admin_token !== ADMIN_TOKEN) return { ok: false, error: 'unauthorized' };
+  var email = _nl_lc(p.email);
+  var token = String(p.token || '').trim();
+  if (!email && !token) return { ok: false, error: 'missing_email_or_token' };
+
+  var sh = _nl_sheet('Subscribers');
+  if (!sh) return { ok: false, error: 'Subscribers_tab_missing' };
+  var headers = _nl_headerMap(sh);
+  var last = sh.getLastRow();
+  if (last < 2) return { ok: false, error: 'no_rows' };
+  var data = sh.getRange(2, 1, last - 1, sh.getLastColumn()).getValues();
+
+  for (var i = 0; i < data.length; i++) {
+    var row = data[i];
+    if ((email && _nl_lc(row[headers['Email']]) === email) ||
+        (token && row[headers['UnsubscribeToken']] === token)) {
+      var r = i + 2;
+      sh.getRange(r, headers['Status'] + 1).setValue('unsubscribed');
+      sh.getRange(r, headers['UnsubscribedAt'] + 1).setValue(_nl_now());
+      return { ok: true, email: _nl_lc(row[headers['Email']]) };
+    }
+  }
+  return { ok: false, error: 'not_found' };
+}
+
+// ---------- admin_create_newsletter ----------
+function _admin_create_newsletter(p) {
+  if (p.admin_token !== ADMIN_TOKEN) return { ok: false, error: 'unauthorized' };
+  var sh = _nl_sheet('Newsletters');
+  if (!sh) return { ok: false, error: 'Newsletters_tab_missing' };
+  var headers = _nl_headerMap(sh);
+  var id = 'nl_' + _nl_rndToken(12);
+  var row = new Array(sh.getLastColumn()).fill('');
+  row[headers['NewsletterID']]     = id;
+  row[headers['Subject']]          = p.subject || '';
+  row[headers['Preheader']]        = p.preheader || '';
+  row[headers['Language']]         = (p.language === 'EN' ? 'EN' : 'AR');
+  row[headers['Blocks']]           = p.blocks || '[]';
+  row[headers['SegmentFilter']]    = p.segmentFilter || '{}';
+  row[headers['Status']]           = 'draft';
+  row[headers['CreatedAt']]        = _nl_now();
+  row[headers['UpdatedAt']]        = _nl_now();
+  row[headers['IdempotencyKey']]   = _nl_rndToken(24);
+  row[headers['CreatedBy']]        = p.createdBy || 'majid';
+  row[headers['CloneOf']]          = p.cloneOf || '';
+  sh.appendRow(row);
+  return { ok: true, newsletterId: id };
+}
+
+// ---------- admin_update_newsletter ----------
+function _admin_update_newsletter(p) {
+  if (p.admin_token !== ADMIN_TOKEN) return { ok: false, error: 'unauthorized' };
+  var id = String(p.newsletterId || '').trim();
+  if (!id) return { ok: false, error: 'missing_newsletterId' };
+
+  var sh = _nl_sheet('Newsletters');
+  if (!sh) return { ok: false, error: 'Newsletters_tab_missing' };
+  var headers = _nl_headerMap(sh);
+  var data = sh.getRange(2, 1, sh.getLastRow() - 1, sh.getLastColumn()).getValues();
+  for (var i = 0; i < data.length; i++) {
+    if (String(data[i][headers['NewsletterID']]) === id) {
+      var r = i + 2;
+      var fields = ['Subject', 'Preheader', 'Language', 'Blocks', 'SegmentFilter', 'ScheduledAt'];
+      fields.forEach(function (f) {
+        var key = f.charAt(0).toLowerCase() + f.slice(1);
+        if (p[key] !== undefined) sh.getRange(r, headers[f] + 1).setValue(p[key]);
+      });
+      sh.getRange(r, headers['UpdatedAt'] + 1).setValue(_nl_now());
+      return { ok: true };
+    }
+  }
+  return { ok: false, error: 'not_found' };
+}
+
+// ---------- admin_mark_newsletter_status ----------
+function _admin_mark_newsletter_status(p) {
+  if (p.admin_token !== ADMIN_TOKEN) return { ok: false, error: 'unauthorized' };
+  var id = String(p.newsletterId || '').trim();
+  var toStatus = String(p.toStatus || '').trim();
+  var fromStatus = String(p.fromStatus || '').trim();
+  if (!id || !toStatus) return { ok: false, error: 'missing' };
+
+  var sh = _nl_sheet('Newsletters');
+  if (!sh) return { ok: false, error: 'Newsletters_tab_missing' };
+  var headers = _nl_headerMap(sh);
+  var data = sh.getRange(2, 1, sh.getLastRow() - 1, sh.getLastColumn()).getValues();
+  for (var i = 0; i < data.length; i++) {
+    if (String(data[i][headers['NewsletterID']]) === id) {
+      var r = i + 2;
+      var current = String(sh.getRange(r, headers['Status'] + 1).getValue());
+      if (fromStatus && current !== fromStatus) {
+        return { ok: false, error: 'status_mismatch', current: current };
+      }
+      sh.getRange(r, headers['Status'] + 1).setValue(toStatus);
+      sh.getRange(r, headers['UpdatedAt'] + 1).setValue(_nl_now());
+      if (toStatus === 'sent') sh.getRange(r, headers['SentAt'] + 1).setValue(_nl_now());
+      if (p.recipientCount !== undefined) sh.getRange(r, headers['RecipientCount'] + 1).setValue(p.recipientCount);
+      if (p.brevoCampaignId) sh.getRange(r, headers['BrevoCampaignId'] + 1).setValue(p.brevoCampaignId);
+      return { ok: true };
+    }
+  }
+  return { ok: false, error: 'not_found' };
+}
+
+// ---------- admin_append_newsletter_event ----------
+function _admin_append_newsletter_event(p) {
+  if (p.admin_token !== ADMIN_TOKEN) return { ok: false, error: 'unauthorized' };
+  var sh = _nl_sheet('NewsletterEvents');
+  if (!sh) return { ok: false, error: 'NewsletterEvents_tab_missing' };
+  var headers = _nl_headerMap(sh);
+  var row = new Array(sh.getLastColumn()).fill('');
+  row[headers['EventID']]       = _nl_rndToken(16);
+  row[headers['Timestamp']]     = _nl_now();
+  row[headers['NewsletterID']]  = p.newsletterId || '';
+  row[headers['Email']]         = _nl_lc(p.email);
+  row[headers['Event']]         = p.event || '';
+  row[headers['URL']]           = p.url || '';
+  row[headers['UserAgent']]     = String(p.userAgent || '').slice(0, 200);
+  sh.appendRow(row);
+
+  if (p.newsletterId) _nl_incrementCounter(p.newsletterId, p.event);
+  return { ok: true };
+}
+
+function _nl_incrementCounter(newsletterId, event) {
+  var map = {
+    delivered: 'DeliveredCount', opened: 'OpenCount', clicked: 'ClickCount',
+    unsubscribed: 'UnsubCount',  hard_bounce: 'BounceCount', soft_bounce: 'BounceCount',
+  };
+  var col = map[event];
+  if (!col) return;
+  var sh = _nl_sheet('Newsletters');
+  if (!sh) return;
+  var headers = _nl_headerMap(sh);
+  var data = sh.getRange(2, 1, sh.getLastRow() - 1, sh.getLastColumn()).getValues();
+  for (var i = 0; i < data.length; i++) {
+    if (String(data[i][headers['NewsletterID']]) === newsletterId) {
+      var r = i + 2;
+      var current = Number(sh.getRange(r, headers[col] + 1).getValue()) || 0;
+      sh.getRange(r, headers[col] + 1).setValue(current + 1);
+      return;
+    }
+  }
+}
+
+// ---------- admin_upload_email_image ----------
+// Fallback uploader for small images (<7000 chars base64). Normal flow is
+// frontend → backend Drive API. This endpoint keeps the contract usable from
+// Apps Script directly if needed.
+function _admin_upload_email_image(p) {
+  if (p.admin_token !== ADMIN_TOKEN) return { ok: false, error: 'unauthorized' };
+  var filename = String(p.filename || '').trim();
+  var contentType = String(p.contentType || '').trim();
+  var b64 = String(p.dataBase64 || '');
+  if (!filename || !contentType || !b64) return { ok: false, error: 'missing_params' };
+  if (b64.length > 7000) return { ok: false, error: 'payload_too_large_use_backend' };
+
+  var folderId = PropertiesService.getScriptProperties().getProperty('EMAIL_ASSETS_FOLDER_ID');
+  var bytes;
+  try { bytes = Utilities.base64Decode(b64); }
+  catch (e) { return { ok: false, error: 'invalid_base64' }; }
+
+  var blob = Utilities.newBlob(bytes, contentType, Date.now() + '-' + filename);
+  var file = folderId
+    ? DriveApp.getFolderById(folderId).createFile(blob)
+    : DriveApp.createFile(blob);
+  file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
+  return { ok: true, url: 'https://drive.google.com/uc?id=' + file.getId() };
 }
