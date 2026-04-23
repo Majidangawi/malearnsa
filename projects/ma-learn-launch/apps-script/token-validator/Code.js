@@ -137,6 +137,7 @@ function doGet(e) {
     else if (action === 'admin_resend_access_link')     result = _admin_resend_access_link(e.parameter);
     else if (action === 'admin_gift_token')              result = _admin_gift_token(e.parameter);
     else if (action === 'admin_remove_subscriber')       result = _admin_remove_subscriber(e.parameter);
+    else if (action === 'admin_reorder_lessons')        result = _admin_reorder_lessons(e.parameter);
     else                                      result = { error: 'unknown_action' };
 
     output.setContent(JSON.stringify(result));
@@ -1134,27 +1135,36 @@ function getLessonContent(params) {
  */
 function saveLessonContent(params) {
   if ((params.admin_token || '') !== ADMIN_TOKEN) return { success: false, reason: 'unauthorized' };
-
   const lessonId = String(params.lesson_id || '').trim();
-  const content  = String(params.content  || '').trim();
+  const content  = String(params.content  || '');
+  const blocks   = String(params.blocks   || '');
   if (!lessonId) return { success: false, reason: 'no_lesson_id' };
 
   const ss    = SpreadsheetApp.openById(MAIN_SHEET_ID);
   const sheet = ss.getSheetByName(LESSON_CONTENT_SHEET);
   if (!sheet) return { success: false, reason: 'no_content_sheet' };
 
-  const data = sheet.getDataRange().getValues();
+  // Header-map lookup so Blocks col position is tolerant.
+  const header = sheet.getRange(1, 1, 1, sheet.getLastColumn()).getValues()[0];
+  const headerIdx = {};
+  header.forEach(function (h, i) { headerIdx[String(h).trim()] = i + 1; });
+  const contentCol = headerIdx['Content'] || 2;
+  const blocksCol  = headerIdx['Blocks']  || 0;
 
-  // Update existing row
+  const data = sheet.getDataRange().getValues();
   for (let i = 1; i < data.length; i++) {
     if (String(data[i][0]).trim() === lessonId) {
-      sheet.getRange(i + 1, 2).setValue(content);
+      sheet.getRange(i + 1, contentCol).setValue(content);
+      if (blocksCol > 0 && blocks) sheet.getRange(i + 1, blocksCol).setValue(blocks);
       return { success: true };
     }
   }
 
-  // New row
-  sheet.appendRow([lessonId, content]);
+  const row = new Array(header.length).fill('');
+  row[0] = lessonId;
+  row[contentCol - 1] = content;
+  if (blocksCol > 0) row[blocksCol - 1] = blocks;
+  sheet.appendRow(row);
   return { success: true };
 }
 
@@ -2449,4 +2459,30 @@ function _admin_remove_subscriber(p) {
     }
   }
   return { ok: true, removed: false };
+}
+
+// ═════════════════════════════════════════════════════════════════════
+// LESSONS — reorder endpoint (2026-04-23 rollout)
+// ═════════════════════════════════════════════════════════════════════
+
+function _admin_reorder_lessons(p) {
+  if (p.admin_token !== ADMIN_TOKEN) return { ok: false, error: 'unauthorized' };
+  var lessonId = String(p.lessonId || '').trim();
+  var moduleOrder = Number(p.moduleOrder);
+  var lessonOrder = Number(p.lessonOrder);
+  if (!lessonId || !Number.isFinite(moduleOrder) || !Number.isFinite(lessonOrder)) {
+    return { ok: false, error: 'missing_params' };
+  }
+  var ss = SpreadsheetApp.openById(MAIN_SHEET_ID);
+  var sh = ss.getSheetByName(LESSONS_SHEET);
+  if (!sh) return { ok: false, error: 'no_lessons_sheet' };
+  var data = sh.getDataRange().getValues();
+  for (var i = 1; i < data.length; i++) {
+    if (String(data[i][0]).trim() === lessonId) {
+      sh.getRange(i + 1, 4).setValue(moduleOrder); // D = Module Order
+      sh.getRange(i + 1, 5).setValue(lessonOrder); // E = Lesson Order
+      return { ok: true, lessonId: lessonId, moduleOrder: moduleOrder, lessonOrder: lessonOrder };
+    }
+  }
+  return { ok: false, error: 'lesson_not_found' };
 }
