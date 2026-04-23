@@ -523,3 +523,108 @@ None blocking V1. Items deferred to future iteration (re-review before writing t
 **Phase F — Production rollout.** BL player first, 48-hour soak, then ITCAI player.
 
 Detailed breakdown (task list, files, tests) lands in the implementation plan document after this spec is approved.
+
+---
+
+## 15 · Post-redesign review notes (2026-04-23 pre-plan pass)
+
+Confirmed the Editorial Atelier redesign has shipped (Phases 1–5 merged on the player and dashboard repos). Majid signed off. Findings that update implementation surface without changing the V1 design intent:
+
+### 15.1 Live repo + path (source of truth)
+
+| Live URL | Repo | Local path | Role |
+|---|---|---|---|
+| `player.malearnsa.com/watch.html` | `Majidangawi/malearnsa-player` | `~/code/malearnsa-player/watch.html` | THE production player for BL + ITCAI (course via query param) |
+| `admin-staging.malearnsa.com` | `Majidangawi/ma-learn-dashboard` | `~/code/ma-learn-dashboard/` | Dashboard (Majid's admin surface — separate repo) |
+
+**Critical:** `projects/ma-learn-launch/player-watch.html` and `watch-updated.html` in the MA EA workspace are stale working copies. Implementation MUST target `~/code/malearnsa-player/watch.html`. Do not edit the MA EA copies.
+
+### 15.2 Tokens in use (use these, not any new vars)
+
+Canonical tokens file: `~/code/malearnsa-player/css/tokens.css`. All chat UI must consume these variables only.
+
+- Gold: `--c-gold`, `--c-gold-bright`, `--c-gold-dim`, `--c-gold-faint`
+- Surfaces: `--c-ink-0` (page bg) through `--c-ink-5` (accented borders)
+- Text: `--c-fg`, `--c-fg-2`, `--c-fg-3`, `--c-fg-4`
+- Semantic with matched backgrounds: `--c-success`/`--c-success-bg`, `--c-warning`/`--c-warning-bg`, `--c-danger`/`--c-danger-bg`
+- Spacing: `--s-1` (4px) through `--s-8` (64px); `--s-page-x` for gutters
+- Radius: `--r-xs/sm/md/lg/xl/pill`
+- Elevation: `--e-card`, `--e-raised`, `--e-modal`, `--e-focus`
+- Motion: `--dur-fast/med/slow`, `--ease-out`, `--ease-in`
+- Typography: `--font-sans` (Cairo), `--font-display` (Gumela Arabic), `--fs-label/body-sm/body/h3/h2/h1/display-l/display-xl`
+
+### 15.3 Sidebar width correction
+
+Spec §6.1 referenced "280px right rail". Actual value: `--sidebar-w: 320px`. Implementation follows the live token; spec narrative remains valid.
+
+### 15.4 Primitives already available (reuse, don't re-style)
+
+At `~/code/malearnsa-player/css/primitives.css`, consumed via `[data-ui]` attributes. Page CSS never restyles primitives.
+
+- `btn` — variants: `primary`, `secondary`, `ghost`, `danger`; sizes: default, `sm`; modifier `data-icon-only`
+- `input` / `textarea` / `select`
+- `field` (label + input wrapper with error state)
+- `card`
+- `tag` — tones: default, `gold`, `success`, `warning`, `danger`
+- `avatar` — default 28px, `data-size="lg"` = 40px
+- `hairline` (0.5px gold-dim editorial rule)
+- Plus: `toggle`, `toast`, `loader` (Gumela gold loader)
+
+### 15.5 Primitives MISSING — must be added as part of chat plan
+
+These don't exist yet and are needed by V1 chat. The plan must add them to `~/code/malearnsa-player/css/primitives/` and import from `primitives.css`:
+
+- **`tabs`** — for the lesson body tab switcher (Description / Discussion / Pinned). Editorial Atelier variant: 12/500 caps labels, 2px gold underline bar transitions between active tabs via `transform: translateX()`, no layout shift. `--c-fg-2` labels → `--c-fg` on active.
+- **`modal`** — for display-name modal, hard-delete confirmation, ban confirmation, clear-room confirmation.
+- **`dropdown` / `menu`** — reused for both (a) moderation action menu on long-press/hover of a message and (b) `@mention` autocomplete under the composer cursor. 10px radius, `--e-raised`, 8px padding, items 32h with hover `--c-ink-3`.
+
+### 15.6 Current lesson body structure (target for tab refactor)
+
+In `~/code/malearnsa-player/watch.html`, the `<main class="main">` contains `<div class="lesson-info">` which wraps:
+
+```
+lesson-module-tag → lesson-title → lesson-desc → lesson-content (#lesson-content) →
+pdf-area (#pdf-area) → lesson-nav → <aside class="player-notes" hidden>
+```
+
+The chat plan wraps `lesson-title` through `lesson-nav` inside a new **`[data-ui="tabs"]`** container with three panels:
+
+1. **الوصف (Description)** — the existing block, moved into the first tab panel unchanged
+2. **النقاش (Discussion)** — new chat panel
+3. **مثبت (Pinned)** — new pinned messages panel
+
+The `<aside class="player-notes" hidden>` V2 slot is **reserved for future note-taking and must NOT be repurposed for chat.** Keep the tabs separate from it.
+
+### 15.7 V2 affordances already shipped — do not disturb
+
+Per `~/code/malearnsa-player/watch.html` recent commits (`ca83c3e feat(player): V2 affordances`):
+
+- `data-progress` attribute on each lesson row
+- `<aside class="player-notes" hidden>` slot
+- Bookmark icon slot in the topbar (hidden in V1)
+- `resume-from` query param passively respected
+
+Chat implementation must not collide with or rename any of these.
+
+### 15.8 Fonts + SDK loading
+
+- Cairo loaded via Google Fonts (weights 200, 300, 400, 500, 600, 700 already linked in watch.html head).
+- Gumela Arabic loaded via `@font-face` in `tokens.css`.
+- Firebase JS SDK not yet present. Chat plan adds ES module imports:
+  `firebase/app`, `firebase/auth`, `firebase/firestore` — from `gstatic.com/firebasejs/` CDN, versioned.
+
+### 15.9 Apps Script token-validator is the auth anchor
+
+Per CLAUDE.md local overrides and memory `reference_apps_script_ids.md`, the token-validator Apps Script is the live auth surface. `mintFirebaseToken` is a new function added to that same Apps Script project (scriptId already canonical — do not trust `.clasp.json` blindly per `feedback_verify_clasp_before_push.md`; verify before push).
+
+### 15.10 Summary of drift vs original spec
+
+| Spec reference | Original | Corrected |
+|---|---|---|
+| Player file | `watch-updated.html` in MA EA workspace | `~/code/malearnsa-player/watch.html` (live source) |
+| Sidebar width | 280px | 320px (`--sidebar-w`) |
+| Colors | Cairo-era hex | OKLCH tokens (`--c-*`) |
+| Live URL | (unstated) | `player.malearnsa.com` |
+| Primitives | (unstated) | Reuse `btn/input/tag/avatar/hairline/toast/loader/toggle`; add `tabs/modal/dropdown` |
+
+Design intent (tabs inside lesson body, chat UX, data model, wipe flow, moderation, @mentions, cost model) is **unchanged and confirmed valid against the new token system.** Implementation plan proceeds with updated file paths + token names.
