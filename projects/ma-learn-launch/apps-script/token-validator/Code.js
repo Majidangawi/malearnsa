@@ -134,6 +134,9 @@ function doGet(e) {
     else if (action === 'admin_mark_newsletter_status')  result = _admin_mark_newsletter_status(e.parameter);
     else if (action === 'admin_append_newsletter_event') result = _admin_append_newsletter_event(e.parameter);
     else if (action === 'admin_upload_email_image')      result = _admin_upload_email_image(e.parameter);
+    else if (action === 'admin_resend_access_link')     result = _admin_resend_access_link(e.parameter);
+    else if (action === 'admin_gift_token')              result = _admin_gift_token(e.parameter);
+    else if (action === 'admin_remove_subscriber')       result = _admin_remove_subscriber(e.parameter);
     else                                      result = { error: 'unknown_action' };
 
     output.setContent(JSON.stringify(result));
@@ -1459,6 +1462,80 @@ function sendT2DripEmail(moduleOrder, unlockedLessons) {
 }
 
 /**
+ * Send the drip unlock email to one specific buyer — for resends after an
+ * email typo fix or any other case where the original blast skipped them.
+ *
+ * Requires: buyer has a T3_PRODUCT row in Customers AND a used T2_PRODUCT
+ * token in Tokens, both keyed on the same lowercased email.
+ */
+function sendDripToSingleBuyer(moduleOrder, targetEmail, unlockedLessons) {
+  targetEmail = String(targetEmail || '').trim().toLowerCase();
+  if (!targetEmail) return { error: 'no_email' };
+
+  const ss = SpreadsheetApp.openById(MAIN_SHEET_ID);
+
+  const customersSheet = ss.getSheetByName(CUSTOMERS_SHEET);
+  if (!customersSheet) return { error: 'no_customers_sheet' };
+  const cData = customersSheet.getDataRange().getValues();
+  let customer = null;
+  for (let i = 1; i < cData.length; i++) {
+    const product = String(cData[i][4] || '').trim();
+    const email   = String(cData[i][1] || '').trim().toLowerCase();
+    if (product !== T3_PRODUCT || email !== targetEmail) continue;
+    customer = { email: email, name: String(cData[i][2] || '').trim() };
+    break;
+  }
+  if (!customer) {
+    Logger.log('sendDripToSingleBuyer: no T3 customer row for ' + targetEmail);
+    return { error: 'customer_not_found', email: targetEmail };
+  }
+
+  const tokensSheet = ss.getSheetByName(TOKENS_SHEET);
+  const tData       = tokensSheet.getDataRange().getValues();
+  let token = null;
+  for (let i = 1; i < tData.length; i++) {
+    const course    = String(tData[i][1] || '').trim();
+    const status    = String(tData[i][2] || '').trim();
+    const custEmail = String(tData[i][3] || '').trim().toLowerCase();
+    if (course !== T2_PRODUCT || status !== 'used' || custEmail !== targetEmail) continue;
+    token = String(tData[i][0] || '').trim();
+    break;
+  }
+  if (!token) {
+    Logger.log('sendDripToSingleBuyer: no T2 token for ' + targetEmail);
+    return { error: 'token_not_found', email: targetEmail };
+  }
+
+  const subject   = 'المحور ' + arabicNumber(moduleOrder) + ' مفتوح الآن — مدخل إلى الذكاء الاصطناعي الإبداعي';
+  const firstName = customer.name ? customer.name.split(/\s+/)[0] : '';
+  const playerUrl = 'https://player.malearnsa.com/watch.html?token=' + token + '&course=' + T2_PRODUCT;
+  const html      = buildDripEmailHtml(firstName, moduleOrder, unlockedLessons, playerUrl);
+
+  try {
+    GmailApp.sendEmail(customer.email, subject, '', {
+      name:     FROM_NAME,
+      from:     FROM_EMAIL,
+      htmlBody: html
+    });
+    Logger.log('✓ single-buyer drip M' + moduleOrder + ' → ' + customer.email);
+    return { sent: 1, email: customer.email, token: token };
+  } catch (err) {
+    Logger.log('✗ single-buyer drip FAILED: ' + err.message);
+    return { error: 'send_failed', message: err.message, email: customer.email };
+  }
+}
+
+/**
+ * One-off resend — M5 drip to the buyer skipped on 2026-04-21 due to a
+ * typo in the Tokens sheet customer_email column. Typo fixed 2026-04-22.
+ */
+function sendDripM5ToMissedBuyer() {
+  return sendDripToSingleBuyer(5, '27madret@gmail.com', [
+    { title: 'Figmaweave (Weavy AI)', order: 1 }
+  ]);
+}
+
+/**
  * Render Latin digits as Arabic-Indic digits (for subject + module labels).
  */
 function arabicNumber(n) {
@@ -2231,4 +2308,145 @@ function _admin_upload_email_image(p) {
     : DriveApp.createFile(blob);
   file.setSharing(DriveApp.Access.ANYONE_WITH_LINK, DriveApp.Permission.VIEW);
   return { ok: true, url: 'https://drive.google.com/uc?id=' + file.getId() };
+}
+
+// ═════════════════════════════════════════════════════════════════════
+// CONTACTS / CRM — admin endpoints (2026-04-23 rollout)
+// ═════════════════════════════════════════════════════════════════════
+// Called by the dashboard's Contacts page via /api/writes/contact/* routes.
+
+// ─── admin_resend_access_link ──────────────────────────────────────────────
+function _admin_resend_access_link(p) {
+  if (p.admin_token !== ADMIN_TOKEN) return { ok: false, error: 'unauthorized' };
+  var email = _nl_lc(p.email);
+  var product = String(p.product || '').trim();
+  if (!email || !product) return { ok: false, error: 'missing_params' };
+
+  var ss = SpreadsheetApp.openById(MAIN_SHEET_ID);
+  var tokensSheet = ss.getSheetByName(TOKENS_SHEET);
+  if (!tokensSheet) return { ok: false, error: 'no_tokens_sheet' };
+
+  var data = tokensSheet.getDataRange().getValues();
+  var foundToken = null;
+  for (var i = 1; i < data.length; i++) {
+    if (_nl_lc(data[i][3]) === email && String(data[i][1]).trim() === product) {
+      foundToken = String(data[i][0]).trim();
+      break;
+    }
+  }
+  if (!foundToken) return { ok: false, error: 'no_token_for_product' };
+
+  var custSheet = ss.getSheetByName(CUSTOMERS_SHEET);
+  var name = '';
+  if (custSheet) {
+    var cdata = custSheet.getDataRange().getValues();
+    for (var j = 1; j < cdata.length; j++) {
+      if (_nl_lc(cdata[j][1]) === email) { name = String(cdata[j][2] || ''); break; }
+    }
+  }
+
+  var courseUrl, subject, body;
+  if (product === T2_PRODUCT) {
+    courseUrl = 'https://player.malearnsa.com/watch.html?token=' + foundToken;
+    subject = 'وصلك رابط الدورة — مدخل إلى الذكاء الاصطناعي الإبداعي';
+    body = buildT2Email(name, courseUrl);
+  } else if (product === T3_PRODUCT) {
+    var t2Url = 'https://player.malearnsa.com/watch.html?token=' + foundToken + '&course=' + T2_PRODUCT;
+    subject = 'تم تسجيلك — ورشة صناعة الإلهام';
+    body = buildT3Email(name, t2Url);
+  } else if (product === BL_PRODUCT) {
+    courseUrl = 'https://player.malearnsa.com/watch.html?token=' + foundToken + '&course=beyond-lighting';
+    subject = 'وصلك رابط الدورة — أبعد من إمكانيات الإضاءة';
+    body = buildBLEmail(name, courseUrl);
+  } else if (product === PP_PRODUCT) {
+    var libUrl = 'https://malearnsa.com/prompt-pack/library/?token=' + foundToken;
+    subject = 'وصلك كود الوصول — حزمة البرومبتات الإبداعية';
+    body = buildPPEmail(name, libUrl, foundToken);
+  } else {
+    return { ok: false, error: 'unknown_product' };
+  }
+
+  try {
+    GmailApp.sendEmail(email, subject, '', { htmlBody: body, name: FROM_NAME, from: FROM_EMAIL });
+    return { ok: true, product: product, email: email };
+  } catch (e) {
+    return { ok: false, error: 'send_failed: ' + String(e) };
+  }
+}
+
+// ─── admin_gift_token ──────────────────────────────────────────────────────
+function _admin_gift_token(p) {
+  if (p.admin_token !== ADMIN_TOKEN) return { ok: false, error: 'unauthorized' };
+  var email = _nl_lc(p.email);
+  var product = String(p.product || '').trim();
+  if (!email || !product) return { ok: false, error: 'missing_params' };
+
+  var ss = SpreadsheetApp.openById(MAIN_SHEET_ID);
+  var tokensSheet = ss.getSheetByName(TOKENS_SHEET);
+  if (!tokensSheet) return { ok: false, error: 'no_tokens_sheet' };
+
+  var data = tokensSheet.getDataRange().getValues();
+  var tokenRow = -1, assignedToken = null;
+  for (var i = 1; i < data.length; i++) {
+    if (String(data[i][1]).trim() === product && String(data[i][2]).trim() === 'available') {
+      assignedToken = String(data[i][0]).trim();
+      tokenRow = i + 1;
+      break;
+    }
+  }
+  if (!assignedToken) return { ok: false, error: 'no_tokens_available' };
+
+  tokensSheet.getRange(tokenRow, 3).setValue('used');
+  tokensSheet.getRange(tokenRow, 4).setValue(email);
+
+  var custSheet = ss.getSheetByName(CUSTOMERS_SHEET);
+  var name = String(p.name || '');
+  var dateStr = Utilities.formatDate(new Date(), 'Asia/Riyadh', 'yyyy-MM-dd HH:mm:ss');
+  var paymentId = 'gift-' + _nl_rndToken(10);
+  if (custSheet) custSheet.appendRow([dateStr, email, name, '', product, 0, 'gift', paymentId]);
+
+  var subject, body;
+  if (product === T2_PRODUCT) {
+    subject = 'هديتك — مدخل إلى الذكاء الاصطناعي الإبداعي';
+    body = buildT2Email(name, 'https://player.malearnsa.com/watch.html?token=' + assignedToken);
+  } else if (product === T3_PRODUCT) {
+    subject = 'هديتك — ورشة صناعة الإلهام';
+    body = buildT3Email(name, 'https://player.malearnsa.com/watch.html?token=' + assignedToken + '&course=' + T2_PRODUCT);
+  } else if (product === BL_PRODUCT) {
+    subject = 'هديتك — أبعد من إمكانيات الإضاءة';
+    body = buildBLEmail(name, 'https://player.malearnsa.com/watch.html?token=' + assignedToken + '&course=beyond-lighting');
+  } else if (product === PP_PRODUCT) {
+    subject = 'هديتك — حزمة البرومبتات الإبداعية';
+    body = buildPPEmail(name, 'https://malearnsa.com/prompt-pack/library/?token=' + assignedToken, assignedToken);
+  } else {
+    return { ok: false, error: 'unknown_product' };
+  }
+
+  try {
+    GmailApp.sendEmail(email, subject, '', { htmlBody: body, name: FROM_NAME, from: FROM_EMAIL });
+    return { ok: true, token: assignedToken, paymentId: paymentId, product: product };
+  } catch (e) {
+    return { ok: false, error: 'send_failed: ' + String(e) };
+  }
+}
+
+// ─── admin_remove_subscriber ───────────────────────────────────────────────
+function _admin_remove_subscriber(p) {
+  if (p.admin_token !== ADMIN_TOKEN) return { ok: false, error: 'unauthorized' };
+  var email = _nl_lc(p.email);
+  if (!email) return { ok: false, error: 'missing_email' };
+
+  var sh = _nl_sheet('Subscribers', p.sheetId);
+  if (!sh) return { ok: false, error: 'Subscribers_tab_missing' };
+  var headers = _nl_headerMap(sh);
+  var last = sh.getLastRow();
+  if (last < 2) return { ok: true, removed: false };
+  var data = sh.getRange(2, 1, last - 1, sh.getLastColumn()).getValues();
+  for (var i = 0; i < data.length; i++) {
+    if (_nl_lc(data[i][headers['Email']]) === email) {
+      sh.deleteRow(i + 2);
+      return { ok: true, removed: true, email: email };
+    }
+  }
+  return { ok: true, removed: false };
 }
