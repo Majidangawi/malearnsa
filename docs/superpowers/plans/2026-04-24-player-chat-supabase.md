@@ -3253,37 +3253,32 @@ git add supabase/migrations/0003_wipe_functions.sql
 git commit -m "feat(db): weekly_wipe + pin_expiry_sweep + noor_alert_post (SECURITY DEFINER)"
 ```
 
-### Task 29: Implement `noor-alert` Edge Function (full rewrite)
+### Task 29: Implement `noor-alert` Edge Function (direct Telegram Bot API)
 
 **Files:**
 - Modify: `~/code/malearn-chat/supabase/functions/noor-alert/index.ts`
 
-**Contract:** POST JSON `{ source, text }`. Forwards to the Noor Telegram bot webhook. Secrets: `NOOR_WEBHOOK_URL` + `NOOR_WEBHOOK_TOKEN`. If either is missing, return `ok:true, skipped:true` (don't block the wipe on a missing alert config).
+**Contract:** POST JSON `{ source, text }`. Sends a message to Majid via Telegram Bot API using the `@MajidNoorBot` credentials. No dependency on Noor's own server — calls `api.telegram.org` directly. Secrets: `TELEGRAM_BOT_TOKEN` + `TELEGRAM_CHAT_ID`. If either is missing, return `{ ok: true, skipped: true }` (don't block the wipe on a missing alert config).
 
-- [ ] **Step 1: Set secrets** — **`[MANUAL — Majid]`** get the URL + token from the Noor bot ops (or stub with placeholders you'll update later)
+**Why direct Telegram Bot API (not Noor's HTTP endpoint):** Noor doesn't currently expose an inbound HTTP endpoint for alerts. Direct Bot API is zero-dependency, already authenticated by the bot token, and delivers the same end-user outcome (a Telegram DM to Majid from `@MajidNoorBot`).
+
+- [ ] **Step 1: Set secrets** — values are in memory `reference_supabase.md` (Telegram Bot API Noor alert path). Run from `~/code/malearn-chat`:
 
 ```bash
 cd ~/code/malearn-chat
-supabase secrets set NOOR_WEBHOOK_URL="<noor webhook url>"
-supabase secrets set NOOR_WEBHOOK_TOKEN="<noor webhook bearer>"
+supabase secrets set TELEGRAM_BOT_TOKEN="<bot token from memory>"
+supabase secrets set TELEGRAM_CHAT_ID="<chat id from memory>"
 ```
 
-If Majid hasn't wired a Noor webhook for chat alerts yet: set placeholders
-
-```bash
-supabase secrets set NOOR_WEBHOOK_URL="TODO"
-supabase secrets set NOOR_WEBHOOK_TOKEN="TODO"
-```
-
-The function will short-circuit on the `TODO` sentinel (see implementation below).
+The function will short-circuit on missing values (see implementation below), so deployment is safe even if a secret is temporarily unset.
 
 - [ ] **Step 2: Overwrite `noor-alert/index.ts`**
 
 ```typescript
 // supabase/functions/noor-alert/index.ts
-// Relay weekly-wipe completion / failure alerts to the Noor Telegram bot.
+// Relay weekly-wipe completion / failure alerts to Majid via Telegram Bot API.
 // Body: { source: string, text: string }. Returns { ok: true } on success or
-// { ok: true, skipped: true } when the webhook URL is missing/TODO.
+// { ok: true, skipped: true } when the bot credentials are missing.
 
 interface Body { source: string; text: string; }
 
@@ -3299,26 +3294,30 @@ Deno.serve(async (req: Request) => {
     status: 400, headers: { 'content-type': 'application/json' }
   }); }
 
-  const url   = Deno.env.get('NOOR_WEBHOOK_URL') || '';
-  const token = Deno.env.get('NOOR_WEBHOOK_TOKEN') || '';
-  if (!url || url === 'TODO') {
-    return new Response(JSON.stringify({ ok: true, skipped: true, reason: 'webhook not configured' }), {
+  const botToken = Deno.env.get('TELEGRAM_BOT_TOKEN') || '';
+  const chatId   = Deno.env.get('TELEGRAM_CHAT_ID')   || '';
+  if (!botToken || !chatId) {
+    return new Response(JSON.stringify({ ok: true, skipped: true, reason: 'telegram creds not configured' }), {
       headers: { 'content-type': 'application/json' }
     });
   }
 
+  const text = `[${body.source}]\n${body.text}`;
+  const url  = `https://api.telegram.org/bot${botToken}/sendMessage`;
+
   try {
     const resp = await fetch(url, {
       method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-        'authorization': `Bearer ${token}`
-      },
-      body: JSON.stringify({ source: body.source, text: body.text })
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        chat_id: chatId,
+        text,
+        disable_web_page_preview: true
+      })
     });
     if (!resp.ok) {
       const txt = await resp.text().catch(() => '');
-      return new Response(JSON.stringify({ ok: false, error: `webhook ${resp.status}: ${txt}` }), {
+      return new Response(JSON.stringify({ ok: false, error: `telegram ${resp.status}: ${txt}` }), {
         status: 502, headers: { 'content-type': 'application/json' }
       });
     }
@@ -3340,11 +3339,26 @@ cd ~/code/malearn-chat
 supabase functions deploy noor-alert
 ```
 
-- [ ] **Step 4: Commit**
+- [ ] **Step 4: Smoke test**
+
+```bash
+curl -X POST "https://rmefydapbrirzgmmbyxx.supabase.co/functions/v1/noor-alert" \
+  -H "authorization: Bearer <SUPABASE_ANON_KEY_FROM_MEMORY>" \
+  -H "content-type: application/json" \
+  -d '{"source":"smoke-test","text":"Noor alert wired up via direct Telegram Bot API."}'
+```
+
+Expected: `{"ok":true}` response AND Majid receives a Telegram DM from `@MajidNoorBot` reading:
+```
+[smoke-test]
+Noor alert wired up via direct Telegram Bot API.
+```
+
+- [ ] **Step 5: Commit**
 
 ```bash
 git add supabase/functions/noor-alert/index.ts
-git commit -m "feat(functions): noor-alert — forward wipe alerts to Telegram bot"
+git commit -m "feat(functions): noor-alert — direct Telegram Bot API (no Noor-server dependency)"
 ```
 
 ### Task 30: Write migration `0004_pg_cron_schedules.sql` + create archive sheet + dry-run
