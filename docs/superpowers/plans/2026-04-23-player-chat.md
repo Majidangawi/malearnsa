@@ -1,4 +1,17 @@
-# Player Chat V1 Implementation Plan
+# Player Chat V1 Implementation Plan (DEPRECATED — Firebase path)
+
+> **🛑 DEPRECATED 2026-04-24 — DO NOT EXECUTE.**
+>
+> This plan targets Firebase. On 2026-04-24 we hit Google Cloud's KSA reseller
+> block (CNTXT) during Blaze upgrade. Chat pivoted to **Supabase**.
+>
+> **Authoritative plan:** `docs/superpowers/plans/2026-04-24-player-chat-supabase.md`
+> **Spec pivot:** see §16 of `docs/superpowers/specs/2026-04-23-player-chat-design.md`
+>
+> This file is preserved for historical context (decision audit trail +
+> reusable UI-task content). Do not start any Task below.
+
+---
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use superpowers:subagent-driven-development (recommended) or superpowers:executing-plans to implement this plan task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
