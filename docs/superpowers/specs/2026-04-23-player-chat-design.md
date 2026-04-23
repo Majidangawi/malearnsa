@@ -1,10 +1,12 @@
 # MA Learn Player Chat — Design Spec
 
-**Date:** 2026-04-23
+**Date:** 2026-04-23 · **Updated:** 2026-04-24 (Supabase pivot — see §16)
 **Owner:** Majid Angawi
-**Status:** Approved design · pending implementation (gated on redesign completion)
+**Status:** Approved design · implementation in progress (backend pivoted from Firebase to Supabase)
 **Scope:** Per-lesson realtime chat inside the MA Learn player for BL and ITCAI (T2) courses.
-**Related:** `docs/superpowers/specs/2026-04-23-dashboard-player-redesign-design.md` (redesign must ship first).
+**Related:** `docs/superpowers/specs/2026-04-23-dashboard-player-redesign-design.md` (redesign shipped).
+
+> **⚠️ Backend pivot:** §4 (Architecture), §5 (Data model), §7 (Wipe), §12 (Setup), and parts of §15 reference Firebase. **§16 supersedes these with Supabase equivalents** after Google Cloud in KSA required contracting through the CNTXT reseller (weeks of paperwork incompatible with Harvest 22 timeline). Design intent (§1–3, §6, §8–11) is unchanged. Read §16 as the authoritative backend architecture.
 
 ---
 
@@ -628,3 +630,368 @@ Per CLAUDE.md local overrides and memory `reference_apps_script_ids.md`, the tok
 | Primitives | (unstated) | Reuse `btn/input/tag/avatar/hairline/toast/loader/toggle`; add `tabs/modal/dropdown` |
 
 Design intent (tabs inside lesson body, chat UX, data model, wipe flow, moderation, @mentions, cost model) is **unchanged and confirmed valid against the new token system.** Implementation plan proceeds with updated file paths + token names.
+
+---
+
+## 16 · Supabase pivot (2026-04-24 — supersedes Firebase in §4, §5, §7, §12, §15.1/.8/.9)
+
+### 16.1 Why the pivot
+
+On 2026-04-24, attempting to upgrade the Firebase project to Blaze plan triggered Google Cloud's **KSA reseller redirect**: all GCP customers with Saudi billing addresses must contract through **CNTXT** (Google's exclusive KSA reseller). This adds 1–3 weeks of contract setup, unknown minimums, and non-self-service billing — incompatible with the Harvest 22 timeline.
+
+Supabase accepts direct credit-card billing with the same $0 cost at MA Learn's scale. It was Option B in the brainstorming round (§3 of spec). The KSA blocker tips the tech-choice balance decisively.
+
+**Cost impact:** none. Supabase Free tier (500 MB DB, 50K MAU, 2 GB bandwidth, 200 concurrent realtime, unlimited API) covers MA Learn indefinitely at current scale. Pro tier at $25/mo remains well under the spec §11 ceiling.
+
+**Design intent unchanged:** every decision from §1–11 (UX, moderation, wipe, @mentions, cost envelope, rollout order) stands. Only the backend fabric swaps.
+
+### 16.2 Translation table
+
+| Firebase reference (§4–§15) | Supabase equivalent (authoritative) |
+|---|---|
+| Firestore (NoSQL) | Postgres (SQL) via PostgREST |
+| Firestore security rules | Postgres **Row-Level Security (RLS)** policies |
+| Firebase Auth custom tokens (RS256 + service account) | Supabase-compatible JWT (**HS256** signed with project JWT Secret in Apps Script) |
+| `onSnapshot` listeners | **Supabase Realtime** channels (`postgres_changes` events) |
+| Cloud Functions + Cloud Scheduler | **Supabase Edge Functions** + **`pg_cron`** |
+| Firebase Admin SDK | Postgres **`service_role`** key (server-side Edge Functions only) |
+| Firebase Console | **Supabase Studio** (`https://supabase.com/dashboard/project/rmefydapbrirzgmmbyxx`) |
+| Firebase CLI | **Supabase CLI** (`brew install supabase/tap/supabase`) |
+| `~/code/malearn-chat/` (Firebase project dir) | `~/code/malearn-chat/` (now holds `supabase/` instead of `firestore.rules` + `functions/`) |
+
+### 16.3 Project coordinates
+
+- **Project ref:** `rmefydapbrirzgmmbyxx`
+- **URL:** `https://rmefydapbrirzgmmbyxx.supabase.co`
+- **Region:** Frankfurt (`eu-central-1`) — matches Bunny video library region for KSA+EU latency balance
+- **Plan:** Free (no billing account required to start)
+- **Owner:** `Majidangawi` GitHub account via org `MA Learn`
+- **Credentials memory:** `reference_supabase.md` — anon key (public), JWT Secret (Apps Script only)
+
+### 16.4 Architecture & auth flow (supersedes §4)
+
+```
+Student opens player?token=XYZ&course=itcai
+        ↓
+player-watch.html sends token to Apps Script (existing validate_token call)
+        ↓
+Apps Script validate_token returns student record + (NEW) Supabase-compatible JWT
+  signed HS256 with the project JWT Secret, payload:
+    {
+      sub: <uid>,
+      aud: 'authenticated',
+      role: 'authenticated',
+      email: <email>,
+      iss: 'supabase',
+      iat: <now>,
+      exp: <now + 3600>,
+      app_metadata: { isMajid: <bool>, provider: 'ma-learn' },
+      user_metadata: { displayName: <name|null> }
+    }
+        ↓
+Browser: supabase.auth.setSession({ access_token: jwt, refresh_token: jwt })
+        ↓
+Postgres accepts reads/writes per RLS policies:
+  • authenticated users → read any message in any room
+  • write message where author_uid == auth.uid() AND rate limits + body caps hold
+  • pin / hard-delete / ban / clear room → only if (auth.jwt()->'app_metadata'->>'isMajid')::boolean
+```
+
+**Key invariants from §4 preserved:**
+1. Apps Script remains source of truth for "who paid" — Supabase trusts the signed JWT; never checks purchase state.
+2. Tokens expire in 1 hour. Player re-calls the Apps Script endpoint silently to refresh.
+3. Majid whitelisted by email in Apps Script → mints JWT with `app_metadata.isMajid: true`.
+4. First-message display-name modal still writes to the `users` row on first send.
+5. No new server. Apps Script = one new function (`mintSupabaseToken_`, HS256). Player = static HTML with Supabase JS SDK.
+
+**Why HS256 (vs Firebase's RS256):** simpler for Apps Script — no RSA private key management, no public-key distribution. The JWT Secret is a symmetric string; Apps Script signs, Supabase verifies with the same secret. The Secret lives only in Apps Script Script Properties (same security envelope as the Firebase service-account key would have had).
+
+### 16.5 Data model (supersedes §5)
+
+Same concepts; Postgres tables instead of Firestore collections. Migration lives at `supabase/migrations/0001_chat_schema.sql` (plan Task 3).
+
+```sql
+-- users: one row per paid student (keyed by uid = hash of email)
+create table users (
+  uid text primary key,
+  email text not null,
+  display_name text,
+  is_majid boolean not null default false,
+  created_at timestamptz not null default now(),
+  last_seen jsonb not null default '{}'::jsonb  -- { "<lessonId>": <messageCount at last view>, ... }
+);
+
+-- rooms: one row per lesson (evergreen)
+create table rooms (
+  lesson_id text primary key,
+  course_id text not null,
+  lesson_title text,
+  message_count integer not null default 0,
+  last_message_at timestamptz
+);
+
+-- messages: ephemeral, wiped weekly
+create table messages (
+  id uuid primary key default gen_random_uuid(),
+  lesson_id text not null references rooms(lesson_id) on delete cascade,
+  author_uid text not null references users(uid),
+  author_display_name text not null,
+  is_majid boolean not null default false,
+  body text not null check (char_length(body) between 1 and 500),
+  mentions text[] not null default array[]::text[],
+  created_at timestamptz not null default now(),
+  deleted boolean not null default false,
+  ip_hash text,
+  user_agent text
+);
+create index messages_lesson_created_idx on messages(lesson_id, created_at);
+create index messages_mentions_gin on messages using gin(mentions);
+
+-- pins: survives weekly wipe
+create table pins (
+  id uuid primary key default gen_random_uuid(),
+  lesson_id text not null references rooms(lesson_id) on delete cascade,
+  author_uid text not null,
+  author_display_name text not null,
+  body text not null,
+  pinned_at timestamptz not null default now(),
+  pinned_by text not null,
+  expires_at timestamptz  -- null = permanent
+);
+
+-- banned users: silent bans
+create table banned_uids (
+  uid text primary key,
+  banned_by text not null,
+  banned_at timestamptz not null default now(),
+  reason text,
+  expires_at timestamptz  -- null = permanent
+);
+
+-- student-submitted reports
+create table reports (
+  id uuid primary key default gen_random_uuid(),
+  msg_id uuid not null,
+  reporter_uid text not null,
+  room_id text not null,
+  created_at timestamptz not null default now(),
+  resolved boolean not null default false
+);
+
+-- audit log (append-only)
+create table moderation_log (
+  id uuid primary key default gen_random_uuid(),
+  action text not null check (action in ('pin','unpin','soft_delete','hard_delete','ban','unban','clear_room')),
+  actor_uid text not null,
+  target_uid text,
+  target_msg_id uuid,
+  room_id text,
+  reason text,
+  timestamp timestamptz not null default now()
+);
+
+-- weekly archive metadata
+create table archives (
+  week_tag text primary key,      -- "2026-W17"
+  week_start date not null,
+  week_end date not null,
+  sheet_url text not null,
+  message_count integer not null,
+  wipe_completed_at timestamptz not null
+);
+
+-- wipe failures
+create table wipe_errors (
+  id uuid primary key default gen_random_uuid(),
+  error text not null,
+  stack text,
+  retry_count integer not null default 0,
+  occurred_at timestamptz not null default now()
+);
+
+-- anti-piracy telemetry (populated V1, queried V2+)
+create table session_events (
+  id uuid primary key default gen_random_uuid(),
+  uid text not null,
+  event text not null check (event in ('sign_in','token_refresh')),
+  ip_hash text,
+  user_agent text,
+  timestamp timestamptz not null default now()
+);
+
+-- rate limit state (Task 25.5 from plan Appendix B.1)
+create table rate_state (
+  uid text primary key,
+  minute_bucket timestamptz not null,
+  minute_count integer not null default 0,
+  hour_bucket timestamptz not null,
+  hour_count integer not null default 0,
+  day_bucket timestamptz not null,
+  day_count integer not null default 0,
+  last_body text,
+  last_body_at timestamptz
+);
+```
+
+RLS is enabled on every table (project setting "Enable automatic RLS" was turned on at project creation).
+
+**Notes carried from §5 unchanged:**
+- `author_display_name` denormalized on messages — rename doesn't cascade.
+- `mentions array-contains my_uid` query via GIN index for "mentioned me" feature.
+- `last_seen` is a JSONB map `{ lessonId: messageCount at last view }` — unread count = `room.message_count - last_seen[lessonId]`.
+
+### 16.6 Key RLS policies (enforce spec §8)
+
+```sql
+-- Helper: is current JWT Majid?
+create or replace function public.is_majid() returns boolean
+language sql stable as $$
+  select coalesce((auth.jwt()->'app_metadata'->>'isMajid')::boolean, false);
+$$;
+
+-- Helper: is the current user banned?
+create or replace function public.is_banned() returns boolean
+language sql stable as $$
+  select exists (
+    select 1 from banned_uids
+    where uid = auth.uid()
+      and (expires_at is null or expires_at > now())
+  );
+$$;
+
+-- messages: everyone authed reads; self-writes; Majid moderates
+alter table messages enable row level security;
+
+create policy messages_read on messages for select
+  using (auth.role() = 'authenticated');
+
+create policy messages_insert_self on messages for insert
+  with check (
+    auth.role() = 'authenticated'
+    and author_uid = auth.uid()
+    and is_majid = public.is_majid()
+    and not public.is_banned()
+    and deleted = false
+  );
+
+create policy messages_self_soft_delete on messages for update
+  using (author_uid = auth.uid())
+  with check (
+    deleted = true
+    and created_at > now() - interval '5 minutes'
+  );
+
+create policy messages_self_edit on messages for update
+  using (author_uid = auth.uid())
+  with check (
+    created_at > now() - interval '2 minutes'
+    and char_length(body) <= 500
+  );
+
+create policy messages_majid_moderate on messages for update
+  using (public.is_majid());
+
+create policy messages_majid_hard_delete on messages for delete
+  using (public.is_majid());
+
+-- pins: authed read; Majid write/delete
+alter table pins enable row level security;
+create policy pins_read on pins for select using (auth.role() = 'authenticated');
+create policy pins_majid_all on pins for all using (public.is_majid()) with check (public.is_majid());
+
+-- banned_uids: self read; Majid write
+alter table banned_uids enable row level security;
+create policy banned_self_read on banned_uids for select using (uid = auth.uid() or public.is_majid());
+create policy banned_majid_write on banned_uids for all using (public.is_majid()) with check (public.is_majid());
+
+-- users: self read/write; cannot claim isMajid
+alter table users enable row level security;
+create policy users_self_read on users for select using (uid = auth.uid() or public.is_majid());
+create policy users_self_insert on users for insert
+  with check (uid = auth.uid() and is_majid = public.is_majid());
+create policy users_self_update on users for update
+  using (uid = auth.uid())
+  with check (is_majid = (select is_majid from users where uid = auth.uid()));
+
+-- reports: self-create; Majid read
+alter table reports enable row level security;
+create policy reports_insert on reports for insert
+  with check (reporter_uid = auth.uid());
+create policy reports_majid_read on reports for select using (public.is_majid());
+
+-- moderation_log: Majid only (and only append)
+alter table moderation_log enable row level security;
+create policy modlog_majid_read on moderation_log for select using (public.is_majid());
+create policy modlog_majid_insert on moderation_log for insert
+  with check (public.is_majid() and actor_uid = auth.uid());
+
+-- session_events: self-create; Majid read
+alter table session_events enable row level security;
+create policy session_insert on session_events for insert with check (uid = auth.uid());
+create policy session_majid_read on session_events for select using (public.is_majid());
+```
+
+### 16.7 Realtime subscriptions
+
+Supabase Realtime exposes Postgres change feeds over WebSocket. Client:
+
+```javascript
+supabase
+  .channel(`messages:${lessonId}`)
+  .on('postgres_changes',
+      { event: '*', schema: 'public', table: 'messages', filter: `lesson_id=eq.${lessonId}` },
+      (payload) => { /* handle INSERT/UPDATE/DELETE */ })
+  .subscribe();
+```
+
+Equivalent to Firestore `onSnapshot`. Must enable Realtime on the `messages` and `pins` tables in Supabase Studio (one-click toggle per table).
+
+### 16.8 Weekly wipe + daily pin-expiry (supersedes §7.1 runner; algorithm unchanged)
+
+Implemented as:
+
+- A Postgres function `public.weekly_wipe()` that collects message rows, calls a Supabase Edge Function via `net.http_post` to archive to Google Sheets, then deletes rows atomically (same archive-then-delete safety gate per §7.6).
+- A Postgres function `public.pin_expiry_sweep()` that deletes pins where `expires_at < now()`.
+- `pg_cron` extension schedules both:
+
+```sql
+create extension if not exists pg_cron;
+
+select cron.schedule(
+  'weekly-wipe',
+  '0 2 * * 5',  -- Friday 02:00
+  $$ select public.weekly_wipe() $$
+) -- TIMEZONE handled at function level via at time zone 'Asia/Riyadh'
+;
+
+select cron.schedule(
+  'daily-pin-expiry',
+  '0 2 * * *',
+  $$ select public.pin_expiry_sweep() $$
+);
+```
+
+The Edge Function (`supabase/functions/archive-to-sheet/`) holds the Google Sheets service-account credentials and writes one tab per ISO week to the master archive sheet.
+
+The Noor Telegram alert is a second Edge Function (`supabase/functions/noor-alert/`) called by `weekly_wipe()` on completion and on failure.
+
+### 16.9 Setup checklist (supersedes §12)
+
+1. ✅ Create Supabase project `malearn-chat` (done 2026-04-24).
+2. Store `SUPABASE_JWT_SECRET` in Apps Script token-validator Script Properties (Majid pending).
+3. Install Supabase CLI locally (`brew install supabase/tap/supabase`).
+4. `cd ~/code/malearn-chat && supabase init && supabase link --project-ref rmefydapbrirzgmmbyxx`.
+5. Write migration `supabase/migrations/0001_chat_schema.sql` (tables from §16.5 + RLS from §16.6). Apply: `supabase db push`.
+6. Enable Realtime on `messages` and `pins` tables in Supabase Studio.
+7. Write Edge Functions (`archive-to-sheet`, `noor-alert`). Deploy: `supabase functions deploy`.
+8. Create `pg_cron` schedules.
+9. Create master "MA Learn — Chat Archive" Google Sheet; share with the Edge Function's service account (generated in step 7).
+10. Add `mintSupabaseToken_` function to token-validator Apps Script. `clasp push`.
+11. Deploy updated player `watch.html` with Supabase JS SDK + chat UI.
+12. Smoke test on staging then production.
+
+Total setup: 2–3 hours (same as the Firebase estimate in §12). No recurring cost at current scale.
+
+### 16.10 Plan reference
+
+Full step-by-step implementation: `docs/superpowers/plans/2026-04-24-player-chat-supabase.md`. The Firebase-flavored plan at `docs/superpowers/plans/2026-04-23-player-chat.md` is archived (deprecation banner at top) but preserved for historical reference.
