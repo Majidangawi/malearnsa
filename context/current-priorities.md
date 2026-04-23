@@ -83,13 +83,15 @@ T2 "مدخل إلى الذكاء الاصطناعي الإبداعي" — free g
 
 ---
 
-## Player Admin shipped to staging — 2026-04-23
+## Dashboard + Player promoted to PROD — 2026-04-23
 
-- Dashboard `/#lessons` — full player admin (3-col layout, composer-based content editor, drag-drop reorder, add/delete, inline Bunny preview, open-in-player link)
-- Apps Script v10 deployed via clasp (`admin_reorder_lessons` + `save_content` Blocks upgrade)
-- LessonContent sheet gained `Blocks` JSON column (staging + prod — operator task)
-- Old `admin-dashboard.html` redirects to new admin
-- Next: dashboard design polish pass → prod migration
+- **Live URLs:** `admin.malearnsa.com` (dashboard frontend), `api.malearnsa.com` (backend), `player.malearnsa.com` (BL + ITCAI player, already prod). Full Editorial Atelier redesign shipped across all surfaces.
+- Player Admin (`/#lessons`) — 3-col layout, composer-based content editor, drag-drop reorder, inline Bunny preview, open-in-player
+- Dashboard: all 8 pages refreshed (Home briefing, Emails, Newsletter, Contacts, Coupons inline, Lessons, Link-in-bio, Activity archive), sidebar consolidated (Noor + Activity both collapsible there), Gumela gold loader everywhere
+- Apps Script v10 (admin_reorder_lessons + Blocks col), LessonContent `Blocks` column live in both sheets
+- Staging pm2 app stopped; DNS + env file retained for rollback. Rollback tag: `pre-redesign-2026-04-23` on all repos.
+- Operator tasks done today: DNS records (admin/api subdomains), Google Cloud OAuth (admin origin + api callback), Bunny referrer whitelist (BL + ITCAI libraries)
+- Runbook: `~/code/ma-learn-dashboard/PROD.md`
 
 ---
 
