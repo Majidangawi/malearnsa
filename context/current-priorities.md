@@ -1,5 +1,5 @@
 # Current Priorities
-*Last updated: 2026-04-22*
+*Last updated: 2026-04-24*
 
 ## Active Plan — MA Learn Harvest 22 (Apr 22 → Sept 30 wedding)
 
@@ -82,6 +82,18 @@ T2 "مدخل إلى الذكاء الاصطناعي الإبداعي" — free g
 - **Evening ~10pm Jeddah** — 3-line EOD check-in from Noor via chat + Telegram (@MajidNoorBot): shipped / moved / blocked.
 
 ---
+
+## Chat V1 shipped to BL production — 2026-04-24
+
+- Per-lesson realtime chat LIVE on `player.malearnsa.com` for `?course=beyond-lighting` (no flag). Students see Discussion + Pinned tabs on every lesson. Supabase-backed (Frankfurt, Free tier), Majid as verified voice, @mentions, unread badges, Majid moderation (pin/soft-delete/hard-delete/ban/clear-room), weekly archive to Google Sheet via Edge Function + Apps Script proxy (avoids KSA/CNTXT GCP wall), daily pin-expiry sweep, Telegram alerts to Majid on wipe success/failure.
+- **ITCAI stays flag-gated** (`?chat=beta`) pending Majid's personal review pass. Flip by adding `'intro-to-creative-ai'` to `CHAT_LIVE_COURSES` in `chat-bootstrap.js`.
+- **Pending manual steps for Majid (on return):**
+  1. 48h staging soak on BL with test token `MABL-UK44` — criteria in spec §16.9
+  2. Optional: Studio SQL Editor dry-run of `select public.weekly_wipe();`
+  3. Fire the pre-approved launch email (curl endpoint in `chat-launch-assets/README.md`)
+  4. Post Instagram Story → Reel → Carousel (assets in `chat-launch-assets/`)
+- Anti-piracy telemetry: `ip_hash` + `session_events` captured per sign-in. Detection workstream deferred.
+- Memory: `project_player_chat_v1.md` has full state, canonical URLs, known gotchas, Apps Script deployment IDs.
 
 ## Dashboard + Player promoted to PROD — 2026-04-23
 
