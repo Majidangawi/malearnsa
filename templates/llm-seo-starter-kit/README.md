@@ -17,6 +17,8 @@
 | `robots.txt` | `https://yourdomain.com/robots.txt` | Explicit allow-list for the 8 major AI crawlers. If you don't do this, some will skip your site entirely. |
 | `index-jsonld.html` | Paste inside `<head>` of `index.html` | Schema.org structured data. Boosts both traditional SEO AND LLM understanding of your brand. |
 | [`GUARANTEE-CHECKLIST.md`](GUARANTEE-CHECKLIST.md) | Use with every client | **50-point audit that tells you when you can (and can't) guarantee results.** Read this first if you're reselling to clients. |
+| [`DEPLOYMENT-GUIDE.md`](DEPLOYMENT-GUIDE.md) / [`DEPLOYMENT-GUIDE.pdf`](DEPLOYMENT-GUIDE.pdf) | Client handoff + training material | **Step-by-step technical handbook** — how to fill the templates, deploy on any platform (WordPress, Webflow, Shopify, Squarespace, Wix, Framer, Netlify, Vercel, Shopify, static/GitHub Pages), verify, troubleshoot. 8-page printable PDF. |
+| [`build/build-pdf.py`](build/build-pdf.py) | Regenerate the PDF after edits | Run `python3 build/build-pdf.py` after changing `DEPLOYMENT-GUIDE.md` to rebuild the PDF. Requires Chrome + Python `markdown` library. |
 
 ---
 
