@@ -842,6 +842,9 @@ RLS is enabled on every table (project setting "Enable automatic RLS" was turned
 
 ### 16.6 Key RLS policies (enforce spec §8)
 
+**UID extraction pattern — critical, every policy must follow it:**
+`auth.uid()` in Supabase casts the JWT `sub` claim to UUID internally. Our uids are TEXT (`u_<base64-sha256-hash>`), not UUIDs, so `auth.uid()` raises `operator does not exist: text = uuid` (SQLSTATE 42883). Every policy below extracts the uid as text directly via `(auth.jwt()->>'sub')`. Do not use `auth.uid()` anywhere. Discovered 2026-04-24 during Task 6 migration push; fixed inline.
+
 ```sql
 -- Helper: is current JWT Majid?
 create or replace function public.is_majid() returns boolean
@@ -854,7 +857,7 @@ create or replace function public.is_banned() returns boolean
 language sql stable as $$
   select exists (
     select 1 from banned_uids
-    where uid = auth.uid()
+    where uid = (auth.jwt()->>'sub')
       and (expires_at is null or expires_at > now())
   );
 $$;
