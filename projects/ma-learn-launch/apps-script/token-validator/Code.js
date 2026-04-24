@@ -118,6 +118,7 @@ function doGet(e) {
     else if (action === 'validate_token')     result = validateToken(e.parameter.token, e.parameter.course || T2_PRODUCT);
     else if (action === 'mint_supabase_token') result = handleMintSupabaseToken_(e.parameter);
     else if (action === 'admin_set_chat_archive_config') result = _admin_set_chat_archive_config(e.parameter);
+    else if (action === 'admin_send_chat_launch_email')   result = _admin_send_chat_launch_email(e.parameter);
     else if (action === 'get_seats_left')     result = getSeatsLeft();
     else if (action === 'get_course_lessons') result = getCourseLessonsSecure(e.parameter);
     else if (action === 'save_lesson_media')  result = saveLessonMedia(e.parameter);
@@ -2495,6 +2496,115 @@ function _admin_reorder_lessons(p) {
     }
   }
   return { ok: false, error: 'lesson_not_found' };
+}
+
+// ─────────────────────────────────────────────
+// CHAT LAUNCH EMAIL — broadcast to BL customers (2026-04-24)
+// Announces the new Discussion tab on player.malearnsa.com.
+// Email copy pre-approved by Majid 2026-04-24 (Q4 green light).
+// Gated on ADMIN_TOKEN + optional &dry_run=true to preview targets.
+// ─────────────────────────────────────────────
+function _admin_send_chat_launch_email(p) {
+  if (String(p.admin_token || '') !== ADMIN_TOKEN) {
+    return { ok: false, error: 'unauthorized' };
+  }
+  var course = String(p.course || BL_PRODUCT).trim();
+  var dryRun = String(p.dry_run || '') === 'true';
+
+  // Read Tokens sheet; collect unique purchased emails for the given course
+  var ss = SpreadsheetApp.openById(MAIN_SHEET_ID);
+  var tokensSheet = ss.getSheetByName(TOKENS_SHEET);
+  if (!tokensSheet) return { ok: false, error: 'tokens_sheet_missing' };
+  var tdata = tokensSheet.getDataRange().getValues();
+  var emails = {};  // email -> name
+  for (var i = 1; i < tdata.length; i++) {
+    var rowCourse = String(tdata[i][1] || '').trim();
+    var rowStatus = String(tdata[i][2] || '').trim();
+    var rowEmail  = String(tdata[i][3] || '').trim().toLowerCase();
+    if (rowCourse !== course) continue;
+    if (rowStatus !== 'used' && rowStatus !== 'available') continue;
+    if (!rowEmail || rowEmail === 'test@test.com') continue;
+    emails[rowEmail] = true;
+  }
+
+  // Join display names from Customers sheet
+  var custSheet = ss.getSheetByName(CUSTOMERS_SHEET);
+  if (custSheet) {
+    var cdata = custSheet.getDataRange().getValues();
+    for (var j = 1; j < cdata.length; j++) {
+      var e = String(cdata[j][1] || '').trim().toLowerCase();
+      if (emails[e] === true) emails[e] = String(cdata[j][2] || '').trim() || '';
+    }
+  }
+
+  var targets = Object.keys(emails).map(function (e) {
+    return { email: e, name: emails[e] || '' };
+  });
+
+  if (dryRun) {
+    return { ok: true, dry_run: true, target_count: targets.length, targets: targets.slice(0, 50) };
+  }
+
+  var subject = 'جديد داخل المنصة — تبويب النقاش';
+  var sentTo = [];
+  var failed = [];
+
+  for (var k = 0; k < targets.length; k++) {
+    var t = targets[k];
+    var firstName = (t.name || '').split(/\s+/)[0] || '';
+    var html = _chatLaunchEmailHtml(firstName);
+    try {
+      GmailApp.sendEmail(t.email, subject, '', {
+        name: FROM_NAME,
+        from: FROM_EMAIL,
+        htmlBody: html
+      });
+      sentTo.push(t.email);
+      Utilities.sleep(150);  // rate-limit politely
+    } catch (err) {
+      failed.push({ email: t.email, error: String(err).slice(0, 200) });
+    }
+  }
+
+  return {
+    ok: true,
+    course: course,
+    target_count: targets.length,
+    sent: sentTo.length,
+    failed_count: failed.length,
+    failed: failed.slice(0, 50)
+  };
+}
+
+function _chatLaunchEmailHtml(firstName) {
+  var greeting = firstName ? ('أهلاً ' + firstName + '،') : 'أهلاً،';
+  return (
+    '<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8">' +
+    '<style>' +
+    'body{font-family:Tahoma,Arial,sans-serif;background:#f7f5f0;margin:0;padding:24px;color:#1a1a1a;line-height:1.8}' +
+    '.c{max-width:560px;margin:0 auto;background:#fff;border-radius:12px;padding:32px 28px;box-shadow:0 1px 3px rgba(0,0,0,0.06)}' +
+    'h2{color:#c9a84c;font-size:20px;margin:0 0 16px;font-weight:700}' +
+    'p{margin:0 0 14px;font-size:15px}' +
+    'ul{margin:0 0 16px 0;padding:0 20px 0 0;font-size:15px}' +
+    'li{margin-bottom:6px}' +
+    '.sig{margin-top:24px;color:#666;font-size:14px}' +
+    '.btn{display:inline-block;background:#c9a84c;color:#000;text-decoration:none;padding:10px 20px;border-radius:6px;font-weight:700;margin-top:8px}' +
+    '</style></head><body><div class="c">' +
+    '<h2>جديد داخل المنصة — تبويب النقاش</h2>' +
+    '<p>' + greeting + '</p>' +
+    '<p>أضفت شي جديد داخل منصة MA Learn: في كل درس الحين في تبويب اسمه "النقاش".</p>' +
+    '<p>من جواه تقدر:</p>' +
+    '<ul>' +
+    '<li>تكتب سؤال عن الدرس</li>' +
+    '<li>تشارك تجربتك، نتيجة شغلك، أو فكرة خطرت ببالك</li>' +
+    '<li>تقرأ أسئلة باقي الطلاب وتستفيد من ردودهم</li>' +
+    '</ul>' +
+    '<p>أنا راح أكون موجود وأرد على أسئلتكم، والأجوبة المفيدة بثبتها حتى تبقى مرجع دائم لكل الطلاب.</p>' +
+    '<p>النقاش يتجدد كل أسبوع حتى يبقى عامر، والأسئلة المثبتة تبقى.</p>' +
+    '<p>ادخل أي درس وافتح تبويب "النقاش" — أبي أسمع رأيك.</p>' +
+    '<p class="sig">تحياتي،<br>ماجد</p>' +
+    '</div></body></html>'
+  );
 }
 
 // ─────────────────────────────────────────────
