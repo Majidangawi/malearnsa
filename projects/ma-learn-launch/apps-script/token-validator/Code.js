@@ -108,6 +108,7 @@ function doGet(e) {
     if      (action === 'validate_coupon')    result = validateCoupon(e.parameter.code, parseInt(e.parameter.amount) || 0);
     else if (action === 'complete_purchase')  result = completePurchase(e.parameter);
     else if (action === 'validate_token')     result = validateToken(e.parameter.token, e.parameter.course || T2_PRODUCT);
+    else if (action === 'mint_supabase_token') result = handleMintSupabaseToken_(e.parameter);
     else if (action === 'get_seats_left')     result = getSeatsLeft();
     else if (action === 'get_course_lessons') result = getCourseLessonsSecure(e.parameter);
     else if (action === 'save_lesson_media')  result = saveLessonMedia(e.parameter);
@@ -2485,4 +2486,71 @@ function _admin_reorder_lessons(p) {
     }
   }
   return { ok: false, error: 'lesson_not_found' };
+}
+
+// ─────────────────────────────────────────────
+// MINT SUPABASE TOKEN — for MA Learn player chat (Supabase backend)
+// Validates MA Learn token, looks up student email (Tokens sheet col D)
+// and name (Customers sheet col C, joined on email), mints a
+// Supabase-compatible HS256 JWT with { sub, role, email, app_metadata,
+// user_metadata } claims. Client passes returned token to
+// supabase.auth.setSession() on the malearnsa-player.
+// ─────────────────────────────────────────────
+function handleMintSupabaseToken_(params) {
+  var token = String(params.token || '').trim();
+  var course = String(params.course || '').trim();
+  if (!token || !course) {
+    return { ok: false, error: 'missing_params' };
+  }
+
+  var check = validateToken(token, course);
+  if (!check.valid) {
+    return { ok: false, error: 'invalid_token', reason: check.reason };
+  }
+
+  // Look up email from Tokens sheet (col D = index 3)
+  var ss = SpreadsheetApp.openById(MAIN_SHEET_ID);
+  var tokensSheet = ss.getSheetByName(TOKENS_SHEET);
+  if (!tokensSheet) return { ok: false, error: 'tokens_sheet_missing' };
+  var tokensData = tokensSheet.getDataRange().getValues();
+  var email = '';
+  for (var i = 1; i < tokensData.length; i++) {
+    if (String(tokensData[i][0]).trim() === token) {
+      email = String(tokensData[i][3] || '').trim().toLowerCase();
+      break;
+    }
+  }
+  if (!email) return { ok: false, error: 'email_not_found_on_token' };
+
+  // Optional: look up displayName from Customers sheet (col B = email, col C = name)
+  var displayName = null;
+  var custSheet = ss.getSheetByName(CUSTOMERS_SHEET);
+  if (custSheet) {
+    var custData = custSheet.getDataRange().getValues();
+    for (var j = 1; j < custData.length; j++) {
+      if (String(custData[j][1] || '').trim().toLowerCase() === email) {
+        var nameVal = String(custData[j][2] || '').trim();
+        if (nameVal) displayName = nameVal;
+        break;
+      }
+    }
+  }
+
+  var isMajid = (email === 'majid@malearnsa.com' || email === 'majed.engawi@gmail.com');
+
+  // uid = 'u_' + first 28 chars of base64url(sha256(email)) — stable across sessions
+  var uid = 'u_' + Utilities.base64EncodeWebSafe(
+    Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, email)
+  ).replace(/=+$/, '').slice(0, 28);
+
+  var supabaseToken = mintSupabaseToken_(uid, email, displayName, isMajid);
+
+  return {
+    ok: true,
+    supabaseToken: supabaseToken,
+    uid: uid,
+    email: email,
+    displayName: displayName,
+    isMajid: isMajid
+  };
 }
