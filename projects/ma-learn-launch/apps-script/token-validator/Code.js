@@ -85,11 +85,19 @@ function doPost(e) {
   const output = ContentService.createTextOutput();
   output.setMimeType(ContentService.MimeType.JSON);
   const params = e.parameter;
-  const action = params.action || '';
+  // For chat archive we accept a JSON body (rows[] is big) via postData.contents
+  let bodyParams = {};
+  if (e.postData && e.postData.type === 'application/json') {
+    try { bodyParams = JSON.parse(e.postData.contents) || {}; }
+    catch (_) { bodyParams = {}; }
+  }
+  const action = params.action || bodyParams.action || '';
+  const merged = Object.assign({}, bodyParams, params);
   try {
     let result;
-    if (action === 'save_content') result = saveLessonContent(params);
-    else                           result = { error: 'unknown_action' };
+    if      (action === 'save_content')                 result = saveLessonContent(params);
+    else if (action === 'admin_archive_chat_messages')  result = _handle_admin_archive_chat_messages(merged);
+    else                                                result = { error: 'unknown_action' };
     output.setContent(JSON.stringify(result));
   } catch(err) {
     output.setContent(JSON.stringify({ success: false, error: err.message }));
@@ -109,6 +117,7 @@ function doGet(e) {
     else if (action === 'complete_purchase')  result = completePurchase(e.parameter);
     else if (action === 'validate_token')     result = validateToken(e.parameter.token, e.parameter.course || T2_PRODUCT);
     else if (action === 'mint_supabase_token') result = handleMintSupabaseToken_(e.parameter);
+    else if (action === 'admin_set_chat_archive_config') result = _admin_set_chat_archive_config(e.parameter);
     else if (action === 'get_seats_left')     result = getSeatsLeft();
     else if (action === 'get_course_lessons') result = getCourseLessonsSecure(e.parameter);
     else if (action === 'save_lesson_media')  result = saveLessonMedia(e.parameter);
@@ -2486,6 +2495,69 @@ function _admin_reorder_lessons(p) {
     }
   }
   return { ok: false, error: 'lesson_not_found' };
+}
+
+// ─────────────────────────────────────────────
+// ADMIN SET CHAT ARCHIVE CONFIG — one-shot setup for Script Properties
+// Sets CHAT_ARCHIVE_SECRET + CHAT_ARCHIVE_SHEET_ID. Gated on ADMIN_TOKEN.
+// Called once from a trusted shell during Phase D setup.
+// ─────────────────────────────────────────────
+function _admin_set_chat_archive_config(p) {
+  if (String(p.admin_token || '') !== ADMIN_TOKEN) {
+    return { ok: false, error: 'unauthorized' };
+  }
+  if (!p.secret || !p.sheet_id) {
+    return { ok: false, error: 'missing_params' };
+  }
+  var props = PropertiesService.getScriptProperties();
+  props.setProperty('CHAT_ARCHIVE_SECRET', String(p.secret));
+  props.setProperty('CHAT_ARCHIVE_SHEET_ID', String(p.sheet_id));
+  return { ok: true };
+}
+
+// ─────────────────────────────────────────────
+// ARCHIVE CHAT MESSAGES — Apps Script proxy for the weekly-wipe flow
+// Called by Supabase Edge Function (archive-to-sheet) which is triggered
+// by the Postgres weekly_wipe() function at Friday 02:00 KSA.
+// Writes rows to the "MA Learn — Chat Archive" sheet (id in Script Properties)
+// using native SpreadsheetApp — no GCP service account needed.
+// Protected by shared secret CHAT_ARCHIVE_SECRET.
+// ─────────────────────────────────────────────
+function _handle_admin_archive_chat_messages(p) {
+  var secret = PropertiesService.getScriptProperties().getProperty('CHAT_ARCHIVE_SECRET');
+  if (!secret) return { ok: false, error: 'secret_not_configured' };
+  if (String(p.secret || '') !== secret) return { ok: false, error: 'unauthorized' };
+
+  var sheetId = PropertiesService.getScriptProperties().getProperty('CHAT_ARCHIVE_SHEET_ID');
+  if (!sheetId) return { ok: false, error: 'archive_sheet_id_not_configured' };
+
+  var weekTag = String(p.weekTag || '').trim();
+  if (!/^\d{4}-W\d{2}$/.test(weekTag)) return { ok: false, error: 'invalid_weekTag' };
+
+  var rowsJson = p.rows;
+  var rows;
+  try { rows = JSON.parse(rowsJson); }
+  catch (e) { return { ok: false, error: 'rows_invalid_json: ' + e.message }; }
+  if (!Array.isArray(rows)) return { ok: false, error: 'rows_not_array' };
+
+  var ss = SpreadsheetApp.openById(sheetId);
+  var sheet = ss.getSheetByName(weekTag);
+  var isNewTab = !sheet;
+  if (isNewTab) {
+    sheet = ss.insertSheet(weekTag);
+    sheet.appendRow([
+      'timestamp_utc','timestamp_ksa','course_id','lesson_id','lesson_title',
+      'author_display_name','author_uid','is_majid','deleted_flag','body','mentions'
+    ]);
+  }
+  if (rows.length === 0) return { ok: true, appended: 0, tab: weekTag, newTab: isNewTab };
+
+  // Batch write for performance
+  var startRow = sheet.getLastRow() + 1;
+  sheet.getRange(startRow, 1, rows.length, 11).setValues(rows);
+  SpreadsheetApp.flush();
+
+  return { ok: true, appended: rows.length, tab: weekTag, newTab: isNewTab };
 }
 
 // ─────────────────────────────────────────────
