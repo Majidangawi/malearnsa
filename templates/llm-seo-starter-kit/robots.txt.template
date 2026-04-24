@@ -1,0 +1,37 @@
+# {{BUSINESS_NAME}} — crawler policy
+# Explicit allow-list for major AI crawlers so your site is included in
+# ChatGPT / Claude / Perplexity / Google AI Overviews / Apple Intelligence.
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+# Also allow traditional search + fallback
+User-agent: *
+Allow: /
+
+Sitemap: {{SITE_URL}}/sitemap.xml
+
+# LLM discovery index files live here:
+# {{SITE_URL}}/llms.txt
+# {{SITE_URL}}/llms-full.txt

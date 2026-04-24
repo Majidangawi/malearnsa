@@ -76,6 +76,19 @@ T2 "مدخل إلى الذكاء الاصطناعي الإبداعي" — free g
 
 ---
 
+## Recurring monthly — LLM Discovery Refresh
+
+**Priority:** HIGH · **Runs:** 1st of every month (autonomous reminder via GitHub Action)
+
+Keeps `llms.txt`, `llms-full.txt`, and `index.html` JSON-LD aligned with current MA Learn offerings so ChatGPT / Claude / Perplexity / Google AI cite accurate products + prices.
+
+- **SOP:** `references/sops/monthly-llms-refresh.md`
+- **Reminder mechanism:** `.github/workflows/monthly-llms-refresh.yml` opens a tracking issue each 1st-of-month
+- **Template kit (resale product):** `templates/llm-seo-starter-kit/`
+- **Latest refresh:** 2026-04-24 (bootstrap) · commits 314c076, 1f41f13, 1317332
+
+When the monthly issue opens, ask Claude: "run the monthly LLM refresh" — takes ~15 min.
+
 ## Daily Sync Format
 
 - **Morning briefing** — HTML dashboard + Linear task table. Now extended with a "Harvest 22 Progress" block: current milestone, revenue vs 120K target, what ships today, what slipped.
