@@ -1,0 +1,122 @@
+<!--
+  Paste this entire <script> block inside the <head> of your homepage
+  (index.html, or your CMS's custom head injection field).
+
+  Change @type to match your business:
+    - "EducationalOrganization"  for schools, courses, tutors
+    - "LocalBusiness"            for brick-and-mortar (spa, restaurant, etc.)
+    - "ProfessionalService"      for agencies, consultancies, clinics
+    - "Organization"             for everything else
+
+  For product/service listings, Course works for education. Other options:
+    - "Service"  for consultations, treatments, subscriptions
+    - "Product"  for physical goods
+    - "Event"    for dated workshops/cohorts
+
+  Validate the JSON after you fill it in:
+    https://search.google.com/test/rich-results
+-->
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "{{SCHEMA_TYPE}}",
+  "name": "{{BUSINESS_NAME}}",
+  "alternateName": [
+    "{{BUSINESS_NAME}}",
+    "{{TAGLINE_LOCAL}}",
+    "{{TAGLINE_EN}}",
+    "{{KEYWORD_LOCAL_1}}",
+    "{{KEYWORD_LOCAL_2}}",
+    "{{KEYWORD_EN_1}}"
+  ],
+  "url": "{{SITE_URL}}",
+  "logo": "{{LOGO_URL}}",
+  "image": "{{LOGO_URL}}",
+  "description": "{{META_DESCRIPTION_BILINGUAL_ONE_SENTENCE}}",
+  "inLanguage": ["{{PRIMARY_LANG_CODE}}", "{{SECONDARY_LANG_CODE}}"],
+  "areaServed": [
+    { "@type": "Country", "name": "{{COUNTRY_1}}" },
+    { "@type": "Place",   "name": "{{REGION_1}}" }
+  ],
+  "sameAs": [
+    "{{SOCIAL_LINK_1}}",
+    "{{SOCIAL_LINK_2}}",
+    "{{SOCIAL_LINK_3}}"
+  ],
+  "founder": {
+    "@type": "Person",
+    "name": "{{FOUNDER_NAME_LOCAL}}",
+    "alternateName": "{{FOUNDER_NAME_EN}}",
+    "jobTitle": "{{FOUNDER_TITLE}}",
+    "nationality": { "@type": "Country", "name": "{{FOUNDER_COUNTRY}}" },
+    "knowsAbout": [
+      "{{FOUNDER_SKILL_1}}",
+      "{{FOUNDER_SKILL_2}}",
+      "{{FOUNDER_SKILL_3}}",
+      "{{FOUNDER_SKILL_4}}",
+      "{{FOUNDER_SKILL_5}}"
+    ],
+    "sameAs": [
+      "{{SOCIAL_LINK_1}}",
+      "{{SOCIAL_LINK_2}}"
+    ]
+  },
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "email": "{{CONTACT_EMAIL}}",
+    "contactType": "customer support",
+    "availableLanguage": ["{{PRIMARY_LANGUAGE}}", "{{SECONDARY_LANGUAGE}}"]
+  },
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "{{CATALOG_LABEL_BILINGUAL}}",
+    "itemListElement": [
+      {
+        "@type": "{{OFFER_ITEM_TYPE}}",
+        "name": "{{PRODUCT_1_NAME}}",
+        "description": "{{PRODUCT_1_DESCRIPTION}}",
+        "provider": { "@type": "Organization", "name": "{{BUSINESS_NAME}}" },
+        "inLanguage": "{{PRIMARY_LANG_CODE}}",
+        "educationalLevel": "{{PRODUCT_1_LEVEL}}",
+        "offers": { "@type": "Offer", "price": "{{PRODUCT_1_PRICE}}", "priceCurrency": "{{CURRENCY_CODE}}" }
+      },
+      {
+        "@type": "{{OFFER_ITEM_TYPE}}",
+        "name": "{{PRODUCT_2_NAME}}",
+        "description": "{{PRODUCT_2_DESCRIPTION}}",
+        "provider": { "@type": "Organization", "name": "{{BUSINESS_NAME}}" },
+        "inLanguage": "{{PRIMARY_LANG_CODE}}",
+        "educationalLevel": "{{PRODUCT_2_LEVEL}}",
+        "offers": { "@type": "Offer", "price": "{{PRODUCT_2_PRICE}}", "priceCurrency": "{{CURRENCY_CODE}}" }
+      },
+      {
+        "@type": "{{OFFER_ITEM_TYPE}}",
+        "name": "{{PRODUCT_3_NAME}}",
+        "description": "{{PRODUCT_3_DESCRIPTION}}",
+        "provider": { "@type": "Organization", "name": "{{BUSINESS_NAME}}" },
+        "inLanguage": "{{PRIMARY_LANG_CODE}}",
+        "educationalLevel": "{{PRODUCT_3_LEVEL}}",
+        "offers": { "@type": "Offer", "price": "{{PRODUCT_3_PRICE}}", "priceCurrency": "{{CURRENCY_CODE}}" }
+      },
+      {
+        "@type": "{{OFFER_ITEM_TYPE}}",
+        "name": "{{PRODUCT_4_NAME}}",
+        "description": "{{PRODUCT_4_DESCRIPTION}}",
+        "provider": { "@type": "Organization", "name": "{{BUSINESS_NAME}}" },
+        "inLanguage": "{{PRIMARY_LANG_CODE}}",
+        "educationalLevel": "{{PRODUCT_4_LEVEL}}",
+        "offers": {
+          "@type": "Offer",
+          "priceSpecification": {
+            "@type": "PriceSpecification",
+            "minPrice": "{{PRODUCT_4_MIN_PRICE}}",
+            "maxPrice": "{{PRODUCT_4_MAX_PRICE}}",
+            "priceCurrency": "{{CURRENCY_CODE}}"
+          }
+        }
+      }
+    ]
+  }
+}
+</script>
