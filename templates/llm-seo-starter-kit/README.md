@@ -16,6 +16,7 @@
 | `llms-full.txt` | `https://yourdomain.com/llms-full.txt` | Long-form reference LLMs pull when they need more depth (product details, pricing, FAQ). Often cited verbatim. |
 | `robots.txt` | `https://yourdomain.com/robots.txt` | Explicit allow-list for the 8 major AI crawlers. If you don't do this, some will skip your site entirely. |
 | `index-jsonld.html` | Paste inside `<head>` of `index.html` | Schema.org structured data. Boosts both traditional SEO AND LLM understanding of your brand. |
+| [`GUARANTEE-CHECKLIST.md`](GUARANTEE-CHECKLIST.md) | Use with every client | **50-point audit that tells you when you can (and can't) guarantee results.** Read this first if you're reselling to clients. |
 
 ---
 
