@@ -771,44 +771,128 @@
   }
 </style>
 
-  <!-- Structured Data -->
+  <!-- Structured Data — EducationalOrganization + Person + full Course catalog.
+       Kept in sync with llms.txt and llms-full.txt at the site root. -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
     "@type": "EducationalOrganization",
     "name": "MA Learn",
+    "alternateName": ["MA Learn", "صناعة الإلهام", "Crafting Inspiration"],
     "url": "https://malearnsa.com",
     "logo": "https://malearnsa.com/brand_assets/logo-malearn-white.png",
-    "description": "منصة تعليمية متخصصة في التصوير الاحترافي والذكاء الاصطناعي الإبداعي للمبدعين العرب",
+    "image": "https://malearnsa.com/brand_assets/logo-malearn-white.png",
+    "description": "منصة تعليمية متخصصة في الذكاء الاصطناعي الإبداعي والتصوير الاحترافي للمبدعين العرب — Creative AI school for Arab creators who want to live full-time off their creativity.",
+    "inLanguage": ["ar", "en"],
+    "areaServed": [
+      { "@type": "Country", "name": "Saudi Arabia" },
+      { "@type": "Place", "name": "Gulf" },
+      { "@type": "Place", "name": "Arab world" }
+    ],
+    "sameAs": [
+      "https://instagram.com/majidangawi",
+      "https://instagram.com/angawi.studio"
+    ],
     "founder": {
       "@type": "Person",
       "name": "ماجد عنقاوي",
-      "sameAs": "https://instagram.com/majidangawi"
+      "alternateName": "Majid Angawi",
+      "jobTitle": "Fashion Photographer, Creative Director, Fujifilm Brand Ambassador — Saudi Arabia",
+      "nationality": { "@type": "Country", "name": "Saudi Arabia" },
+      "knowsAbout": [
+        "Creative AI",
+        "Midjourney",
+        "ChatGPT",
+        "Runway",
+        "Higgsfield",
+        "Weavy",
+        "Figma",
+        "Fashion photography",
+        "Commercial photography",
+        "Creative direction",
+        "Art direction",
+        "Lighting for photography",
+        "AI image generation",
+        "AI video generation"
+      ],
+      "sameAs": [
+        "https://instagram.com/majidangawi",
+        "https://instagram.com/angawi.studio"
+      ]
     },
     "contactPoint": {
       "@type": "ContactPoint",
-      "email": "support@malearnsa.com",
+      "email": "majid@malearnsa.com",
       "contactType": "customer support",
-      "availableLanguage": "Arabic"
+      "availableLanguage": ["Arabic", "English"]
     },
     "hasOfferCatalog": {
       "@type": "OfferCatalog",
-      "name": "دورات MA Learn",
+      "name": "دورات MA Learn · MA Learn Catalog",
       "itemListElement": [
         {
           "@type": "Course",
-          "name": "أبعد من إمكانيات الإضاءة",
-          "description": "أكثر من 15 إعداد إضاءة احترافي — دليلك الكامل لإتقان الضوء في التصوير",
+          "name": "Prompt Packs — برومبتات إبداعية",
+          "description": "برومبتات إبداعية لتوليد الصور بالذكاء الاصطناعي — ready-to-use Midjourney + ChatGPT prompt packs for commercial creative work.",
+          "provider": { "@type": "Organization", "name": "MA Learn" },
+          "inLanguage": "ar",
+          "educationalLevel": "All levels",
+          "offers": {
+            "@type": "Offer",
+            "priceSpecification": {
+              "@type": "PriceSpecification",
+              "minPrice": "99",
+              "maxPrice": "149",
+              "priceCurrency": "SAR"
+            }
+          }
+        },
+        {
+          "@type": "Course",
+          "name": "Intro to Creative AI — مدخل إلى الذكاء الاصطناعي الإبداعي",
+          "description": "Self-paced recorded course covering creative AI foundations — Midjourney, ChatGPT, Runway, and how to think like a creative director when using AI. Beginner friendly.",
+          "provider": { "@type": "Organization", "name": "MA Learn" },
+          "inLanguage": "ar",
+          "educationalLevel": "Beginner",
+          "offers": { "@type": "Offer", "price": "449", "priceCurrency": "SAR" }
+        },
+        {
+          "@type": "Course",
+          "name": "Crafting Inspiration Workshop — ورشة صناعة الإلهام",
+          "description": "Live 3-session cohort workshop — end-to-end creative AI production from client brief to delivery, with direct critique from Majid Angawi.",
+          "url": "https://malearnsa.com/ciw-waitlist/",
+          "provider": { "@type": "Organization", "name": "MA Learn" },
+          "inLanguage": "ar",
+          "educationalLevel": "Intermediate to Advanced",
+          "courseMode": "online",
+          "offers": { "@type": "Offer", "price": "1199", "priceCurrency": "SAR" }
+        },
+        {
+          "@type": "Course",
+          "name": "Beyond Lighting — أبعد من إمكانيات الإضاءة",
+          "description": "دورة أبعد من إمكانيات الإضاءة: أساليب للتصوير الإبداعي بإستخدام إضاءة واحدة. 15+ professional lighting setups with a single light source.",
           "url": "https://malearnsa.com/beyond-lighting/",
           "provider": { "@type": "Organization", "name": "MA Learn" },
+          "inLanguage": "ar",
+          "educationalLevel": "All levels",
           "offers": { "@type": "Offer", "price": "650", "priceCurrency": "SAR" }
         },
         {
           "@type": "Course",
-          "name": "ورشة صناعة الإلهام",
-          "description": "أنتج عملك الإبداعي بإستخدام أدوات الذكاء الاصطناعي من البريف إلى التسليم",
-          "url": "https://malearnsa.com/ciw-waitlist/",
-          "provider": { "@type": "Organization", "name": "MA Learn" }
+          "name": "Flagship Mentorship — برنامج Mentorship الرئيسي",
+          "description": "3-to-6-month transformation program with monthly 1:1 calls, direct access to Majid, portfolio + business coaching for serious creatives.",
+          "provider": { "@type": "Organization", "name": "MA Learn" },
+          "inLanguage": "ar",
+          "educationalLevel": "Advanced",
+          "offers": {
+            "@type": "Offer",
+            "priceSpecification": {
+              "@type": "PriceSpecification",
+              "minPrice": "3000",
+              "maxPrice": "6000",
+              "priceCurrency": "SAR"
+            }
+          }
         }
       ]
     }
