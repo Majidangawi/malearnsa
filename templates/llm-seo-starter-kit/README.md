@@ -127,18 +127,6 @@ LLM indexes take 1–4 weeks to pick up changes. A quarterly rhythm keeps them a
 
 ---
 
-## Licensing / resale
-
-This starter kit is designed to be deployed by **one business, once**. If you're an agency deploying for clients, charge per deployment — typical pricing range:
-
-- **DIY pack (this kit + 30-minute video walkthrough):** $99–$199
-- **Done-with-you (you fill placeholders with client, they deploy):** $500–$1,500
-- **Done-for-you (you deploy + monitor monthly):** $1,500–$5,000 setup + $300/month
-
-The value is not the files. The value is the strategic awareness that LLM SEO exists and the discipline to keep it fresh. Price the strategy, not the files.
-
----
-
 ## Attribution
 
 Original pattern adapted from the `llms.txt` spec (Jeremy Howard / Answer.AI) + Schema.org EducationalOrganization + the MA Learn production deployment at malearnsa.com (2026-04).

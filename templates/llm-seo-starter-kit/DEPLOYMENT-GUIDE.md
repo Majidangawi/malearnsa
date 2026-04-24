@@ -486,22 +486,6 @@ curl -sS https://example.com/ | grep -A 200 'application/ld+json' | head -100
 
 ---
 
-## Appendix C · Pricing guidance
-
-When you deliver this kit to clients, price the OUTCOME, not the files.
-
-| Tier | Scope | Price range (USD) | Time investment |
-|------|-------|--------------------|-----------------|
-| **DIY pack** | Files + video walkthrough, client deploys | $99–$199 | 1 hour to produce |
-| **Done-with-you** | You fill placeholders with client, client deploys | $500–$1,500 | 4–6 hours |
-| **Done-for-you (single)** | Full audit + deploy + verify + handoff report | $1,500–$3,500 | 8–12 hours |
-| **Done-for-you + monitoring** | Above + 3 months of 30/60/90 check-ins + one refresh | $3,500–$7,500 | + 2 hours/month |
-| **Agency retainer** | Done-for-you + monthly refreshes + ad-hoc updates | $500–$1,500/month recurring | 4 hours/month |
-
-**Key pricing principle:** you're selling discipline, not files. The files are commoditized. The discipline to deploy correctly, verify, monitor, and refresh is what justifies the margin.
-
----
-
 *Guide author: Majid Angawi · MA Learn · [malearnsa.com](https://malearnsa.com)*
 
 *Questions / edits / feedback: majid@malearnsa.com*
