@@ -1,27 +1,35 @@
 /**
  * ══════════════════════════════════════════════════════════════
- * MA Learn — Crafting Inspiration Workshop Waitlist
+ * MA Learn — Waitlist
  * Google Apps Script — Web App
  *
- * SETUP STEPS:
- * 1. Go to script.google.com → New Project
- * 2. Paste this entire file as Code.gs
- * 3. Run setup() once to create the sheet headers
- * 4. Deploy → New Deployment → Web App
- *    - Execute as: Me
- *    - Who has access: Anyone
- * 5. Copy the Web App URL
- * 6. Paste it into ciw-waitlist.html → const SCRIPT_URL = '...'
- * 7. Redeploy the HTML page
+ * Generalised 2026-04-26: was previously the CIW workshop waitlist
+ * collector. Now serves the generic /waitlist/ page (malearnsa.com/waitlist/).
+ * Existing column layout preserved (F=Sent, G=Purchase, H=Reminder,
+ * I=Final Reminder are externally managed by blast scripts). Country
+ * added at column J to avoid collision.
+ *
+ * Bound spreadsheet: 1byx1WxktAKB1ajVFgEWbo6tMLlBo0gkcWZqXXO4FF58
+ * Sheet name:        Waitlist
+ * Live deployment:   v5 — AKfycby2tDtm76JhBU-cwT6wnFVTp5ysYxsf73ZKGxoY-ZadbswSXRK_CkjpgkDbds4cJCO0
+ *
+ * Column layout (1-indexed):
+ *   A: التاريخ والوقت | B: الاسم | C: البريد | D: الجوال
+ *   E: الدورة/الورشة (legacy) / "MA Learn Waitlist" for new signups
+ *   F: Sent Status (managed by waitlist-blast)
+ *   G: Purchase Status (managed externally — see memory)
+ *   H: Reminder Status (managed by waitlist-blast)
+ *   I: Final Reminder Status (managed by waitlist-blast)
+ *   J: الدولة (NEW — written by this script only)
  * ══════════════════════════════════════════════════════════════
  */
 
 // ── CONFIGURATION ─────────────────────────────────────────────
 const SPREADSHEET_ID   = '1byx1WxktAKB1ajVFgEWbo6tMLlBo0gkcWZqXXO4FF58';
 const SHEET_NAME       = 'Waitlist';
-const WORKSHOP_NAME    = 'Crafting Inspiration Workshop';
-const NOTIFY_EMAIL     = 'info@malearnsa.com';   // New registration alerts
-const SUPPORT_EMAIL    = 'support@malearnsa.com'; // Shown in confirmation email
+const DEFAULT_SOURCE   = 'MA Learn Waitlist';
+const NOTIFY_EMAIL     = 'info@malearnsa.com';
+const SUPPORT_EMAIL    = 'support@malearnsa.com';
 
 
 // ── HELPERS ───────────────────────────────────────────────────
@@ -30,40 +38,22 @@ function getSpreadsheet() {
 }
 
 
-// ── SETUP (run once) ──────────────────────────────────────────
+// ── SETUP (run once to add الدولة header at col J) ───────────
+// NOTE: Existing cols A-I are already in production with status-tracking
+// data. Setup ONLY touches J1 (header), it does not rewrite A-I.
 function setup() {
-  const ss = getSpreadsheet();
+  const ss    = getSpreadsheet();
+  const sheet = ss.getSheetByName(SHEET_NAME);
+  if (!sheet) throw new Error('Waitlist sheet not found');
 
-  let sheet = ss.getSheetByName(SHEET_NAME);
-  if (!sheet) {
-    sheet = ss.insertSheet(SHEET_NAME);
-    try {
-      const defaultSheet = ss.getSheetByName('Sheet1');
-      if (defaultSheet) ss.deleteSheet(defaultSheet);
-    } catch (_) {}
-  }
+  const countryHeaderCell = sheet.getRange(1, 10); // J1
+  countryHeaderCell.setValue('الدولة');
+  countryHeaderCell.setBackground('#C9A84C');
+  countryHeaderCell.setFontColor('#000000');
+  countryHeaderCell.setFontWeight('bold');
+  sheet.setColumnWidth(10, 180);
 
-  sheet.getRange(1, 1, 1, 5).setValues([[
-    'التاريخ والوقت',
-    'الاسم',
-    'البريد الإلكتروني',
-    'رقم الجوال',
-    'الدورة / الورشة'
-  ]]);
-
-  const headerRange = sheet.getRange(1, 1, 1, 5);
-  headerRange.setBackground('#C9A84C');
-  headerRange.setFontColor('#000000');
-  headerRange.setFontWeight('bold');
-
-  sheet.setFrozenRows(1);
-  sheet.setColumnWidth(1, 170);
-  sheet.setColumnWidth(2, 180);
-  sheet.setColumnWidth(3, 240);
-  sheet.setColumnWidth(4, 140);
-  sheet.setColumnWidth(5, 220);
-
-  Logger.log('✅ Setup complete.');
+  Logger.log('✅ Country header added at J1.');
   Logger.log('📊 Spreadsheet URL: ' + ss.getUrl());
 }
 
@@ -83,7 +73,8 @@ function doPost(e) {
           name     : e.parameter.name     || '',
           email    : e.parameter.email    || '',
           phone    : e.parameter.phone    || '',
-          workshop : e.parameter.workshop || WORKSHOP_NAME,
+          country  : e.parameter.country  || '',
+          workshop : e.parameter.workshop || DEFAULT_SOURCE,
         };
       }
     }
@@ -91,22 +82,25 @@ function doPost(e) {
     const name     = (data.name     || '').trim();
     const email    = (data.email    || '').trim();
     const phone    = (data.phone    || '').trim();
-    const workshop = data.workshop  || WORKSHOP_NAME;
+    const country  = (data.country  || '').trim();
+    const workshop = data.workshop  || DEFAULT_SOURCE;
 
-    // 1. Write to sheet
-    sheet.appendRow([ new Date(), name, email, phone, workshop ]);
+    // 1. Write to sheet — preserve cols F-I (status tracking),
+    //    write country at col J (10th position).
+    sheet.appendRow([ new Date(), name, email, phone, workshop, '', '', '', '', country ]);
 
     const lastRow = sheet.getLastRow();
     if (lastRow % 2 === 0) {
+      // Stripe only the data columns we own (A-E + J), skip F-I.
       sheet.getRange(lastRow, 1, 1, 5).setBackground('#f9f6ef');
+      sheet.getRange(lastRow, 10, 1, 1).setBackground('#f9f6ef');
     }
 
-    // 1b. Auto-add to newsletter Subscribers (via token-validator admin endpoint).
-    // Hardcoded like token-validator's ADMIN_TOKEN. Update both in sync if rotated.
+    // 1b. Auto-add to newsletter Subscribers (via token-validator admin endpoint)
     try {
       const tvUrl = 'https://script.google.com/macros/s/AKfycbznjcsYu8gLDZqFJGededAQaATad_L8vlhRQV04pOqh57HB5nFVRy9zUHAcg6goyj8DKA/exec';
       const adminToken = 'MAL-ADMIN-2026';
-      const subscribersSheetId = '17OXBVq8XBXDWUY7Zh88MTycqMYJA8zYRtGSk9WE08QI'; // staging; change to prod sheet ID when prod dashboard ships
+      const subscribersSheetId = '17OXBVq8XBXDWUY7Zh88MTycqMYJA8zYRtGSk9WE08QI';
       if (email) {
         const qs = 'action=admin_upsert_subscriber'
           + '&admin_token=' + encodeURIComponent(adminToken)
@@ -120,10 +114,10 @@ function doPost(e) {
     } catch (_) { /* never block the waitlist submit */ }
 
     // 2. Notify Majid
-    sendNotification(name, email, phone);
+    sendNotification(name, email, phone, country, workshop);
 
     // 3. Confirm to user
-    if (email) sendConfirmation(name, email);
+    if (email) sendConfirmation(name, email, workshop);
 
     return ContentService
       .createTextOutput(JSON.stringify({ success: true, row: lastRow }))
@@ -139,12 +133,17 @@ function doPost(e) {
 
 
 // ── NOTIFICATION EMAIL (to Majid) ─────────────────────────────
-function sendNotification(name, email, phone) {
+function sendNotification(name, email, phone, country, workshop) {
   const timestamp = Utilities.formatDate(new Date(), 'Asia/Riyadh', 'dd/MM/yyyy — hh:mm a');
+  const isCIW = workshop === 'Crafting Inspiration Workshop';
+  const subject = isCIW
+    ? 'تسجيل جديد — ورشة صناعة الإلهام'
+    : 'تسجيل جديد — قائمة انتظار MA Learn';
+  const sourceLabel = isCIW ? 'ورشة صناعة الإلهام — قائمة الانتظار' : 'قائمة انتظار MA Learn';
 
   MailApp.sendEmail({
     to      : NOTIFY_EMAIL,
-    subject : 'تسجيل جديد — ورشة صناعة الإلهام',
+    subject : subject,
     htmlBody: `
       <div style="font-family:Arial,sans-serif;direction:rtl;padding:24px;max-width:480px;">
         <p style="font-size:13px;color:#888;margin-bottom:16px;">${timestamp}</p>
@@ -157,13 +156,17 @@ function sendNotification(name, email, phone) {
             <td style="padding:10px 0;color:#888;">البريد</td>
             <td style="padding:10px 0;color:#111;">${email}</td>
           </tr>
-          <tr>
+          <tr style="border-bottom:1px solid #eee;">
             <td style="padding:10px 0;color:#888;">الجوال</td>
             <td style="padding:10px 0;color:#111;">${phone}</td>
           </tr>
+          <tr>
+            <td style="padding:10px 0;color:#888;">الدولة</td>
+            <td style="padding:10px 0;color:#111;">${country || '—'}</td>
+          </tr>
         </table>
         <div style="margin-top:20px;padding:12px 16px;background:#fffbf0;border-right:3px solid #C9A84C;">
-          <p style="margin:0;font-size:13px;color:#555;">ورشة صناعة الإلهام — قائمة الانتظار</p>
+          <p style="margin:0;font-size:13px;color:#555;">${sourceLabel}</p>
         </div>
       </div>
     `,
@@ -172,10 +175,24 @@ function sendNotification(name, email, phone) {
 
 
 // ── CONFIRMATION EMAIL (to registrant) ───────────────────────
-function sendConfirmation(name, email) {
+function sendConfirmation(name, email, workshop) {
+  const isCIW = workshop === 'Crafting Inspiration Workshop';
+
+  const subject = isCIW
+    ? 'تم تسجيلك في قائمة انتظار ورشة صناعة الإلهام ✓'
+    : 'تم تسجيلك في قائمة انتظار MA Learn ✓';
+
+  const heroLine = isCIW
+    ? `وصل تسجيلك — أنت الآن على قائمة الانتظار لورشة <strong style="color:#C9A84C;">صناعة الإلهام</strong>.`
+    : `وصل تسجيلك — أنت الآن على <strong style="color:#C9A84C;">قائمة انتظار MA Learn</strong>.`;
+
+  const bodyLine = isCIW
+    ? `بمجرد ما نفتح التسجيل، راح تكون أول من يعرف — وبسعر الإطلاق الحصري قبل الجميع.`
+    : `هنا نرسل عروضنا، خصوماتنا، إصداراتنا الجديدة، ومميزات حصرية لأعضاء القائمة فقط. الانضمام مجاني — اللي عليك بس تنتبه لبريدك.`;
+
   MailApp.sendEmail({
     to      : email,
-    subject : 'تم تسجيلك في قائمة انتظار ورشة صناعة الإلهام ✓',
+    subject : subject,
     name    : 'MA Learn',
     replyTo : SUPPORT_EMAIL,
     htmlBody: `
@@ -192,19 +209,16 @@ function sendConfirmation(name, email) {
       <td align="center">
         <table width="100%" cellpadding="0" cellspacing="0" style="max-width:520px;background:#0a0a0a;border-radius:2px;overflow:hidden;">
 
-          <!-- Header bar -->
           <tr>
             <td style="background:#C9A84C;padding:4px 0;font-size:0;line-height:0;">&nbsp;</td>
           </tr>
 
-          <!-- Logo area -->
           <tr>
             <td style="padding:36px 40px 0;text-align:center;">
               <p style="margin:0;font-size:11px;letter-spacing:0.2em;color:#C9A84C;text-transform:uppercase;">MA LEARN</p>
             </td>
           </tr>
 
-          <!-- Body -->
           <tr>
             <td style="padding:28px 40px 36px;">
 
@@ -213,18 +227,17 @@ function sendConfirmation(name, email) {
               </p>
 
               <p style="margin:0 0 20px;font-size:15px;line-height:1.8;color:#F5F0E8;">
-                وصل تسجيلك — أنت الآن على قائمة الانتظار لورشة <strong style="color:#C9A84C;">صناعة الإلهام</strong>.
+                ${heroLine}
               </p>
 
               <p style="margin:0 0 20px;font-size:15px;line-height:1.8;color:#BBBBBB;">
-                بمجرد ما نفتح التسجيل، راح تكون أول من يعرف — وبسعر الإطلاق الحصري قبل الجميع.
+                ${bodyLine}
               </p>
 
               <p style="margin:0 0 32px;font-size:15px;line-height:1.8;color:#BBBBBB;">
                 ابقَ على تواصل، نسعى دائماً لصناعة الإلهام.
               </p>
 
-              <!-- Divider -->
               <table width="100%" cellpadding="0" cellspacing="0" style="margin-bottom:28px;">
                 <tr>
                   <td style="border-top:1px solid #1e1e1e;font-size:0;">&nbsp;</td>
@@ -246,7 +259,6 @@ function sendConfirmation(name, email) {
             </td>
           </tr>
 
-          <!-- Footer -->
           <tr>
             <td style="padding:20px 40px;border-top:1px solid #141414;text-align:center;">
               <p style="margin:0;font-size:11px;color:#444444;">
@@ -273,7 +285,9 @@ function doGet() {
     .createTextOutput(JSON.stringify({
       status  : 'live',
       sheet   : SHEET_NAME,
-      workshop: WORKSHOP_NAME,
+      source  : DEFAULT_SOURCE,
+      columns : 10,
+      countryCol: 'J',
     }))
     .setMimeType(ContentService.MimeType.JSON);
 }
