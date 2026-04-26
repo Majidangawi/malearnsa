@@ -69,6 +69,10 @@
       --grey-warm:  #888888;
       --grey:       #666666;
       --bg:         #080808;
+      /* Dark Scale — for elements sitting on warm/light photography */
+      --void:       #080808;
+      --card:       #0E0E0E;
+      --elevated:   #141414;
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -180,8 +184,8 @@
 
     .hero-badge {
       display: inline-flex; align-items: center; gap: 10px;
-      border: 1px solid rgba(138,100,32,0.55);
-      color: rgba(138,100,32,0.95);
+      border: 1px solid rgba(8,8,8,0.55);
+      color: var(--card);
       font-size: 0.68rem; letter-spacing: 0.14em;
       padding: 6px 18px; margin-bottom: 22px;
       font-family: 'Cairo', sans-serif;
@@ -190,15 +194,15 @@
     }
     .badge-pulse {
       width: 5px; height: 5px; border-radius: 50%;
-      background: var(--gold-deep); flex-shrink: 0;
+      background: var(--void); flex-shrink: 0;
       animation: glow 2.2s ease-in-out infinite;
     }
-    @keyframes glow { 0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(138,100,32,0.55)} 50%{opacity:0.4;box-shadow:0 0 0 4px rgba(138,100,32,0)} }
+    @keyframes glow { 0%,100%{opacity:1;box-shadow:0 0 0 0 rgba(8,8,8,0.55)} 50%{opacity:0.4;box-shadow:0 0 0 4px rgba(8,8,8,0)} }
 
     .hero-kicker {
       font-family: 'Cairo', sans-serif;
       font-size: 0.78rem; font-weight: 300;
-      color: var(--grey-warm); letter-spacing: 0.22em;
+      color: var(--elevated); letter-spacing: 0.22em;
       text-transform: uppercase;
       margin-bottom: 10px;
       opacity: 0; animation: rise 0.7s ease forwards;
