@@ -1011,7 +1011,7 @@ Process: scrape current product prices/URLs → regenerate llms.txt + llms-full.
 - **Owner:** `Majidangawi` GitHub account via org `MA Learn`
 - **Credentials:** [memory/reference_supabase.md](../../.claude/projects/-Users-mastudio-MA-Photography-Dropbox-MA-Creative-Studio-MA-Ai-Claude-AI-MA-EA/memory/reference_supabase.md)
 - **CLI:** `npx supabase` (Brew not installed on Majid's Mac)
-- **PAT:** `sbp_REDACTED_ROTATED_2026-04-27` (stored in memory; rotate if leaked)
+- **PAT:** Never committed to this file. Live value in [memory/reference_supabase.md](../../.claude/projects/-Users-mastudio-MA-Photography-Dropbox-MA-Creative-Studio-MA-Ai-Claude-AI-MA-EA/memory/reference_supabase.md) as `SUPABASE_ACCESS_TOKEN`. Rotate via https://supabase.com/dashboard/account/tokens if leaked.
 
 ### 21.4 CI/CD
 
