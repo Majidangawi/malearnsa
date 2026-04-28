@@ -721,9 +721,17 @@
     // Hide Step 2 entirely → Moyasar iframe + Tamara button + summary all disappear
     document.getElementById('step-payment').style.display = 'none';
     document.getElementById('step-contact').style.display = 'block';
-    // Clear Moyasar form so re-proceed re-inits cleanly with latest amount
-    document.getElementById('moyasar-form').innerHTML = '';
-    // Reset proceed button (in case Tamara error left it disabled)
+    // Hard-replace Moyasar form node — innerHTML='' isn't enough for Moyasar.js
+    // to release its instance, so the next Moyasar.init() ignores the new amount.
+    // Replacing the node guarantees a clean mount on the next proceedToPayment.
+    const oldForm = document.getElementById('moyasar-form');
+    if (oldForm && oldForm.parentNode) {
+      const fresh = document.createElement('div');
+      fresh.id = 'moyasar-form';
+      fresh.className = 'mysr-form';
+      oldForm.parentNode.replaceChild(fresh, oldForm);
+    }
+    // Reset Tamara button (in case its error left it disabled)
     const tamaraBtn = document.getElementById('tamara-btn');
     if (tamaraBtn) tamaraBtn.disabled = false;
     // Scroll back to Step 1
