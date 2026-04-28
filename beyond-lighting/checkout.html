@@ -718,24 +718,35 @@
   }
 
   function editContact() {
-    // Hide Step 2 entirely → Moyasar iframe + Tamara button + summary all disappear
-    document.getElementById('step-payment').style.display = 'none';
-    document.getElementById('step-contact').style.display = 'block';
-    // Hard-replace Moyasar form node — innerHTML='' isn't enough for Moyasar.js
-    // to release its instance, so the next Moyasar.init() ignores the new amount.
-    // Replacing the node guarantees a clean mount on the next proceedToPayment.
-    const oldForm = document.getElementById('moyasar-form');
-    if (oldForm && oldForm.parentNode) {
-      const fresh = document.createElement('div');
-      fresh.id = 'moyasar-form';
-      fresh.className = 'mysr-form';
-      oldForm.parentNode.replaceChild(fresh, oldForm);
+    // Moyasar.js has no public update/destroy API and ignores re-init on the same page,
+    // so we hard-reload to guarantee the gateway re-renders with the new amount.
+    // Form data + applied coupon are persisted in sessionStorage and restored on load.
+    sessionStorage.setItem('bl_form_state', JSON.stringify({
+      name:    document.getElementById('name').value.trim(),
+      email:   document.getElementById('email').value.trim(),
+      phone:   document.getElementById('phone').value.trim(),
+      coupon:  appliedCoupon ? appliedCoupon.code : ''
+    }));
+    window.location.reload();
+  }
+
+  // Restore form state on page load (when user came back via Edit)
+  function restoreFormState_() {
+    const raw = sessionStorage.getItem('bl_form_state');
+    if (!raw) return;
+    sessionStorage.removeItem('bl_form_state');
+    let s; try { s = JSON.parse(raw); } catch (_) { return; }
+    if (s.name)  document.getElementById('name').value  = s.name;
+    if (s.email) document.getElementById('email').value = s.email;
+    if (s.phone) document.getElementById('phone').value = s.phone;
+    if (s.coupon) {
+      const ci = document.getElementById('coupon-input');
+      if (ci) {
+        ci.value = s.coupon;
+        // Re-apply on next tick so the coupon-input event listener wires first
+        setTimeout(() => applyCoupon(), 0);
+      }
     }
-    // Reset Tamara button (in case its error left it disabled)
-    const tamaraBtn = document.getElementById('tamara-btn');
-    if (tamaraBtn) tamaraBtn.disabled = false;
-    // Scroll back to Step 1
-    document.getElementById('step-contact').scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 
   // ─────────────────────────────────────────────
@@ -807,6 +818,7 @@
     localStorage.removeItem('bl_purchase');
     const ci = document.getElementById('coupon-input');
     if (ci) ci.addEventListener('input', () => { ci.value = ci.value.toUpperCase(); });
+    restoreFormState_();
   });
 </script>
 
