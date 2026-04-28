@@ -31,6 +31,9 @@
 // standalone project (not sheet-bound). Required for the Workspace migration
 // so we inherit the 1500/day Gmail quota instead of consumer 100/day.
 const MAIN_SHEET_ID = '1nkrwK-KJ7nD2kv_8zdYiLqot6RFoH-v67VpmjCzvYi0';
+// Dashboard-owned tabs (LinkInBio, LinkInBioHeader, EmailTemplates, AuditLog) live on a
+// separate sheet from shared business data. Backend reads via SHEET_ID_ADMIN; Apps Script writes here.
+const ADMIN_SHEET_ID = '17OXBVq8XBXDWUY7Zh88MTycqMYJA8zYRtGSk9WE08QI';
 
 const TOKENS_SHEET          = 'Tokens';
 const COUPONS_SHEET         = 'Coupons';
@@ -60,8 +63,8 @@ const T3_ORIGINAL_PRICE    = 999;
 
 // Beyond Lighting product
 const BL_PRODUCT           = 'beyond-lighting';
-const BL_DAFTRA_PRODUCT_ID = 40; // UPDATE: create in Daftra → use that product ID
-const BL_ORIGINAL_PRICE    = 299; // UPDATE: match actual checkout price
+const BL_DAFTRA_PRODUCT_ID = 40;
+const BL_ORIGINAL_PRICE    = 650;
 
 // Prompt Pack product
 const PP_PRODUCT           = 'prompt-pack';
@@ -1923,7 +1926,7 @@ function adminDeleteCoupon(params) {
 
 function adminAddLinkbio(params) {
   if (params.admin_token !== ADMIN_TOKEN) return { ok: false, error: 'unauthorized' };
-  const ss = SpreadsheetApp.openById(MAIN_SHEET_ID);
+  const ss = SpreadsheetApp.openById(ADMIN_SHEET_ID);
   const sh = ss.getSheetByName('LinkInBio');
   if (!sh) return { ok: false, error: 'no LinkInBio tab' };
   const linkId = 'LNK-' + Utilities.getUuid().slice(0, 8).toUpperCase();
@@ -1946,8 +1949,9 @@ function adminAddLinkbio(params) {
 function adminUpdateLinkbio(params) {
   if (params.admin_token !== ADMIN_TOKEN) return { ok: false, error: 'unauthorized' };
   const id = String(params.link_id || '');
-  const ss = SpreadsheetApp.openById(MAIN_SHEET_ID);
+  const ss = SpreadsheetApp.openById(ADMIN_SHEET_ID);
   const sh = ss.getSheetByName('LinkInBio');
+  if (!sh) return { ok: false, error: 'no LinkInBio tab' };
   const data = sh.getDataRange().getValues();
   const fields = { title_ar: 2, title_en: 3, url: 4, icon: 5, description: 6, active: 7, order: 8 };
   for (let r = 1; r < data.length; r++) {
@@ -1970,8 +1974,9 @@ function adminUpdateLinkbio(params) {
 function adminDeleteLinkbio(params) {
   if (params.admin_token !== ADMIN_TOKEN) return { ok: false, error: 'unauthorized' };
   const id = String(params.link_id || '');
-  const ss = SpreadsheetApp.openById(MAIN_SHEET_ID);
+  const ss = SpreadsheetApp.openById(ADMIN_SHEET_ID);
   const sh = ss.getSheetByName('LinkInBio');
+  if (!sh) return { ok: false, error: 'no LinkInBio tab' };
   const data = sh.getDataRange().getValues();
   for (let r = 1; r < data.length; r++) {
     if (String(data[r][0]) === id) {
@@ -1984,8 +1989,9 @@ function adminDeleteLinkbio(params) {
 
 function adminUpdateLinkbioHeader(params) {
   if (params.admin_token !== ADMIN_TOKEN) return { ok: false, error: 'unauthorized' };
-  const ss = SpreadsheetApp.openById(MAIN_SHEET_ID);
+  const ss = SpreadsheetApp.openById(ADMIN_SHEET_ID);
   const sh = ss.getSheetByName('LinkInBioHeader');
+  if (!sh) return { ok: false, error: 'no LinkInBioHeader tab' };
   const data = sh.getDataRange().getValues();
   const updates = {};
   if (params.photo_url !== undefined) updates.PhotoURL = params.photo_url;
@@ -2001,8 +2007,9 @@ function adminUpdateLinkbioHeader(params) {
 function adminIncrementLinkbioClick(params) {
   // No admin_token check — called from the public link.malearnsa.com page.
   const id = String(params.link_id || '');
-  const ss = SpreadsheetApp.openById(MAIN_SHEET_ID);
+  const ss = SpreadsheetApp.openById(ADMIN_SHEET_ID);
   const sh = ss.getSheetByName('LinkInBio');
+  if (!sh) return { ok: false, error: 'no LinkInBio tab' };
   const data = sh.getDataRange().getValues();
   for (let r = 1; r < data.length; r++) {
     if (String(data[r][0]) === id) {
@@ -2016,7 +2023,7 @@ function adminIncrementLinkbioClick(params) {
 
 function adminAddEmailTemplate(params) {
   if (params.admin_token !== ADMIN_TOKEN) return { ok: false, error: 'unauthorized' };
-  const ss = SpreadsheetApp.openById(MAIN_SHEET_ID);
+  const ss = SpreadsheetApp.openById(ADMIN_SHEET_ID);
   const sh = ss.getSheetByName('EmailTemplates');
   if (!sh) return { ok: false, error: 'no EmailTemplates tab' };
   const templateId = String(params.template_id || ('tpl-' + Utilities.getUuid().slice(0, 8).toLowerCase()));
@@ -2720,10 +2727,18 @@ function handleMintSupabaseToken_(params) {
 
   var isMajid = (email === 'majid@malearnsa.com' || email === 'majed.engawi@gmail.com');
 
-  // uid = 'u_' + first 28 chars of base64url(sha256(email)) — stable across sessions
-  var uid = 'u_' + Utilities.base64EncodeWebSafe(
-    Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, email)
-  ).replace(/=+$/, '').slice(0, 28);
+  // uid = UUID-shaped hex-split from sha256(email) — stable across sessions.
+  // Supabase GoTrue rejects non-UUID JWT `sub` claims with status 400
+  // "invalid claim: sub claim must be a UUID", breaking supabase.auth.setSession()
+  // which internally calls /auth/v1/user. Producing a 36-char UUID-shaped string
+  // satisfies the GoTrue regex and keeps uid deterministic from email.
+  var shaBytes = Utilities.computeDigest(Utilities.DigestAlgorithm.SHA_256, email);
+  var hex = shaBytes.map(function (b) {
+    var v = b < 0 ? b + 256 : b;
+    return (v < 16 ? '0' : '') + v.toString(16);
+  }).join('').slice(0, 32);
+  var uid = hex.slice(0,8) + '-' + hex.slice(8,12) + '-' + hex.slice(12,16) +
+            '-' + hex.slice(16,20) + '-' + hex.slice(20,32);
 
   var supabaseToken = mintSupabaseToken_(uid, email, displayName, isMajid);
 
