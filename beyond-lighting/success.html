@@ -160,47 +160,14 @@
 </footer>
 
 <script>
-  const APPS_SCRIPT_URL   = 'https://script.google.com/macros/s/AKfycbzt5pyO7CpSVFRgH-CaCT-N5G6m-NBXiU6RA_0xXU5vl3IRSP_i3zFNdc0p3saXCwpcIg/exec';
-  const TAMARA_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwoHKusESjdfxSYaL8VdH5YlUEHArLwcWK-_IJ2cL5knN6UK0jsxlV2pRQySRePGyBT7w/exec';
+  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzt5pyO7CpSVFRgH-CaCT-N5G6m-NBXiU6RA_0xXU5vl3IRSP_i3zFNdc0p3saXCwpcIg/exec';
 
   async function handleSuccess() {
     let purchaseData = {};
     try { purchaseData = JSON.parse(localStorage.getItem('bl_purchase') || '{}'); } catch(e) {}
 
-    const params        = new URLSearchParams(window.location.search);
-    const status        = params.get('status');
-    const method        = purchaseData.payment_method || 'moyasar';
-
-    // ── TAMARA FLOW ──────────────────────────────────────────────
-    if (method === 'tamara') {
-      const tamaraOrderId = purchaseData.tamara_order_id || '';
-
-      if (!tamaraOrderId) {
-        // No order ID — show success anyway (capture may have been triggered by webhook)
-        localStorage.removeItem('bl_purchase');
-        if (window.fbq) fbq('track', 'Purchase', { value: parseFloat(purchaseData.amount) || 0, currency: 'SAR', content_name: 'أبعد من إمكانيات الإضاءة' });
-        document.getElementById('processing').style.display = 'none';
-        document.getElementById('success-view').style.display = 'block';
-        return;
-      }
-
-      try {
-        await fetch(TAMARA_SCRIPT_URL, {
-          method: 'POST',
-          body: JSON.stringify({ action: 'capture_payment', order_id: tamaraOrderId })
-        });
-      } catch(e) {
-        console.warn('Tamara capture failed (non-blocking):', e);
-      }
-
-      localStorage.removeItem('bl_purchase');
-      if (window.fbq) fbq('track', 'Purchase', { value: parseFloat(purchaseData.amount) || 0, currency: 'SAR', content_name: 'أبعد من إمكانيات الإضاءة' });
-      document.getElementById('processing').style.display = 'none';
-      document.getElementById('success-view').style.display = 'block';
-      return;
-    }
-
-    // ── MOYASAR FLOW ─────────────────────────────────────────────
+    const params    = new URLSearchParams(window.location.search);
+    const status    = params.get('status');
     const paymentId = params.get('id') || params.get('payment_id') || '';
 
     if (status === 'failed' || status === 'canceled') {
