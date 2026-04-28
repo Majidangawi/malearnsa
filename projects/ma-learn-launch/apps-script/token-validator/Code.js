@@ -96,9 +96,11 @@ function doPost(e) {
   const output = ContentService.createTextOutput();
   output.setMimeType(ContentService.MimeType.JSON);
   const params = e.parameter;
-  // For chat archive we accept a JSON body (rows[] is big) via postData.contents
+  // Parse body as JSON regardless of Content-Type — browser fetch() with string body
+  // defaults to text/plain even when sending JSON, and Apps Script never sees the
+  // application/json hint. Try/catch swallows non-JSON bodies (legacy form posts).
   let bodyParams = {};
-  if (e.postData && e.postData.type === 'application/json') {
+  if (e.postData && e.postData.contents) {
     try { bodyParams = JSON.parse(e.postData.contents) || {}; }
     catch (_) { bodyParams = {}; }
   }

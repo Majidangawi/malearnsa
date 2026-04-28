@@ -714,6 +714,7 @@
       const res = await fetch(APPS_SCRIPT_URL + '?action=tamara_create_order', {
         method: 'POST',
         body: JSON.stringify({
+          action: 'tamara_create_order',
           name, email, phone,
           product: PRODUCT_ID,
           amount:  finalAmount / 100,
