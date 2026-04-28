@@ -166,8 +166,26 @@
     let purchaseData = {};
     try { purchaseData = JSON.parse(localStorage.getItem('bl_purchase') || '{}'); } catch(e) {}
 
-    const params    = new URLSearchParams(window.location.search);
-    const status    = params.get('status');
+    const params       = new URLSearchParams(window.location.search);
+    const status       = params.get('status');
+    const paymentMethod = params.get('payment_method') || purchaseData.payment_method || 'moyasar';
+
+    // ── TAMARA return ─────────────────────────────────────────
+    // Customer sees success immediately. Token + Daftra + email fire from webhook (server-side).
+    if (paymentMethod === 'tamara') {
+      if (status === 'failed' || status === 'canceled') {
+        document.getElementById('processing').style.display = 'none';
+        document.getElementById('failed-view').style.display = 'block';
+        return;
+      }
+      localStorage.removeItem('bl_purchase');
+      if (window.fbq) fbq('track', 'Purchase', { value: parseFloat(purchaseData.amount) || 0, currency: 'SAR', content_name: 'أبعد من إمكانيات الإضاءة' });
+      document.getElementById('processing').style.display = 'none';
+      document.getElementById('success-view').style.display = 'block';
+      return;
+    }
+
+    // ── MOYASAR return ────────────────────────────────────────
     const paymentId = params.get('id') || params.get('payment_id') || '';
 
     if (status === 'failed' || status === 'canceled') {

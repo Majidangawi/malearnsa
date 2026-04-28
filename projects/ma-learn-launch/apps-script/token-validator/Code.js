@@ -76,6 +76,14 @@ const DAFTRA_API_KEY  = '641fb01dbafdb03000f2658ab3196d5795308ffa';
 const DAFTRA_BASE_URL = 'https://malearn.daftra.com/api2';
 const DAFTRA_STORE_ID = 1;
 
+// Tamara — BNPL provider. SANDBOX creds; swap for prod after UAT.
+// Webhook URL to register in Tamara partner portal:
+//   https://script.google.com/macros/s/AKfycbznjcsYu8gLDZqFJGededAQaATad_L8vlhRQV04pOqh57HB5nFVRy9zUHAcg6goyj8DKA/exec?action=tamara_webhook
+const TAMARA_API_BASE              = 'https://api-sandbox.tamara.co';
+const TAMARA_API_TOKEN             = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhY2NvdW50SWQiOiJhZTc4N2IzYS0yYWQwLTQ5NDAtOGNjYS1hYzI2ZmZkZmUzZDEiLCJ0eXBlIjoibWVyY2hhbnQiLCJzYWx0IjoiMWIzOWE5YWQ3NDk0MTdmMGZiZTliMTY5YmM2OWZkNjMiLCJyb2xlcyI6WyJST0xFX01FUkNIQU5UIl0sImlhdCI6MTc3NzM4MTI3MywiaXNzIjoiVGFtYXJhIn0.Ra2wK-F7JDZJUVQIIsefo_Gaag7y64smOKFzXuaSw8H3Z_w_VH8-_ldCnjLwU-puLpl5_btnz2y5d8OCBY870FFueYnDYS0pUm_T-IOfukCRTVj66FYVxtnfyJ7GrKleQEbhs5KxQ33uJ9bRohLGc7XtsZHRWuaQu5mByoqN4yHu5HSZZ7wV7Tm-Y6rRqANbCuyzj5n9b_L1u09BJLdI_YN229JTzDnlPtFSSwyN2__j_L0GECII4ms1PFTAxmVjEdaKfRQUXwjDHetNJx9hMseQ8Fa2plj1AEyo6JPLr0W8i1z6maJfwxrlhj2IYkW0sxLNo4V62t-bw9ab_O3-yQ';
+const TAMARA_NOTIFICATION_TOKEN    = 'c5369f05-d4ff-406e-9712-0a54cc78e41e';
+const TAMARA_PUBLIC_KEY            = '4715671d-9dc2-4e39-b848-f5470a65789b';
+
 // ─────────────────────────────────────────────
 // ROUTER
 // ─────────────────────────────────────────────
@@ -100,6 +108,8 @@ function doPost(e) {
     let result;
     if      (action === 'save_content')                 result = saveLessonContent(params);
     else if (action === 'admin_archive_chat_messages')  result = _handle_admin_archive_chat_messages(merged);
+    else if (action === 'tamara_create_order')          result = tamaraCreateOrder(merged);
+    else if (action === 'tamara_webhook')               result = tamaraHandleWebhook(merged, e);
     else                                                result = { error: 'unknown_action' };
     output.setContent(JSON.stringify(result));
   } catch(err) {
@@ -528,6 +538,255 @@ function completePPPurchase(params) {
   sendPurchaseNotification(name, email, phone, PP_PRODUCT, amount, coupon, paymentId);
 
   return { success: true, token: assignedToken };
+}
+
+// ═════════════════════════════════════════════════════════════════════
+// TAMARA — BNPL payment provider
+// Flow: checkout → tamaraCreateOrder → Tamara checkout page → customer pays
+//   → Tamara fires webhook (status=approved) → tamaraHandleWebhook
+//   → authorise + capture (auto) → completePurchase (token + Daftra + email)
+//
+// Idempotency: tamara order_id is used as payment_id throughout, so
+// paymentAlreadyProcessed() dedupes if Tamara redelivers the webhook.
+// ═════════════════════════════════════════════════════════════════════
+
+function tamaraCreateOrder(params) {
+  const name    = String(params.name    || '').trim();
+  const email   = String(params.email   || '').trim();
+  const phone   = String(params.phone   || '').trim();
+  const product = String(params.product || '').trim();
+  const amount  = Number(params.amount  || 0);
+  const coupon  = String(params.coupon  || '').trim();
+
+  if (!email || !name || !phone) return { success: false, error: 'missing_buyer_info' };
+  if (!product || amount <= 0)   return { success: false, error: 'invalid_order' };
+
+  const productNames = {
+    'beyond-lighting':         'أبعد من إمكانيات الإضاءة',
+    'intro-to-creative-ai':    'مدخل إلى الذكاء الاصطناعي الإبداعي',
+    'creative-ai-workshop-t3': 'ورشة صناعة الإلهام',
+    'prompt-pack':             'حزمة البرومبتات الإبداعية'
+  };
+  const productName = productNames[product] || product;
+
+  // Phone → E.164 (+9665XXXXXXXX). Strip non-digits, normalise leading 0/966.
+  let phoneDigits = phone.replace(/\D/g, '');
+  if (phoneDigits.indexOf('966') === 0) phoneDigits = phoneDigits.slice(3);
+  if (phoneDigits.indexOf('0') === 0)   phoneDigits = phoneDigits.slice(1);
+  const phoneE164 = '+966' + phoneDigits;
+
+  const nameParts = name.split(/\s+/);
+  const firstName = nameParts[0] || name;
+  const lastName  = nameParts.slice(1).join(' ') || firstName;
+
+  const orderRefId = product + '-' + Utilities.getUuid().slice(0, 12);
+
+  const baseOrigin   = 'https://malearnsa.com';
+  const productPath  = '/' + product + '/';
+
+  const amountStr = amount.toFixed(2);
+  const zeroAmt   = { amount: '0.00', currency: 'SAR' };
+
+  const orderPayload = {
+    order_reference_id: orderRefId,
+    total_amount:       { amount: amountStr, currency: 'SAR' },
+    shipping_amount:    zeroAmt,
+    tax_amount:         zeroAmt,
+    description:        productName,
+    country_code:       'SA',
+    payment_type:       'PAY_BY_INSTALMENTS',
+    instalments:        3,
+    locale:             'ar_SA',
+    items: [{
+      reference_id:    product,
+      type:            'Digital',
+      name:            productName,
+      sku:             product,
+      quantity:        1,
+      total_amount:    { amount: amountStr, currency: 'SAR' },
+      unit_price:      { amount: amountStr, currency: 'SAR' },
+      tax_amount:      zeroAmt,
+      discount_amount: zeroAmt
+    }],
+    consumer: {
+      first_name:   firstName,
+      last_name:    lastName,
+      phone_number: phoneE164,
+      email:        email
+    },
+    shipping_address: {
+      first_name:   firstName,
+      last_name:    lastName,
+      line1:        'Digital delivery',
+      city:         'Jeddah',
+      country_code: 'SA',
+      phone_number: phoneE164
+    },
+    merchant_url: {
+      success:      baseOrigin + productPath + 'success.html?status=paid&payment_method=tamara&order_id=' + orderRefId,
+      failure:      baseOrigin + productPath + 'success.html?status=failed&payment_method=tamara',
+      cancel:       baseOrigin + productPath + 'success.html?status=canceled&payment_method=tamara',
+      notification: getTamaraNotificationUrl_()
+    },
+    platform: 'malearnsa-pages'
+  };
+
+  // Stash buyer context keyed by orderRefId so the webhook can run
+  // completePurchase even though localStorage is gone by then.
+  PropertiesService.getScriptProperties().setProperty(
+    'tamara_ctx_' + orderRefId,
+    JSON.stringify({ name, email, phone, product, amount, coupon, ts: Date.now() })
+  );
+
+  const headers = {
+    'Authorization': 'Bearer ' + TAMARA_API_TOKEN,
+    'Content-Type':  'application/json'
+  };
+
+  try {
+    const res = UrlFetchApp.fetch(TAMARA_API_BASE + '/checkout', {
+      method:             'post',
+      headers:            headers,
+      payload:            JSON.stringify(orderPayload),
+      muteHttpExceptions: true
+    });
+    const code = res.getResponseCode();
+    const body = res.getContentText();
+    let data; try { data = JSON.parse(body); } catch (_) { data = { raw: body }; }
+
+    if (code >= 200 && code < 300 && data.checkout_url) {
+      return {
+        success:      true,
+        order_id:     data.order_id || orderRefId,
+        checkout_id:  data.checkout_id || '',
+        checkout_url: data.checkout_url
+      };
+    }
+    return { success: false, error: 'tamara_create_failed', http: code, details: data };
+  } catch (err) {
+    return { success: false, error: 'tamara_unreachable', message: String(err) };
+  }
+}
+
+function tamaraAuthoriseOrder_(orderId) {
+  const headers = { 'Authorization': 'Bearer ' + TAMARA_API_TOKEN, 'Content-Type': 'application/json' };
+  const res = UrlFetchApp.fetch(TAMARA_API_BASE + '/orders/' + encodeURIComponent(orderId) + '/authorise', {
+    method: 'post', headers: headers, payload: '{}', muteHttpExceptions: true
+  });
+  return { code: res.getResponseCode(), body: res.getContentText() };
+}
+
+function tamaraCaptureOrder_(orderId, amount) {
+  const headers = { 'Authorization': 'Bearer ' + TAMARA_API_TOKEN, 'Content-Type': 'application/json' };
+  const payload = {
+    order_id:        orderId,
+    total_amount:    { amount: amount, currency: 'SAR' },
+    shipping_info:   { shipped_at: new Date().toISOString(), shipping_company: 'Digital', tracking_number: 'N/A', tracking_url: 'https://malearnsa.com' }
+  };
+  const res = UrlFetchApp.fetch(TAMARA_API_BASE + '/payments/capture', {
+    method: 'post', headers: headers, payload: JSON.stringify(payload), muteHttpExceptions: true
+  });
+  return { code: res.getResponseCode(), body: res.getContentText() };
+}
+
+function tamaraGetOrder_(orderId) {
+  const res = UrlFetchApp.fetch(TAMARA_API_BASE + '/orders/' + encodeURIComponent(orderId), {
+    method: 'get', headers: { 'Authorization': 'Bearer ' + TAMARA_API_TOKEN }, muteHttpExceptions: true
+  });
+  if (res.getResponseCode() !== 200) return null;
+  try { return JSON.parse(res.getContentText()); } catch (_) { return null; }
+}
+
+function tamaraVerifyToken_(jwt) {
+  const parts = String(jwt || '').split('.');
+  if (parts.length !== 3) return null;
+  const [headerB64, payloadB64, sigB64] = parts;
+
+  const expectedBytes = Utilities.computeHmacSha256Signature(headerB64 + '.' + payloadB64, TAMARA_NOTIFICATION_TOKEN);
+  const expectedSig   = Utilities.base64EncodeWebSafe(expectedBytes).replace(/=+$/, '');
+  if (expectedSig !== sigB64) return null;
+
+  try {
+    const decoded = Utilities.newBlob(Utilities.base64DecodeWebSafe(payloadB64)).getDataAsString();
+    return JSON.parse(decoded);
+  } catch (_) { return null; }
+}
+
+function getTamaraNotificationUrl_() {
+  const exec = ScriptApp.getService().getUrl();
+  return exec + '?action=tamara_webhook';
+}
+
+function tamaraHandleWebhook(merged, e) {
+  const tamaraToken = (e && e.parameter && e.parameter.tamaraToken) || merged.tamaraToken || '';
+  const verified    = tamaraVerifyToken_(tamaraToken);
+  if (!verified) return { success: false, error: 'invalid_tamara_token' };
+
+  const orderId     = String(merged.order_id     || '');
+  const orderRefId  = String(merged.order_reference_id || '');
+  const status      = String(merged.order_status || merged.status || '').toLowerCase();
+  const eventType   = String(merged.event_type   || '').toLowerCase();
+
+  if (!orderId) return { success: false, error: 'missing_order_id' };
+
+  // Idempotency — Tamara may redeliver. Use orderRefId as payment_id so we share dedup with completePurchase.
+  if (paymentAlreadyProcessed(orderRefId)) return { success: true, reason: 'already_processed' };
+
+  // Only act on "approved" — capture+fulfill. Everything else (declined, expired, canceled) we no-op.
+  const isApproved = (status === 'approved' || eventType === 'order_approved');
+  if (!isApproved) return { success: true, reason: 'event_ignored', event: eventType, status: status };
+
+  // 1. Authorise — required within 72h or the order auto-cancels
+  const authRes = tamaraAuthoriseOrder_(orderId);
+  if (authRes.code < 200 || authRes.code >= 300) {
+    return { success: false, error: 'authorise_failed', http: authRes.code, details: authRes.body };
+  }
+
+  // 2. Recover buyer context from PropertiesService (set during create_order)
+  const ctxKey = 'tamara_ctx_' + orderRefId;
+  let ctx = {};
+  const ctxRaw = PropertiesService.getScriptProperties().getProperty(ctxKey);
+  if (ctxRaw) {
+    try { ctx = JSON.parse(ctxRaw); } catch (_) {}
+  }
+
+  // Fallback to fetching from Tamara if context missing (e.g. cross-deploy)
+  if (!ctx.email) {
+    const order = tamaraGetOrder_(orderId);
+    if (order && order.consumer) {
+      ctx.email   = order.consumer.email   || '';
+      ctx.name    = ((order.consumer.first_name || '') + ' ' + (order.consumer.last_name || '')).trim();
+      ctx.phone   = order.consumer.phone_number || '';
+      ctx.amount  = (order.total_amount && order.total_amount.amount) || 0;
+      ctx.product = (order.items && order.items[0] && order.items[0].sku) || '';
+    }
+  }
+
+  if (!ctx.email || !ctx.product) {
+    return { success: false, error: 'context_missing', orderRefId: orderRefId };
+  }
+
+  // 3. Capture — for digital goods we capture immediately (instant fulfilment)
+  const capRes = tamaraCaptureOrder_(orderId, ctx.amount);
+  if (capRes.code < 200 || capRes.code >= 300) {
+    return { success: false, error: 'capture_failed', http: capRes.code, details: capRes.body };
+  }
+
+  // 4. Fulfil: token + Daftra + email + Majid notification — same pipeline as Moyasar
+  const result = completePurchase({
+    name:       ctx.name,
+    email:      ctx.email,
+    phone:      ctx.phone,
+    product:    ctx.product,
+    amount:     ctx.amount,
+    coupon:     ctx.coupon || '',
+    payment_id: orderRefId
+  });
+
+  // Cleanup the stashed context (best-effort)
+  try { PropertiesService.getScriptProperties().deleteProperty(ctxKey); } catch (_) {}
+
+  return { success: true, fulfilled: result, payment_method: 'tamara' };
 }
 
 // ─────────────────────────────────────────────
