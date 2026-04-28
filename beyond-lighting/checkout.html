@@ -735,11 +735,16 @@
   }
 
   function editPayment() {
-    // Destroy Moyasar form (clear DOM so next init starts fresh)
-    const formEl = document.getElementById('moyasar-form');
-    if (formEl) {
-      formEl.innerHTML  = '';
-      formEl.style.display = 'none';
+    // Hard-replace the Moyasar form node — innerHTML='' isn't always enough
+    // because Moyasar.js leaves listeners/iframes that survive child clearing.
+    // Removing and re-inserting a fresh node guarantees zero residual state.
+    const oldForm = document.getElementById('moyasar-form');
+    if (oldForm && oldForm.parentNode) {
+      const fresh = document.createElement('div');
+      fresh.id = 'moyasar-form';
+      fresh.className = 'mysr-form';
+      fresh.style.display = 'none';
+      oldForm.parentNode.replaceChild(fresh, oldForm);
     }
     // Restore proceed button + Tamara section
     const btn = document.getElementById('proceed-btn');
