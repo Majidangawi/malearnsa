@@ -37,6 +37,8 @@
   <!-- Moyasar -->
   <link rel="stylesheet" href="https://cdn.moyasar.com/mpf/1.14.0/moyasar.css" />
   <script src="https://cdn.moyasar.com/mpf/1.14.0/moyasar.js"></script>
+  <!-- PayPal Smart Buttons (sandbox) -->
+  <script src="https://www.paypal.com/sdk/js?client-id=AWXSwPDc7UR3L1GJiRdgcf7zoVUKcCj7k3IKnzT0KIJwi3Zp_WuqpkD_iVZ-ukF870Njd-ypI86Gg1C4&currency=USD&intent=capture&components=buttons" data-namespace="paypal_sdk"></script>
   <style>
     @font-face { font-family: 'Gumela'; src: url('../brand_assets/gumela-arabic-bold.otf') format('opentype'); font-weight: 700; }
     @font-face { font-family: 'Gumela'; src: url('../brand_assets/gumela-arabic-regular.otf') format('opentype'); font-weight: 400; }
@@ -257,6 +259,21 @@
       height: 1px; background: rgba(255,255,255,0.07);
     }
 
+    /* PayPal section — international */
+    .co-paypal-wrap {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 10px;
+      padding: 12px;
+    }
+    .co-paypal-label {
+      font-size: 0.78rem; color: var(--silver);
+      margin-bottom: 8px; text-align: center;
+    }
+    .co-paypal-label .usd { color: var(--gold); font-weight: 700; }
+    #paypal-button-container { min-height: 48px; }
+    #paypal-msg { font-size: 0.78rem; color: #e74c3c; margin-top: 8px; text-align: center; }
+
     /* Bank transfer button — neutral / silver */
     .co-bank-btn {
       width: 100%;
@@ -424,6 +441,16 @@
             <span class="co-bank-badge">مصرف الإنماء · يومين عمل</span>
           </button>
           <p id="bank-msg" style="display:none;"></p>
+        </div>
+
+        <!-- PayPal — international payments (charged in USD at SAR peg 3.75) -->
+        <div id="paypal-section">
+          <div class="co-or-divider">للدفع الدولي</div>
+          <div class="co-paypal-wrap">
+            <div class="co-paypal-label">PayPal · <span class="usd" id="paypal-usd-label">—</span> USD</div>
+            <div id="paypal-button-container"></div>
+            <p id="paypal-msg" style="display:none;"></p>
+          </div>
         </div>
 
         <!-- Tamara — BNPL alternative (parallel option, doesn't require Step 2) -->
@@ -632,7 +659,8 @@
         document.getElementById('summary-coupon').textContent = `كود الخصم "${code}" مفعّل`;
         btn.textContent = 'مفعّل';
         document.getElementById('coupon-input').disabled = true;
-        // Reinit Moyasar with the discounted amount so payment reflects the new price
+        // Refresh PayPal USD label to reflect new amount
+        updatePaypalUsdLabel_();
         // No Moyasar reinit needed — coupon is captured at proceedToPayment() time
       } else {
         appliedCoupon = null;
@@ -788,6 +816,98 @@
         setTimeout(() => applyCoupon(), 0);
       }
     }
+  }
+
+  // ─────────────────────────────────────────────
+  // PAYPAL — international payments (Smart Buttons SDK)
+  // Charged in USD using the official Saudi riyal peg (3.75).
+  // Button mounts on page load; updates USD label when coupon applied.
+  // ─────────────────────────────────────────────
+  const SAR_TO_USD = 3.75;
+
+  function updatePaypalUsdLabel_() {
+    const finalAmount = appliedCoupon ? appliedCoupon.finalAmount : BASE_AMOUNT;
+    const usd = (finalAmount / 100 / SAR_TO_USD).toFixed(2);
+    const el = document.getElementById('paypal-usd-label');
+    if (el) el.textContent = '$' + usd;
+  }
+
+  function renderPaypalButtons_() {
+    const ns = window.paypal_sdk || window.paypal;
+    if (!ns || !ns.Buttons) return;
+    ns.Buttons({
+      style: { layout: 'vertical', color: 'gold', shape: 'rect', label: 'paypal', height: 44 },
+      createOrder: function() {
+        const name  = document.getElementById('name').value.trim();
+        const email = document.getElementById('email').value.trim();
+        const phone = document.getElementById('phone').value.trim();
+        if (!name || !email) {
+          const el = !name ? document.getElementById('name') : document.getElementById('email');
+          el.style.borderColor = 'rgba(231,76,60,0.8)';
+          el.focus();
+          setTimeout(() => el.style.borderColor = 'rgba(201,168,76,0.2)', 2500);
+          throw new Error('missing buyer info');
+        }
+        const finalAmount = appliedCoupon ? appliedCoupon.finalAmount : BASE_AMOUNT;
+        const coupon = appliedCoupon ? appliedCoupon.code : '';
+        // Stash for the success page
+        localStorage.setItem('bl_purchase', JSON.stringify({
+          name, email, phone,
+          product: PRODUCT_ID,
+          coupon,
+          amount: (finalAmount / 100).toFixed(2),
+          payment_method: 'paypal'
+        }));
+        return fetch(APPS_SCRIPT_URL + '?action=paypal_create_order', {
+          method: 'POST',
+          body: JSON.stringify({
+            action: 'paypal_create_order',
+            name, email, phone,
+            product: PRODUCT_ID,
+            amount:  finalAmount / 100,
+            coupon
+          })
+        })
+          .then(r => r.text())
+          .then(t => { console.log('[PayPal] create:', t.slice(0, 300)); return JSON.parse(t); })
+          .then(data => {
+            if (data.success && data.order_id) return data.order_id;
+            throw new Error(data.error || 'paypal_create_failed');
+          });
+      },
+      onApprove: function(data) {
+        const msg = document.getElementById('paypal-msg');
+        return fetch(APPS_SCRIPT_URL + '?action=paypal_capture_order', {
+          method: 'POST',
+          body: JSON.stringify({ action: 'paypal_capture_order', order_id: data.orderID })
+        })
+          .then(r => r.text())
+          .then(t => { console.log('[PayPal] capture:', t.slice(0, 300)); return JSON.parse(t); })
+          .then(captured => {
+            if (captured.success) {
+              window.location.href = SUCCESS_URL + '?status=paid&payment_method=paypal&order_id=' + encodeURIComponent(data.orderID);
+            } else {
+              msg.style.display = 'block';
+              msg.textContent = captured.error || 'تعذر إتمام الدفع — حاول مرة ثانية';
+            }
+          })
+          .catch(err => {
+            msg.style.display = 'block';
+            msg.textContent = 'خطأ في إتمام الدفع: ' + (err.message || 'unknown');
+          });
+      },
+      onError: function(err) {
+        const msg = document.getElementById('paypal-msg');
+        msg.style.display = 'block';
+        msg.textContent = 'حدث خطأ مع PayPal — جرب مرة ثانية أو اختر طريقة دفع أخرى';
+        console.error('[PayPal] onError:', err);
+      },
+      onCancel: function() {
+        const msg = document.getElementById('paypal-msg');
+        msg.style.display = 'block';
+        msg.textContent = 'تم إلغاء الدفع — يمكنك المحاولة مرة ثانية';
+      }
+    }).render('#paypal-button-container');
   }
 
   // ─────────────────────────────────────────────
@@ -955,6 +1075,8 @@
     const ci = document.getElementById('coupon-input');
     if (ci) ci.addEventListener('input', () => { ci.value = ci.value.toUpperCase(); });
     restoreFormState_();
+    updatePaypalUsdLabel_();
+    renderPaypalButtons_();
   });
 </script>
 
