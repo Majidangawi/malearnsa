@@ -85,12 +85,16 @@ const TAMARA_NOTIFICATION_TOKEN    = 'c5369f05-d4ff-406e-9712-0a54cc78e41e';
 const TAMARA_PUBLIC_KEY            = '4715671d-9dc2-4e39-b848-f5470a65789b';
 
 // Bank Al-Inmaa — receiving account for bank transfer payment method
-const ALINMA_IBAN          = 'SA3805000068207281538000';
-const ALINMA_SWIFT         = 'INMASARI';
-const ALINMA_ACCOUNT_NAME  = 'MA Learn — ماجد عنقاوي';
-const ALINMA_BANK_NAME_AR  = 'مصرف الإنماء';
-const ALINMA_BANK_NAME_EN  = 'Alinma Bank';
-const BANK_TRANSFERS_SHEET = 'BankTransfers';
+const ALINMA_IBAN             = 'SA3805000068207281538000';
+const ALINMA_ACCOUNT_NUMBER   = '68207281538000';
+const ALINMA_SWIFT            = 'INMASARI';
+const ALINMA_ACCOUNT_NAME_AR  = 'ماجد زكي عنقاوي التصوير الفوتوغرافي';
+const ALINMA_ACCOUNT_NAME_EN  = 'Majid Zaki Angawi Photography';
+const ALINMA_BANK_NAME_AR     = 'مصرف الإنماء';
+const ALINMA_BANK_NAME_EN     = 'Alinma Bank';
+const ALINMA_ADDRESS_AR       = 'عبد الرحمن بخش 3581، حي طيبة 7923، 23833 جدة، المملكة العربية السعودية';
+const ALINMA_ADDRESS_EN       = '3581 Abdulrahman Bakhsh St., Taibah Dist. 7923, 23833 Jeddah, Kingdom of Saudi Arabia';
+const BANK_TRANSFERS_SHEET    = 'BankTransfers';
 // Two-working-day SLA for buyer confirmation (per reference_alinma_bank.md)
 
 // ─────────────────────────────────────────────
@@ -480,7 +484,7 @@ function completeBLPurchase(params) {
 
   // 4. Send access email
   const courseUrl = `https://player.malearnsa.com/watch.html?token=${assignedToken}&course=beyond-lighting`;
-  const subject   = 'وصلك رابط الدورة — أبعد من إمكانيات الإضاءة';
+  const subject   = 'وصلك رابط الدورة - أبعد من إمكانيات الإضاءة';
   const body      = buildBLEmail(name, courseUrl);
 
   GmailApp.sendEmail(email, subject, '', { htmlBody: body, name: FROM_NAME, from: FROM_EMAIL });
@@ -879,14 +883,19 @@ function bankTransferInitiate(params) {
   try { _admin_upsert_subscriber({ admin_token: ADMIN_TOKEN, email: email, name: name, source: 'bank-transfer-pending', language: 'AR' }); } catch (e) {}
 
   return {
-    success:    true,
-    reference:  reference,
-    iban:       ALINMA_IBAN,
-    swift:      ALINMA_SWIFT,
-    bank_name:  ALINMA_BANK_NAME_AR,
-    account_name: ALINMA_ACCOUNT_NAME,
-    sla_days:   2,
-    amount:     amount
+    success:        true,
+    reference:      reference,
+    iban:           ALINMA_IBAN,
+    account_number: ALINMA_ACCOUNT_NUMBER,
+    swift:          ALINMA_SWIFT,
+    bank_name_ar:   ALINMA_BANK_NAME_AR,
+    bank_name_en:   ALINMA_BANK_NAME_EN,
+    account_name_ar: ALINMA_ACCOUNT_NAME_AR,
+    account_name_en: ALINMA_ACCOUNT_NAME_EN,
+    address_ar:     ALINMA_ADDRESS_AR,
+    address_en:     ALINMA_ADDRESS_EN,
+    sla_days:       2,
+    amount:         amount
   };
 }
 
@@ -1000,64 +1009,116 @@ function _bankProductDisplay_(product) {
 
 function sendBankInstructionsEmail_(name, email, product, amount, reference) {
   const productName = _bankProductDisplay_(product);
-  const subject = '📥 طلبك مستلم — تعليمات التحويل البنكي · ' + productName;
+  const subject = 'تم استلام طلبك - تعليمات التحويل البنكي - ' + productName;
   const body = `
-<!DOCTYPE html><html dir="rtl" lang="ar"><body style="margin:0;padding:0;background:#f9f6ef;font-family:Cairo,sans-serif;color:#1a1a1a;">
+<!DOCTYPE html><html dir="rtl" lang="ar"><body style="margin:0;padding:0;background:#f9f6ef;font-family:Cairo,Arial,sans-serif;color:#1a1a1a;">
 <div style="max-width:600px;margin:0 auto;padding:32px 24px;">
+
   <h1 style="font-size:1.4rem;font-weight:700;margin:0 0 6px;">يا هلا ${name}،</h1>
   <p style="font-size:0.95rem;line-height:1.7;color:#444;margin:0 0 24px;">
     استلمنا طلبك لـ <strong>${productName}</strong>. عشان نأكدك ونرسلك رابط الوصول، حول المبلغ على الحساب التالي:
   </p>
-  <div style="background:#fff;border:1px solid rgba(201,168,76,0.4);border-radius:12px;padding:24px;margin-bottom:24px;">
-    <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:14px;border-bottom:1px solid #eee;margin-bottom:14px;">
-      <span style="color:#888;font-size:0.85rem;">المبلغ</span>
-      <span style="color:#C9A84C;font-size:1.3rem;font-weight:700;">${amount} ر.س</span>
-    </div>
-    <div style="margin-bottom:10px;font-size:0.85rem;"><span style="color:#888;">البنك:</span> ${ALINMA_BANK_NAME_AR}</div>
-    <div style="margin-bottom:10px;font-size:0.85rem;"><span style="color:#888;">اسم الحساب:</span> ${ALINMA_ACCOUNT_NAME}</div>
-    <div style="margin-bottom:10px;font-size:0.85rem;direction:ltr;text-align:right;"><span style="color:#888;">IBAN:</span> <span style="font-family:monospace;font-weight:700;">${ALINMA_IBAN}</span></div>
-    <div style="margin-bottom:10px;font-size:0.85rem;direction:ltr;text-align:right;"><span style="color:#888;">SWIFT:</span> <span style="font-family:monospace;font-weight:700;">${ALINMA_SWIFT}</span></div>
-    <div style="background:#f9f6ef;border:1px dashed #C9A84C;border-radius:8px;padding:12px;margin-top:14px;text-align:center;">
-      <div style="font-size:0.78rem;color:#888;margin-bottom:4px;">رقم المرجع — اكتبه في وصف التحويل</div>
-      <div style="font-family:monospace;font-size:1.1rem;font-weight:700;color:#1a1a1a;letter-spacing:0.5px;">${reference}</div>
+
+  <!-- Bank details card -->
+  <div style="background:#fff;border:1px solid rgba(201,168,76,0.4);border-radius:12px;padding:20px;margin-bottom:18px;">
+
+    <!-- Amount row (prominent) -->
+    <table dir="rtl" cellpadding="0" cellspacing="0" border="0" style="width:100%;border-bottom:1px solid #eee;padding-bottom:12px;margin-bottom:12px;">
+      <tr>
+        <td align="right" style="color:#888;font-size:0.85rem;">المبلغ</td>
+        <td align="left" dir="ltr" style="color:#C9A84C;font-size:1.4rem;font-weight:700;font-family:Arial,sans-serif;">${amount} SAR</td>
+      </tr>
+    </table>
+
+    <!-- Detail rows -->
+    <table dir="rtl" cellpadding="6" cellspacing="0" border="0" style="width:100%;font-size:0.88rem;line-height:1.6;">
+      <tr>
+        <td align="right" style="color:#888;width:38%;vertical-align:top;">اسم الحساب</td>
+        <td align="right" style="font-weight:600;">${ALINMA_ACCOUNT_NAME_AR}</td>
+      </tr>
+      <tr>
+        <td align="right" style="color:#888;vertical-align:top;">البنك</td>
+        <td align="right">${ALINMA_BANK_NAME_AR}</td>
+      </tr>
+      <tr>
+        <td align="right" style="color:#888;vertical-align:top;">IBAN</td>
+        <td align="left" dir="ltr" style="font-family:'Courier New',monospace;font-weight:700;letter-spacing:0.4px;">${ALINMA_IBAN}</td>
+      </tr>
+      <tr>
+        <td align="right" style="color:#888;vertical-align:top;">SWIFT</td>
+        <td align="left" dir="ltr" style="font-family:'Courier New',monospace;font-weight:700;">${ALINMA_SWIFT}</td>
+      </tr>
+      <tr>
+        <td align="right" style="color:#888;vertical-align:top;">رقم الحساب</td>
+        <td align="left" dir="ltr" style="font-family:'Courier New',monospace;">${ALINMA_ACCOUNT_NUMBER}</td>
+      </tr>
+      <tr>
+        <td align="right" style="color:#888;vertical-align:top;">العنوان</td>
+        <td align="right" style="font-size:0.82rem;line-height:1.5;">${ALINMA_ADDRESS_AR}</td>
+      </tr>
+    </table>
+
+    <!-- Reference number — emphasized -->
+    <div style="background:#f9f6ef;border:1px dashed #C9A84C;border-radius:8px;padding:12px;margin-top:16px;text-align:center;">
+      <div style="font-size:0.78rem;color:#888;margin-bottom:4px;">رقم المرجع - اكتبه في وصف التحويل</div>
+      <div style="font-family:'Courier New',monospace;font-size:1.1rem;font-weight:700;color:#1a1a1a;letter-spacing:0.6px;" dir="ltr">${reference}</div>
     </div>
   </div>
-  <div style="background:#fff;border:1px solid #eee;border-radius:12px;padding:18px;margin-bottom:18px;">
-    <p style="margin:0 0 6px;font-size:0.88rem;font-weight:700;">⏱ يومين عمل لتأكيد التحويل</p>
-    <p style="margin:0;color:#666;font-size:0.83rem;line-height:1.6;">
-      بمجرد ما نستلم التحويل ونتأكد منه، راح يوصلك إيميل ثاني فيه رابط الدورة. أي سؤال؟ راسلنا على
-      <a href="mailto:support@malearnsa.com" style="color:#C9A84C;">support@malearnsa.com</a>
+
+  <!-- Receipt-reply instruction (prominent, action-oriented) -->
+  <div style="background:#fff8e6;border:1px solid #C9A84C;border-radius:12px;padding:16px 18px;margin-bottom:18px;">
+    <p style="margin:0 0 6px;font-size:0.92rem;font-weight:700;color:#8a6d2c;">بعد ما تحول، رد على هذا الإيميل بصورة الإيصال</p>
+    <p style="margin:0;color:#5a4a1f;font-size:0.85rem;line-height:1.6;">
+      أرفق صورة الإيصال على نفس هذا الإيميل، ويساعدنا نأكد التحويل في أسرع وقت ونفعّل وصولك للدورة.
     </p>
   </div>
-  <p style="text-align:center;color:#aaa;font-size:0.78rem;margin:24px 0 0;">© MA Learn 2026</p>
+
+  <!-- SLA + support -->
+  <div style="background:#fff;border:1px solid #eee;border-radius:12px;padding:16px 18px;margin-bottom:18px;">
+    <p style="margin:0 0 6px;font-size:0.88rem;font-weight:700;">يومين عمل لتأكيد التحويل</p>
+    <p style="margin:0;color:#666;font-size:0.83rem;line-height:1.6;">
+      بمجرد ما نستلم التحويل ونتأكد منه، يوصلك إيميل ثاني فيه رابط الدورة. أي سؤال راسلنا على
+      <a href="mailto:support@malearnsa.com" style="color:#C9A84C;text-decoration:underline;">support@malearnsa.com</a>
+    </p>
+  </div>
+
+  <p style="text-align:center;color:#aaa;font-size:0.78rem;margin:24px 0 0;">MA Learn 2026 - ${ALINMA_ACCOUNT_NAME_AR}</p>
 </div>
 </body></html>`;
-  GmailApp.sendEmail(email, subject, '', { from: FROM_EMAIL, name: FROM_NAME, htmlBody: body });
+  GmailApp.sendEmail(email, subject, '', {
+    from: FROM_EMAIL,
+    name: FROM_NAME,
+    replyTo: SUPPORT_EMAIL_BANK_,
+    htmlBody: body
+  });
 }
+
+// Reply-To for bank-transfer instructions email — buyer replies with the receipt
+const SUPPORT_EMAIL_BANK_ = 'info@malearnsa.com';
 
 function sendBankPendingNotification_(name, email, phone, product, amount, coupon, reference, rowIndex) {
   const productName = _bankProductDisplay_(product);
   const execUrl = ScriptApp.getService().getUrl();
   const confirmUrl = execUrl + '?action=admin_confirm_bank_transfer&admin_token=' + encodeURIComponent(ADMIN_TOKEN) + '&row_index=' + rowIndex;
 
-  const subject = '🔴 تحويل بنكي — ' + name + ' · ' + productName;
+  const subject = 'تحويل بنكي ينتظر التأكيد - ' + name + ' - ' + productName;
   const body = `
 <!DOCTYPE html><html dir="rtl" lang="ar"><body style="font-family:Arial,sans-serif;background:#f5f5f7;padding:20px;">
 <div style="max-width:560px;margin:0 auto;background:#fff;border-radius:12px;padding:24px;">
   <h2 style="margin:0 0 16px;font-size:1.15rem;">تحويل بنكي ينتظر التأكيد</h2>
-  <table style="width:100%;font-size:0.88rem;line-height:1.7;">
-    <tr><td style="color:#888;width:90px;">المرجع:</td><td style="font-family:monospace;font-weight:700;">${reference}</td></tr>
-    <tr><td style="color:#888;">الاسم:</td><td>${name}</td></tr>
-    <tr><td style="color:#888;">الإيميل:</td><td><a href="mailto:${email}">${email}</a></td></tr>
-    <tr><td style="color:#888;">الجوال:</td><td>${phone}</td></tr>
-    <tr><td style="color:#888;">المنتج:</td><td>${productName}</td></tr>
-    <tr><td style="color:#888;">المبلغ:</td><td><strong>${amount} ر.س</strong></td></tr>
-    ${coupon ? '<tr><td style="color:#888;">كود خصم:</td><td>' + coupon + '</td></tr>' : ''}
+  <table dir="rtl" cellpadding="4" cellspacing="0" border="0" style="width:100%;font-size:0.88rem;line-height:1.7;">
+    <tr><td align="right" style="color:#888;width:100px;">المرجع</td><td align="left" dir="ltr" style="font-family:'Courier New',monospace;font-weight:700;">${reference}</td></tr>
+    <tr><td align="right" style="color:#888;">الاسم</td><td align="right">${name}</td></tr>
+    <tr><td align="right" style="color:#888;">الإيميل</td><td align="left" dir="ltr"><a href="mailto:${email}">${email}</a></td></tr>
+    <tr><td align="right" style="color:#888;">الجوال</td><td align="left" dir="ltr">${phone}</td></tr>
+    <tr><td align="right" style="color:#888;">المنتج</td><td align="right">${productName}</td></tr>
+    <tr><td align="right" style="color:#888;">المبلغ</td><td align="left" dir="ltr"><strong>${amount} SAR</strong></td></tr>
+    ${coupon ? '<tr><td align="right" style="color:#888;">كود خصم</td><td align="right">' + coupon + '</td></tr>' : ''}
   </table>
   <div style="margin-top:18px;padding-top:14px;border-top:1px solid #eee;">
-    <p style="margin:0 0 10px;color:#444;font-size:0.85rem;">بعد ما تتأكد من البنك، اضغط:</p>
-    <a href="${confirmUrl}" style="display:inline-block;background:#34C759;color:#fff;padding:10px 22px;border-radius:8px;text-decoration:none;font-weight:700;font-size:0.9rem;">✓ أكد التحويل وفعّل الوصول</a>
-    <p style="margin:14px 0 0;color:#999;font-size:0.78rem;">الرفض من dashboard.</p>
+    <p style="margin:0 0 10px;color:#444;font-size:0.85rem;">بعد ما تتأكد من استلام التحويل في البنك، اضغط الزر:</p>
+    <a href="${confirmUrl}" style="display:inline-block;background:#34C759;color:#fff;padding:10px 22px;border-radius:8px;text-decoration:none;font-weight:700;font-size:0.9rem;">أكد التحويل وفعّل الوصول</a>
+    <p style="margin:14px 0 0;color:#999;font-size:0.78rem;">للرفض، استخدم الـ dashboard.</p>
   </div>
 </div>
 </body></html>`;
@@ -1067,7 +1128,7 @@ function sendBankPendingNotification_(name, email, phone, product, amount, coupo
 function sendBankRejectionEmail_(name, email, product, reason) {
   if (!email) return;
   const productName = _bankProductDisplay_(product);
-  const subject = 'تحديث بخصوص طلبك — ' + productName;
+  const subject = 'تحديث بخصوص طلبك - ' + productName;
   const body = `
 <!DOCTYPE html><html dir="rtl" lang="ar"><body style="margin:0;padding:0;background:#f9f6ef;font-family:Cairo,sans-serif;color:#1a1a1a;">
 <div style="max-width:600px;margin:0 auto;padding:32px 24px;">
@@ -1099,7 +1160,7 @@ function sendPurchaseNotification(name, email, phone, product, amount, coupon, p
   };
   const productName = productNames[product] || product;
 
-  const subject = decodeURIComponent('%E2%9C%A8%20%D8%B9%D9%85%D9%84%D9%8A%D8%A9%20%D8%B4%D8%B1%D8%A7%D8%A1%20%D8%AC%D8%AF%D9%8A%D8%AF%D8%A9%20%E2%80%94%20') + productName;
+  const subject = 'عملية شراء جديدة - ' + productName;
   try {
     GmailApp.sendEmail(NOTIFY_EMAIL, subject, '', {
       name:     FROM_NAME,

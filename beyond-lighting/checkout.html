@@ -622,15 +622,15 @@
       if (data.valid) {
         appliedCoupon = { code, discountHalalas: data.discountHalalas, finalAmount: data.finalAmount, isFree: data.isFree, message: data.message };
         msg.style.color = '#4caf82';
-        msg.textContent = data.isFree ? 'وصول مجاني ✓' : data.message;
+        msg.textContent = data.isFree ? 'وصول مجاني' : data.message;
         document.getElementById('discount-row').style.display = 'flex';
         document.getElementById('discount-amount').textContent = `-${data.discountSAR} ر.س`;
         const totalLabel = data.isFree ? 'مجاني' : `${data.finalSAR} ر.س`;
         document.getElementById('total-price').textContent = totalLabel;
         document.getElementById('toggle-total').textContent = totalLabel;
         document.getElementById('summary-coupon').style.display = 'block';
-        document.getElementById('summary-coupon').textContent = `✓ كود الخصم "${code}" مفعّل`;
-        btn.textContent = '✓';
+        document.getElementById('summary-coupon').textContent = `كود الخصم "${code}" مفعّل`;
+        btn.textContent = 'مفعّل';
         document.getElementById('coupon-input').disabled = true;
         // Reinit Moyasar with the discounted amount so payment reflects the new price
         // No Moyasar reinit needed — coupon is captured at proceedToPayment() time
@@ -849,9 +849,14 @@
           payment_method: 'bank',
           reference: data.reference,
           iban: data.iban,
+          account_number: data.account_number,
           swift: data.swift,
-          bank_name: data.bank_name,
-          account_name: data.account_name,
+          bank_name_ar: data.bank_name_ar,
+          bank_name_en: data.bank_name_en,
+          account_name_ar: data.account_name_ar,
+          account_name_en: data.account_name_en,
+          address_ar: data.address_ar,
+          address_en: data.address_en,
           sla_days: data.sla_days
         }));
         window.location.href = SUCCESS_URL + '?status=bank-pending&payment_method=bank&reference=' + encodeURIComponent(data.reference);

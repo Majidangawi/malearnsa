@@ -86,15 +86,15 @@
       <p style="font-size:0.78rem;color:var(--grey);margin-bottom:12px;letter-spacing:0.08em;">ماذا يحصل الآن؟</p>
       <div style="display:flex;flex-direction:column;gap:10px;font-size:0.85rem;color:var(--silver);">
         <div style="display:flex;align-items:center;gap:10px;">
-          <span style="color:var(--gold);font-size:1rem;">✓</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="3" style="flex-shrink:0;"><polyline points="20 6 9 17 4 12"/></svg>
           رابط الدورة وصلك على إيميلك
         </div>
         <div style="display:flex;align-items:center;gap:10px;">
-          <span style="color:var(--gold);font-size:1rem;">✓</span>
-          الرابط خاص بك — يشتغل من أي جهاز
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="3" style="flex-shrink:0;"><polyline points="20 6 9 17 4 12"/></svg>
+          الرابط خاص بك - يشتغل من أي جهاز
         </div>
         <div style="display:flex;align-items:center;gap:10px;">
-          <span style="color:var(--gold);font-size:1rem;">✓</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="3" style="flex-shrink:0;"><polyline points="20 6 9 17 4 12"/></svg>
           وصول مدى الحياة بدون قيود
         </div>
       </div>
@@ -106,55 +106,78 @@
   </div>
 
   <!-- Bank transfer pending state -->
-  <div id="bank-view" style="display:none;text-align:right;">
+  <div id="bank-view" style="display:none;">
     <div style="text-align:center;margin-bottom:24px;">
       <div style="width:80px;height:80px;border:2px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;">
         <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2"><path d="M3 21h18M3 10h18M5 6l7-3 7 3M4 10v11M20 10v11M8 14v3M12 14v3M16 14v3"/></svg>
       </div>
-      <p style="color:var(--gold);font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:10px;">طلبك مستلم — ينتظر التحويل</p>
+      <p style="color:var(--gold);font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:10px;">طلبك مستلم - ينتظر التحويل</p>
       <h1 style="font-size:clamp(1.5rem,4vw,1.9rem);font-weight:700;margin-bottom:14px;line-height:1.3;">حول المبلغ على الحساب التالي</h1>
       <p style="color:var(--silver);font-size:0.88rem;line-height:1.7;max-width:480px;margin:0 auto;">بمجرد ما نستلم التحويل ونتأكد منه، يوصلك رابط الدورة على إيميلك خلال يومين عمل.</p>
     </div>
 
     <!-- Bank details card -->
-    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(201,168,76,0.3);border-radius:14px;padding:24px;margin-bottom:18px;">
-      <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,0.06);margin-bottom:14px;">
-        <span style="color:var(--grey);font-size:0.8rem;">المبلغ</span>
-        <span id="bank-amount" style="color:var(--gold);font-size:1.4rem;font-weight:700;">— ر.س</span>
-      </div>
-      <div style="display:flex;flex-direction:column;gap:12px;font-size:0.85rem;">
-        <div style="display:flex;justify-content:space-between;align-items:center;">
-          <span style="color:var(--grey);">البنك:</span>
-          <span id="bank-name-val">—</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;align-items:center;">
-          <span style="color:var(--grey);">اسم الحساب:</span>
-          <span id="bank-account-name">—</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;align-items:center;direction:ltr;">
-          <button onclick="copyVal_('bank-iban')" type="button" style="background:transparent;border:1px solid rgba(201,168,76,0.4);color:var(--gold);padding:4px 10px;border-radius:6px;font-size:0.7rem;cursor:pointer;font-family:inherit;">نسخ</button>
-          <span id="bank-iban" style="font-family:monospace;font-weight:700;letter-spacing:0.5px;">—</span>
-          <span style="color:var(--grey);">IBAN:</span>
-        </div>
-        <div style="display:flex;justify-content:space-between;align-items:center;direction:ltr;">
-          <span id="bank-swift" style="font-family:monospace;font-weight:700;">—</span>
-          <span style="color:var(--grey);">SWIFT:</span>
-        </div>
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(201,168,76,0.3);border-radius:14px;padding:22px;margin-bottom:16px;">
+      <!-- Amount row -->
+      <table dir="rtl" cellpadding="0" cellspacing="0" border="0" style="width:100%;border-bottom:1px solid rgba(255,255,255,0.08);padding-bottom:12px;margin-bottom:14px;">
+        <tr>
+          <td align="right" style="color:var(--grey);font-size:0.82rem;padding:6px 0;">المبلغ</td>
+          <td align="left" dir="ltr" style="color:var(--gold);font-size:1.4rem;font-weight:700;font-family:Arial,sans-serif;padding:6px 0;"><span id="bank-amount">—</span> SAR</td>
+        </tr>
+      </table>
+
+      <!-- Detail rows -->
+      <table dir="rtl" cellpadding="0" cellspacing="0" border="0" style="width:100%;font-size:0.85rem;">
+        <tr>
+          <td align="right" style="color:var(--grey);width:38%;padding:6px 0;vertical-align:top;">اسم الحساب</td>
+          <td align="right" style="font-weight:600;padding:6px 0;"><span id="bank-account-name">—</span></td>
+        </tr>
+        <tr>
+          <td align="right" style="color:var(--grey);padding:6px 0;vertical-align:top;">البنك</td>
+          <td align="right" style="padding:6px 0;"><span id="bank-name-val">—</span></td>
+        </tr>
+        <tr>
+          <td align="right" style="color:var(--grey);padding:6px 0;vertical-align:top;">IBAN</td>
+          <td align="left" dir="ltr" style="font-family:monospace;font-weight:700;letter-spacing:0.4px;padding:6px 0;">
+            <button onclick="copyVal_('bank-iban')" type="button" style="background:transparent;border:1px solid rgba(201,168,76,0.4);color:var(--gold);padding:3px 8px;border-radius:5px;font-size:0.65rem;cursor:pointer;font-family:inherit;margin-left:6px;">نسخ</button>
+            <span id="bank-iban">—</span>
+          </td>
+        </tr>
+        <tr>
+          <td align="right" style="color:var(--grey);padding:6px 0;vertical-align:top;">SWIFT</td>
+          <td align="left" dir="ltr" style="font-family:monospace;font-weight:700;padding:6px 0;"><span id="bank-swift">—</span></td>
+        </tr>
+        <tr>
+          <td align="right" style="color:var(--grey);padding:6px 0;vertical-align:top;">رقم الحساب</td>
+          <td align="left" dir="ltr" style="font-family:monospace;padding:6px 0;"><span id="bank-account-number">—</span></td>
+        </tr>
+        <tr>
+          <td align="right" style="color:var(--grey);padding:6px 0;vertical-align:top;">العنوان</td>
+          <td align="right" style="font-size:0.78rem;line-height:1.5;color:var(--silver);padding:6px 0;"><span id="bank-address">—</span></td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Reference number -->
+    <div style="background:rgba(201,168,76,0.08);border:1px dashed rgba(201,168,76,0.5);border-radius:12px;padding:18px;margin-bottom:18px;text-align:center;">
+      <p style="font-size:0.78rem;color:var(--silver);margin-bottom:6px;">رقم المرجع - اكتبه في وصف التحويل</p>
+      <div style="display:inline-flex;align-items:center;gap:10px;direction:ltr;">
+        <span id="bank-ref" style="font-family:monospace;font-size:1.15rem;font-weight:700;color:var(--ivory);letter-spacing:0.6px;">—</span>
+        <button onclick="copyVal_('bank-ref')" type="button" style="background:transparent;border:1px solid rgba(201,168,76,0.5);color:var(--gold);padding:4px 10px;border-radius:5px;font-size:0.7rem;cursor:pointer;font-family:inherit;">نسخ</button>
       </div>
     </div>
 
-    <!-- Reference number — emphasized -->
-    <div style="background:rgba(201,168,76,0.08);border:1px dashed rgba(201,168,76,0.5);border-radius:12px;padding:18px;margin-bottom:24px;text-align:center;">
-      <p style="font-size:0.78rem;color:var(--silver);margin-bottom:6px;">رقم المرجع — اكتبه في وصف التحويل</p>
-      <div style="display:flex;align-items:center;justify-content:center;gap:10px;">
-        <button onclick="copyVal_('bank-ref')" type="button" style="background:transparent;border:1px solid rgba(201,168,76,0.5);color:var(--gold);padding:5px 12px;border-radius:6px;font-size:0.72rem;cursor:pointer;font-family:inherit;">نسخ</button>
-        <div id="bank-ref" style="font-family:monospace;font-size:1.15rem;font-weight:700;color:var(--ivory);letter-spacing:0.6px;">—</div>
-      </div>
+    <!-- Receipt-reply prompt (gold callout) -->
+    <div style="background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.35);border-radius:12px;padding:16px 18px;margin-bottom:24px;">
+      <p style="margin:0 0 6px;font-size:0.92rem;font-weight:700;color:var(--gold);">بعد ما تحول، رد على إيميل التعليمات بصورة الإيصال</p>
+      <p style="margin:0;color:var(--silver);font-size:0.83rem;line-height:1.6;">
+        راح يوصلك إيميل فيه نفس هذي التفاصيل. رد عليه وأرفق صورة الإيصال عشان نأكد التحويل أسرع.
+      </p>
     </div>
 
-    <p style="text-align:center;color:var(--grey);font-size:0.78rem;line-height:1.6;margin-bottom:24px;">
-      ✉️ التفاصيل وصلتك أيضاً على إيميلك. أي سؤال؟
-      <a href="mailto:support@malearnsa.com" style="color:var(--gold);">support@malearnsa.com</a>
+    <p style="text-align:center;color:var(--grey);font-size:0.78rem;line-height:1.6;margin-bottom:20px;">
+      أي سؤال راسلنا على
+      <a href="mailto:support@malearnsa.com" style="color:var(--gold);direction:ltr;">support@malearnsa.com</a>
     </p>
     <div style="text-align:center;">
       <a href="https://malearnsa.com" style="display:inline-block;background:var(--gold);color:#000;font-weight:700;padding:14px 36px;text-decoration:none;font-family:'Gumela','Cairo',sans-serif;border-radius:8px;">العودة إلى الرئيسية</a>
@@ -163,7 +186,9 @@
 
   <!-- Failed state (payment failed or cancelled) -->
   <div id="failed-view" style="display:none;">
-    <div style="font-size:3rem;margin-bottom:20px;">⚠️</div>
+    <div style="width:60px;height:60px;border:2px solid #e74c3c;border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 20px;">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#e74c3c" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </div>
     <h1 style="font-size:1.5rem;font-weight:700;margin-bottom:12px;">لم يتم إتمام الدفع</h1>
     <p style="color:var(--silver);font-size:0.9rem;line-height:1.8;max-width:420px;margin:0 auto 32px;">
       تم إلغاء العملية أو واجهنا مشكلة في الدفع.<br>
@@ -235,15 +260,15 @@
 
     // ── BANK TRANSFER pending ────────────────────────────────
     if (paymentMethod === 'bank') {
-      document.getElementById('bank-amount').textContent     = (purchaseData.amount || '—') + ' ر.س';
-      document.getElementById('bank-name-val').textContent   = purchaseData.bank_name || 'مصرف الإنماء';
-      document.getElementById('bank-account-name').textContent = purchaseData.account_name || 'MA Learn — ماجد عنقاوي';
-      document.getElementById('bank-iban').textContent       = purchaseData.iban  || 'SA3805000068207281538000';
-      document.getElementById('bank-swift').textContent      = purchaseData.swift || 'INMASARI';
-      document.getElementById('bank-ref').textContent        = purchaseData.reference || params.get('reference') || '—';
-      // Track lead event (not Purchase — that fires on confirm)
-      if (window.fbq) fbq('track', 'InitiateCheckout', { value: parseFloat(purchaseData.amount) || 0, currency: 'SAR', content_name: 'أبعد من إمكانيات الإضاءة — تحويل بنكي' });
-      // Keep purchase data in localStorage in case user refreshes
+      document.getElementById('bank-amount').textContent       = purchaseData.amount || '—';
+      document.getElementById('bank-name-val').textContent     = purchaseData.bank_name_ar    || 'مصرف الإنماء';
+      document.getElementById('bank-account-name').textContent = purchaseData.account_name_ar || 'ماجد زكي عنقاوي التصوير الفوتوغرافي';
+      document.getElementById('bank-iban').textContent         = purchaseData.iban            || 'SA3805000068207281538000';
+      document.getElementById('bank-swift').textContent        = purchaseData.swift           || 'INMASARI';
+      document.getElementById('bank-account-number').textContent = purchaseData.account_number || '68207281538000';
+      document.getElementById('bank-address').textContent      = purchaseData.address_ar      || 'عبد الرحمن بخش 3581، حي طيبة 7923، 23833 جدة، المملكة العربية السعودية';
+      document.getElementById('bank-ref').textContent          = purchaseData.reference || params.get('reference') || '—';
+      if (window.fbq) fbq('track', 'InitiateCheckout', { value: parseFloat(purchaseData.amount) || 0, currency: 'SAR', content_name: 'أبعد من إمكانيات الإضاءة - تحويل بنكي' });
       document.getElementById('processing').style.display = 'none';
       document.getElementById('bank-view').style.display = 'block';
       return;
