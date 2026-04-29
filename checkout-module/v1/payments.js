@@ -30,6 +30,14 @@
 (function () {
   'use strict';
 
+  // ──────────────────────────────────────────────────────────────────
+  // FEATURE FLAGS
+  // ──────────────────────────────────────────────────────────────────
+  // Tamara: button is rendered as disabled "قريباً" until production
+  // credentials arrive from Tamara. Flip to true in this file alone and
+  // all 4 product checkouts pick it up on next load.
+  const TAMARA_ENABLED = false;
+
   const DEFAULT_CONFIG = {
     appsScriptUrl: 'https://script.google.com/macros/s/AKfycbznjcsYu8gLDZqFJGededAQaATad_L8vlhRQV04pOqh57HB5nFVRy9zUHAcg6goyj8DKA/exec',
     moyasarKey:    'pk_live_ciyD54kvT4b6bWev3RNzEjzLXpJPC8DmnbgcW47H',
@@ -115,15 +123,30 @@
   }
 
   function tamaraHtml_() {
+    const tamaraLogo = [
+      '<svg style="height:22px;width:auto" viewBox="0 0 1353.7 686.7" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">',
+      '  <path fill="#fff" d="M185.1,252h37.3c1.2,0,2.2,1,2.2,2.2v200.6c0,1.2-1,2.2-2.2,2.2h-37.3c-1.2,0-2.2-1-2.2-2.2v-200.6c0-1.2,1-2.2,2.2-2.2Z"/>',
+      '  <path fill="#fff" d="M344.3,319.8h-37.3c-1.2,0-2.2,1-2.2,2.2v120.7c0,13.9-12.1,25.6-25.9,25.6h-29.8c-1.6,0-2.6,1.6-2.1,3l14,37.2c.3.9,1.2,1.4,2.1,1.4h16.2c37.1,0,67.2-30,67.2-67.2v-120.8c0-1.2-1-2.2-2.2-2.2Z"/>',
+      '  <path fill="#fff" d="M1120.5,284.5c18.4.3,33.5-14.7,33.1-33.1-.3-17.4-14.5-31.6-31.9-31.9-18.4-.3-33.5,14.7-33.1,33.1.3,17.4,14.5,31.6,31.9,31.9Z"/>',
+      '  <path fill="#fff" d="M1059.2,283.2c.3.3.8.4,1.2.2,12.9-4.5,22-16.9,21.7-31.3-.4-17.4-14.8-31.5-32.2-31.6-15.9,0-29.1,11.3-31.9,26.3,0,.4,0,.8.4,1.1l40.9,35.3Z"/>',
+      '  <path fill="#fff" d="M1168.5,317.3h-242.5c-37.2,1.9-66.9,32.8-66.9,70.5s1.8,18.1,5.1,26.2h-375.1c-45.4-3.6-60.1-20.7-60.1-61.6v-98.2c0-1.2-1-2.2-2.2-2.2h-39.8c-1.2,0-2.2,1-2.2,2.2v91.6c0,81.2,33.2,112.5,123.9,112.5h426.4l-.4-.3c36.6-2.5,65.6-33.1,65.6-70.3s-1.8-18-5-26h173.5c1.2,0,2.2-1,2.2-2.2v-40c0-1.2-1-2.2-2.2-2.2ZM929.2,416.5c-15.6,0-28.4-13.2-28.4-28.9s12.8-28.6,28.4-28.6,29.2,12.9,29.2,28.6-13.6,28.9-29.2,28.9Z"/>',
+      '</svg>'
+    ].join('\n');
+
+    if (!TAMARA_ENABLED) {
+      // Disabled state — visible so customers know it's coming, no click handler
+      return [
+        '<button id="tamara-btn" class="co-tamara-btn" disabled aria-disabled="true" style="opacity:0.55;cursor:not-allowed;filter:grayscale(0.3);">',
+        tamaraLogo,
+        '  <span class="co-tamara-divider-line"></span>',
+        '  <span class="co-tamara-badge">قريباً</span>',
+        '</button>'
+      ].join('\n');
+    }
+
     return [
       '<button id="tamara-btn" class="co-tamara-btn" onclick="MaCheckout.proceedWithTamara()">',
-      '  <svg style="height:22px;width:auto" viewBox="0 0 1353.7 686.7" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">',
-      '    <path fill="#fff" d="M185.1,252h37.3c1.2,0,2.2,1,2.2,2.2v200.6c0,1.2-1,2.2-2.2,2.2h-37.3c-1.2,0-2.2-1-2.2-2.2v-200.6c0-1.2,1-2.2,2.2-2.2Z"/>',
-      '    <path fill="#fff" d="M344.3,319.8h-37.3c-1.2,0-2.2,1-2.2,2.2v120.7c0,13.9-12.1,25.6-25.9,25.6h-29.8c-1.6,0-2.6,1.6-2.1,3l14,37.2c.3.9,1.2,1.4,2.1,1.4h16.2c37.1,0,67.2-30,67.2-67.2v-120.8c0-1.2-1-2.2-2.2-2.2Z"/>',
-      '    <path fill="#fff" d="M1120.5,284.5c18.4.3,33.5-14.7,33.1-33.1-.3-17.4-14.5-31.6-31.9-31.9-18.4-.3-33.5,14.7-33.1,33.1.3,17.4,14.5,31.6,31.9,31.9Z"/>',
-      '    <path fill="#fff" d="M1059.2,283.2c.3.3.8.4,1.2.2,12.9-4.5,22-16.9,21.7-31.3-.4-17.4-14.8-31.5-32.2-31.6-15.9,0-29.1,11.3-31.9,26.3,0,.4,0,.8.4,1.1l40.9,35.3Z"/>',
-      '    <path fill="#fff" d="M1168.5,317.3h-242.5c-37.2,1.9-66.9,32.8-66.9,70.5s1.8,18.1,5.1,26.2h-375.1c-45.4-3.6-60.1-20.7-60.1-61.6v-98.2c0-1.2-1-2.2-2.2-2.2h-39.8c-1.2,0-2.2,1-2.2,2.2v91.6c0,81.2,33.2,112.5,123.9,112.5h426.4l-.4-.3c36.6-2.5,65.6-33.1,65.6-70.3s-1.8-18-5-26h173.5c1.2,0,2.2-1,2.2-2.2v-40c0-1.2-1-2.2-2.2-2.2ZM929.2,416.5c-15.6,0-28.4-13.2-28.4-28.9s12.8-28.6,28.4-28.6,29.2,12.9,29.2,28.6-13.6,28.9-29.2,28.9Z"/>',
-      '  </svg>',
+      tamaraLogo,
       '  <span class="co-tamara-divider-line"></span>',
       '  <span class="co-tamara-badge">٣ أقساط · بدون فوائد</span>',
       '</button>',
