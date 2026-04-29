@@ -101,7 +101,7 @@
     </div>
 
     <!-- Success content (shown after Apps Script responds) -->
-    <div id="success-content" style="display:none;">
+    <div id="success-view" style="display:none;">
       <div class="check-ring">
         <span style="font-size:2.5rem;">✓</span>
       </div>
@@ -160,55 +160,63 @@
     </div>
 
     <!-- Error state -->
-    <div id="error-content" style="display:none;">
+    <div id="failed-view" style="display:none;">
       <h2 style="font-size:1.5rem;color:#e05252;margin-bottom:12px;">مشكلة في الدفع</h2>
       <p style="font-size:0.9rem;color:var(--silver);margin-bottom:24px;">لم يتم إتمام الدفع. حاول مجدداً أو راسلنا.</p>
       <a href="https://malearnsa.com/prompt-pack/" class="btn">العودة للصفحة</a>
     </div>
 
+    <!-- Bank transfer pending -->
+    <div id="bank-view" style="display:none;text-align:right;">
+      <div style="text-align:center;margin-bottom:24px;">
+        <div style="width:80px;height:80px;border:2px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;">
+          <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2"><path d="M3 21h18M3 10h18M5 6l7-3 7 3M4 10v11M20 10v11M8 14v3M12 14v3M16 14v3"/></svg>
+        </div>
+        <p style="color:var(--gold);font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:10px;">طلبك مستلم - ينتظر التحويل</p>
+        <h1 style="font-size:clamp(1.5rem,4vw,1.9rem);font-weight:700;margin-bottom:14px;line-height:1.3;text-align:center;">حول المبلغ على الحساب التالي</h1>
+        <p style="color:var(--silver);font-size:0.88rem;line-height:1.7;max-width:480px;margin:0 auto;text-align:center;">بمجرد ما نستلم التحويل ونتأكد منه، يوصلك كود الوصول على إيميلك خلال يومين عمل.</p>
+      </div>
+      <div class="card" style="margin-bottom:16px;">
+        <table dir="rtl" cellpadding="0" cellspacing="0" border="0" style="width:100%;border-bottom:1px solid rgba(255,255,255,0.08);padding-bottom:12px;margin-bottom:14px;">
+          <tr>
+            <td align="right" style="color:var(--grey);font-size:0.82rem;padding:6px 0;">المبلغ</td>
+            <td align="left" dir="ltr" style="color:var(--gold);font-size:1.4rem;font-weight:700;font-family:Arial,sans-serif;padding:6px 0;"><span id="bank-amount">—</span> SAR</td>
+          </tr>
+        </table>
+        <table dir="rtl" cellpadding="0" cellspacing="0" border="0" style="width:100%;font-size:0.85rem;">
+          <tr><td align="right" style="color:var(--grey);width:38%;padding:6px 0;vertical-align:top;">اسم الحساب</td><td align="right" style="font-weight:600;padding:6px 0;"><span id="bank-account-name">—</span></td></tr>
+          <tr><td align="right" style="color:var(--grey);padding:6px 0;vertical-align:top;">البنك</td><td align="right" style="padding:6px 0;"><span id="bank-name-val">—</span></td></tr>
+          <tr><td align="right" style="color:var(--grey);padding:6px 0;vertical-align:top;">IBAN</td><td align="left" dir="ltr" style="font-family:monospace;font-weight:700;letter-spacing:0.4px;padding:6px 0;">
+            <button onclick="MaSuccess.copyVal('bank-iban')" type="button" style="background:transparent;border:1px solid rgba(201,168,76,0.4);color:var(--gold);padding:3px 8px;border-radius:5px;font-size:0.65rem;cursor:pointer;font-family:inherit;margin-left:6px;">نسخ</button>
+            <span id="bank-iban">—</span>
+          </td></tr>
+          <tr><td align="right" style="color:var(--grey);padding:6px 0;vertical-align:top;">SWIFT</td><td align="left" dir="ltr" style="font-family:monospace;font-weight:700;padding:6px 0;"><span id="bank-swift">—</span></td></tr>
+          <tr><td align="right" style="color:var(--grey);padding:6px 0;vertical-align:top;">رقم الحساب</td><td align="left" dir="ltr" style="font-family:monospace;padding:6px 0;"><span id="bank-account-number">—</span></td></tr>
+          <tr><td align="right" style="color:var(--grey);padding:6px 0;vertical-align:top;">العنوان</td><td align="right" style="font-size:0.78rem;line-height:1.5;color:var(--silver);padding:6px 0;"><span id="bank-address">—</span></td></tr>
+        </table>
+      </div>
+      <div style="background:rgba(201,168,76,0.08);border:1px dashed rgba(201,168,76,0.5);border-radius:12px;padding:18px;margin-bottom:18px;text-align:center;">
+        <p style="font-size:0.78rem;color:var(--silver);margin-bottom:6px;">رقم المرجع - اكتبه في وصف التحويل</p>
+        <div style="display:inline-flex;align-items:center;gap:10px;direction:ltr;">
+          <span id="bank-ref" style="font-family:monospace;font-size:1.15rem;font-weight:700;color:var(--ivory);letter-spacing:0.6px;">—</span>
+          <button onclick="MaSuccess.copyVal('bank-ref')" type="button" style="background:transparent;border:1px solid rgba(201,168,76,0.5);color:var(--gold);padding:4px 10px;border-radius:5px;font-size:0.7rem;cursor:pointer;font-family:inherit;">نسخ</button>
+        </div>
+      </div>
+      <div style="background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.35);border-radius:12px;padding:16px 18px;margin-bottom:24px;">
+        <p style="margin:0 0 6px;font-size:0.92rem;font-weight:700;color:var(--gold);">بعد ما تحول، رد على إيميل التعليمات بصورة الإيصال</p>
+        <p style="margin:0;color:var(--silver);font-size:0.83rem;line-height:1.6;">راح يوصلك إيميل فيه نفس هذي التفاصيل. رد عليه وأرفق صورة الإيصال عشان نأكد التحويل أسرع.</p>
+      </div>
+    </div>
+
   </div>
 
+  <!-- Shared module — handles all 4 method states (Moyasar/Tamara/PayPal paid, Bank pending, Failed) -->
+  <script src="https://malearnsa.com/checkout-module/v1/success.js"></script>
   <script>
-    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzt5pyO7CpSVFRgH-CaCT-N5G6m-NBXiU6RA_0xXU5vl3IRSP_i3zFNdc0p3saXCwpcIg/exec';
-
-    const params        = new URLSearchParams(window.location.search);
-    const paymentId     = params.get('id');
-    const paymentStatus = params.get('status');
-
-    // Failed payment — show error
-    if (paymentStatus && paymentStatus !== 'paid') {
-      document.getElementById('processing').style.display    = 'none';
-      document.getElementById('error-content').style.display = 'block';
-    } else if (paymentStatus === 'paid' && paymentId) {
-      // Trigger complete_purchase on Apps Script
-      (async function completePurchase() {
-        try {
-          const customer = JSON.parse(localStorage.getItem('ma_customer') || '{}');
-          const url      = new URL(APPS_SCRIPT_URL);
-          url.searchParams.set('action',     'complete_purchase');
-          url.searchParams.set('name',       customer.name    || '');
-          url.searchParams.set('email',      customer.email   || '');
-          url.searchParams.set('phone',      customer.phone   || '');
-          url.searchParams.set('product',    'prompt-pack');
-          url.searchParams.set('amount',     customer.amount  || '');
-          url.searchParams.set('coupon',     customer.coupon  || '');
-          url.searchParams.set('payment_id', paymentId);
-
-          await fetch(url.toString());
-          if (window.fbq) fbq('track', 'Purchase', { value: parseFloat(customer.amount) || 0, currency: 'SAR', content_name: 'حزمة البرومبتات الإبداعية' });
-          localStorage.removeItem('ma_customer');
-        } catch (e) {
-          // Fail silently — show success regardless (payment already confirmed by Moyasar)
-        }
-
-        document.getElementById('processing').style.display      = 'none';
-        document.getElementById('success-content').style.display = 'block';
-      })();
-    } else {
-      // No payment params — direct visit, show success UI anyway
-      document.getElementById('processing').style.display      = 'none';
-      document.getElementById('success-content').style.display = 'block';
-    }
+    MaSuccess.init({
+      productId:     'prompt-pack',
+      productNameAr: 'حزمة البرومبتات الإبداعية'
+    });
   </script>
 
 

@@ -231,19 +231,19 @@
           <div id="step-contact">
             <div style="margin-bottom:16px;">
               <label style="display:block;font-size:0.8rem;color:var(--silver);margin-bottom:8px;">الاسم *</label>
-              <input id="customer-name" type="text" placeholder="الاسم الكامل"
+              <input id="name" type="text" placeholder="الاسم الكامل"
                 style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(201,168,76,0.25);border-radius:8px;padding:12px 14px;color:var(--ivory);font-family:'Cairo',sans-serif;font-size:0.9rem;outline:none;direction:rtl;"
                 onfocus="this.style.borderColor='rgba(201,168,76,0.6)'" onblur="this.style.borderColor='rgba(201,168,76,0.25)'">
             </div>
             <div style="margin-bottom:16px;">
               <label style="display:block;font-size:0.8rem;color:var(--silver);margin-bottom:8px;">الإيميل *</label>
-              <input id="customer-email" type="email" placeholder="example@email.com"
+              <input id="email" type="email" placeholder="example@email.com"
                 style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(201,168,76,0.25);border-radius:8px;padding:12px 14px;color:var(--ivory);font-family:'Cairo',sans-serif;font-size:0.9rem;outline:none;direction:ltr;"
                 onfocus="this.style.borderColor='rgba(201,168,76,0.6)'" onblur="this.style.borderColor='rgba(201,168,76,0.25)'">
             </div>
             <div style="margin-bottom:20px;">
               <label style="display:block;font-size:0.8rem;color:var(--silver);margin-bottom:8px;">رقم الجوال *</label>
-              <input id="customer-phone" type="tel" placeholder="05xxxxxxxx"
+              <input id="phone" type="tel" placeholder="05xxxxxxxx"
                 style="width:100%;background:rgba(255,255,255,0.06);border:1px solid rgba(201,168,76,0.25);border-radius:8px;padding:12px 14px;color:var(--ivory);font-family:'Cairo',sans-serif;font-size:0.9rem;outline:none;direction:ltr;"
                 onfocus="this.style.borderColor='rgba(201,168,76,0.6)'" onblur="this.style.borderColor='rgba(201,168,76,0.25)'">
             </div>
@@ -254,9 +254,8 @@
               <div style="display:flex;gap:8px;">
                 <input id="coupon-input" type="text" placeholder="MALEARN20"
                   style="flex:1;background:rgba(255,255,255,0.06);border:1px solid rgba(201,168,76,0.25);border-radius:8px;padding:12px 14px;color:var(--ivory);font-family:'Cairo',sans-serif;font-size:0.9rem;outline:none;direction:ltr;text-transform:uppercase;"
-                  onfocus="this.style.borderColor='rgba(201,168,76,0.6)'" onblur="this.style.borderColor='rgba(201,168,76,0.25)'"
-                  oninput="this.value=this.value.toUpperCase();resetCoupon()">
-                <button onclick="applyCoupon()"
+                  onfocus="this.style.borderColor='rgba(201,168,76,0.6)'" onblur="this.style.borderColor='rgba(201,168,76,0.25)'">
+                <button id="coupon-btn"
                   style="background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.35);border-radius:8px;color:var(--gold);font-family:'Cairo',sans-serif;font-size:0.85rem;padding:0 16px;cursor:pointer;white-space:nowrap;transition:background 0.2s;"
                   onmouseover="this.style.background='rgba(201,168,76,0.22)'" onmouseout="this.style.background='rgba(201,168,76,0.12)'">
                   تطبيق
@@ -269,49 +268,40 @@
             <div style="margin-bottom:20px;padding:14px;background:rgba(255,255,255,0.02);border-radius:8px;border:1px solid rgba(255,255,255,0.06);">
               <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
                 <span style="font-size:0.8rem;color:var(--silver);">سعر الحزمة</span>
-                <span style="font-size:0.8rem;" id="price-original-label">99 ر.س</span>
+                <span style="font-size:0.8rem;" id="original-price">99 ر.س</span>
               </div>
               <div id="discount-row" style="display:none;justify-content:space-between;margin-bottom:6px;">
-                <span style="font-size:0.8rem;color:#4caf82;" id="discount-label">خصم</span>
+                <span style="font-size:0.8rem;color:#4caf82;">الخصم</span>
                 <span style="font-size:0.8rem;color:#4caf82;" id="discount-amount">-0 ر.س</span>
               </div>
               <div style="height:1px;background:rgba(255,255,255,0.06);margin:8px 0;"></div>
               <div style="display:flex;justify-content:space-between;">
                 <span style="font-size:0.9rem;font-weight:700;">الإجمالي</span>
-                <span style="font-size:0.9rem;font-weight:700;color:var(--gold);" id="price-final-label">99 ر.س</span>
+                <span style="font-size:0.9rem;font-weight:700;color:var(--gold);" id="total-price">99 ر.س</span>
               </div>
+              <p id="summary-coupon" style="display:none;font-size:0.78rem;color:#4caf82;margin-top:8px;text-align:center;"></p>
             </div>
 
-            <p id="contact-error" style="display:none;font-size:0.8rem;color:#e05252;margin-bottom:12px;">يرجى إدخال الاسم والإيميل ورقم الجوال بشكل صحيح</p>
-            <button onclick="showPaymentForm()"
-              style="width:100%;background:var(--gold);color:#000;font-family:'Gumela','Cairo',sans-serif;font-weight:700;padding:14px;border:none;cursor:pointer;font-size:1rem;transition:background 0.25s;"
-              onmouseover="this.style.background='var(--gold-lum)'" onmouseout="this.style.background='var(--gold)'">
-              متابعة للدفع ←
-            </button>
+            <!-- Module renders all 4 payment methods here -->
+            <div id="ma-payment-methods"></div>
           </div>
 
-          <!-- Step 2: Payment -->
+          <!-- Step 2: Card payment (module shows after "الدفع بالبطاقة") -->
           <div id="step-payment" style="display:none;">
-            <div style="margin-bottom:20px;padding:12px 14px;background:rgba(201,168,76,0.06);border-radius:8px;border:1px solid rgba(201,168,76,0.15);">
-              <p style="font-size:0.8rem;color:var(--ivory);margin-bottom:4px;font-weight:400;" id="summary-name"></p>
-              <p style="font-size:0.8rem;color:var(--silver);margin-bottom:4px;" id="summary-email"></p>
-              <p style="font-size:0.8rem;color:var(--silver);margin-bottom:4px;" id="summary-phone"></p>
-              <p style="font-size:0.8rem;color:#4caf82;display:none;" id="summary-coupon"></p>
-              <button onclick="editContact()" style="background:none;border:none;color:var(--gold);font-size:0.75rem;cursor:pointer;padding:0;margin-top:6px;">تعديل</button>
+            <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+              <p style="font-size:0.78rem;color:var(--gold);font-weight:700;letter-spacing:0.05em;">الدفع بالبطاقة</p>
+              <button id="edit-contact-btn" type="button" style="background:none;border:none;color:var(--gold);font-size:0.78rem;cursor:pointer;font-family:'Cairo',sans-serif;display:flex;align-items:center;gap:4px;">
+                <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                تعديل
+              </button>
+            </div>
+            <div style="margin-bottom:18px;padding:12px 14px;background:rgba(201,168,76,0.06);border-radius:8px;border:1px solid rgba(201,168,76,0.15);">
+              <p style="font-size:0.8rem;color:var(--ivory);margin-bottom:4px;font-weight:400;" id="sum-name"></p>
+              <p style="font-size:0.8rem;color:var(--silver);margin-bottom:4px;direction:ltr;text-align:right;" id="sum-email"></p>
+              <p style="font-size:0.8rem;color:var(--silver);direction:ltr;text-align:right;" id="sum-phone"></p>
+              <p id="sum-coupon-row" style="display:none;font-size:0.78rem;color:#4caf82;margin-top:6px;"><span id="sum-coupon"></span></p>
             </div>
             <div id="moyasar-form" class="mysr-form"></div>
-
-            <!-- Tamara option -->
-            <div id="tamara-section">
-              <div class="co-or-divider">أو</div>
-              <button id="tamara-btn" class="co-tamara-btn" onclick="proceedWithTamara()">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
-                ادفع بالتقسيط مع تمارا
-                <span class="co-tamara-badge">٣ أقساط</span>
-              </button>
-              <p style="text-align:center;font-size:0.72rem;color:#666;margin-top:8px;">بدون فوائد · متاح لسكان المملكة العربية السعودية</p>
-              <div id="tamara-msg" style="display:none;font-size:0.8rem;margin-top:10px;text-align:center;padding:10px;border-radius:8px;background:rgba(231,76,60,0.1);color:#e74c3c;"></div>
-            </div>
           </div>
 
         </div>
@@ -359,210 +349,18 @@
 </div>
 </footer>
 
+  <!-- MA Learn shared checkout module v1 -->
+  <link rel="stylesheet" href="https://malearnsa.com/checkout-module/v1/payments.css">
+  <script src="https://malearnsa.com/checkout-module/v1/payments.js"></script>
   <script>
-    const APPS_SCRIPT_URL   = 'https://script.google.com/macros/s/AKfycbzt5pyO7CpSVFRgH-CaCT-N5G6m-NBXiU6RA_0xXU5vl3IRSP_i3zFNdc0p3saXCwpcIg/exec';
-    const TAMARA_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwoHKusESjdfxSYaL8VdH5YlUEHArLwcWK-_IJ2cL5knN6UK0jsxlV2pRQySRePGyBT7w/exec';
-    const MOYASAR_KEY       = 'pk_live_TnwNBaVGNp6VcZ95rGXqFKD7LrYe1dGNndDo6Eod';
-    const BASE_AMOUNT       = 9900;   // halalas — 99 SAR
-    const PRODUCT_ID        = 'prompt-pack';
-    const SUCCESS_URL       = 'https://malearnsa.com/prompt-pack/success.html';
-    const CANCEL_URL        = 'https://malearnsa.com/prompt-pack/';
-
-    let appliedCoupon = null;
-
-    // ── Coupon ────────────────────────────────────────────
-    async function applyCoupon() {
-      const code = document.getElementById('coupon-input').value.trim();
-      if (!code) return;
-
-      const msg = document.getElementById('coupon-msg');
-      msg.style.display = 'block';
-      msg.style.color   = 'var(--silver)';
-      msg.textContent   = 'جاري التحقق...';
-
-      try {
-        const url  = `${APPS_SCRIPT_URL}?action=validate_coupon&code=${encodeURIComponent(code)}&amount=${BASE_AMOUNT}`;
-        const res  = await fetch(url);
-        const data = await res.json();
-
-        if (data.valid) {
-          appliedCoupon = { code, discountHalalas: data.discountHalalas, finalAmount: data.finalAmount, message: data.message };
-          msg.style.color = '#4caf82';
-          msg.textContent = `✓ ${data.message} — تم تطبيق الكود`;
-          updatePriceSummary(data.discountSAR, data.finalSAR, data.message);
-        } else {
-          appliedCoupon = null;
-          msg.style.color = '#e05252';
-          msg.textContent = data.message || 'كود غير صحيح';
-          resetPriceSummary();
-        }
-      } catch (err) {
-        msg.style.color = '#e05252';
-        msg.textContent = 'تعذر التحقق — حاول مجدداً';
-      }
-    }
-
-    function resetCoupon() {
-      appliedCoupon = null;
-      const msg = document.getElementById('coupon-msg');
-      msg.style.display = 'none';
-      resetPriceSummary();
-    }
-
-    function updatePriceSummary(discountSAR, finalSAR, label) {
-      document.getElementById('discount-row').style.display  = 'flex';
-      document.getElementById('discount-label').textContent  = label;
-      document.getElementById('discount-amount').textContent = `-${discountSAR} ر.س`;
-      document.getElementById('price-final-label').textContent = `${finalSAR} ر.س`;
-    }
-
-    function resetPriceSummary() {
-      document.getElementById('discount-row').style.display    = 'none';
-      document.getElementById('price-final-label').textContent = '99 ر.س';
-    }
-
-    // ── Checkout flow ─────────────────────────────────────
-    function showPaymentForm() {
-      const name  = document.getElementById('customer-name').value.trim();
-      const email = document.getElementById('customer-email').value.trim();
-      const phone = document.getElementById('customer-phone').value.trim();
-
-      if (name.length < 2 || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || phone.length < 9) {
-        document.getElementById('contact-error').style.display = 'block';
-        return;
-      }
-
-      document.getElementById('contact-error').style.display = 'none';
-      document.getElementById('step-contact').style.display  = 'none';
-      document.getElementById('step-payment').style.display  = 'block';
-
-      document.getElementById('summary-name').textContent  = name;
-      document.getElementById('summary-email').textContent = email;
-      document.getElementById('summary-phone').textContent = phone;
-
-      const couponEl = document.getElementById('summary-coupon');
-      if (appliedCoupon) {
-        couponEl.textContent   = `كود الخصم: ${appliedCoupon.code} — ${appliedCoupon.message}`;
-        couponEl.style.display = 'block';
-      } else {
-        couponEl.style.display = 'none';
-      }
-
-      const finalAmount = appliedCoupon ? appliedCoupon.finalAmount : BASE_AMOUNT;
-      const priceSAR    = (BASE_AMOUNT / 100).toFixed(0);
-
-      localStorage.setItem('ma_customer', JSON.stringify({
-        name, email, phone,
-        coupon:  appliedCoupon ? appliedCoupon.code : '',
-        amount:  (finalAmount / 100).toFixed(2),
-        product: PRODUCT_ID
-      }));
-
-      // Handle free coupon (0 SAR)
-      if (finalAmount <= 0) {
-        (async function() {
-          try {
-            const url = new URL(APPS_SCRIPT_URL);
-            url.searchParams.set('action',     'complete_purchase');
-            url.searchParams.set('name',       name);
-            url.searchParams.set('email',      email);
-            url.searchParams.set('phone',      phone);
-            url.searchParams.set('product',    PRODUCT_ID);
-            url.searchParams.set('amount',     '0');
-            url.searchParams.set('coupon',     appliedCoupon ? appliedCoupon.code : '');
-            url.searchParams.set('payment_id', 'FREE_COUPON');
-            await fetch(url.toString());
-          } catch(e) {}
-          window.location.href = SUCCESS_URL + '?status=paid&id=FREE_COUPON';
-        })();
-        return;
-      }
-
-      Moyasar.init({
-        element:              document.getElementById('moyasar-form'),
-        amount:               finalAmount,
-        currency:             'SAR',
-        description:          `حزمة البرومبتات الإبداعية — MA Learn (${priceSAR} ر.س)`,
-        publishable_api_key:  MOYASAR_KEY,
-        callback_url:         SUCCESS_URL,
-        metadata:             { email, phone, coupon: appliedCoupon ? appliedCoupon.code : '' },
-        supported_networks:   ['mada', 'visa', 'mastercard'],
-        methods:              ['creditcard', 'applepay'],
-        apple_pay: {
-          country:                'SA',
-          label:                  'MA Learn',
-          validate_merchant_url:  'https://api.moyasar.com/v1/applepay/initiate',
-          supported_networks:     ['mada', 'visa', 'mastercard']
-        }
-      });
-    }
-
-    function editContact() {
-      document.getElementById('step-payment').style.display  = 'none';
-      document.getElementById('step-contact').style.display  = 'block';
-      document.getElementById('moyasar-form').innerHTML      = '';
-    }
-
-    // ── Tamara — Create order and redirect ────────────────
-    async function proceedWithTamara() {
-      const name  = document.getElementById('customer-name').value.trim();
-      const email = document.getElementById('customer-email').value.trim();
-      const phone = document.getElementById('customer-phone').value.trim();
-
-      // Validate required fields
-      const el = !name ? document.getElementById('customer-name') : !email ? document.getElementById('customer-email') : !phone ? document.getElementById('customer-phone') : null;
-      if (el) {
-        el.style.borderColor = 'rgba(220,80,60,0.6)';
-        el.focus();
-        setTimeout(() => el.style.borderColor = 'rgba(201,168,76,0.25)', 2500);
-        return;
-      }
-
-      const btn = document.getElementById('tamara-btn');
-      const msg = document.getElementById('tamara-msg');
-      btn.disabled = true;
-      btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg> جارٍ الاتصال بتمارا...';
-      msg.style.display = 'none';
-
-      const finalAmount  = appliedCoupon ? appliedCoupon.finalAmount : BASE_AMOUNT;
-      const couponCode   = appliedCoupon ? appliedCoupon.code : '';
-
-      try {
-        const res = await fetch(TAMARA_SCRIPT_URL, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            action: 'create_order',
-            name, email, phone,
-            product: PRODUCT_ID,
-            amount: finalAmount,
-            coupon: couponCode
-          })
-        });
-        const data = await res.json();
-
-        if (data.success && data.checkout_url) {
-          localStorage.setItem('ma_customer', JSON.stringify({
-            name, email, phone,
-            product: PRODUCT_ID,
-            coupon: couponCode,
-            amount: (finalAmount / 100).toFixed(2),
-            payment_method: 'tamara'
-          }));
-          window.location.href = data.checkout_url;
-        } else {
-          msg.style.display = 'block';
-          msg.textContent = data.error || 'حدث خطأ عند الاتصال بتمارا — حاول مرة ثانية';
-          btn.disabled = false;
-          btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg> ادفع بالتقسيط مع تمارا <span class="co-tamara-badge">٣ أقساط</span>';
-        }
-      } catch (err) {
-        msg.style.display = 'block';
-        msg.textContent = 'تعذّر الاتصال بالخادم — تحقق من اتصالك وحاول مرة ثانية';
-        btn.disabled = false;
-        btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg> ادفع بالتقسيط مع تمارا <span class="co-tamara-badge">٣ أقساط</span>';
-      }
-    }
+    MaCheckout.init({
+      productId:     'prompt-pack',
+      productNameAr: 'حزمة البرومبتات الإبداعية',
+      basePrice:     99,
+      successUrl:    'https://malearnsa.com/prompt-pack/success.html',
+      moyasarKey:    'pk_live_TnwNBaVGNp6VcZ95rGXqFKD7LrYe1dGNndDo6Eod',
+      methods:       ['moyasar', 'bank', 'tamara', 'paypal']
+    });
   </script>
 
 </body>
