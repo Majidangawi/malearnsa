@@ -257,6 +257,35 @@
       height: 1px; background: rgba(255,255,255,0.07);
     }
 
+    /* Bank transfer button — neutral / silver */
+    .co-bank-btn {
+      width: 100%;
+      background: transparent;
+      color: var(--ivory);
+      border: 1px solid rgba(245,240,232,0.35);
+      padding: 13px 16px;
+      font-family: 'Gumela', 'Cairo', sans-serif;
+      font-size: 0.95rem; font-weight: 700;
+      cursor: pointer; border-radius: 10px;
+      transition: background 0.2s, border-color 0.2s;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      min-height: 48px;
+    }
+    .co-bank-btn:hover  { background: rgba(255,255,255,0.04); border-color: rgba(245,240,232,0.6); }
+    .co-bank-btn:active { transform: scale(0.98); }
+    .co-bank-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+    .co-bank-btn-divider { width: 1px; height: 18px; background: rgba(255,255,255,0.18); }
+    .co-bank-badge {
+      background: rgba(245,240,232,0.12);
+      border-radius: 20px;
+      padding: 3px 9px;
+      font-size: 0.7rem; font-weight: 700;
+      font-family: 'Cairo', sans-serif;
+      letter-spacing: 0.01em; white-space: nowrap;
+      color: var(--silver);
+    }
+    #bank-msg { font-size: 0.78rem; color: #e74c3c; margin-top: 8px; text-align: center; }
+
     /* Tamara button */
     .co-tamara-btn {
       width: 100%;
@@ -384,6 +413,18 @@
           الدفع بالبطاقة
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><rect x="2" y="5" width="20" height="14" rx="2"/><line x1="2" y1="10" x2="22" y2="10"/></svg>
         </button>
+
+        <!-- Bank transfer — manual confirmation, 2-day SLA -->
+        <div id="bank-section">
+          <div class="co-or-divider">أو</div>
+          <button id="bank-btn" class="co-bank-btn" onclick="proceedWithBankTransfer()">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M3 10h18M5 6l7-3 7 3M4 10v11M20 10v11M8 14v3M12 14v3M16 14v3"/></svg>
+            تحويل بنكي
+            <span class="co-bank-btn-divider"></span>
+            <span class="co-bank-badge">مصرف الإنماء · يومين عمل</span>
+          </button>
+          <p id="bank-msg" style="display:none;"></p>
+        </div>
 
         <!-- Tamara — BNPL alternative (parallel option, doesn't require Step 2) -->
         <div id="tamara-section">
@@ -746,6 +787,85 @@
         // Re-apply on next tick so the coupon-input event listener wires first
         setTimeout(() => applyCoupon(), 0);
       }
+    }
+  }
+
+  // ─────────────────────────────────────────────
+  // BANK TRANSFER — Bank Al-Inmaa, manual confirmation
+  // Logs pending row to Apps Script, emails buyer with IBAN + reference,
+  // notifies Majid. On confirm in dashboard, fulfilment runs server-side.
+  // ─────────────────────────────────────────────
+  async function proceedWithBankTransfer() {
+    const name  = document.getElementById('name').value.trim();
+    const email = document.getElementById('email').value.trim();
+    const phone = document.getElementById('phone').value.trim();
+
+    if (!name || !email || !phone) {
+      const el = !name ? document.getElementById('name') : !email ? document.getElementById('email') : document.getElementById('phone');
+      el.style.borderColor = 'rgba(231,76,60,0.8)';
+      el.focus();
+      setTimeout(() => el.style.borderColor = 'rgba(201,168,76,0.2)', 2500);
+      return;
+    }
+
+    const btn         = document.getElementById('bank-btn');
+    const msg         = document.getElementById('bank-msg');
+    const finalAmount = appliedCoupon ? appliedCoupon.finalAmount : BASE_AMOUNT;
+    const coupon      = appliedCoupon ? appliedCoupon.code : '';
+    const originalHTML = btn.innerHTML;
+
+    btn.disabled = true;
+    btn.innerHTML = 'جارٍ تسجيل طلبك...';
+    msg.style.display = 'none';
+
+    try {
+      const res = await fetch(APPS_SCRIPT_URL + '?action=bank_transfer_initiate', {
+        method: 'POST',
+        body: JSON.stringify({
+          action: 'bank_transfer_initiate',
+          name, email, phone,
+          product: PRODUCT_ID,
+          amount:  finalAmount / 100,
+          coupon
+        })
+      });
+      const rawText = await res.text();
+      console.log('[Bank] HTTP', res.status, 'response:', rawText.slice(0, 500));
+      let data; try { data = JSON.parse(rawText); } catch (e) {
+        msg.style.display = 'block';
+        msg.textContent = 'استجابة غير متوقعة من الخادم.';
+        btn.disabled = false;
+        btn.innerHTML = originalHTML;
+        return;
+      }
+
+      if (data.success && data.reference) {
+        // Stash for the success page so it can show IBAN + reference + amount
+        localStorage.setItem('bl_purchase', JSON.stringify({
+          name, email, phone,
+          product: PRODUCT_ID,
+          coupon,
+          amount: (finalAmount / 100).toFixed(2),
+          payment_method: 'bank',
+          reference: data.reference,
+          iban: data.iban,
+          swift: data.swift,
+          bank_name: data.bank_name,
+          account_name: data.account_name,
+          sla_days: data.sla_days
+        }));
+        window.location.href = SUCCESS_URL + '?status=bank-pending&payment_method=bank&reference=' + encodeURIComponent(data.reference);
+      } else {
+        msg.style.display = 'block';
+        msg.textContent = data.error || 'تعذر تسجيل الطلب. حاول مرة ثانية.';
+        btn.disabled = false;
+        btn.innerHTML = originalHTML;
+      }
+    } catch (err) {
+      msg.style.display = 'block';
+      msg.textContent = 'تعذّر الاتصال — تحقق من الإنترنت وحاول مرة ثانية.';
+      btn.disabled = false;
+      btn.innerHTML = originalHTML;
     }
   }
 

@@ -105,6 +105,62 @@
     </a>
   </div>
 
+  <!-- Bank transfer pending state -->
+  <div id="bank-view" style="display:none;text-align:right;">
+    <div style="text-align:center;margin-bottom:24px;">
+      <div style="width:80px;height:80px;border:2px solid var(--gold);border-radius:50%;display:flex;align-items:center;justify-content:center;margin:0 auto 24px;">
+        <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#C9A84C" stroke-width="2"><path d="M3 21h18M3 10h18M5 6l7-3 7 3M4 10v11M20 10v11M8 14v3M12 14v3M16 14v3"/></svg>
+      </div>
+      <p style="color:var(--gold);font-size:0.75rem;letter-spacing:0.15em;text-transform:uppercase;margin-bottom:10px;">طلبك مستلم — ينتظر التحويل</p>
+      <h1 style="font-size:clamp(1.5rem,4vw,1.9rem);font-weight:700;margin-bottom:14px;line-height:1.3;">حول المبلغ على الحساب التالي</h1>
+      <p style="color:var(--silver);font-size:0.88rem;line-height:1.7;max-width:480px;margin:0 auto;">بمجرد ما نستلم التحويل ونتأكد منه، يوصلك رابط الدورة على إيميلك خلال يومين عمل.</p>
+    </div>
+
+    <!-- Bank details card -->
+    <div style="background:rgba(255,255,255,0.03);border:1px solid rgba(201,168,76,0.3);border-radius:14px;padding:24px;margin-bottom:18px;">
+      <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,0.06);margin-bottom:14px;">
+        <span style="color:var(--grey);font-size:0.8rem;">المبلغ</span>
+        <span id="bank-amount" style="color:var(--gold);font-size:1.4rem;font-weight:700;">— ر.س</span>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:12px;font-size:0.85rem;">
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <span style="color:var(--grey);">البنك:</span>
+          <span id="bank-name-val">—</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;">
+          <span style="color:var(--grey);">اسم الحساب:</span>
+          <span id="bank-account-name">—</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;direction:ltr;">
+          <button onclick="copyVal_('bank-iban')" type="button" style="background:transparent;border:1px solid rgba(201,168,76,0.4);color:var(--gold);padding:4px 10px;border-radius:6px;font-size:0.7rem;cursor:pointer;font-family:inherit;">نسخ</button>
+          <span id="bank-iban" style="font-family:monospace;font-weight:700;letter-spacing:0.5px;">—</span>
+          <span style="color:var(--grey);">IBAN:</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;align-items:center;direction:ltr;">
+          <span id="bank-swift" style="font-family:monospace;font-weight:700;">—</span>
+          <span style="color:var(--grey);">SWIFT:</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Reference number — emphasized -->
+    <div style="background:rgba(201,168,76,0.08);border:1px dashed rgba(201,168,76,0.5);border-radius:12px;padding:18px;margin-bottom:24px;text-align:center;">
+      <p style="font-size:0.78rem;color:var(--silver);margin-bottom:6px;">رقم المرجع — اكتبه في وصف التحويل</p>
+      <div style="display:flex;align-items:center;justify-content:center;gap:10px;">
+        <button onclick="copyVal_('bank-ref')" type="button" style="background:transparent;border:1px solid rgba(201,168,76,0.5);color:var(--gold);padding:5px 12px;border-radius:6px;font-size:0.72rem;cursor:pointer;font-family:inherit;">نسخ</button>
+        <div id="bank-ref" style="font-family:monospace;font-size:1.15rem;font-weight:700;color:var(--ivory);letter-spacing:0.6px;">—</div>
+      </div>
+    </div>
+
+    <p style="text-align:center;color:var(--grey);font-size:0.78rem;line-height:1.6;margin-bottom:24px;">
+      ✉️ التفاصيل وصلتك أيضاً على إيميلك. أي سؤال؟
+      <a href="mailto:support@malearnsa.com" style="color:var(--gold);">support@malearnsa.com</a>
+    </p>
+    <div style="text-align:center;">
+      <a href="https://malearnsa.com" style="display:inline-block;background:var(--gold);color:#000;font-weight:700;padding:14px 36px;text-decoration:none;font-family:'Gumela','Cairo',sans-serif;border-radius:8px;">العودة إلى الرئيسية</a>
+    </div>
+  </div>
+
   <!-- Failed state (payment failed or cancelled) -->
   <div id="failed-view" style="display:none;">
     <div style="font-size:3rem;margin-bottom:20px;">⚠️</div>
@@ -162,6 +218,13 @@
 <script>
   const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbznjcsYu8gLDZqFJGededAQaATad_L8vlhRQV04pOqh57HB5nFVRy9zUHAcg6goyj8DKA/exec';
 
+  function copyVal_(elId) {
+    const el = document.getElementById(elId);
+    if (!el) return;
+    const text = el.textContent.trim();
+    navigator.clipboard.writeText(text).catch(() => {});
+  }
+
   async function handleSuccess() {
     let purchaseData = {};
     try { purchaseData = JSON.parse(localStorage.getItem('bl_purchase') || '{}'); } catch(e) {}
@@ -169,6 +232,22 @@
     const params       = new URLSearchParams(window.location.search);
     const status       = params.get('status');
     const paymentMethod = params.get('payment_method') || purchaseData.payment_method || 'moyasar';
+
+    // ── BANK TRANSFER pending ────────────────────────────────
+    if (paymentMethod === 'bank') {
+      document.getElementById('bank-amount').textContent     = (purchaseData.amount || '—') + ' ر.س';
+      document.getElementById('bank-name-val').textContent   = purchaseData.bank_name || 'مصرف الإنماء';
+      document.getElementById('bank-account-name').textContent = purchaseData.account_name || 'MA Learn — ماجد عنقاوي';
+      document.getElementById('bank-iban').textContent       = purchaseData.iban  || 'SA3805000068207281538000';
+      document.getElementById('bank-swift').textContent      = purchaseData.swift || 'INMASARI';
+      document.getElementById('bank-ref').textContent        = purchaseData.reference || params.get('reference') || '—';
+      // Track lead event (not Purchase — that fires on confirm)
+      if (window.fbq) fbq('track', 'InitiateCheckout', { value: parseFloat(purchaseData.amount) || 0, currency: 'SAR', content_name: 'أبعد من إمكانيات الإضاءة — تحويل بنكي' });
+      // Keep purchase data in localStorage in case user refreshes
+      document.getElementById('processing').style.display = 'none';
+      document.getElementById('bank-view').style.display = 'block';
+      return;
+    }
 
     // ── TAMARA return ─────────────────────────────────────────
     // Customer sees success immediately. Token + Daftra + email fire from webhook (server-side).

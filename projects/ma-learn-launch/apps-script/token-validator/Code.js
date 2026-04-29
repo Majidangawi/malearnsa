@@ -84,6 +84,15 @@ const TAMARA_API_TOKEN             = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhY
 const TAMARA_NOTIFICATION_TOKEN    = 'c5369f05-d4ff-406e-9712-0a54cc78e41e';
 const TAMARA_PUBLIC_KEY            = '4715671d-9dc2-4e39-b848-f5470a65789b';
 
+// Bank Al-Inmaa — receiving account for bank transfer payment method
+const ALINMA_IBAN          = 'SA3805000068207281538000';
+const ALINMA_SWIFT         = 'INMASARI';
+const ALINMA_ACCOUNT_NAME  = 'MA Learn — ماجد عنقاوي';
+const ALINMA_BANK_NAME_AR  = 'مصرف الإنماء';
+const ALINMA_BANK_NAME_EN  = 'Alinma Bank';
+const BANK_TRANSFERS_SHEET = 'BankTransfers';
+// Two-working-day SLA for buyer confirmation (per reference_alinma_bank.md)
+
 // ─────────────────────────────────────────────
 // ROUTER
 // ─────────────────────────────────────────────
@@ -112,7 +121,19 @@ function doPost(e) {
     else if (action === 'admin_archive_chat_messages')  result = _handle_admin_archive_chat_messages(merged);
     else if (action === 'tamara_create_order')          result = tamaraCreateOrder(merged);
     else if (action === 'tamara_webhook')               result = tamaraHandleWebhook(merged, e);
-    else                                                result = { error: 'unknown_action' };
+    else if (action === 'bank_transfer_initiate')       result = bankTransferInitiate(merged);
+    else result = {
+      error: 'unknown_action',
+      _diag: {
+        action_seen:        action,
+        param_keys:         Object.keys(params || {}),
+        body_keys:          Object.keys(bodyParams || {}),
+        postData_present:   !!(e && e.postData),
+        postData_type:      (e && e.postData && e.postData.type)        || null,
+        postData_length:    (e && e.postData && e.postData.contents) ? e.postData.contents.length : 0,
+        postData_preview:   (e && e.postData && e.postData.contents) ? e.postData.contents.slice(0, 200) : ''
+      }
+    };
     output.setContent(JSON.stringify(result));
   } catch(err) {
     output.setContent(JSON.stringify({ success: false, error: err.message }));
@@ -164,6 +185,10 @@ function doGet(e) {
     else if (action === 'admin_gift_token')              result = _admin_gift_token(e.parameter);
     else if (action === 'admin_remove_subscriber')       result = _admin_remove_subscriber(e.parameter);
     else if (action === 'admin_reorder_lessons')        result = _admin_reorder_lessons(e.parameter);
+    else if (action === 'bank_transfer_initiate')        result = bankTransferInitiate(e.parameter);
+    else if (action === 'admin_list_pending_transfers')  result = adminListPendingTransfers(e.parameter);
+    else if (action === 'admin_confirm_bank_transfer')   result = adminConfirmBankTransfer(e.parameter);
+    else if (action === 'admin_reject_bank_transfer')    result = adminRejectBankTransfer(e.parameter);
     else                                      result = { error: 'unknown_action' };
 
     output.setContent(JSON.stringify(result));
@@ -789,6 +814,275 @@ function tamaraHandleWebhook(merged, e) {
   try { PropertiesService.getScriptProperties().deleteProperty(ctxKey); } catch (_) {}
 
   return { success: true, fulfilled: result, payment_method: 'tamara' };
+}
+
+// ═════════════════════════════════════════════════════════════════════
+// BANK TRANSFER — Bank Al-Inmaa, manual confirmation flow
+// Mirrors the ciw-waitlist pattern but in the canonical script and
+// integrates with completePurchase for fulfilment on confirm.
+//
+// Flow:
+//   1. User on checkout clicks تحويل بنكي
+//   2. bankTransferInitiate logs row to BankTransfers sheet (status=pending)
+//      → emails buyer with IBAN + SWIFT + reference + 2-day SLA
+//      → emails Majid with confirm/reject quick-action links
+//   3. Majid (via dashboard or quick-action link) calls
+//      admin_confirm_bank_transfer → row flips to confirmed
+//      → completePurchase runs (token + Daftra + access email + Majid notification)
+//   4. Or admin_reject_bank_transfer → row flips to rejected, buyer gets reason email
+// ═════════════════════════════════════════════════════════════════════
+
+function ensureBankTransfersSheet_() {
+  const ss = SpreadsheetApp.openById(MAIN_SHEET_ID);
+  let sheet = ss.getSheetByName(BANK_TRANSFERS_SHEET);
+  if (!sheet) {
+    sheet = ss.insertSheet(BANK_TRANSFERS_SHEET);
+    sheet.getRange(1, 1, 1, 11).setValues([[
+      'Timestamp', 'Reference', 'Name', 'Email', 'Phone',
+      'Product', 'Amount (SAR)', 'Coupon', 'Status', 'Resolved At', 'Notes'
+    ]]);
+    sheet.setFrozenRows(1);
+    sheet.getRange(1, 1, 1, 11).setFontWeight('bold');
+  }
+  return sheet;
+}
+
+function bankTransferInitiate(params) {
+  const name    = String(params.name    || '').trim();
+  const email   = String(params.email   || '').trim();
+  const phone   = String(params.phone   || '').trim();
+  const product = String(params.product || '').trim();
+  const amount  = Number(params.amount  || 0);
+  const coupon  = String(params.coupon  || '').trim();
+
+  if (!email || !name || !phone) return { success: false, error: 'missing_buyer_info' };
+  if (!product || amount <= 0)   return { success: false, error: 'invalid_order' };
+
+  const reference = generateBankReference_(product);
+  const sheet = ensureBankTransfersSheet_();
+  const dateStr = Utilities.formatDate(new Date(), 'Asia/Riyadh', 'yyyy-MM-dd HH:mm:ss');
+
+  sheet.appendRow([
+    dateStr, reference, name, email, phone,
+    product, amount, coupon, 'pending', '', ''
+  ]);
+
+  // Email buyer with bank details
+  try { sendBankInstructionsEmail_(name, email, product, amount, reference); }
+  catch (err) { Logger.log('sendBankInstructionsEmail_ error: ' + err.message); }
+
+  // Notify Majid with confirm/reject quick-action links
+  try { sendBankPendingNotification_(name, email, phone, product, amount, coupon, reference, sheet.getLastRow()); }
+  catch (err) { Logger.log('sendBankPendingNotification_ error: ' + err.message); }
+
+  // Auto-add to subscriber list
+  try { _admin_upsert_subscriber({ admin_token: ADMIN_TOKEN, email: email, name: name, source: 'bank-transfer-pending', language: 'AR' }); } catch (e) {}
+
+  return {
+    success:    true,
+    reference:  reference,
+    iban:       ALINMA_IBAN,
+    swift:      ALINMA_SWIFT,
+    bank_name:  ALINMA_BANK_NAME_AR,
+    account_name: ALINMA_ACCOUNT_NAME,
+    sla_days:   2,
+    amount:     amount
+  };
+}
+
+function generateBankReference_(product) {
+  const prefixes = {
+    'beyond-lighting':         'MABL',
+    'intro-to-creative-ai':    'MAITCAI',
+    'creative-ai-workshop-t3': 'MACIW',
+    'prompt-pack':             'MAPP'
+  };
+  const prefix = prefixes[product] || 'MA';
+  const rand   = Utilities.getUuid().replace(/-/g, '').slice(0, 6).toUpperCase();
+  return prefix + '-BNK-' + rand;
+}
+
+function adminListPendingTransfers(params) {
+  if (params.admin_token !== ADMIN_TOKEN) return { ok: false, error: 'unauthorized' };
+  const sheet = ensureBankTransfersSheet_();
+  const lastRow = sheet.getLastRow();
+  if (lastRow < 2) return { ok: true, count: 0, rows: [] };
+  const data = sheet.getRange(2, 1, lastRow - 1, 11).getValues();
+  const rows = [];
+  data.forEach((r, i) => {
+    if (String(r[8] || '').trim() === 'pending') {
+      rows.push({
+        rowIndex: i + 2,
+        timestamp: r[0] instanceof Date ? r[0].toISOString() : String(r[0]),
+        reference: r[1], name: r[2], email: r[3], phone: r[4],
+        product: r[5], amount: r[6], coupon: r[7], status: r[8]
+      });
+    }
+  });
+  rows.sort((a, b) => (b.timestamp || '').localeCompare(a.timestamp || ''));
+  return { ok: true, count: rows.length, rows: rows };
+}
+
+function adminConfirmBankTransfer(params) {
+  if (params.admin_token !== ADMIN_TOKEN) return { ok: false, error: 'unauthorized' };
+  const rowIndex = parseInt(params.row_index, 10);
+  if (!rowIndex || rowIndex < 2) return { ok: false, error: 'invalid_row_index' };
+
+  const sheet = ensureBankTransfersSheet_();
+  const row = sheet.getRange(rowIndex, 1, 1, 11).getValues()[0];
+  if (String(row[8] || '').trim() !== 'pending') {
+    return { ok: false, error: 'row_not_pending', currentStatus: row[8] };
+  }
+
+  const reference = String(row[1] || '');
+  const name      = String(row[2] || '');
+  const email     = String(row[3] || '');
+  const phone     = String(row[4] || '');
+  const product   = String(row[5] || '');
+  const amount    = Number(row[6] || 0);
+  const coupon    = String(row[7] || '');
+
+  // Mark confirmed BEFORE fulfilment so concurrent confirms can't double-fire
+  const ts = Utilities.formatDate(new Date(), 'Asia/Riyadh', 'yyyy-MM-dd HH:mm:ss');
+  sheet.getRange(rowIndex, 9).setValue('confirmed');
+  sheet.getRange(rowIndex, 10).setValue(ts);
+
+  // Run the same fulfilment chain as Moyasar/Tamara — token + Daftra + access email + Majid notification
+  const result = completePurchase({
+    name:       name,
+    email:      email,
+    phone:      phone,
+    product:    product,
+    amount:     amount,
+    coupon:     coupon,
+    payment_id: reference
+  });
+
+  return { ok: true, action: 'confirmed', reference: reference, fulfilled: result };
+}
+
+function adminRejectBankTransfer(params) {
+  if (params.admin_token !== ADMIN_TOKEN) return { ok: false, error: 'unauthorized' };
+  const rowIndex = parseInt(params.row_index, 10);
+  const reason   = String(params.reason || '').trim();
+  if (!rowIndex || rowIndex < 2) return { ok: false, error: 'invalid_row_index' };
+  if (!reason)                   return { ok: false, error: 'reason_required' };
+
+  const sheet = ensureBankTransfersSheet_();
+  const row = sheet.getRange(rowIndex, 1, 1, 11).getValues()[0];
+  if (String(row[8] || '').trim() !== 'pending') {
+    return { ok: false, error: 'row_not_pending', currentStatus: row[8] };
+  }
+  const name      = String(row[2] || '');
+  const email     = String(row[3] || '');
+  const product   = String(row[5] || '');
+
+  const ts = Utilities.formatDate(new Date(), 'Asia/Riyadh', 'yyyy-MM-dd HH:mm:ss');
+  sheet.getRange(rowIndex, 9).setValue('rejected');
+  sheet.getRange(rowIndex, 10).setValue(ts);
+  sheet.getRange(rowIndex, 11).setValue(reason);
+
+  try { sendBankRejectionEmail_(name, email, product, reason); }
+  catch (err) { Logger.log('sendBankRejectionEmail_ error: ' + err.message); }
+
+  return { ok: true, action: 'rejected', reason: reason };
+}
+
+function _bankProductDisplay_(product) {
+  const map = {
+    'beyond-lighting':         'دورة أبعد من إمكانيات الإضاءة',
+    'intro-to-creative-ai':    'دورة مدخل إلى الذكاء الاصطناعي الإبداعي',
+    'creative-ai-workshop-t3': 'ورشة صناعة الإلهام',
+    'prompt-pack':             'حزمة البرومبتات الإبداعية'
+  };
+  return map[product] || product;
+}
+
+function sendBankInstructionsEmail_(name, email, product, amount, reference) {
+  const productName = _bankProductDisplay_(product);
+  const subject = '📥 طلبك مستلم — تعليمات التحويل البنكي · ' + productName;
+  const body = `
+<!DOCTYPE html><html dir="rtl" lang="ar"><body style="margin:0;padding:0;background:#f9f6ef;font-family:Cairo,sans-serif;color:#1a1a1a;">
+<div style="max-width:600px;margin:0 auto;padding:32px 24px;">
+  <h1 style="font-size:1.4rem;font-weight:700;margin:0 0 6px;">يا هلا ${name}،</h1>
+  <p style="font-size:0.95rem;line-height:1.7;color:#444;margin:0 0 24px;">
+    استلمنا طلبك لـ <strong>${productName}</strong>. عشان نأكدك ونرسلك رابط الوصول، حول المبلغ على الحساب التالي:
+  </p>
+  <div style="background:#fff;border:1px solid rgba(201,168,76,0.4);border-radius:12px;padding:24px;margin-bottom:24px;">
+    <div style="display:flex;justify-content:space-between;align-items:center;padding-bottom:14px;border-bottom:1px solid #eee;margin-bottom:14px;">
+      <span style="color:#888;font-size:0.85rem;">المبلغ</span>
+      <span style="color:#C9A84C;font-size:1.3rem;font-weight:700;">${amount} ر.س</span>
+    </div>
+    <div style="margin-bottom:10px;font-size:0.85rem;"><span style="color:#888;">البنك:</span> ${ALINMA_BANK_NAME_AR}</div>
+    <div style="margin-bottom:10px;font-size:0.85rem;"><span style="color:#888;">اسم الحساب:</span> ${ALINMA_ACCOUNT_NAME}</div>
+    <div style="margin-bottom:10px;font-size:0.85rem;direction:ltr;text-align:right;"><span style="color:#888;">IBAN:</span> <span style="font-family:monospace;font-weight:700;">${ALINMA_IBAN}</span></div>
+    <div style="margin-bottom:10px;font-size:0.85rem;direction:ltr;text-align:right;"><span style="color:#888;">SWIFT:</span> <span style="font-family:monospace;font-weight:700;">${ALINMA_SWIFT}</span></div>
+    <div style="background:#f9f6ef;border:1px dashed #C9A84C;border-radius:8px;padding:12px;margin-top:14px;text-align:center;">
+      <div style="font-size:0.78rem;color:#888;margin-bottom:4px;">رقم المرجع — اكتبه في وصف التحويل</div>
+      <div style="font-family:monospace;font-size:1.1rem;font-weight:700;color:#1a1a1a;letter-spacing:0.5px;">${reference}</div>
+    </div>
+  </div>
+  <div style="background:#fff;border:1px solid #eee;border-radius:12px;padding:18px;margin-bottom:18px;">
+    <p style="margin:0 0 6px;font-size:0.88rem;font-weight:700;">⏱ يومين عمل لتأكيد التحويل</p>
+    <p style="margin:0;color:#666;font-size:0.83rem;line-height:1.6;">
+      بمجرد ما نستلم التحويل ونتأكد منه، راح يوصلك إيميل ثاني فيه رابط الدورة. أي سؤال؟ راسلنا على
+      <a href="mailto:support@malearnsa.com" style="color:#C9A84C;">support@malearnsa.com</a>
+    </p>
+  </div>
+  <p style="text-align:center;color:#aaa;font-size:0.78rem;margin:24px 0 0;">© MA Learn 2026</p>
+</div>
+</body></html>`;
+  GmailApp.sendEmail(email, subject, '', { from: FROM_EMAIL, name: FROM_NAME, htmlBody: body });
+}
+
+function sendBankPendingNotification_(name, email, phone, product, amount, coupon, reference, rowIndex) {
+  const productName = _bankProductDisplay_(product);
+  const execUrl = ScriptApp.getService().getUrl();
+  const confirmUrl = execUrl + '?action=admin_confirm_bank_transfer&admin_token=' + encodeURIComponent(ADMIN_TOKEN) + '&row_index=' + rowIndex;
+
+  const subject = '🔴 تحويل بنكي — ' + name + ' · ' + productName;
+  const body = `
+<!DOCTYPE html><html dir="rtl" lang="ar"><body style="font-family:Arial,sans-serif;background:#f5f5f7;padding:20px;">
+<div style="max-width:560px;margin:0 auto;background:#fff;border-radius:12px;padding:24px;">
+  <h2 style="margin:0 0 16px;font-size:1.15rem;">تحويل بنكي ينتظر التأكيد</h2>
+  <table style="width:100%;font-size:0.88rem;line-height:1.7;">
+    <tr><td style="color:#888;width:90px;">المرجع:</td><td style="font-family:monospace;font-weight:700;">${reference}</td></tr>
+    <tr><td style="color:#888;">الاسم:</td><td>${name}</td></tr>
+    <tr><td style="color:#888;">الإيميل:</td><td><a href="mailto:${email}">${email}</a></td></tr>
+    <tr><td style="color:#888;">الجوال:</td><td>${phone}</td></tr>
+    <tr><td style="color:#888;">المنتج:</td><td>${productName}</td></tr>
+    <tr><td style="color:#888;">المبلغ:</td><td><strong>${amount} ر.س</strong></td></tr>
+    ${coupon ? '<tr><td style="color:#888;">كود خصم:</td><td>' + coupon + '</td></tr>' : ''}
+  </table>
+  <div style="margin-top:18px;padding-top:14px;border-top:1px solid #eee;">
+    <p style="margin:0 0 10px;color:#444;font-size:0.85rem;">بعد ما تتأكد من البنك، اضغط:</p>
+    <a href="${confirmUrl}" style="display:inline-block;background:#34C759;color:#fff;padding:10px 22px;border-radius:8px;text-decoration:none;font-weight:700;font-size:0.9rem;">✓ أكد التحويل وفعّل الوصول</a>
+    <p style="margin:14px 0 0;color:#999;font-size:0.78rem;">الرفض من dashboard.</p>
+  </div>
+</div>
+</body></html>`;
+  GmailApp.sendEmail(NOTIFY_EMAIL, subject, '', { from: FROM_EMAIL, name: FROM_NAME, htmlBody: body });
+}
+
+function sendBankRejectionEmail_(name, email, product, reason) {
+  if (!email) return;
+  const productName = _bankProductDisplay_(product);
+  const subject = 'تحديث بخصوص طلبك — ' + productName;
+  const body = `
+<!DOCTYPE html><html dir="rtl" lang="ar"><body style="margin:0;padding:0;background:#f9f6ef;font-family:Cairo,sans-serif;color:#1a1a1a;">
+<div style="max-width:600px;margin:0 auto;padding:32px 24px;">
+  <h1 style="font-size:1.3rem;font-weight:700;margin:0 0 12px;">يا هلا ${name}،</h1>
+  <p style="font-size:0.95rem;line-height:1.7;color:#444;margin:0 0 16px;">نأسف لإبلاغك إن طلب التحويل البنكي ما اكتمل بسبب:</p>
+  <div style="background:#fff;border:1px solid #eee;border-radius:10px;padding:16px;margin-bottom:18px;font-size:0.9rem;">${reason}</div>
+  <p style="font-size:0.9rem;color:#444;line-height:1.7;">
+    تقدر تجرب طريقة دفع ثانية أو تراسلنا على
+    <a href="mailto:support@malearnsa.com" style="color:#C9A84C;">support@malearnsa.com</a>
+    وإحنا نحل لك المشكلة.
+  </p>
+  <p style="text-align:center;color:#aaa;font-size:0.78rem;margin:24px 0 0;">© MA Learn 2026</p>
+</div>
+</body></html>`;
+  GmailApp.sendEmail(email, subject, '', { from: FROM_EMAIL, name: FROM_NAME, htmlBody: body });
 }
 
 // ─────────────────────────────────────────────
