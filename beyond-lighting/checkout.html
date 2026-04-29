@@ -788,7 +788,18 @@
           coupon
         })
       });
-      const data = await res.json();
+      const rawText = await res.text();
+      console.log('[Tamara] HTTP', res.status, 'response:', rawText.slice(0, 500));
+      let data;
+      try { data = JSON.parse(rawText); }
+      catch (e) {
+        console.error('[Tamara] response was not JSON:', rawText.slice(0, 200));
+        msg.style.display = 'block';
+        msg.textContent = 'استجابة غير متوقعة من الخادم. تحقق من إضافات المتصفح أو جرّب وضع التصفح المتخفي.';
+        btn.disabled = false;
+        btn.innerHTML = originalHTML;
+        return;
+      }
 
       if (data.success && data.checkout_url) {
         localStorage.setItem('bl_purchase', JSON.stringify({
