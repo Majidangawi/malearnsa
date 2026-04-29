@@ -258,6 +258,22 @@
     const status       = params.get('status');
     const paymentMethod = params.get('payment_method') || purchaseData.payment_method || 'moyasar';
 
+    // ── PAYPAL return ────────────────────────────────────────
+    // Capture already ran server-side via paypal_capture_order before this redirect.
+    // Webhook (PAYMENT.CAPTURE.COMPLETED) is a backup, idempotent via paymentAlreadyProcessed.
+    if (paymentMethod === 'paypal') {
+      if (status === 'failed' || status === 'canceled') {
+        document.getElementById('processing').style.display = 'none';
+        document.getElementById('failed-view').style.display = 'block';
+        return;
+      }
+      localStorage.removeItem('bl_purchase');
+      if (window.fbq) fbq('track', 'Purchase', { value: parseFloat(purchaseData.amount) || 0, currency: 'SAR', content_name: 'أبعد من إمكانيات الإضاءة' });
+      document.getElementById('processing').style.display = 'none';
+      document.getElementById('success-view').style.display = 'block';
+      return;
+    }
+
     // ── BANK TRANSFER pending ────────────────────────────────
     if (paymentMethod === 'bank') {
       document.getElementById('bank-amount').textContent       = purchaseData.amount || '—';

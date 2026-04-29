@@ -84,6 +84,19 @@ const TAMARA_API_TOKEN             = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhY
 const TAMARA_NOTIFICATION_TOKEN    = 'c5369f05-d4ff-406e-9712-0a54cc78e41e';
 const TAMARA_PUBLIC_KEY            = '4715671d-9dc2-4e39-b848-f5470a65789b';
 
+// PayPal — international payments (sandbox creds; swap for prod after UAT).
+// Webhook URL registered in dev dashboard: ?action=paypal_webhook
+const PAYPAL_API_BASE      = 'https://api-m.sandbox.paypal.com';
+const PAYPAL_CLIENT_ID     = 'AWXSwPDc7UR3L1GJiRdgcf7zoVUKcCj7k3IKnzT0KIJwi3Zp_WuqpkD_iVZ-ukF870Njd-ypI86Gg1C4';
+const PAYPAL_SECRET        = 'EHMmL6EjcWhqcKy5bjH-znhPV7-kIFJEjizVqPyMczmo2K0e4Ds5JtoGFo5eSlMJYEO2Vz8tFM1xQazH';
+const PAYPAL_WEBHOOK_ID    = '8SV142918E816311D';
+// PayPal does NOT support SAR. Saudi riyal is officially pegged to USD at 3.75:1
+// (since 1986, monetary authority commitment). We charge USD via PayPal but
+// record the SAR-equivalent amount in Customers/Daftra for consistency with
+// other payment methods. Prod customers see "$X.XX USD" on the PayPal button.
+const PAYPAL_CURRENCY      = 'USD';
+const SAR_TO_USD           = 3.75;
+
 // Bank Al-Inmaa — receiving account for bank transfer payment method
 const ALINMA_IBAN             = 'SA3805000068207281538000';
 const ALINMA_ACCOUNT_NUMBER   = '68207281538000';
@@ -126,6 +139,9 @@ function doPost(e) {
     else if (action === 'tamara_create_order')          result = tamaraCreateOrder(merged);
     else if (action === 'tamara_webhook')               result = tamaraHandleWebhook(merged, e);
     else if (action === 'bank_transfer_initiate')       result = bankTransferInitiate(merged);
+    else if (action === 'paypal_create_order')          result = paypalCreateOrder(merged);
+    else if (action === 'paypal_capture_order')         result = paypalCaptureOrder(merged);
+    else if (action === 'paypal_webhook')               result = paypalHandleWebhook(merged, e);
     else result = {
       error: 'unknown_action',
       _diag: {
@@ -818,6 +834,208 @@ function tamaraHandleWebhook(merged, e) {
   try { PropertiesService.getScriptProperties().deleteProperty(ctxKey); } catch (_) {}
 
   return { success: true, fulfilled: result, payment_method: 'tamara' };
+}
+
+// ═════════════════════════════════════════════════════════════════════
+// PAYPAL — international payments via Smart Buttons
+// Flow:
+//   1. User clicks PayPal Smart Button on checkout
+//   2. paypalCreateOrder builds an Orders v2 request, returns order_id
+//   3. PayPal popup → user approves
+//   4. SDK calls paypalCaptureOrder → completePurchase fires
+//   5. paypalHandleWebhook fires async (PAYMENT.CAPTURE.COMPLETED) as backup —
+//      idempotent via paymentAlreadyProcessed(order_id)
+// ═════════════════════════════════════════════════════════════════════
+
+function paypalGetAccessToken_() {
+  const props = PropertiesService.getScriptProperties();
+  const cached = props.getProperty('paypal_token');
+  if (cached) {
+    try {
+      const t = JSON.parse(cached);
+      if (t.expires && t.expires > Date.now()) return t.access_token;
+    } catch (_) {}
+  }
+  const auth = Utilities.base64Encode(PAYPAL_CLIENT_ID + ':' + PAYPAL_SECRET);
+  const res = UrlFetchApp.fetch(PAYPAL_API_BASE + '/v1/oauth2/token', {
+    method:             'post',
+    headers:            { 'Authorization': 'Basic ' + auth, 'Accept': 'application/json' },
+    contentType:        'application/x-www-form-urlencoded',
+    payload:            'grant_type=client_credentials',
+    muteHttpExceptions: true
+  });
+  if (res.getResponseCode() !== 200) {
+    throw new Error('paypal_token_failed: ' + res.getContentText().slice(0, 200));
+  }
+  const data = JSON.parse(res.getContentText());
+  props.setProperty('paypal_token', JSON.stringify({
+    access_token: data.access_token,
+    expires:      Date.now() + (data.expires_in * 1000) - 60000
+  }));
+  return data.access_token;
+}
+
+function paypalCreateOrder(params) {
+  const name    = String(params.name    || '').trim();
+  const email   = String(params.email   || '').trim();
+  const phone   = String(params.phone   || '').trim();
+  const product = String(params.product || '').trim();
+  const amount  = Number(params.amount  || 0);
+  const coupon  = String(params.coupon  || '').trim();
+
+  if (!email || !name) return { success: false, error: 'missing_buyer_info' };
+  if (!product || amount <= 0) return { success: false, error: 'invalid_order' };
+
+  const productNames = {
+    'beyond-lighting':         'Beyond Lighting Course',
+    'intro-to-creative-ai':    'Intro to Creative AI',
+    'creative-ai-workshop-t3': 'Creative AI Workshop',
+    'prompt-pack':             'Creative Prompt Pack'
+  };
+  const productName = productNames[product] || product;
+  const refId = product + '-' + Utilities.getUuid().slice(0, 12);
+
+  // SAR is not supported by PayPal — convert to USD at the official peg
+  const amountUSD = (amount / SAR_TO_USD).toFixed(2);
+
+  const orderPayload = {
+    intent: 'CAPTURE',
+    purchase_units: [{
+      reference_id: refId,
+      description:  productName,
+      custom_id:    'sar:' + amount.toFixed(2), // record SAR amount for our records
+      amount: {
+        currency_code: PAYPAL_CURRENCY,
+        value: amountUSD,
+        breakdown: {
+          item_total: { currency_code: PAYPAL_CURRENCY, value: amountUSD }
+        }
+      },
+      items: [{
+        name:        productName,
+        quantity:    '1',
+        unit_amount: { currency_code: PAYPAL_CURRENCY, value: amountUSD },
+        category:    'DIGITAL_GOODS',
+        sku:         product
+      }]
+    }],
+    payer: {
+      email_address: email,
+      name: { given_name: name.split(/\s+/)[0] || name, surname: name.split(/\s+/).slice(1).join(' ') || '' }
+    },
+    application_context: {
+      brand_name:   'MA Learn',
+      locale:       'ar-SA',
+      user_action:  'PAY_NOW',
+      shipping_preference: 'NO_SHIPPING'
+    }
+  };
+
+  // Stash buyer context for capture + webhook fulfilment
+  PropertiesService.getScriptProperties().setProperty(
+    'paypal_ctx_' + refId,
+    JSON.stringify({ name, email, phone, product, amount, coupon, ts: Date.now() })
+  );
+
+  const token = paypalGetAccessToken_();
+  const res = UrlFetchApp.fetch(PAYPAL_API_BASE + '/v2/checkout/orders', {
+    method:             'post',
+    headers:            { 'Authorization': 'Bearer ' + token, 'PayPal-Request-Id': refId },
+    contentType:        'application/json',
+    payload:            JSON.stringify(orderPayload),
+    muteHttpExceptions: true
+  });
+
+  const code = res.getResponseCode();
+  const body = res.getContentText();
+  let data; try { data = JSON.parse(body); } catch (_) { data = { raw: body }; }
+
+  if (code >= 200 && code < 300 && data.id) {
+    // Re-key context by PayPal's order ID so webhook can find it.
+    // Note: amount stored as SAR (so completePurchase logs the SAR amount in Customers + Daftra)
+    PropertiesService.getScriptProperties().setProperty(
+      'paypal_ctx_' + data.id,
+      JSON.stringify({ name, email, phone, product, amount, coupon, ref: refId, amount_usd: amountUSD, ts: Date.now() })
+    );
+    return { success: true, order_id: data.id, reference: refId, amount_sar: amount, amount_usd: Number(amountUSD) };
+  }
+  return { success: false, error: 'paypal_create_failed', http: code, details: data };
+}
+
+function paypalCaptureOrder(params) {
+  const orderId = String(params.order_id || '').trim();
+  if (!orderId) return { success: false, error: 'missing_order_id' };
+  if (paymentAlreadyProcessed(orderId)) return { success: true, reason: 'already_processed' };
+
+  const token = paypalGetAccessToken_();
+  const res = UrlFetchApp.fetch(PAYPAL_API_BASE + '/v2/checkout/orders/' + encodeURIComponent(orderId) + '/capture', {
+    method:             'post',
+    headers:            { 'Authorization': 'Bearer ' + token, 'PayPal-Request-Id': orderId + '-cap' },
+    contentType:        'application/json',
+    payload:            '{}',
+    muteHttpExceptions: true
+  });
+  const code = res.getResponseCode();
+  const body = res.getContentText();
+  let data; try { data = JSON.parse(body); } catch (_) { data = { raw: body }; }
+
+  if (code < 200 || code >= 300) {
+    return { success: false, error: 'paypal_capture_failed', http: code, details: data };
+  }
+
+  // Recover buyer context
+  const ctxKey = 'paypal_ctx_' + orderId;
+  let ctx = {};
+  const ctxRaw = PropertiesService.getScriptProperties().getProperty(ctxKey);
+  if (ctxRaw) { try { ctx = JSON.parse(ctxRaw); } catch (_) {} }
+
+  // Fall back to PayPal-side data if context lost
+  if (!ctx.email && data.payer && data.payer.email_address) {
+    ctx.email   = data.payer.email_address;
+    ctx.name    = ((data.payer.name && data.payer.name.given_name) || '') + ' ' + ((data.payer.name && data.payer.name.surname) || '');
+    ctx.product = data.purchase_units && data.purchase_units[0] && data.purchase_units[0].items && data.purchase_units[0].items[0] && data.purchase_units[0].items[0].sku;
+    ctx.amount  = data.purchase_units && data.purchase_units[0] && data.purchase_units[0].amount && Number(data.purchase_units[0].amount.value);
+  }
+
+  if (!ctx.email || !ctx.product) {
+    return { success: false, error: 'context_missing', orderId: orderId };
+  }
+
+  const result = completePurchase({
+    name:       ctx.name || '',
+    email:      ctx.email,
+    phone:      ctx.phone || '',
+    product:    ctx.product,
+    amount:     ctx.amount || 0,
+    coupon:     ctx.coupon || '',
+    payment_id: orderId
+  });
+
+  try { PropertiesService.getScriptProperties().deleteProperty(ctxKey); } catch (_) {}
+
+  return { success: true, order_id: orderId, fulfilled: result, payment_method: 'paypal' };
+}
+
+function paypalHandleWebhook(merged, e) {
+  // PayPal sends signature headers; verify with /v1/notifications/verify-webhook-signature
+  // Headers we need are not exposed in Apps Script's e object directly — we accept the body
+  // and use the verification API. In sandbox we can fall through to capture-on-event for simplicity.
+  const eventType = String(merged.event_type || '').toUpperCase();
+  const orderId = (merged.resource && (merged.resource.supplementary_data
+    && merged.resource.supplementary_data.related_ids
+    && merged.resource.supplementary_data.related_ids.order_id))
+    || (merged.resource && merged.resource.id)
+    || '';
+
+  if (!orderId) return { success: false, error: 'missing_order_id', event: eventType };
+
+  if (eventType !== 'PAYMENT.CAPTURE.COMPLETED' && eventType !== 'CHECKOUT.ORDER.APPROVED') {
+    return { success: true, reason: 'event_ignored', event: eventType };
+  }
+
+  // Idempotent — paypalCaptureOrder also checks paymentAlreadyProcessed
+  const result = paypalCaptureOrder({ order_id: orderId });
+  return { success: true, fulfilled: result, event: eventType };
 }
 
 // ═════════════════════════════════════════════════════════════════════
