@@ -240,102 +240,18 @@
   <p style="font-size:0.72rem;color:#444;">© MA Learn 2026 — جميع الحقوق محفوظة</p>
 </footer>
 
+<!-- Backward-compat shim for existing onclick="copyVal_('bank-iban')" handlers -->
 <script>
-  const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbznjcsYu8gLDZqFJGededAQaATad_L8vlhRQV04pOqh57HB5nFVRy9zUHAcg6goyj8DKA/exec';
+  function copyVal_(elId) { return window.MaSuccess && MaSuccess.copyVal(elId); }
+</script>
 
-  function copyVal_(elId) {
-    const el = document.getElementById(elId);
-    if (!el) return;
-    const text = el.textContent.trim();
-    navigator.clipboard.writeText(text).catch(() => {});
-  }
-
-  async function handleSuccess() {
-    let purchaseData = {};
-    try { purchaseData = JSON.parse(localStorage.getItem('bl_purchase') || '{}'); } catch(e) {}
-
-    const params       = new URLSearchParams(window.location.search);
-    const status       = params.get('status');
-    const paymentMethod = params.get('payment_method') || purchaseData.payment_method || 'moyasar';
-
-    // ── PAYPAL return ────────────────────────────────────────
-    // Capture already ran server-side via paypal_capture_order before this redirect.
-    // Webhook (PAYMENT.CAPTURE.COMPLETED) is a backup, idempotent via paymentAlreadyProcessed.
-    if (paymentMethod === 'paypal') {
-      if (status === 'failed' || status === 'canceled') {
-        document.getElementById('processing').style.display = 'none';
-        document.getElementById('failed-view').style.display = 'block';
-        return;
-      }
-      localStorage.removeItem('bl_purchase');
-      if (window.fbq) fbq('track', 'Purchase', { value: parseFloat(purchaseData.amount) || 0, currency: 'SAR', content_name: 'أبعد من إمكانيات الإضاءة' });
-      document.getElementById('processing').style.display = 'none';
-      document.getElementById('success-view').style.display = 'block';
-      return;
-    }
-
-    // ── BANK TRANSFER pending ────────────────────────────────
-    if (paymentMethod === 'bank') {
-      document.getElementById('bank-amount').textContent       = purchaseData.amount || '—';
-      document.getElementById('bank-name-val').textContent     = purchaseData.bank_name_ar    || 'مصرف الإنماء';
-      document.getElementById('bank-account-name').textContent = purchaseData.account_name_ar || 'ماجد زكي عنقاوي التصوير الفوتوغرافي';
-      document.getElementById('bank-iban').textContent         = purchaseData.iban            || 'SA3805000068207281538000';
-      document.getElementById('bank-swift').textContent        = purchaseData.swift           || 'INMASARI';
-      document.getElementById('bank-account-number').textContent = purchaseData.account_number || '68207281538000';
-      document.getElementById('bank-address').textContent      = purchaseData.address_ar      || 'عبد الرحمن بخش 3581، حي طيبة 7923، 23833 جدة، المملكة العربية السعودية';
-      document.getElementById('bank-ref').textContent          = purchaseData.reference || params.get('reference') || '—';
-      if (window.fbq) fbq('track', 'InitiateCheckout', { value: parseFloat(purchaseData.amount) || 0, currency: 'SAR', content_name: 'أبعد من إمكانيات الإضاءة - تحويل بنكي' });
-      document.getElementById('processing').style.display = 'none';
-      document.getElementById('bank-view').style.display = 'block';
-      return;
-    }
-
-    // ── TAMARA return ─────────────────────────────────────────
-    // Customer sees success immediately. Token + Daftra + email fire from webhook (server-side).
-    if (paymentMethod === 'tamara') {
-      if (status === 'failed' || status === 'canceled') {
-        document.getElementById('processing').style.display = 'none';
-        document.getElementById('failed-view').style.display = 'block';
-        return;
-      }
-      localStorage.removeItem('bl_purchase');
-      if (window.fbq) fbq('track', 'Purchase', { value: parseFloat(purchaseData.amount) || 0, currency: 'SAR', content_name: 'أبعد من إمكانيات الإضاءة' });
-      document.getElementById('processing').style.display = 'none';
-      document.getElementById('success-view').style.display = 'block';
-      return;
-    }
-
-    // ── MOYASAR return ────────────────────────────────────────
-    const paymentId = params.get('id') || params.get('payment_id') || '';
-
-    if (status === 'failed' || status === 'canceled') {
-      document.getElementById('processing').style.display = 'none';
-      document.getElementById('failed-view').style.display = 'block';
-      return;
-    }
-
-    try {
-      const url = `${APPS_SCRIPT_URL}?action=complete_purchase` +
-        `&product=beyond-lighting` +
-        `&name=${encodeURIComponent(purchaseData.name || '')}` +
-        `&email=${encodeURIComponent(purchaseData.email || '')}` +
-        `&phone=${encodeURIComponent(purchaseData.phone || '')}` +
-        `&amount=${encodeURIComponent(purchaseData.amount || '')}` +
-        `&coupon=${encodeURIComponent(purchaseData.coupon || '')}` +
-        `&payment_id=${encodeURIComponent(paymentId)}`;
-
-      await fetch(url);
-    } catch(e) {
-      console.warn('Apps Script call failed (non-blocking):', e);
-    }
-
-    localStorage.removeItem('bl_purchase');
-    if (window.fbq) fbq('track', 'Purchase', { value: parseFloat(purchaseData.amount) || 0, currency: 'SAR', content_name: 'أبعد من إمكانيات الإضاءة' });
-    document.getElementById('processing').style.display = 'none';
-    document.getElementById('success-view').style.display = 'block';
-  }
-
-  handleSuccess();
+<!-- Initialize the shared success-page module -->
+<script src="https://malearnsa.com/checkout-module/v1/success.js"></script>
+<script>
+  MaSuccess.init({
+    productId:     'beyond-lighting',
+    productNameAr: 'أبعد من إمكانيات الإضاءة'
+  });
 </script>
 
 </body>
