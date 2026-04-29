@@ -1,0 +1,176 @@
+/* ═══════════════════════════════════════════════════════════════════
+ * MA Learn Checkout Module — v1
+ * Shared payment-method styles for Moyasar, Tamara, Bank Transfer, PayPal
+ * Page-level theme variables (--gold, --bg, etc.) are owned by each
+ * product page — this file only styles the payment-method elements.
+ * ═══════════════════════════════════════════════════════════════════ */
+
+/* ── Form inputs / coupon row ─────────────────────────────────────── */
+.co-input {
+  width: 100%;
+  background: #181818;
+  border: 1px solid rgba(201,168,76,0.2);
+  color: #F5F0E8;
+  padding: 13px 14px;
+  font-family: 'Gumela', 'Cairo', sans-serif;
+  font-size: 1rem;
+  border-radius: 10px;
+  outline: none;
+  transition: border-color 0.2s;
+  -webkit-appearance: none;
+}
+.co-input:focus { border-color: rgba(201,168,76,0.6); }
+.co-label {
+  display: block; font-size: 0.78rem;
+  color: #888; margin-bottom: 7px;
+}
+.co-field { margin-bottom: 14px; }
+.co-field:last-child { margin-bottom: 0; }
+
+.co-coupon-row { display: flex; gap: 8px; }
+.co-coupon-btn {
+  background: transparent;
+  border: 1px solid rgba(201,168,76,0.4);
+  color: #C9A84C;
+  padding: 13px 18px;
+  font-family: 'Gumela', 'Cairo', sans-serif;
+  font-size: 0.9rem; font-weight: 700;
+  cursor: pointer; border-radius: 10px;
+  white-space: nowrap;
+  min-height: 48px; min-width: 72px;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+  transition: background 0.2s, border-color 0.2s;
+  -webkit-appearance: none;
+}
+.co-coupon-btn:hover  { background: rgba(201,168,76,0.08); border-color: rgba(201,168,76,0.7); }
+.co-coupon-btn:active { background: rgba(201,168,76,0.15); border-color: rgba(201,168,76,0.9); }
+
+/* ── Step badges + section titles ─────────────────────────────────── */
+.co-step-badge {
+  background: #C9A84C; color: #000;
+  width: 22px; height: 22px; border-radius: 50%;
+  display: inline-flex; align-items: center; justify-content: center;
+  font-size: 0.72rem; font-weight: 700; flex-shrink: 0;
+}
+.co-section-title {
+  font-size: 0.95rem; font-weight: 700; color: #F5F0E8;
+  display: flex; align-items: center; gap: 10px;
+  margin-bottom: 18px;
+}
+
+/* ── Card payment (Moyasar) ───────────────────────────────────────── */
+.co-proceed-btn {
+  width: 100%;
+  background: #C9A84C;
+  color: #000;
+  border: none;
+  padding: 16px;
+  font-family: 'Gumela', 'Cairo', sans-serif;
+  font-size: 1rem; font-weight: 700;
+  cursor: pointer; border-radius: 10px;
+  transition: background 0.2s, transform 0.1s;
+  letter-spacing: 0.03em;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+}
+.co-proceed-btn:hover  { background: #E8D08A; }
+.co-proceed-btn:active { transform: scale(0.98); }
+.co-proceed-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.co-secure-note {
+  font-size: 0.78rem; color: #4caf82;
+  margin-bottom: 16px;
+  display: flex; align-items: center; gap: 6px;
+}
+
+/* Moyasar dark theme overrides */
+.mysr-form { direction: ltr; }
+.mysr-form .mysr-payment-form { background: transparent !important; border: none !important; padding: 0 !important; box-shadow: none !important; }
+.mysr-form input { background: #181818 !important; color: #F5F0E8 !important; border: 1px solid rgba(201,168,76,0.25) !important; border-radius: 8px !important; }
+.mysr-form label { color: #888 !important; font-size: 0.8rem !important; }
+.mysr-form .mysr-pay-button { background: #C9A84C !important; color: #000 !important; font-weight: 700 !important; border-radius: 8px !important; font-size: 1rem !important; padding: 14px !important; }
+.mysr-form .mysr-pay-button:hover { background: #E8D08A !important; }
+.mysr-form .mysr-apple-pay-button { border-radius: 8px !important; }
+
+/* ── Bank transfer button ─────────────────────────────────────────── */
+.co-bank-btn {
+  width: 100%;
+  background: transparent;
+  color: #F5F0E8;
+  border: 1px solid rgba(245,240,232,0.35);
+  padding: 13px 16px;
+  font-family: 'Gumela', 'Cairo', sans-serif;
+  font-size: 0.95rem; font-weight: 700;
+  cursor: pointer; border-radius: 10px;
+  transition: background 0.2s, border-color 0.2s;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  min-height: 48px;
+}
+.co-bank-btn:hover  { background: rgba(255,255,255,0.04); border-color: rgba(245,240,232,0.6); }
+.co-bank-btn:active { transform: scale(0.98); }
+.co-bank-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.co-bank-btn-divider { width: 1px; height: 18px; background: rgba(255,255,255,0.18); }
+.co-bank-badge {
+  background: rgba(245,240,232,0.12);
+  border-radius: 20px;
+  padding: 3px 9px;
+  font-size: 0.7rem; font-weight: 700;
+  font-family: 'Cairo', sans-serif;
+  letter-spacing: 0.01em; white-space: nowrap;
+  color: #BBBBBB;
+}
+#bank-msg { font-size: 0.78rem; color: #e74c3c; margin-top: 8px; text-align: center; }
+
+/* ── Tamara button (brand lavender) ───────────────────────────────── */
+.co-tamara-btn {
+  width: 100%;
+  background: #4A3AFF;
+  color: #fff;
+  border: none;
+  padding: 13px 16px;
+  font-family: 'Gumela', 'Cairo', sans-serif;
+  font-size: 0.95rem; font-weight: 700;
+  cursor: pointer; border-radius: 10px;
+  transition: background 0.2s, transform 0.1s;
+  display: flex; align-items: center; justify-content: center; gap: 10px;
+  min-height: 48px;
+}
+.co-tamara-btn:hover  { background: #3a2ce0; }
+.co-tamara-btn:active { transform: scale(0.98); }
+.co-tamara-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.co-tamara-divider-line { width: 1px; height: 20px; background: rgba(255,255,255,0.25); }
+.co-tamara-badge {
+  background: rgba(255,255,255,0.18);
+  border-radius: 20px;
+  padding: 3px 9px;
+  font-size: 0.7rem; font-weight: 700;
+  font-family: 'Cairo', sans-serif;
+  letter-spacing: 0.01em; white-space: nowrap;
+}
+#tamara-msg { font-size: 0.78rem; color: #e74c3c; margin-top: 8px; text-align: center; }
+
+/* ── PayPal section ───────────────────────────────────────────────── */
+.co-paypal-wrap {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 10px;
+  padding: 12px;
+}
+.co-paypal-label {
+  font-size: 0.78rem; color: #BBBBBB;
+  margin-bottom: 8px; text-align: center;
+}
+.co-paypal-label .usd { color: #C9A84C; font-weight: 700; }
+#paypal-button-container { min-height: 48px; }
+#paypal-msg { font-size: 0.78rem; color: #e74c3c; margin-top: 8px; text-align: center; }
+
+/* ── Method-divider rules ─────────────────────────────────────────── */
+.co-or-divider {
+  display: flex; align-items: center; gap: 10px;
+  margin: 14px 0;
+  color: #555; font-size: 0.78rem;
+}
+.co-or-divider::before, .co-or-divider::after {
+  content: ''; flex: 1;
+  height: 1px; background: rgba(255,255,255,0.07);
+}
