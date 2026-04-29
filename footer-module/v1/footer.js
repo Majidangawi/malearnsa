@@ -53,60 +53,57 @@
 <footer class="ma-footer">
   <div class="ma-footer-blur"></div>
 
-  <div class="ma-footer-main">
+  <!-- Top row: 5 equal columns on desktop -->
+  <div class="ma-footer-top">
 
-    <!-- Brand column -->
-    <div class="ma-footer-brand ma-footer-anim">
+    <!-- Brand column (compact) -->
+    <div class="ma-footer-col ma-footer-brand ma-footer-anim">
       <img class="ma-footer-logo" src="${cfg.logoSrc}" alt="MA Learn" onerror="this.style.display='none'">
       <p class="tagline">${cfg.tagline}</p>
-      <p class="copyright">© ${year} MA Learn - جميع الحقوق محفوظة</p>
-      <div class="contact">
-        <a href="mailto:${cfg.supportEmail}">${cfg.supportEmail}</a><br>
-        ${cfg.supportPhone}
+      <p class="pitch">منصة تعليم إبداعية تساعدك تعيش من إبداعك.</p>
+    </div>
+
+    <!-- Links -->
+    <div class="ma-footer-col ma-footer-anim">
+      <h3>روابط</h3>
+      <ul>
+        <li><a href="${cfg.homeUrl}">الرئيسية</a></li>
+        <li><a href="${cfg.coursesUrl}">الدورات</a></li>
+        <li><a href="${cfg.aboutUrl}">عن ماجد</a></li>
+        <li><a href="mailto:${cfg.supportEmail}">${mailSvg}<span>تواصل معنا</span></a></li>
+      </ul>
+    </div>
+
+    <!-- Legal -->
+    <div class="ma-footer-col ma-footer-anim">
+      <h3>قانوني</h3>
+      <ul>
+        <li><a href="${cfg.refundUrl}">سياسة الاسترجاع</a></li>
+        <li><a href="${cfg.privacyUrl}">سياسة الخصوصية</a></li>
+      </ul>
+    </div>
+
+    <!-- Payments -->
+    <div class="ma-footer-col ma-footer-anim">
+      <h3>الدفع</h3>
+      <div class="ma-footer-payments">
+        <div class="pay-item">${paymentLogos.mada}</div>
+        <div class="pay-item">${paymentLogos.visa}</div>
+        <div class="pay-item">${paymentLogos.mastercard}</div>
+        <div class="pay-item">${paymentLogos.applePay}</div>
+        <div class="pay-item">${paymentLogos.paypal}</div>
+        <div class="pay-item pay-soon">${paymentLogos.tamara}</div>
       </div>
     </div>
 
-    <!-- 4 sections -->
-    <div class="ma-footer-sections">
-
-      <div class="ma-footer-section ma-footer-anim">
-        <h3>روابط</h3>
-        <ul>
-          <li><a href="${cfg.homeUrl}">الرئيسية</a></li>
-          <li><a href="${cfg.coursesUrl}">الدورات</a></li>
-          <li><a href="${cfg.aboutUrl}">عن ماجد</a></li>
-          <li><a href="mailto:${cfg.supportEmail}">${mailSvg}<span>تواصل معنا</span></a></li>
-        </ul>
-      </div>
-
-      <div class="ma-footer-section ma-footer-anim">
-        <h3>قانوني</h3>
-        <ul>
-          <li><a href="${cfg.refundUrl}">سياسة الاسترجاع</a></li>
-          <li><a href="${cfg.privacyUrl}">سياسة الخصوصية</a></li>
-        </ul>
-      </div>
-
-      <div class="ma-footer-section ma-footer-anim">
-        <h3>الدفع</h3>
-        <div class="ma-footer-payments">
-          <div class="pay-item">${paymentLogos.mada}</div>
-          <div class="pay-item">${paymentLogos.visa}</div>
-          <div class="pay-item">${paymentLogos.mastercard}</div>
-          <div class="pay-item">${paymentLogos.applePay}</div>
-          <div class="pay-item">${paymentLogos.paypal}</div>
-          <div class="pay-item pay-soon">${paymentLogos.tamara}</div>
-        </div>
-      </div>
-
-      <div class="ma-footer-section ma-footer-anim">
-        <h3>تابعنا</h3>
-        <ul>
-          <li><a href="${cfg.instagramUrl}" target="_blank" rel="noopener">${instagramSvg}<span>Instagram</span></a></li>
-        </ul>
-      </div>
-
+    <!-- Social -->
+    <div class="ma-footer-col ma-footer-anim">
+      <h3>تابعنا</h3>
+      <ul>
+        <li><a href="${cfg.instagramUrl}" target="_blank" rel="noopener">${instagramSvg}<span>Instagram</span></a></li>
+      </ul>
     </div>
+
   </div>
 
   <!-- Trust row: government licenses -->
@@ -127,9 +124,15 @@
     </a>
   </div>
 
-  <!-- Bottom strip -->
+  <!-- Bottom strip: copyright + contact -->
   <div class="ma-footer-bottom">
-    تم تطوير الموقع بكل عناية في المملكة العربية السعودية
+    <span>© ${year} MA Learn — جميع الحقوق محفوظة</span>
+    <span class="sep">·</span>
+    <a href="mailto:${cfg.supportEmail}">${cfg.supportEmail}</a>
+    <span class="sep">·</span>
+    <a class="phone" href="tel:${cfg.supportPhone.replace(/\s+/g,'')}" dir="ltr">${cfg.supportPhone}</a>
+    <span class="sep">·</span>
+    <span>تم تطوير الموقع بكل عناية في المملكة العربية السعودية</span>
   </div>
 
 </footer>
