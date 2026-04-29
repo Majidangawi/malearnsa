@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <!-- Meta Pixel Code -->
+  <script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '961157069802409');
+  fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=961157069802409&ev=PageView&noscript=1"
+  /></noscript>
+  <!-- End Meta Pixel Code -->
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TZ9839RVDJ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TZ9839RVDJ');
+  </script>
+  <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>مدخل إلى الذكاء الاصطناعي الإبداعي | MA Learn</title>
+  <!-- SEO -->
+  <meta name="description" content="ابدأ من الأساس. ١٢ درساً مسجلاً في الذكاء الاصطناعي الإبداعي مع ماجد عنقاوي. الإطار الذهني قبل الأدوات. وصول مدى الحياة.">
+  <meta name="keywords" content="مدخل إلى الذكاء الاصطناعي الإبداعي, دورة Midjourney, ذكاء اصطناعي للمبدعين, دورة مسجلة, ماجد عنقاوي, MA Learn">
+  <meta name="author" content="ماجد عنقاوي — MA Learn">
+  <link rel="canonical" href="https://malearnsa.com/intro-to-creative-ai/">
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="مدخل إلى الذكاء الاصطناعي الإبداعي | MA Learn">
+  <meta property="og:description" content="ابدأ من الأساس. ١٢ درساً مسجلاً في الذكاء الاصطناعي الإبداعي. الإطار الذهني قبل الأدوات.">
+  <meta property="og:url" content="https://malearnsa.com/intro-to-creative-ai/">
+  <meta property="og:image" content="https://malearnsa.com/intro-to-creative-ai/images/hero-desktop.jpg">
+  <meta property="og:locale" content="ar_SA">
+  <meta property="og:site_name" content="MA Learn">
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="مدخل إلى الذكاء الاصطناعي الإبداعي | MA Learn">
+  <meta name="twitter:description" content="ابدأ من الأساس. ١٢ درساً مسجلاً في الذكاء الاصطناعي الإبداعي. الإطار الذهني قبل الأدوات.">
+  <meta name="twitter:image" content="https://malearnsa.com/intro-to-creative-ai/images/hero-desktop.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <style>
+    @font-face { font-family:'Gumela'; src:url('../brand_assets/gumela-arabic-bold.otf') format('opentype'); font-weight:700; }
+    @font-face { font-family:'Gumela'; src:url('../brand_assets/gumela-arabic-regular.otf') format('opentype'); font-weight:400; }
+    @font-face { font-family:'Gumela'; src:url('../brand_assets/gumela-arabic-light.otf') format('opentype'); font-weight:300; }
+
+    :root {
+      --bg:        #080808;
+      --card-bg:   #0E0E0E;
+      --card-bg2:  #111111;
+      --card-border:#1A1A1A;
+      --gold:      #C9A84C;
+      --gold-lum:  #E8D08A;
+      --ivory:     #F5F0E8;
+      --silver:    #BBBBBB;
+      --grey:      #666666;
+      --green:     #4CAF82;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Gumela', 'Cairo', sans-serif;
+      background: var(--bg);
+      color: var(--ivory);
+      min-height: 100vh;
+      direction: rtl;
+      overflow-x: hidden;
+    }
+
+    body::after {
+      content: '';
+      position: fixed; inset: 0;
+      pointer-events: none; z-index: 9999; opacity: 0.035;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+      background-size: 200px 200px;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
+      padding: 14px 32px;
+      background: rgba(8,8,8,0.96);
+      border-bottom: 1px solid rgba(201,168,76,0.08);
+      backdrop-filter: blur(12px);
+      transition: border-color 0.3s;
+    }
+    nav.scrolled { border-bottom-color: rgba(201,168,76,0.15); }
+    .nav-inner {
+      max-width: 1060px; margin: 0 auto;
+      display: flex; align-items: center; justify-content: space-between; gap: 16px;
+    }
+    .nav-logo img { height: 28px; width: auto; display: block; }
+    .nav-links {
+      display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
+    }
+    .nav-links a {
+      font-size: 0.78rem; color: var(--grey); text-decoration: none;
+      font-family: 'Cairo', sans-serif; transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-cta {
+      background: var(--gold); color: #000;
+      font-family: 'Gumela', 'Cairo', sans-serif; font-weight: 700; font-size: 0.82rem;
+      padding: 9px 22px; border: none; cursor: pointer; text-decoration: none;
+      transition: background 0.2s; white-space: nowrap; flex-shrink: 0;
+    }
+    .nav-cta:hover { background: var(--gold-lum); }
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      nav { padding: 14px 20px; }
+    }
+
+    /* ── HERO ── */
+    .hero {
+      min-height: 100vh;
+      display: flex; align-items: center; justify-content: center;
+      text-align: center;
+      padding: 130px 24px 90px;
+      position: relative; overflow: hidden;
+    }
+    .hero-photo {
+      position: absolute; inset: 0; z-index: 0;
+      display: block; width: 100%; height: 100%;
+    }
+    .hero-photo img {
+      width: 100%; height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+    .hero-overlay {
+      position: absolute; inset: 0; z-index: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 50% 45%, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.75) 60%, rgba(8,8,8,0.92) 100%),
+        linear-gradient(180deg, rgba(8,8,8,0.55) 0%, rgba(8,8,8,0.25) 40%, rgba(8,8,8,0.92) 100%);
+    }
+    .hero-content { position: relative; z-index: 2; max-width: 780px; }
+    .hero-label {
+      display: inline-block;
+      border: 1px solid rgba(201,168,76,0.35);
+      color: var(--gold); font-size: 0.72rem;
+      letter-spacing: 0.1em; padding: 5px 16px;
+      margin-bottom: 28px; text-transform: uppercase;
+    }
+    .hero-title {
+      font-weight: 700;
+      font-size: clamp(2rem, 5.5vw, 3.5rem);
+      line-height: 1.25; color: var(--ivory);
+      margin-bottom: 20px;
+    }
+    .hero-subtitle {
+      font-size: clamp(0.95rem, 2vw, 1.15rem);
+      color: var(--silver); line-height: 1.85;
+      margin-bottom: 36px;
+      max-width: 580px; margin-left: auto; margin-right: auto;
+    }
+    .hero-facts {
+      display: flex; align-items: center; justify-content: center;
+      gap: 28px; margin-bottom: 40px; flex-wrap: wrap;
+    }
+    .hero-fact-item {
+      display: flex; align-items: center; gap: 8px;
+      color: var(--silver); font-size: 0.9rem;
+    }
+    .hero-fact-item svg { color: var(--gold); flex-shrink: 0; }
+    .hero-price-block { margin-bottom: 36px; }
+    .price-main {
+      font-size: 2.6rem; font-weight: 700; color: var(--gold); line-height: 1;
+    }
+    .price-main span { font-size: 1rem; color: var(--silver); font-weight: 400; }
+    .price-note { font-size: 0.78rem; color: var(--grey); margin-top: 6px; }
+    .btn-primary {
+      display: inline-block;
+      background: var(--gold); color: #000;
+      font-family: 'Gumela', 'Cairo', sans-serif; font-weight: 700;
+      font-size: 1.05rem; padding: 17px 52px;
+      text-decoration: none; border: none; cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+    }
+    .btn-primary:hover { background: var(--gold-lum); transform: translateY(-1px); }
+    .hero-guarantee { margin-top: 18px; font-size: 0.82rem; color: var(--grey); }
+
+    /* ── SECTION BASE ── */
+    section { padding: 96px 24px; }
+    .container { max-width: 900px; margin: 0 auto; }
+    .section-label {
+      font-size: 0.68rem; letter-spacing: 0.15em;
+      color: var(--gold); text-transform: uppercase; margin-bottom: 14px;
+    }
+    .section-title {
+      font-weight: 700;
+      font-size: clamp(1.55rem, 3.8vw, 2.3rem);
+      color: var(--ivory); line-height: 1.35; margin-bottom: 18px;
+    }
+    .section-body {
+      font-size: 1rem; color: var(--silver); line-height: 1.9;
+    }
+    .divider { border: none; border-top: 1px solid #1a1a1a; margin: 0; }
+
+    /* ── PROBLEM ── */
+    .problem-quote {
+      border-right: 3px solid var(--gold);
+      padding: 24px 28px; margin: 36px 0;
+      background: var(--card-bg);
+    }
+    .problem-quote p {
+      font-size: 1.05rem; color: var(--ivory); line-height: 1.85;
+    }
+
+    /* ── MODULES ── */
+    .modules { background: #0A0A0A; }
+    .modules-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 2px; margin-top: 56px;
+    }
+    .module-card {
+      background: var(--card-bg); padding: 0;
+      position: relative; overflow: hidden;
+    }
+    .module-card::before {
+      content: ''; position: absolute; top: 0; right: 0;
+      width: 3px; height: 100%; background: var(--gold);
+      opacity: 0; transition: opacity 0.3s;
+      z-index: 2;
+    }
+    .module-card:hover::before { opacity: 1; }
+    .module-card-image {
+      width: 100%; aspect-ratio: 4/3;
+      overflow: hidden; background: #0a0a0a;
+    }
+    .module-card-image img {
+      width: 100%; height: 100%;
+      object-fit: cover; object-position: center;
+      display: block;
+      filter: grayscale(5%) brightness(0.95);
+      transition: transform 0.5s ease, filter 0.3s ease;
+    }
+    .module-card:hover .module-card-image img {
+      transform: scale(1.04);
+      filter: grayscale(0%) brightness(1);
+    }
+    .module-card-body { padding: 32px 30px 36px; }
+    .module-number {
+      font-size: 0.68rem; letter-spacing: 0.14em;
+      color: var(--gold); text-transform: uppercase; margin-bottom: 14px;
+    }
+    .module-title {
+      font-size: 1.15rem; font-weight: 700;
+      color: var(--ivory); margin-bottom: 12px; line-height: 1.4;
+    }
+    .module-desc { font-size: 0.88rem; color: var(--silver); line-height: 1.75; }
+
+    /* ── FOR WHO ── */
+    .for-who { background: var(--bg); }
+    .who-grid {
+      display: grid; grid-template-columns: 1fr 1fr;
+      gap: 2px; margin-top: 44px;
+    }
+    @media (max-width: 640px) { .who-grid { grid-template-columns: 1fr; } }
+    .who-card { background: var(--card-bg); padding: 34px 30px; }
+    .who-card-title {
+      font-size: 0.72rem; letter-spacing: 0.12em;
+      color: var(--gold); text-transform: uppercase; margin-bottom: 22px;
+    }
+    .who-list { list-style: none; }
+    .who-list li {
+      display: flex; align-items: flex-start; gap: 12px;
+      font-size: 0.92rem; color: var(--silver); line-height: 1.6;
+      padding: 10px 0; border-bottom: 1px solid #141414;
+    }
+    .who-list li:last-child { border-bottom: none; }
+    .icon-yes { color: var(--gold); font-size: 0.78rem; margin-top: 3px; flex-shrink: 0; }
+    .icon-no  { color: var(--grey); font-size: 0.78rem; margin-top: 3px; flex-shrink: 0; }
+
+    /* ── INSTRUCTOR ── */
+    .instructor { background: #0A0A0A; }
+    .instructor-inner {
+      display: grid; grid-template-columns: 190px 1fr;
+      gap: 56px; align-items: start; margin-top: 44px;
+    }
+    @media (max-width: 640px) {
+      .instructor-inner { grid-template-columns: 1fr; gap: 28px; }
+      .instructor-photo { width: 130px; }
+    }
+    .instructor-photo {
+      width: 100%; aspect-ratio: 3/4; object-fit: cover;
+      object-position: top; filter: grayscale(15%);
+    }
+    .instructor-name { font-size: 1.55rem; font-weight: 700; color: var(--ivory); margin-bottom: 5px; }
+    .instructor-role { font-size: 0.82rem; color: var(--gold); letter-spacing: 0.07em; margin-bottom: 22px; }
+    .instructor-bio { font-size: 0.92rem; color: var(--silver); line-height: 1.9; }
+    .instructor-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
+    .instructor-tag {
+      border: 1px solid #2a2a2a; color: var(--silver);
+      font-size: 0.72rem; padding: 5px 13px;
+    }
+
+    /* ── STUDENT RESULTS ── */
+    .results { background: var(--bg); }
+    .results-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 44px;
+    }
+    .results-grid picture {
+      display: block; width: 100%;
+      aspect-ratio: 4/5;
+      overflow: hidden;
+      background: #0a0a0a;
+    }
+    .results-grid img {
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+      filter: grayscale(5%);
+      transition: filter 0.3s ease, transform 0.5s ease;
+    }
+    .results-grid picture:hover img {
+      filter: grayscale(0%);
+      transform: scale(1.03);
+    }
+    .results-caption {
+      font-size: 0.78rem; color: var(--grey); text-align: center;
+      margin-top: 18px; font-style: italic;
+    }
+    @media (max-width: 640px) {
+      .results-grid { grid-template-columns: repeat(2, 1fr); gap: 8px; }
+    }
+
+    /* ── TESTIMONIALS ── */
+    .testimonials { background: #0A0A0A; }
+    .testimonials-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px; margin-top: 44px;
+    }
+    .testimonial-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      padding: 8px;
+      overflow: hidden;
+    }
+    .testimonial-card img {
+      width: 100%; height: auto;
+      display: block;
+    }
+
+    /* ── FAQ ── */
+    .faq { background: var(--bg); }
+    .faq-list { margin-top: 44px; }
+    .faq-item { border-bottom: 1px solid #141414; padding: 28px 0; }
+    .faq-item:first-child { border-top: 1px solid #141414; }
+    .faq-q { font-size: 1rem; font-weight: 700; color: var(--ivory); margin-bottom: 10px; }
+    .faq-a { font-size: 0.92rem; color: var(--silver); line-height: 1.8; }
+
+    /* ── PRICING ── */
+    .pricing { background: #0A0A0A; }
+    .pricing-card {
+      max-width: 560px; margin: 48px auto 0;
+      background: var(--card-bg);
+      border: 1px solid #1a1a1a;
+      padding: 48px 40px;
+      text-align: center; position: relative; overflow: hidden;
+    }
+    .pricing-card::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+    .pricing-badge {
+      display: inline-block;
+      background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.3);
+      color: var(--gold); font-size: 0.75rem; letter-spacing: 0.08em;
+      padding: 5px 16px; text-transform: uppercase; margin-bottom: 28px;
+    }
+    .pricing-name { font-size: 1.05rem; color: var(--silver); margin-bottom: 28px; }
+    .value-stack { margin-bottom: 28px; text-align: right; }
+    .value-stack-item {
+      display: flex; justify-content: flex-start; align-items: flex-start;
+      padding: 11px 0; border-bottom: 1px solid #141414;
+      font-size: 0.9rem; color: var(--silver); line-height: 1.55;
+    }
+    .value-stack-item:last-child { border-bottom: none; }
+    .value-stack-item::before { content: '✓'; color: var(--gold); font-weight: 700; margin-left: 10px; flex-shrink: 0; }
+    .pricing-price {
+      font-size: 2.8rem; font-weight: 700; color: var(--gold);
+      margin: 14px 0 4px;
+    }
+    .pricing-price span { font-size: 1rem; color: var(--silver); font-weight: 400; }
+    .pricing-note {
+      font-size: 0.82rem; color: var(--grey);
+      margin-bottom: 28px;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: #050505;
+      border-top: 1px solid rgba(255,255,255,0.05);
+      padding: 40px 24px 28px; text-align: center;
+    }
+    .footer-logo img { height: 26px; margin: 0 auto 18px; display: block; opacity: 0.7; }
+    .footer-links {
+      display: flex; justify-content: center; gap: 20px;
+      flex-wrap: wrap; margin-bottom: 10px;
+    }
+    .footer-links a {
+      color: var(--grey); text-decoration: none; font-size: 0.72rem;
+      font-family: 'Cairo', sans-serif; transition: color 0.2s;
+    }
+    .footer-links a:hover { color: var(--silver); }
+    .footer-contact {
+      font-size: 0.7rem; color: #444; direction: ltr; margin-bottom: 18px;
+    }
+    .footer-payments {
+      display: flex; align-items: center; justify-content: center;
+      gap: 8px; flex-wrap: wrap; margin-bottom: 20px;
+    }
+    .footer-payments-label { font-size: 0.65rem; color: #555; margin-left: 4px; }
+    .footer-badges {
+      display: inline-flex; align-items: center; gap: 12px;
+      flex-wrap: wrap; justify-content: center; margin-bottom: 16px;
+    }
+    .footer-badge-link {
+      display: inline-flex; align-items: center; gap: 12px;
+      background: #fff; border-radius: 10px; padding: 10px 16px;
+      direction: rtl; text-decoration: none;
+    }
+    .footer-badge-link img { height: 44px; width: auto; display: block; }
+    .footer-badge-info { border-right: 1px solid #ddd; padding-right: 12px; text-align: right; }
+    .footer-badge-label { font-size: 0.55rem; color: #888; margin: 0 0 3px 0; font-family: Cairo,Arial,sans-serif; line-height: 1; }
+    .footer-badge-num { font-size: 0.75rem; font-weight: 700; color: #222; margin: 0; font-family: Arial,sans-serif; letter-spacing: 0.5px; line-height: 1; }
+    .footer-copy { font-size: 0.72rem; color: var(--grey); margin-top: 6px; }
+
+    /* ── STICKY BAR ── */
+    .sticky-bar {
+      position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(8,8,8,0.97);
+      border-top: 1px solid #1e1e1e;
+      padding: 14px 24px;
+      display: flex; align-items: center; justify-content: space-between; gap: 14px;
+      transform: translateY(100%); transition: transform 0.4s ease;
+    }
+    .sticky-bar.visible { transform: translateY(0); }
+    .sticky-bar-text { font-size: 0.88rem; color: var(--silver); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .sticky-price-now { color: var(--gold); font-weight: 700; }
+    .sticky-bar-btn {
+      background: var(--gold); color: #000;
+      font-family: 'Gumela', 'Cairo', sans-serif; font-weight: 700;
+      font-size: 0.88rem; padding: 11px 28px;
+      border: none; cursor: pointer; text-decoration: none;
+      white-space: nowrap; flex-shrink: 0;
+    }
+    .sticky-bar-btn:hover { background: var(--gold-lum); }
+    @media (max-width: 480px) {
+      .sticky-bar { flex-direction: column; text-align: center; }
+      .sticky-bar-btn { width: 100%; text-align: center; display: block; }
+    }
+
+    @media (max-width: 640px) {
+      section { padding: 68px 20px; }
+      .pricing-card { padding: 34px 22px; }
+      .instructor-inner { gap: 24px; }
+    }
+  </style>
+  <link rel="stylesheet" href="https://malearnsa.com/footer-module/v1/footer.css">
+</head>
+<body>
+
+  <!-- ══ NAV ══════════════════════════════════════════ -->
+  <nav id="nav">
+    <div class="nav-inner">
+      <div class="nav-logo">
+        <img src="../brand_assets/logo-malearn-white.png" alt="MA Learn"
+             onerror="this.style.display='none'">
+      </div>
+      <div class="nav-links">
+        <a href="https://malearnsa.com">الرئيسية</a>
+        <a href="https://malearnsa.com/#courses">الدورات</a>
+        <a href="https://malearnsa.com/refund-policy.html">سياسة الاسترجاع</a>
+        <a href="https://malearnsa.com/privacy-policy.html">الخصوصية</a>
+      </div>
+      <a href="#pricing" class="nav-cta" id="nav-cta">ابدأ الدورة — ٤٤٩ ر.س</a>
+    </div>
+  </nav>
+
+  <!-- ══ HERO ═════════════════════════════════════════ -->
+  <section class="hero">
+    <picture class="hero-photo">
+      <source media="(min-width: 768px)" srcset="images/hero-desktop.jpg">
+      <img src="images/hero-mobile.jpg" alt="" fetchpriority="high" decoding="async">
+    </picture>
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <div style="font-family:'Gumela','Cairo',sans-serif;font-weight:700;font-size:clamp(1.1rem,2.5vw,1.5rem);color:var(--gold);letter-spacing:0.02em;margin-bottom:14px;">مدخل إلى الذكاء الاصطناعي الإبداعي</div>
+      <div class="hero-label">دورة مسجلة · ١٢ درساً · وصول مدى الحياة</div>
+
+      <h1 class="hero-title">
+        كل الناس من حولك بدأت تشتغل بالذكاء الاصطناعي.<br>
+        <span style="color:var(--gold);">وأنت لسه مو عارف من وين تبدأ.</span>
+      </h1>
+
+      <p class="hero-subtitle">
+        هنا الأساس اللي تبدأ منه.<br>
+        ١٢ درساً مسجلاً. الإطار الذهني قبل الأدوات — قبل ما تضيع شهور تجرب بدون توجيه.
+      </p>
+
+      <div class="hero-facts">
+        <div class="hero-fact-item">
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+          ابدأ فوراً — بدون انتظار
+        </div>
+        <div class="hero-fact-item">
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          وصول مدى الحياة
+        </div>
+        <div class="hero-fact-item">
+          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+          باللغة العربية — لهجة سعودية
+        </div>
+      </div>
+
+      <div class="hero-price-block">
+        <div class="price-main">٤٤٩ <span>ر.س</span></div>
+        <div class="price-note">دفعة واحدة · وصول فوري</div>
+      </div>
+
+      <a href="#pricing" class="btn-primary" id="hero-cta">ابدأ الدورة الآن</a>
+      <div class="hero-guarantee">شامل ضمان الاسترجاع خلال ٧ أيام</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ══ PROBLEM ══════════════════════════════════════ -->
+  <section class="problem">
+    <div class="container">
+      <div class="section-label">المشكلة</div>
+      <h2 class="section-title">تفتح إنستقرام وتشوف أداة جديدة كل يوم.</h2>
+      <p class="section-body">
+        ترند جديد. "ثورة" جديدة. وبعد ساعة من التصفح تحس إنك متأخر، مشوش، وما عملت شيء.
+      </p>
+
+      <div class="problem-quote">
+        <p>
+          هذا مو ذنبك. هذي طبيعة المحتوى اللي يُصنع يخليك محتاج… ما يعطيك حلول.<br><br>
+          المشكلة الحقيقية مو إنك ما تعرف الأدوات.<br>
+          المشكلة إنك ما عندك <strong>إطار تفكير</strong> قبل ما تفتح أي واحدة منها.
+          وبدون هذا الإطار، كل أداة جديدة تشوفها تزيدك ضياع، مو قوة.
+        </p>
+      </div>
+
+      <p class="section-body">
+        الدورة هذي ما تعلمك "كل الأدوات".<br>
+        تعلمك <strong>الإطار الذهني</strong> اللي يخليك تختار الأداة الصح، تستخدمها بوعي، وتخرج بشغل فيه توقيعك.
+      </p>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ══ MODULES ══════════════════════════════════════ -->
+  <section class="modules">
+    <div class="container">
+      <div class="section-label">محتوى الدورة</div>
+      <h2 class="section-title">٦ وحدات. ١٢ درساً. كل درس يبني على اللي قبله.</h2>
+      <p class="section-body">
+        ما تنتهي الدورة بمعلومات متفرقة. تنتهي وفي يدك طريقة شغل ترجع لها في كل مشروع جاي.
+      </p>
+
+      <div class="modules-grid">
+        <div class="module-card">
+          <div class="module-card-image"><img src="images/module-1.jpg" alt="الوحدة الأولى — المدخل" loading="lazy" decoding="async"></div>
+          <div class="module-card-body">
+            <div class="module-number">الوحدة الأولى</div>
+            <div class="module-title">المدخل — كيف تفكر قبل أي أداة</div>
+            <p class="module-desc">الإطار الذهني الأساس. كيف تستقبل البريف، تحوله لتوجه بصري، وتختار الأداة الصح بدل ما تجرب عشوائي.</p>
+          </div>
+        </div>
+        <div class="module-card">
+          <div class="module-card-image"><img src="images/module-2.jpg" alt="الوحدة الثانية — Midjourney" loading="lazy" decoding="async"></div>
+          <div class="module-card-body">
+            <div class="module-number">الوحدة الثانية</div>
+            <div class="module-title">Midjourney — الأساسيات والإعدادات</div>
+            <p class="module-desc">الأوامر، الإعدادات، الـ parameters المهمة، و--sref و--cref عملياً. تبني صورتك الأولى داخل الدرس.</p>
+          </div>
+        </div>
+        <div class="module-card">
+          <div class="module-card-image"><img src="images/module-3.jpg" alt="الوحدة الثالثة — Storytelling" loading="lazy" decoding="async"></div>
+          <div class="module-card-body">
+            <div class="module-number">الوحدة الثالثة</div>
+            <div class="module-title">الحكاية البصرية — Storytelling</div>
+            <p class="module-desc">كيف تبني قصة بصرية متماسكة بدل صور منفصلة. الإضاءة، الإطار، والحركة داخل المشهد.</p>
+          </div>
+        </div>
+        <div class="module-card">
+          <div class="module-card-image"><img src="images/work-1.jpg" alt="الوحدة الرابعة — البريف" loading="lazy" decoding="async"></div>
+          <div class="module-card-body">
+            <div class="module-number">الوحدة الرابعة</div>
+            <div class="module-title">البريف العملي — من الفكرة للتنفيذ</div>
+            <p class="module-desc">ورش عمل على بريف عميل حقيقي. تقرأ، تحلل، وتحول المطلوب لمشروع قابل للتنفيذ.</p>
+          </div>
+        </div>
+        <div class="module-card">
+          <div class="module-card-image"><img src="images/work-2.jpg" alt="الوحدة الخامسة — الأدوات المتقدمة" loading="lazy" decoding="async"></div>
+          <div class="module-card-body">
+            <div class="module-number">الوحدة الخامسة</div>
+            <div class="module-title">الأدوات الاحترافية في منظومة واحدة</div>
+            <p class="module-desc">Higgsfield، Weavy، Seedance، وأدوات الفيديو. متى تستخدم كل واحدة، وكيف تربطها في سير عمل متكامل.</p>
+          </div>
+        </div>
+        <div class="module-card">
+          <div class="module-card-image"><img src="images/work-3.jpg" alt="الوحدة السادسة — التطبيق" loading="lazy" decoding="async"></div>
+          <div class="module-card-body">
+            <div class="module-number">الوحدة السادسة</div>
+            <div class="module-title">التطبيق — مشروع كامل من الصفر</div>
+            <p class="module-desc">مشروع عملي من البريف للتسليم. تخرج بنتيجة تضيفها لمحفظتك — مو بس معلومات في ذهنك.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ══ FOR WHO ════════════════════════════════════════ -->
+  <section class="for-who">
+    <div class="container">
+      <div class="section-label">لمين هذي الدورة؟</div>
+      <h2 class="section-title">مو لكل أحد… وهذا قصد.</h2>
+
+      <div class="who-grid">
+        <div class="who-card">
+          <div class="who-card-title">الدورة لك لو</div>
+          <ul class="who-list">
+            <li><span class="icon-yes">✓</span> أنت مصور، مصمم، أو مبدع بصري وحاسس إن الذكاء الاصطناعي فات عليك</li>
+            <li><span class="icon-yes">✓</span> تبي تبدأ صح — بدون ما تضيع شهور تتفرج على شروحات متفرقة</li>
+            <li><span class="icon-yes">✓</span> مشغول وتبي تتعلم على راحتك، متى ما تقدر</li>
+            <li><span class="icon-yes">✓</span> تبي أساس متين تبني عليه، مو مجرد أوامر تحفظها</li>
+          </ul>
+        </div>
+        <div class="who-card">
+          <div class="who-card-title">الدورة مو لك لو</div>
+          <ul class="who-list">
+            <li><span class="icon-no">✗</span> تدور تتعلم أكواد أو برمجة</li>
+            <li><span class="icon-no">✗</span> تبي موسوعة في كل أداة ذكاء اصطناعي موجودة</li>
+            <li><span class="icon-no">✗</span> تبي نتائج بدون ما تشتغل على التمارين</li>
+            <li><span class="icon-no">✗</span> هدفك تجمع أدوات مو تبني أسلوب شغل</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ══ INSTRUCTOR ═════════════════════════════════════ -->
+  <section class="instructor">
+    <div class="container">
+      <div class="section-label">المدرب</div>
+      <div class="instructor-inner">
+        <img src="../brand_assets/profile.jpg" alt="ماجد عنقاوي" class="instructor-photo"
+             onerror="this.style.display='none'">
+        <div>
+          <div class="instructor-name">ماجد عنقاوي</div>
+          <div class="instructor-role">مصور أزياء · مدير إبداعي · مؤسس MA Learn</div>
+          <p class="instructor-bio">
+            اللي تتعلمه في هذي الدورة مو من يوتيوب. هو من شغل حقيقي، مع عملاء حقيقيين.<br><br>
+            ١٦ سنة في الإنتاج البصري. مصور أزياء ومدير إبداعي شغل مع برندات في السعودية وخارجها.
+            سفير Fujifilm في السعودية. مؤسس MA Learn — منصة التعليم الإبداعي العربي.<br><br>
+            كل أداة وكل سير عمل تشوفه في الدورة — ماجد يستخدمه فعلياً في مشاريع العملاء. مو تنظير، شغل عملي.
+          </p>
+          <div class="instructor-tags">
+            <span class="instructor-tag">تصوير أزياء</span>
+            <span class="instructor-tag">إدارة إبداعية</span>
+            <span class="instructor-tag">ذكاء اصطناعي إبداعي</span>
+            <span class="instructor-tag">سفير Fujifilm KSA</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ══ STUDENT RESULTS ════════════════════════════════ -->
+  <section class="results">
+    <div class="container">
+      <div class="section-label">نتائج الطلاب</div>
+      <h2 class="section-title">مو مجرد دروس. شغل حقيقي خرج من أيديهم.</h2>
+      <p class="section-body">
+        هذي أعمال من طلاب طبقوا اللي تعلموه داخل الدورة. كل واحد منهم بدأ من نفس المكان اللي أنت فيه الحين.
+      </p>
+
+      <div class="results-grid">
+        <picture><img src="images/student-work/haneen-1.jpg" alt="عمل حنين التركستاني" loading="lazy" decoding="async"></picture>
+        <picture><img src="images/student-work/m7md-1.jpg" alt="عمل محمد السحيم" loading="lazy" decoding="async"></picture>
+        <picture><img src="images/student-work/raad-1.jpg" alt="عمل رعد جميل" loading="lazy" decoding="async"></picture>
+        <picture><img src="images/student-work/haneen-2.jpg" alt="عمل حنين التركستاني" loading="lazy" decoding="async"></picture>
+        <picture><img src="images/student-work/m7md-2.jpg" alt="عمل محمد السحيم" loading="lazy" decoding="async"></picture>
+        <picture><img src="images/student-work/raad-2.jpg" alt="عمل رعد جميل" loading="lazy" decoding="async"></picture>
+      </div>
+
+      <div class="results-caption">أعمال حقيقية من طلاب MA Learn</div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ══ TESTIMONIALS ═══════════════════════════════════ -->
+  <section class="testimonials">
+    <div class="container">
+      <div class="section-label">يقولون عن التجربة</div>
+      <h2 class="section-title">كلام حقيقي من ناس خلصوا الدورة.</h2>
+
+      <div class="testimonials-grid">
+        <div class="testimonial-card">
+          <img src="images/testimonials/testimonial-1.png" alt="شهادة طالب" loading="lazy">
+        </div>
+        <div class="testimonial-card">
+          <img src="images/testimonials/testimonial-2.jpg" alt="شهادة طالب" loading="lazy">
+        </div>
+        <div class="testimonial-card">
+          <img src="images/testimonials/testimonial-3.jpg" alt="شهادة طالب" loading="lazy">
+        </div>
+        <div class="testimonial-card">
+          <img src="images/testimonials/testimonial-4.jpg" alt="شهادة طالب" loading="lazy">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ══ FAQ ═══════════════════════════════════════════ -->
+  <section class="faq">
+    <div class="container">
+      <div class="section-label">أسئلة شائعة</div>
+      <h2 class="section-title">أسئلة ممكن تخطر على بالك.</h2>
+
+      <div class="faq-list">
+        <div class="faq-item">
+          <div class="faq-q">ما عندي خبرة بالذكاء الاصطناعي، هل الدورة مناسبة؟</div>
+          <p class="faq-a">هذا بالضبط المكان اللي تبدأ منه. الدورة مبنية من الصفر — الإطار الذهني قبل الأدوات. ما يحتاج خلفية تقنية.</p>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">متى أقدر أبدأ الدورة؟</div>
+          <p class="faq-a">فوراً بعد الدفع. توصلك رابط الوصول على إيميلك خلال دقائق، وتبدأ متى ما تبي — الدروس كلها متاحة من أول يوم.</p>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">كم تاخذ الدورة وقت؟</div>
+          <p class="faq-a">١٢ درساً. تقدر تخلصها في أسبوع لو متفرغ، أو على مهلك خلال شهر. وصولك لها مدى الحياة — ترجع لها متى ما تبي.</p>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">الدورة أونلاين أم حضورية؟</div>
+          <p class="faq-a">أونلاين بالكامل ومسجلة. تحضرها من أي مكان، من أي جهاز، في أي وقت.</p>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">شو الفرق بينها وبين "ورشة صناعة الإلهام"؟</div>
+          <p class="faq-a">هذي الأساس — الإطار الذهني والأدوات. الورشة المباشرة (T3) هي الخطوة الجاية — تطبيق حي على بريف عميل حقيقي مع ماجد، وجلسة نقد شخصية لشغلك.</p>
+        </div>
+        <div class="faq-item">
+          <div class="faq-q">هل فيه استرجاع؟</div>
+          <p class="faq-a">نعم. ضمان استرجاع كامل خلال ٧ أيام من تاريخ الشراء، بدون أسئلة، لو ما حسيت إن الدورة تستاهل.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr class="divider">
+
+  <!-- ══ PRICING ════════════════════════════════════════ -->
+  <section class="pricing" id="pricing">
+    <div class="container">
+      <div class="section-label" style="text-align:center;">ابدأ الآن</div>
+      <h2 class="section-title" style="text-align:center;">استثمار واحد. شغل تستخدمه كل مشروع.</h2>
+
+      <div class="pricing-card">
+        <div class="pricing-badge">دورة مسجلة · وصول مدى الحياة</div>
+        <div class="pricing-name">مدخل إلى الذكاء الاصطناعي الإبداعي</div>
+
+        <div class="value-stack">
+          <div class="value-stack-item">
+            <span>١٢ درساً مسجلاً · ٦ وحدات متكاملة</span>
+          </div>
+          <div class="value-stack-item">
+            <span>الإطار الذهني قبل كل أداة — أساس لا يتغير</span>
+          </div>
+          <div class="value-stack-item">
+            <span>Midjourney، Higgsfield، Weavy — في سير عمل واحد</span>
+          </div>
+          <div class="value-stack-item">
+            <span>مشروع تطبيقي كامل — من البريف للتسليم</span>
+          </div>
+          <div class="value-stack-item">
+            <span>وصول مدى الحياة · تحديثات مجانية</span>
+          </div>
+          <div class="value-stack-item">
+            <span>ضمان استرجاع ٧ أيام — بدون أسئلة</span>
+          </div>
+        </div>
+
+        <div class="pricing-price">٤٤٩ <span>ر.س</span></div>
+        <div class="pricing-note">دفعة واحدة · وصول فوري بعد الدفع</div>
+
+        <!-- TODO: replace with live Moyasar checkout URL once set up (MAL-185) -->
+        <a href="https://checkout.malearnsa.com/intro-to-creative-ai/" class="btn-primary" id="pricing-cta"
+           style="width:100%;display:block;text-align:center;">
+          ابدأ الدورة — ٤٤٩ ر.س
+        </a>
+
+        <div style="margin-top:16px;font-size:0.78rem;color:var(--grey);">الدفع آمن عبر Moyasar · مدى · Visa · Mastercard · Apple Pay</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══ FOOTER ═════════════════════════════════════════ -->
+  <!-- MA Learn shared footer module v1 -->
+<div id="ma-footer"></div>
+<script src="https://malearnsa.com/footer-module/v1/footer.js"></script>
+
+  <!-- ══ STICKY BAR ═════════════════════════════════════ -->
+  <div class="sticky-bar" id="stickyBar">
+    <div class="sticky-bar-text">
+      مدخل إلى الذكاء الاصطناعي الإبداعي —
+      <span class="sticky-price-now">٤٤٩ ر.س</span>
+    </div>
+    <a href="#pricing" class="sticky-bar-btn" id="sticky-cta">ابدأ الدورة</a>
+  </div>
+
+  <script>
+    const nav = document.getElementById('nav');
+    const stickyBar = document.getElementById('stickyBar');
+    const heroH = document.querySelector('.hero').offsetHeight;
+
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 60);
+      stickyBar.classList.toggle('visible', window.scrollY > heroH * 0.7);
+    });
+
+    // Scroll reveal
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(el => {
+        if (el.isIntersecting) {
+          el.target.style.opacity = '1';
+          el.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, { threshold: 0.08 });
+
+    document.querySelectorAll('.module-card, .who-card, .faq-item, .testimonial-card, .results-grid picture').forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(20px)';
+      el.style.transition = 'opacity 0.55s ease, transform 0.55s ease';
+      observer.observe(el);
+    });
+  </script>
+</body>
+</html>
