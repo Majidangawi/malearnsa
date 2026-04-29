@@ -1,7 +1,7 @@
 /* ═══════════════════════════════════════════════════════════════════
  * MA Learn Footer Module — v1
- * Plain HTML/CSS adaptation of the sent React+Motion+Tailwind design.
- * Adapted to MA Learn dark theme (gold/ivory), Arabic-first RTL.
+ * Plain HTML/CSS adaptation of the React+Motion+Tailwind reference.
+ * RTL Arabic-first, gold/ivory dark theme.
  * ═══════════════════════════════════════════════════════════════════ */
 
 .ma-footer {
@@ -9,7 +9,7 @@
   width: 100%;
   max-width: 1200px;
   margin: 60px auto 0;
-  padding: 56px 28px 32px;
+  padding: 56px 28px 28px;
   border-top: 1px solid rgba(255,255,255,0.06);
   border-top-left-radius: 32px;
   border-top-right-radius: 32px;
@@ -19,7 +19,7 @@
   direction: rtl;
 }
 
-/* Top centered blur accent line — replaces the React design's bg-foreground/20 absolute bar */
+/* Top centered blur accent line */
 .ma-footer-blur {
   position: absolute;
   top: 0;
@@ -33,84 +33,59 @@
   border-radius: 99px;
 }
 
-/* ── Main grid: brand-col | 4-section-col on desktop, stacked on mobile ── */
-.ma-footer-main {
+/* ── Top row: 5 equal columns on desktop, 2 on tablet, 1 on mobile ── */
+.ma-footer-top {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 40px;
+  gap: 32px 24px;
   align-items: start;
 }
-
+@media (min-width: 640px) {
+  .ma-footer-top { grid-template-columns: repeat(2, 1fr); gap: 36px 24px; }
+}
 @media (min-width: 1024px) {
-  .ma-footer-main {
-    grid-template-columns: 1fr 2fr;
-    gap: 48px;
-  }
+  .ma-footer-top { grid-template-columns: repeat(5, 1fr); gap: 24px; }
 }
 
-/* ── Brand column ── */
+/* ── Brand column (compact: logo + tagline only) ── */
 .ma-footer-brand .ma-footer-logo {
   height: 32px;
   width: auto;
   display: block;
-  margin-bottom: 16px;
+  margin-bottom: 14px;
   opacity: 0.9;
 }
 .ma-footer-brand .tagline {
-  font-size: 0.9rem;
+  font-size: 0.92rem;
   color: #F5F0E8;
-  line-height: 1.6;
-  margin-bottom: 14px;
+  line-height: 1.5;
+  margin-bottom: 8px;
   font-weight: 400;
 }
-.ma-footer-brand .copyright {
-  font-size: 0.78rem;
-  color: rgba(245,240,232,0.55);
+.ma-footer-brand .pitch {
+  font-size: 0.75rem;
+  color: rgba(245,240,232,0.5);
   line-height: 1.7;
   font-weight: 300;
 }
-.ma-footer-brand .contact {
-  margin-top: 18px;
-  font-size: 0.78rem;
-  color: rgba(245,240,232,0.55);
-  line-height: 1.8;
-  direction: ltr;
-  text-align: right;
-}
-.ma-footer-brand .contact a {
-  color: #C9A84C;
-  text-decoration: none;
-  transition: opacity 0.2s;
-}
-.ma-footer-brand .contact a:hover { opacity: 0.7; }
 
-/* ── 4-column sections ── */
-.ma-footer-sections {
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 32px;
-}
-@media (min-width: 768px) {
-  .ma-footer-sections {
-    grid-template-columns: repeat(4, 1fr);
-  }
-}
-.ma-footer-section h3 {
-  font-size: 0.72rem;
+/* ── Section headings + lists ── */
+.ma-footer-col h3 {
+  font-size: 0.7rem;
   font-weight: 700;
   color: #C9A84C;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  margin: 0 0 16px;
+  margin: 0 0 14px;
 }
-.ma-footer-section ul {
+.ma-footer-col ul {
   list-style: none;
   margin: 0; padding: 0;
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
-.ma-footer-section ul a {
+.ma-footer-col ul a {
   color: rgba(245,240,232,0.55);
   text-decoration: none;
   font-size: 0.85rem;
@@ -120,50 +95,51 @@
   transition: color 0.25s;
   font-weight: 300;
 }
-.ma-footer-section ul a:hover { color: #F5F0E8; }
-.ma-footer-section ul a svg { flex-shrink: 0; }
+.ma-footer-col ul a:hover { color: #F5F0E8; }
+.ma-footer-col ul a svg { flex-shrink: 0; }
 
-/* ── Payment grid (lives inside one section slot) ── */
+/* ── Payment grid (lives inside its column) ── */
 .ma-footer-payments {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-  margin-top: 4px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 6px;
 }
 .ma-footer-payments .pay-item {
   background: rgba(255,255,255,0.04);
   border: 1px solid rgba(255,255,255,0.07);
   border-radius: 6px;
-  height: 32px;
+  height: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 4px 6px;
-}
-.ma-footer-payments .pay-item.pay-soon {
+  padding: 4px;
   position: relative;
-  opacity: 0.55;
 }
+.ma-footer-payments .pay-item.pay-soon { opacity: 0.55; }
 .ma-footer-payments .pay-item.pay-soon::after {
   content: 'قريباً';
   position: absolute;
   bottom: -16px;
+  left: 50%;
+  transform: translateX(-50%);
   font-size: 0.6rem;
   color: #C9A84C;
   font-family: Cairo, Arial, sans-serif;
   letter-spacing: 0.02em;
 }
 
-/* ── Trust row (government licenses) ── */
+/* ── Trust row (government licenses) — centered horizontal ── */
 .ma-footer-trust {
-  margin-top: 36px;
+  margin: 36px auto 0;
   padding-top: 28px;
   border-top: 1px solid rgba(255,255,255,0.05);
   display: flex;
+  flex-direction: row;
   flex-wrap: wrap;
   gap: 12px;
   justify-content: center;
   align-items: center;
+  width: 100%;
 }
 .ma-footer-license-card {
   display: inline-flex;
@@ -171,46 +147,39 @@
   gap: 12px;
   background: #ffffff;
   border-radius: 10px;
-  padding: 10px 16px;
+  padding: 8px 14px;
   direction: rtl;
   text-decoration: none;
-  transition: transform 0.2s;
+  transition: transform 0.2s, box-shadow 0.2s;
 }
-.ma-footer-license-card:hover { transform: translateY(-1px); }
-.ma-footer-license-card img { height: 40px; width: auto; display: block; }
-.ma-footer-license-card .info {
-  border-right: 1px solid #ddd;
-  padding-right: 12px;
-  text-align: right;
+.ma-footer-license-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 16px rgba(0,0,0,0.3);
 }
-.ma-footer-license-card .info .label {
-  font-size: 0.55rem;
-  color: #888;
-  font-family: Cairo, Arial, sans-serif;
-  line-height: 1;
-  margin: 0 0 3px;
-}
-.ma-footer-license-card .info .number {
-  font-size: 0.72rem;
-  font-weight: 700;
-  color: #222;
-  font-family: Arial, sans-serif;
-  letter-spacing: 0.5px;
-  line-height: 1;
-  margin: 0;
-}
+.ma-footer-license-card img { height: 36px; width: auto; display: block; }
+.ma-footer-license-card .info { border-right: 1px solid #ddd; padding-right: 10px; text-align: right; }
+.ma-footer-license-card .info .label  { font-size: 0.55rem; color: #888; font-family: Cairo, Arial, sans-serif; line-height: 1; margin: 0 0 3px; }
+.ma-footer-license-card .info .number { font-size: 0.72rem; font-weight: 700; color: #222; font-family: Arial, sans-serif; letter-spacing: 0.5px; line-height: 1; margin: 0; }
 
-/* ── Bottom strip ── */
+/* ── Bottom strip: copyright + contact, centered ── */
 .ma-footer-bottom {
-  margin-top: 28px;
-  padding-top: 20px;
+  margin-top: 24px;
+  padding-top: 18px;
   border-top: 1px solid rgba(255,255,255,0.04);
-  text-align: center;
-  font-size: 0.72rem;
-  color: rgba(245,240,232,0.4);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 6px 18px;
+  font-size: 0.74rem;
+  color: rgba(245,240,232,0.45);
   font-weight: 300;
-  letter-spacing: 0.02em;
+  text-align: center;
 }
+.ma-footer-bottom .sep { color: rgba(245,240,232,0.2); }
+.ma-footer-bottom a { color: #C9A84C; text-decoration: none; transition: opacity 0.2s; }
+.ma-footer-bottom a:hover { opacity: 0.7; }
+.ma-footer-bottom .phone { direction: ltr; unicode-bidi: embed; font-family: Arial, sans-serif; }
 
 /* ── Animation: blur-fade-up on scroll-in ── */
 .ma-footer-anim {
@@ -225,9 +194,10 @@
   filter: blur(0);
 }
 .ma-footer-anim:nth-child(1) { transition-delay: 0.05s; }
-.ma-footer-anim:nth-child(2) { transition-delay: 0.15s; }
-.ma-footer-anim:nth-child(3) { transition-delay: 0.25s; }
-.ma-footer-anim:nth-child(4) { transition-delay: 0.35s; }
+.ma-footer-anim:nth-child(2) { transition-delay: 0.10s; }
+.ma-footer-anim:nth-child(3) { transition-delay: 0.15s; }
+.ma-footer-anim:nth-child(4) { transition-delay: 0.20s; }
+.ma-footer-anim:nth-child(5) { transition-delay: 0.25s; }
 
 @media (prefers-reduced-motion: reduce) {
   .ma-footer-anim { opacity: 1; transform: none; filter: none; transition: none; }
