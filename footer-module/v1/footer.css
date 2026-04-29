@@ -6,6 +6,7 @@
 
 .ma-footer {
   position: relative;
+  display: block;        /* defeat any global `footer { display: flex }` */
   width: 100%;
   max-width: 1200px;
   margin: 60px auto 0;
@@ -17,7 +18,9 @@
   font-family: 'Gumela', 'Cairo', Arial, sans-serif;
   color: #F5F0E8;
   direction: rtl;
+  text-align: start;
 }
+.ma-footer * { box-sizing: border-box; }
 
 /* Top centered blur accent line */
 .ma-footer-blur {
