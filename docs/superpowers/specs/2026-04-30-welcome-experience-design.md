@@ -25,7 +25,7 @@ The system has four principles baked into every layer:
 
 The experience promotes through three stages, each with its own gate:
 
-1. **Stage 0 — Hidden staging** (`staging-welcome.malearnsa.com`): build + internal soak. Only Majid + Noor + invited testers can access. Search engines blocked. No real captures. Must pass internal QA before promotion.
+1. **Stage 0 — Hidden staging** (`staging-welcome.malearnsa.com`): build + internal soak. Majid + Noor + an invited family-and-friends tester pool (8–15 people) access via shared password. Search engines blocked. No real captures. Built-in feedback rails capture every tester reaction. Must pass internal QA + tester triage before promotion.
 2. **Stage 1 — Public `/welcome`** (`malearnsa.com/welcome`): parallel URL. IG bio + email links migrate here. A/B against current homepage. Must hit decision-gate metrics before promotion.
 3. **Stage 2 — Live homepage swap** (`malearnsa.com/`): only if Stage 1 metrics earn it. Old homepage retired to `/legacy` for rollback.
 
@@ -322,7 +322,7 @@ v1 seed rows: ManyChat tag, Newsletter list (Composer v1), Telegram hot-alert, T
    - `<meta name="robots" content="noindex, nofollow, noarchive">` in `<head>`
    - Staging-specific `robots.txt` denying all
    - Subdomain not listed in any sitemap.xml
-4. **Invited testers (optional during soak):** Layan for content review, plus 3–5 trusted humans Majid picks. They get the same shared password. No external/anonymous access ever.
+4. **Invited testers (expected during soak — not optional):** Layan for content review, plus a tester pool of family + friends that Majid personally invites. Target: 8–15 testers total covering different tools, languages, ages, and tech comfort levels. They get the same shared password (rotated after Stage 1 launch). No external/anonymous access ever. The point is to surface real reactions, edge cases, voice issues, and loopholes that Majid + Noor won't see from inside the build.
 
 #### 4.8.2 Staging data isolation
 
@@ -342,7 +342,22 @@ Majid can't easily test "I came from ManyChat as Khalid using Midjourney with wa
 4. Includes preset scenarios (warm Midjourney user / cold organic / returning customer / hot T4 intent / etc.) for fast scenario sweeping.
 5. Disabled in production via `IS_STAGING` env flag.
 
-#### 4.8.4 Stage 0 → Stage 1 promotion gate
+#### 4.8.4 Tester feedback capture (staging only)
+
+Family + friends won't write thoughtful bug reports — they'll react in the moment, then forget. The staging build needs feedback rails baked in so insights aren't lost.
+
+1. **Floating feedback button** (bottom-left, always visible on staging only): "💬 رأيك مهم" / "Share feedback" — opens a 3-field modal:
+   - What did you think? (free text, AR or EN auto-detected)
+   - Where on the page? (auto-captured: URL + scroll position + screenshot via `html2canvas`)
+   - Optional: Your name (so Majid can follow up)
+2. **Submissions write to `staging.tester_feedback` table** + fire a Telegram message to Majid in real-time: "<name> said: <quote> — [view in dashboard]"
+3. **Dashboard tab "Tester Feedback"** at `admin.malearnsa.com/welcome-analytics` (staging filter): chronological feed of all tester feedback with screenshots, filterable by tester / scenario / sentiment.
+4. **End-of-session prompt:** if a tester spends >2 minutes on staging then tries to leave, show a soft overlay: "قبل ما تروح، شو أفضل شي وأسوأ شي شفته؟" — captures the last impression that usually slips away.
+5. **Direct WhatsApp/Telegram channel (lightweight backup):** Majid creates one shared chat per tester batch. Floating button also offers "أو راسل ماجد مباشرة" link.
+
+This channel is **only on staging**. Disabled in production via `IS_STAGING` env flag.
+
+#### 4.8.5 Stage 0 → Stage 1 promotion gate
 
 Before staging promotes to public `/welcome`:
 
@@ -351,12 +366,13 @@ Before staging promotes to public `/welcome`:
 3. **Latency check.** P95 page load on real Saudi 4G mobile devices ≤ 2.0s (cache hit) and ≤ 3.0s (cache miss). Tested on actual phones, not Chrome devtools throttle.
 4. **Fallback chain test.** Manually trigger every fallback path (LLM down, JWT invalid, banned phrase, no tool signal, etc.) and verify the UX is graceful in each.
 5. **Mobile review.** Real-device test on iPhone (Safari) + Android (Chrome) + at least one older Android (Galaxy A-series).
-6. **External tester soak ≥ 2 days.** Layan + 3–5 invited friends use staging without coaching. Majid reviews their session recordings (or self-reports) before promoting.
-7. **Majid signs off in writing** (Linear comment on the Stage 1 promotion ticket).
+6. **Family + friends tester soak ≥ 5 days, ≥ 8 testers.** Majid invites the personal pool, sends them the staging URL + password, asks them to use it as if they were a real visitor. No coaching. Feedback flows in via §4.8.4 mechanisms (floating button + Telegram + end-of-session prompt + WhatsApp backup channel).
+7. **Feedback triage.** Majid + Noor review every piece of tester feedback in the dashboard. Each one classified: (a) blocking issue, (b) non-blocking but worth fixing, (c) noise. All blocking issues fixed and re-tested before promotion. Non-blocking items become v1.1 backlog.
+8. **Majid signs off in writing** (Linear comment on the Stage 1 promotion ticket).
 
-Only after all 7 pass does anything go to `/welcome` on public production.
+Only after all 8 pass does anything go to `/welcome` on public production.
 
-#### 4.8.5 Stage 1 → Stage 2 promotion gate
+#### 4.8.6 Stage 1 → Stage 2 promotion gate
 
 Before public `/welcome` swaps into root `/`:
 
@@ -366,11 +382,11 @@ Before public `/welcome` swaps into root `/`:
 4. Swap deployed during low-traffic window (Tuesday or Wednesday morning KSA), never Friday, never during Aug 9–15.
 5. 7-day post-swap monitoring window with rollback authority pre-armed.
 
-#### 4.8.6 Build-on-staging implication
+#### 4.8.7 Build-on-staging implication
 
 The "build phase" of v1 happens entirely on staging. There is no separate "build environment" — staging IS the dev environment for everyone except code commits (those go to a feature branch, deploy to staging, soak there). The 3-week build window does not get longer because of staging — it's just where the build lives.
 
-What gets longer: a 1-week soak window between "build complete" and "public launch." That moves the public launch from May 25 → ~June 1, and the v1 → v2 decision gate from May 28 → ~June 15. Worth it for the safety guarantee.
+What gets longer: a 1-week-plus soak window between "build complete" and "public launch" that includes ≥ 5 days of family + friends tester feedback. That moves the public launch from May 25 → ~June 1, and the v1 → v2 decision gate from May 28 → ~June 15. Worth it for the safety guarantee plus the real-human feedback loop before any lead sees the experience.
 
 ---
 
@@ -714,14 +730,15 @@ All under the cost of a single T2 sale (449 SAR ≈ $120) per month.
 13. **Capture destinations:** Approach B (channel split: email→newsletter, IG→ManyChat, hot-lead→Telegram, daily digest→Telegram). All disabled in staging via `IS_STAGING` flag.
 14. **Measurement:** native dashboard at `admin.malearnsa.com/welcome-analytics` + GA cross-check
 15. **Expandability:** all tools/cards/prompts/CTAs/rules/destinations data-driven and dashboard-editable
-16. **Staging access:** Vercel deployment-level password protection (Pro tier preferred, magic-link fallback if Hobby). Search engines blocked at three layers (header + meta + robots.txt).
+16. **Staging access:** Vercel deployment-level password protection (Pro tier required). Search engines blocked at three layers (header + meta + robots.txt).
 17. **Staging data isolation:** separate `staging` Supabase schema, no production capture-destinations fire from staging.
-18. **Decision gate:** ~June 15, 30-min call, pre-committed metrics in §8.2 after 14 days of public traffic data
-19. **Time-off:** Fridays + Aug 9-15 buffer fully respected
-20. **Linear:** child issues inside Harvest 22 M2/M3/M5/M6, prefix `WELCOME-`, tag `welcome-experience`
-21. **Visual system:** reuse existing Editorial Atelier tokens (no new design system)
-22. **Standard footer:** `malearnsa.com/footer-module/v1/` per locked SOP
-23. **Failure-mode notifications:** Telegram only, no email noise
+18. **Family + friends testing is expected, not optional.** ≥ 8 testers, ≥ 5 day soak, in-page feedback button + Telegram channel + end-of-session prompt + WhatsApp backup. Every piece of feedback triaged before Stage 1 promotion. See §4.8.4.
+19. **Decision gate:** ~June 15, 30-min call, pre-committed metrics in §8.2 after 14 days of public traffic data
+20. **Time-off:** Fridays + Aug 9-15 buffer fully respected
+21. **Linear:** child issues inside Harvest 22 M2/M3/M5/M6, prefix `WELCOME-`, tag `welcome-experience`
+22. **Visual system:** reuse existing Editorial Atelier tokens (no new design system)
+23. **Standard footer:** `malearnsa.com/footer-module/v1/` per locked SOP
+24. **Failure-mode notifications:** Telegram only, no email noise
 
 ---
 
@@ -739,5 +756,7 @@ These get resolved during the writing-plans / implementation phase:
 8. Testimonials table population — pull from existing customer comms; v2 work but v1 schema accommodates
 9. Customer-match heuristics — exact match on email/ig_handle in v1; fuzzy match deferred to v2
 10. `/legacy` route plan if homepage swap happens — define rollback path during v3 design pass
-11. External tester recruitment for Stage 0 → Stage 1 gate — Majid picks 3–5 trusted people during build window
+11. **Family + friends tester pool — Majid recruits 8–15 people during the build window** (Linear ticket WELCOME-RECRUIT-TESTERS in M2). Mix should cover: AR + EN speakers, novice + advanced AI users, mobile + desktop preferred, mix of ages. Layan auto-included.
 12. Mock-token admin UI scope — confirm preset scenarios list during impl (proposal: 8–10 covering all tool/state/lang combinations)
+13. Tester feedback table schema (`staging.tester_feedback`) — finalize columns during impl. Minimum: tester_name, page_url, scroll_position, screenshot_url, feedback_text, sentiment_auto, status (open/triaged/resolved/wont-fix), triage_notes.
+14. Telegram tester-feedback alert format — propose template during impl, e.g. "🆕 Feedback from <name>: '<quote>' — [view in dashboard]".
