@@ -2,7 +2,11 @@
 
 **Date:** 2026-04-30
 **Status:** Design approved. Pending implementation plan.
-**Target ship window:** v1 inside Harvest 22 M2/M3 (May 3 → May 25, 2026)
+**Target ship windows:**
+- Build (Stage 0 staging): May 3 → May 22, 2026
+- Internal + tester soak: May 22 → ~May 31, 2026
+- Public `/welcome` launch (Stage 1): ~June 1, 2026
+- Decision gate: ~June 15, 2026 (after 14 days of public traffic)
 **Owner:** Noor (build), Majid (content + decision gates), Layan (downstream IG nurture sequence)
 **Linear:** child issues inside Harvest 22 M2/M3/M5/M6, prefix `WELCOME-`, tagged `welcome-experience`
 
@@ -12,13 +16,18 @@
 
 A personalized landing experience at `malearnsa.com/welcome` that greets every visitor with a tailored hero + tip cards based on what we already know about them — primarily which AI creative tool they were using before they clicked through. Reuses existing infrastructure (Supabase, Anthropic key, ManyChat Pro, Composer v1, dashboard) and ships in 3 weeks at <$25/mo all-in.
 
-The system has three principles baked into every layer:
+The system has four principles baked into every layer:
 
-1. **Value first, ask second.** Personalization happens before any form. We never ask people what we already know, and never ask cold visitors anything until we've delivered a clear hit of value.
-2. **Native measurement.** Every metric needed to judge success ships with the build, surfaced in `admin.malearnsa.com/welcome-analytics` — not just GA.
-3. **Nothing rigid.** Tools, tip cards, prompts, CTAs, lead-state rules, capture destinations — all data-driven, all editable from the dashboard. No code changes for content or rule iteration.
+1. **Staging-first, never live-first.** The entire system is built and tested on a hidden staging clone of the homepage that only Majid + Noor can access. Nothing reaches public traffic until staging soak passes. See §4.8.
+2. **Value first, ask second.** Personalization happens before any form. We never ask people what we already know, and never ask cold visitors anything until we've delivered a clear hit of value.
+3. **Native measurement.** Every metric needed to judge success ships with the build, surfaced in `admin.malearnsa.com/welcome-analytics` — not just GA.
+4. **Nothing rigid.** Tools, tip cards, prompts, CTAs, lead-state rules, capture destinations — all data-driven, all editable from the dashboard. No code changes for content or rule iteration.
 
-The experience is staged: ship `/welcome` as a parallel URL first, A/B test against the current homepage, only swap into root `/` after metrics earn it.
+The experience promotes through three stages, each with its own gate:
+
+1. **Stage 0 — Hidden staging** (`staging-welcome.malearnsa.com`): build + internal soak. Only Majid + Noor + invited testers can access. Search engines blocked. No real captures. Must pass internal QA before promotion.
+2. **Stage 1 — Public `/welcome`** (`malearnsa.com/welcome`): parallel URL. IG bio + email links migrate here. A/B against current homepage. Must hit decision-gate metrics before promotion.
+3. **Stage 2 — Live homepage swap** (`malearnsa.com/`): only if Stage 1 metrics earn it. Old homepage retired to `/legacy` for rollback.
 
 ---
 
@@ -300,6 +309,69 @@ v1 seed rows: ManyChat tag, Newsletter list (Composer v1), Telegram hot-alert, T
 6. Daily Anthropic spend alert at $10/day
 7. Cache hit-rate monitoring — alert if drops below 70%
 
+### 4.8 Staging environment (CRITICAL — non-negotiable)
+
+**Nothing reaches public traffic until it has soaked in staging and Majid signs off.** This is a locked architectural requirement, not an optional safety. The risk of a bad first impression on a personalized greeting is too high — voice drift, broken latency, or an off-tone tip card can poison a lead's first encounter with MA Learn permanently.
+
+#### 4.8.1 Staging URL & access
+
+1. **URL:** `staging-welcome.malearnsa.com` (subdomain on the new Next.js Vercel deployment)
+2. **Access control:** Vercel deployment-level password protection (Pro tier). Single shared password rotated monthly. Stored in 1Password (Majid) + Supabase Vault (Noor). If we end up on Hobby tier, fallback is middleware-enforced signed-cookie auth issued via magic link to Majid's email.
+3. **Search engine block (defense in depth):**
+   - `X-Robots-Tag: noindex, nofollow, noarchive` HTTP header on every staging response
+   - `<meta name="robots" content="noindex, nofollow, noarchive">` in `<head>`
+   - Staging-specific `robots.txt` denying all
+   - Subdomain not listed in any sitemap.xml
+4. **Invited testers (optional during soak):** Layan for content review, plus 3–5 trusted humans Majid picks. They get the same shared password. No external/anonymous access ever.
+
+#### 4.8.2 Staging data isolation
+
+1. **Separate Supabase schema:** all staging writes go to schema `staging`, prefixed tables (`staging.welcome_visits`, `staging.welcome_chats`, etc.). Production schema `public` is untouched.
+2. **Tip cards table is shared** (read-only from staging) — staging reads the same content Majid is editing for production. Avoids divergence.
+3. **No real captures fired:** staging captures write to `staging.welcome_captures` only. ManyChat tagging, newsletter add, Telegram alerts, daily digest — all disabled in staging mode (env flag `IS_STAGING=true`). Captures in staging are dummy data for QA.
+4. **No real Anthropic spend cap leakage:** staging LLM calls count against the same Anthropic key but are tagged with metadata `env=staging` so the daily spend alert separates them.
+5. **No real cookie carryover:** staging cookies live on the staging subdomain only. A user who tests in staging then visits production starts fresh — production behavior is not affected by staging activity.
+
+#### 4.8.3 Mock-token admin UI (staging only)
+
+Majid can't easily test "I came from ManyChat as Khalid using Midjourney with warm lead state." Instead of going through ManyChat each test:
+
+1. A small admin UI at `staging-welcome.malearnsa.com/_test` lets Majid (or Noor) issue a mock JWT in seconds.
+2. Form fields: name, ig_handle, tool, lead_state, language, day_part, source_channel.
+3. Output: a one-click link that opens `/welcome?ref=<channel>&t=<jwt>` in a new tab as that simulated user.
+4. Includes preset scenarios (warm Midjourney user / cold organic / returning customer / hot T4 intent / etc.) for fast scenario sweeping.
+5. Disabled in production via `IS_STAGING` env flag.
+
+#### 4.8.4 Stage 0 → Stage 1 promotion gate
+
+Before staging promotes to public `/welcome`:
+
+1. **Internal soak ≥ 5 days.** Majid uses it daily across all 6 tools, both languages, and all lead states via the mock-token UI.
+2. **Voice review.** Majid reviews the last 50 generated greetings in the dashboard's "Recent Outputs" tab. Flags any off-brand outputs. Voice tuning iterations until ≤2/50 are flagged.
+3. **Latency check.** P95 page load on real Saudi 4G mobile devices ≤ 2.0s (cache hit) and ≤ 3.0s (cache miss). Tested on actual phones, not Chrome devtools throttle.
+4. **Fallback chain test.** Manually trigger every fallback path (LLM down, JWT invalid, banned phrase, no tool signal, etc.) and verify the UX is graceful in each.
+5. **Mobile review.** Real-device test on iPhone (Safari) + Android (Chrome) + at least one older Android (Galaxy A-series).
+6. **External tester soak ≥ 2 days.** Layan + 3–5 invited friends use staging without coaching. Majid reviews their session recordings (or self-reports) before promoting.
+7. **Majid signs off in writing** (Linear comment on the Stage 1 promotion ticket).
+
+Only after all 7 pass does anything go to `/welcome` on public production.
+
+#### 4.8.5 Stage 1 → Stage 2 promotion gate
+
+Before public `/welcome` swaps into root `/`:
+
+1. All v1 decision-gate metrics in §8.2 met for ≥ 14 consecutive days.
+2. Conversion-positive vs. current homepage in head-to-head A/B (no statistical-significance theatre — Majid + Noor agree the data is clear and aligned with intuition).
+3. Old homepage tagged + archived to `/legacy` route. DNS + redirects ready for rollback within 5 minutes if swap goes wrong.
+4. Swap deployed during low-traffic window (Tuesday or Wednesday morning KSA), never Friday, never during Aug 9–15.
+5. 7-day post-swap monitoring window with rollback authority pre-armed.
+
+#### 4.8.6 Build-on-staging implication
+
+The "build phase" of v1 happens entirely on staging. There is no separate "build environment" — staging IS the dev environment for everyone except code commits (those go to a feature branch, deploy to staging, soak there). The 3-week build window does not get longer because of staging — it's just where the build lives.
+
+What gets longer: a 1-week soak window between "build complete" and "public launch." That moves the public launch from May 25 → ~June 1, and the v1 → v2 decision gate from May 28 → ~June 15. Worth it for the safety guarantee.
+
 ---
 
 ## 5. Personalization depth
@@ -465,7 +537,7 @@ Below this bar = no alert, digest only.
 #### Daily Telegram digest at 9pm KSA →
 Reuses Noor bot. Format: "Yesterday: <visits> visits, <captures> captures (<rate>%), top tool = <X>, <hot_count> hot leads (see dashboard), top question logged."
 
-Lands next to existing EOD check-in. Builds capture-rate intuition before May 28 decision gate.
+Lands next to existing EOD check-in. Builds capture-rate intuition before ~June 15 decision gate.
 
 ### 7.3 Destination registry
 
@@ -490,7 +562,7 @@ All destinations registered in `capture_destinations` table. Adding Daftra conta
 9. **Top chat questions:** if Noor sees the same question 5+ times in a week, surfaces here. Feeds tip card backlog + Majid's IG content ideas.
 10. **Daily Telegram digest** (see §7.2).
 
-### 8.2 Decision-gate metrics (May 28, pre-committed)
+### 8.2 Decision-gate metrics (~June 15, pre-committed; evaluated after 14 days of public traffic)
 
 To proceed v1 → v2:
 
@@ -505,31 +577,45 @@ If 2+ metrics miss: 1-week tuning window, then re-evaluate. If still missing: st
 
 ## 9. Phasing & rollout
 
-### v1 — "Capture-first" (May 3 → May 25, 2026)
+### v1 Stage 0 — Build on hidden staging (May 3 → May 22, 2026)
 
-Ships inside Harvest 22 M2 (T4 soft launch) + M3 (T2 public launch). 3 weeks from approval.
+3-week build window. Everything is built and deployed to `staging-welcome.malearnsa.com` (password-protected, `noindex`, isolated `staging` Supabase schema). No public traffic.
 
-Ship list:
-1. Next.js app at `/welcome` on Vercel
-2. Edge middleware + signal decode + JWT verification + cache layer
-3. Greeting generator with full prompt + 6–8 few-shots
-4. Chat Noor widget (player-chat-v1 fork)
-5. ManyChat JWT issuance on welcome flow
-6. Email JWT extension to token-validator Apps Script
-7. Dashboard "Welcome Tips" tab (CRUD for tip_cards)
-8. Dashboard "Welcome Analytics" tab (§8)
-9. 5 Supabase tables + visit logging
-10. Standardized fallback + per-tool static fallbacks
-11. Tip card library: **66 cards** (5 × 6 tools × 2 langs + 3 × 2 langs for `other` bucket), text + image only
-12. ManyChat tag automation + Layan nurture sequence (Layan-owned ticket)
-13. Telegram hot-lead alerts + daily digest (Noor bot extension)
-14. Cloudflare bot management
-15. Privacy policy update + cookie banner
-16. 100% IG bio link migration to `/welcome`. Email CTAs migrate gradually.
+Ship list (build phase — all lands on staging):
+1. Next.js app at `staging-welcome.malearnsa.com` (later promoted to `malearnsa.com/welcome`)
+2. Vercel deployment-level password protection + `noindex` headers + isolated `robots.txt`
+3. Edge middleware + signal decode + JWT verification + cache layer
+4. Greeting generator with full prompt + 6–8 few-shots
+5. Chat Noor widget (player-chat-v1 fork)
+6. ManyChat JWT issuance on welcome flow
+7. Email JWT extension to token-validator Apps Script
+8. Dashboard "Welcome Tips" tab (CRUD for tip_cards) — writes to shared `tip_cards` table read by both staging + prod
+9. Dashboard "Welcome Analytics" tab (§8) — defaults to prod data, toggle to view staging
+10. Mock-token admin UI at `/_test` (staging only, gated behind `IS_STAGING` env flag)
+11. Supabase: `staging` schema with prefixed tables + production schema + capture-destination disable in staging
+12. Standardized fallback + per-tool static fallbacks
+13. Tip card library: **66 cards** drafted + entered into shared table during this window
+14. Cloudflare bot management config (production only — staging is password-gated, doesn't need it)
+15. Privacy policy + cookie banner draft (legal review in parallel)
+16. ManyChat tag automation + Layan nurture sequence ready but not yet pointed at production
 
-### v1 — Decision gate May 28
+### v1 Stage 0 → Stage 1 promotion gate (May 22 → ~May 31, 2026)
 
-See §8.2.
+5-day internal soak + 2-day external tester soak + Majid sign-off. See §4.8.4 for the 7 gates that must pass. No public exposure during this window.
+
+### v1 Stage 1 — Public `/welcome` launch (target ~June 1, 2026)
+
+Promotion actions:
+1. Promote staging code to production `/welcome` route on `malearnsa.com`
+2. Flip `IS_STAGING=false` env — re-enables real capture destinations (ManyChat, newsletter, Telegram)
+3. Migrate IG bio link from current homepage to `/welcome`
+4. Migrate email CTAs gradually
+5. Activate Cloudflare bot management
+6. Telegram digest starts firing nightly
+
+### v1 — Decision gate (~June 15, 2026)
+
+14 days of public traffic data, then evaluate against §8.2 metrics. Outcome decides v2 spend.
 
 ### v2 — "Buy-push" (June 22 → July 13, M5 Compound)
 
@@ -594,13 +680,13 @@ Ship list:
 
 ### v1 monthly
 
-1. Vercel: $0–20 (Hobby if commercial-use compatible; Pro if not — confirm during impl)
-2. Supabase: $0 (existing free tier)
+1. Vercel Pro: $20 (required for deployment-level password protection on staging — non-negotiable per §4.8)
+2. Supabase: $0 (existing free tier; staging schema fits within it)
 3. Vercel KV: $0 (free tier covers cache)
-4. Anthropic: ~$2 at v1 volume
+4. Anthropic: ~$2 at v1 volume (staging usage tagged separately, negligible during soak)
 5. Cloudflare: $0 (free tier)
 6. ManyChat: $0 incremental (existing Pro account)
-7. **Total: $2–25/mo**
+7. **Total: ~$22/mo**
 
 ### v2 / v3 monthly
 
@@ -613,26 +699,29 @@ All under the cost of a single T2 sale (449 SAR ≈ $120) per month.
 
 ## 12. Locked decisions log
 
-1. **Audience priority:** A (funnel) → C (customers) → B (cold organic)
-2. **Conversion goal phasing:** v1 capture-first → v2 buy-push → v3 hybrid AI router
-3. **Format:** smart hero + Noor chat widget (hybrid)
-4. **URL strategy:** ship `/welcome` parallel → A/B test → swap into `/` only after metrics earn it
-5. **Personalization depth:** Medium-Heavy, scaled by version
-6. **AI architecture:** Hybrid (curated tip content + LLM-generated warmth wrapper) for v1; pure real-time LLM possible in v3
-7. **Capture mechanic:** skip ask for known (ManyChat/email tokens); layered B+C+D for anonymous
-8. **Budget:** optimize tight at start. Haiku 4.5, 1 call/visit max, aggressive cache
-9. **Tools at launch:** Midjourney, Higgsfield, Weavy, Magnific, Luma, OpenArt + operational `Other` chip
-10. **Tip card format v1:** text + 1 image only; video deferred to v2 based on data
-11. **Chat scope:** tight 5-bucket scope + 6 edge-case pre-decided rules
-12. **Capture destinations:** Approach B (channel split: email→newsletter, IG→ManyChat, hot-lead→Telegram, daily digest→Telegram)
-13. **Measurement:** native dashboard at `admin.malearnsa.com/welcome-analytics` + GA cross-check
-14. **Expandability:** all tools/cards/prompts/CTAs/rules/destinations data-driven and dashboard-editable
-15. **Decision gate:** May 28, 30-min call, pre-committed metrics in §8.2
-16. **Time-off:** Fridays + Aug 9-15 buffer fully respected
-17. **Linear:** child issues inside Harvest 22 M2/M3/M5/M6, prefix `WELCOME-`, tag `welcome-experience`
-18. **Visual system:** reuse existing Editorial Atelier tokens (no new design system)
-19. **Standard footer:** `malearnsa.com/footer-module/v1/` per locked SOP
-20. **Failure-mode notifications:** Telegram only, no email noise
+1. **Staging-first, never live-first.** Three-stage promotion path: hidden staging → public `/welcome` → live `/` swap. Each stage has its own gate. See §4.8 + §9. **Non-negotiable.**
+2. **Audience priority:** A (funnel) → C (customers) → B (cold organic)
+3. **Conversion goal phasing:** v1 capture-first → v2 buy-push → v3 hybrid AI router
+4. **Format:** smart hero + Noor chat widget (hybrid)
+5. **URL strategy:** staging at `staging-welcome.malearnsa.com` → public parallel at `/welcome` → swap into `/` only after both gates pass
+6. **Personalization depth:** Medium-Heavy, scaled by version
+7. **AI architecture:** Hybrid (curated tip content + LLM-generated warmth wrapper) for v1; pure real-time LLM possible in v3
+8. **Capture mechanic:** skip ask for known (ManyChat/email tokens); layered B+C+D for anonymous
+9. **Budget:** optimize tight at start. Haiku 4.5, 1 call/visit max, aggressive cache
+10. **Tools at launch:** Midjourney, Higgsfield, Weavy, Magnific, Luma, OpenArt + operational `Other` chip
+11. **Tip card format v1:** text + 1 image only; video deferred to v2 based on data
+12. **Chat scope:** tight 5-bucket scope + 6 edge-case pre-decided rules
+13. **Capture destinations:** Approach B (channel split: email→newsletter, IG→ManyChat, hot-lead→Telegram, daily digest→Telegram). All disabled in staging via `IS_STAGING` flag.
+14. **Measurement:** native dashboard at `admin.malearnsa.com/welcome-analytics` + GA cross-check
+15. **Expandability:** all tools/cards/prompts/CTAs/rules/destinations data-driven and dashboard-editable
+16. **Staging access:** Vercel deployment-level password protection (Pro tier preferred, magic-link fallback if Hobby). Search engines blocked at three layers (header + meta + robots.txt).
+17. **Staging data isolation:** separate `staging` Supabase schema, no production capture-destinations fire from staging.
+18. **Decision gate:** ~June 15, 30-min call, pre-committed metrics in §8.2 after 14 days of public traffic data
+19. **Time-off:** Fridays + Aug 9-15 buffer fully respected
+20. **Linear:** child issues inside Harvest 22 M2/M3/M5/M6, prefix `WELCOME-`, tag `welcome-experience`
+21. **Visual system:** reuse existing Editorial Atelier tokens (no new design system)
+22. **Standard footer:** `malearnsa.com/footer-module/v1/` per locked SOP
+23. **Failure-mode notifications:** Telegram only, no email noise
 
 ---
 
@@ -640,13 +729,15 @@ All under the cost of a single T2 sale (449 SAR ≈ $120) per month.
 
 These get resolved during the writing-plans / implementation phase:
 
-1. Vercel Hobby vs Pro — verify Hobby permits commercial use for `/welcome` or upgrade to Pro on existing account
+1. Vercel Pro tier — confirmed needed for deployment-level password protection on staging. Cost ($20/mo) absorbed into v1 monthly cost estimate.
 2. Tip card image style — confirm visual treatment in first design pass (likely reuse Editorial Atelier card style from dashboard)
-3. JWT secret rotation cadence — propose 90 days, lock during impl
-4. Layan IG nurture sequence — separate ticket she owns; needs to ship before /welcome launches IG handle captures (or captures go to a queue temporarily)
+3. JWT secret rotation cadence — propose 90 days for ManyChat + email tokens; staging password rotates monthly. Lock during impl.
+4. Layan IG nurture sequence — separate ticket she owns; needs to ship before public `/welcome` launches IG handle captures
 5. Privacy policy update copy — Ziyad-adjacent legal review, draft during impl
 6. Cookie banner copy — minimal, KSA-compliant, draft during impl
 7. Voice memo capture for Higgsfield/Weavy/Magnific tip cards — schedule 3× 30-min sessions with Majid in M2 sprint planning
 8. Testimonials table population — pull from existing customer comms; v2 work but v1 schema accommodates
 9. Customer-match heuristics — exact match on email/ig_handle in v1; fuzzy match deferred to v2
 10. `/legacy` route plan if homepage swap happens — define rollback path during v3 design pass
+11. External tester recruitment for Stage 0 → Stage 1 gate — Majid picks 3–5 trusted people during build window
+12. Mock-token admin UI scope — confirm preset scenarios list during impl (proposal: 8–10 covering all tool/state/lang combinations)
