@@ -92,7 +92,7 @@
         <div class="pay-item">${paymentLogos.mastercard}</div>
         <div class="pay-item">${paymentLogos.applePay}</div>
         <div class="pay-item">${paymentLogos.paypal}</div>
-        <div class="pay-item pay-soon">${paymentLogos.tamara}</div>
+        <div class="pay-item">${paymentLogos.tamara}</div>
       </div>
     </div>
 
