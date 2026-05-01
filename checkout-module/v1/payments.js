@@ -40,7 +40,7 @@
   const DEFAULT_CONFIG = {
     appsScriptUrl: 'https://script.google.com/macros/s/AKfycbznjcsYu8gLDZqFJGededAQaATad_L8vlhRQV04pOqh57HB5nFVRy9zUHAcg6goyj8DKA/exec',
     moyasarKey:    'pk_live_ciyD54kvT4b6bWev3RNzEjzLXpJPC8DmnbgcW47H',
-    paypalClientId: 'AWXSwPDc7UR3L1GJiRdgcf7zoVUKcCj7k3IKnzT0KIJwi3Zp_WuqpkD_iVZ-ukF870Njd-ypI86Gg1C4',
+    paypalClientId: 'AV8VULQBjiVHzR2slAgRKnGVw3H_gf8AxUTq6tN6rqvlRglS4vP8m0EyXkdRMe3LH_FCQBrbEMqKbSyS',
     sarToUsd:      3.75,
     methods:       ['moyasar', 'bank', 'tamara', 'paypal'],
     fbq:           true   // fire FB Pixel events if window.fbq exists
