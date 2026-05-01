@@ -4,3 +4,11 @@ CLAUDE.local.md
 node_modules/
 .gstack/
 .superpowers/
+
+# Apps Script source files contain live API tokens (Tamara Bearer JWT,
+# Daftra API key, PayPal Live Secret, Anthropic). NEVER commit to the
+# public malearnsa repo. Source of truth = Google Apps Script (deployed
+# via clasp from ~/code/.clasp-token-validator/). The paths below are
+# local-only working mirrors.
+projects/ma-learn-launch/apps-script/token-validator/
+projects/ma-learn-launch/tamara-apps-script.js
