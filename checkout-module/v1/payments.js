@@ -33,10 +33,9 @@
   // ──────────────────────────────────────────────────────────────────
   // FEATURE FLAGS
   // ──────────────────────────────────────────────────────────────────
-  // Tamara: button is rendered as disabled "قريباً" until production
-  // credentials arrive from Tamara. Flip to true in this file alone and
-  // all 4 product checkouts pick it up on next load.
-  const TAMARA_ENABLED = false;
+  // Tamara: production live since 2026-05-02. Flip to false to disable
+  // the button across all 4 product checkouts in one move.
+  const TAMARA_ENABLED = true;
 
   const DEFAULT_CONFIG = {
     appsScriptUrl: 'https://script.google.com/macros/s/AKfycbznjcsYu8gLDZqFJGededAQaATad_L8vlhRQV04pOqh57HB5nFVRy9zUHAcg6goyj8DKA/exec',
