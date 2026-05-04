@@ -368,8 +368,23 @@
     document.getElementById('step-contact').style.display = 'none';
     document.getElementById('step-payment').style.display = 'block';
 
+    // Persist buyer info to localStorage BEFORE init (used to be in
+    // on_initiating, but that callback can confuse Apple Pay's flow —
+    // C1's working checkout had no on_initiating).
+    localStorage.setItem(storageKey, JSON.stringify({
+      name:    document.getElementById('name').value.trim(),
+      email:   document.getElementById('email').value.trim(),
+      phone:   document.getElementById('phone').value.trim(),
+      product: cfg.productId,
+      coupon,
+      amount:  (finalAmount / 100).toFixed(2)
+    }));
+
     const formEl = document.getElementById('moyasar-form');
-    const description = (cfg.productNameAr || cfg.productId) + ' - MA Learn';
+    const buyerEmail = document.getElementById('email').value.trim();
+    const buyerPhone = document.getElementById('phone').value.trim();
+    const priceSAR = (finalAmount / 100).toFixed(0);
+    const description = `${cfg.productNameAr || cfg.productId} — MA Learn (${priceSAR} ر.س)`;
     Moyasar.init({
       element:              formEl,
       amount:               finalAmount,
@@ -377,6 +392,7 @@
       description:          description,
       publishable_api_key:  cfg.moyasarKey,
       callback_url:         cfg.successUrl,
+      metadata:             { email: buyerEmail, phone: buyerPhone, coupon: coupon },
       supported_networks:   ['mada', 'visa', 'mastercard'],
       methods:              ['creditcard', 'applepay'],
       apple_pay: {
@@ -384,20 +400,6 @@
         label:                  'MA Learn',
         validate_merchant_url:  'https://api.moyasar.com/v1/applepay/initiate',
         supported_networks:     ['mada', 'visa', 'mastercard']
-      },
-      on_initiating: () => {
-        // Refresh localStorage in case user changed fields after clicking proceed
-        localStorage.setItem(storageKey, JSON.stringify({
-          name:    document.getElementById('name').value.trim(),
-          email:   document.getElementById('email').value.trim(),
-          phone:   document.getElementById('phone').value.trim(),
-          product: cfg.productId,
-          coupon,
-          amount:  (finalAmount / 100).toFixed(2)
-        }));
-        // Moyasar v1.14.0 throws "Invalid handler result undefined" if the
-        // handler returns nothing. Return true to signal "proceed with defaults".
-        return true;
       }
     });
 
