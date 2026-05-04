@@ -581,6 +581,15 @@
         <div class="price-deadline">السعر قابل للتغيير في الدفعات القادمة</div>
       </div>
 
+      <!-- Live seats badge — prominent, gold pill under hero CTA area -->
+      <div id="seats-badge" style="display:inline-flex;align-items:center;gap:8px;margin-bottom:18px;padding:8px 18px;background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.4);border-radius:999px;font-size:0.88rem;font-weight:700;color:var(--gold);">
+        <span style="width:8px;height:8px;background:var(--gold);border-radius:50%;display:inline-block;animation:seats-pulse 1.8s ease-in-out infinite;"></span>
+        <span id="seats-badge-text">٣٠ مقعد متاح</span>
+      </div>
+      <style>
+        @keyframes seats-pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
+      </style>
+
       <a href="/creative-ai-workshop/checkout.html" class="btn-primary" id="hero-cta">احجز مقعدك الآن</a>
       <div class="hero-seats">الدفعة الأولى اكتملت · الدفعة الثانية مفتوحة الآن</div>
     </div>
@@ -875,7 +884,8 @@
           احجز مقعدك — ١,٢٩٩ ر.س
         </a>
 
-        <div style="margin-top:16px;font-size:0.78rem;color:var(--grey);"><span id="card-seats-text">٣٠ مقعد فقط</span> · السعر قابل للتغيير في الدفعات القادمة</div>
+        <div style="margin-top:16px;font-size:0.85rem;color:var(--gold);font-weight:700;"><span id="card-seats-text">٣٠ مقعد فقط</span></div>
+        <div style="margin-top:4px;font-size:0.75rem;color:var(--grey);">السعر قابل للتغيير في الدفعات القادمة</div>
       </div>
 
       <!-- Sold-out state — reused pattern -->
@@ -951,14 +961,31 @@
         const left = data.seats_left;
         const total = data.seats_total || 30;
 
-        // Update both seat counter spans
-        const heroSeats = document.getElementById('hero-seats-text');
-        const cardSeats = document.getElementById('card-seats-text');
-        const seatsCopy = (left === total)
+        // Update all seat counter elements
+        const heroSeats   = document.getElementById('hero-seats-text');
+        const cardSeats   = document.getElementById('card-seats-text');
+        const badgeText   = document.getElementById('seats-badge-text');
+        const seatsCopy   = (left === total)
           ? toArDigits(total) + ' مقعد فقط'
           : 'متبقي ' + toArDigits(left) + ' من ' + toArDigits(total) + ' مقعد';
+        const badgeCopy   = (left === total)
+          ? toArDigits(total) + ' مقعد متاح'
+          : toArDigits(left) + ' مقعد متبقي من ' + toArDigits(total);
         if (heroSeats) heroSeats.textContent = seatsCopy;
         if (cardSeats) cardSeats.textContent = seatsCopy;
+        if (badgeText) badgeText.textContent = badgeCopy;
+
+        // Urgency: under 10 seats — flip badge to red-orange
+        if (left > 0 && left < 10) {
+          const badge = document.getElementById('seats-badge');
+          if (badge) {
+            badge.style.background = 'rgba(255,89,0,0.12)';
+            badge.style.borderColor = 'rgba(255,89,0,0.5)';
+            badge.style.color = '#ff7a30';
+            const dot = badge.querySelector('span');
+            if (dot) dot.style.background = '#ff7a30';
+          }
+        }
 
         // Sold-out: swap CTAs
         if (data.sold_out) {
