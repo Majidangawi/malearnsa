@@ -12,3 +12,7 @@ node_modules/
 # local-only working mirrors.
 projects/ma-learn-launch/apps-script/token-validator/
 projects/ma-learn-launch/tamara-apps-script.js
+
+# Local Apps Script backups (timestamped Code.js snapshots). Useful for
+# rollback but no need to ship to the public repo.
+archives/apps-script-backups/
