@@ -377,11 +377,13 @@
       description:          description,
       publishable_api_key:  cfg.moyasarKey,
       callback_url:         cfg.successUrl,
+      supported_networks:   ['mada', 'visa', 'mastercard'],
       methods:              ['creditcard', 'applepay'],
       apple_pay: {
         country:                'SA',
         label:                  cfg.productNameAr || 'MA Learn',
-        validate_merchant_url:  'https://api.moyasar.com/v1/applepay/initiate'
+        validate_merchant_url:  'https://api.moyasar.com/v1/applepay/initiate',
+        supported_networks:     ['mada', 'visa', 'mastercard']
       },
       on_initiating: () => {
         // Refresh localStorage in case user changed fields after clicking proceed
