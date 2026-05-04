@@ -393,6 +393,9 @@
           coupon,
           amount:  (finalAmount / 100).toFixed(2)
         }));
+        // Moyasar v1.14.0 throws "Invalid handler result undefined" if the
+        // handler returns nothing. Return true to signal "proceed with defaults".
+        return true;
       }
     });
 
