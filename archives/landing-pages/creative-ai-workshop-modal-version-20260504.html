@@ -53,6 +53,10 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://malearnsa.com/footer-module/v1/footer.css">
+  <!-- Checkout module v1 (Moyasar + Bank + Tamara + PayPal) -->
+  <link rel="stylesheet" href="https://malearnsa.com/checkout-module/v1/payments.css">
+  <link rel="stylesheet" href="https://cdn.moyasar.com/mpf/1.14.0/moyasar.css">
+  <script src="https://cdn.moyasar.com/mpf/1.14.0/moyasar.js"></script>
   <style>
     @font-face { font-family:'Gumela'; src:url('../brand_assets/gumela-arabic-bold.otf') format('opentype'); font-weight:700; }
     @font-face { font-family:'Gumela'; src:url('../brand_assets/gumela-arabic-regular.otf') format('opentype'); font-weight:400; }
@@ -519,6 +523,97 @@
       .work-grid { gap: 8px; }
     }
 
+    /* ── INLINE CHECKOUT MODAL ────────────────────────── */
+    .checkout-modal-overlay {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.88);
+      backdrop-filter: blur(8px);
+      z-index: 1000;
+      display: none;
+      align-items: flex-start; justify-content: center;
+      padding: 24px 16px;
+      overflow-y: auto;
+      animation: checkout-fade-in 0.25s ease;
+    }
+    .checkout-modal-overlay.open { display: flex; }
+    @keyframes checkout-fade-in {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+    body.checkout-modal-open { overflow: hidden; }
+
+    .checkout-modal-content {
+      position: relative;
+      background: var(--bg);
+      border: 1px solid rgba(201,168,76,0.25);
+      border-radius: 16px;
+      max-width: 640px; width: 100%;
+      padding: 28px 24px 32px;
+      margin: 24px 0;
+      animation: checkout-slide-up 0.35s cubic-bezier(0.4,0,0.2,1);
+    }
+    @keyframes checkout-slide-up {
+      from { transform: translateY(20px); opacity: 0; }
+      to   { transform: translateY(0);    opacity: 1; }
+    }
+    .checkout-modal-close {
+      position: absolute; top: 14px; left: 14px;
+      background: transparent; border: none;
+      color: var(--silver); font-size: 1.6rem; line-height: 1;
+      cursor: pointer; width: 36px; height: 36px;
+      border-radius: 8px;
+      transition: background 0.2s, color 0.2s;
+    }
+    .checkout-modal-close:hover { background: rgba(255,255,255,0.06); color: var(--ivory); }
+    .checkout-modal-header { margin-bottom: 22px; padding-left: 36px; }
+    .checkout-modal-header .eyebrow {
+      font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--gold); margin-bottom: 6px;
+    }
+    .checkout-modal-header h2 {
+      font-family: 'Gumela','Cairo',sans-serif; font-weight: 700;
+      font-size: 1.25rem; color: var(--ivory); line-height: 1.4;
+    }
+    .checkout-modal-content .card {
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(201,168,76,0.18);
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 14px;
+    }
+    .checkout-modal-content .co-section-title {
+      display: flex; align-items: center; gap: 10px;
+      font-family: 'Gumela','Cairo',sans-serif; font-weight: 700;
+      font-size: 1rem; color: var(--ivory);
+      margin-bottom: 16px;
+    }
+    .checkout-modal-content .co-step-badge {
+      width: 28px; height: 28px; border-radius: 50%;
+      background: var(--gold); color: #000;
+      font-size: 0.85rem; font-weight: 700;
+      display: inline-flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .checkout-modal-summary {
+      padding: 14px 16px;
+      background: rgba(255,255,255,0.02);
+      border: 1px solid rgba(255,255,255,0.06);
+      border-radius: 10px;
+      margin-bottom: 18px;
+      font-size: 0.85rem;
+      color: var(--silver);
+    }
+    .checkout-modal-summary > div { padding: 4px 0; }
+    .checkout-modal-summary .label { color: var(--grey); margin-left: 6px; }
+
+    /* Step 2: edit-back link */
+    .checkout-edit-btn {
+      background: none; border: none;
+      color: var(--gold); font-size: 0.78rem;
+      cursor: pointer; font-family: 'Gumela','Cairo',sans-serif;
+      display: flex; align-items: center; gap: 4px;
+      margin-right: auto;
+    }
   </style>
 </head>
 <body>
@@ -536,7 +631,7 @@
         <a href="https://malearnsa.com/refund-policy.html">سياسة الاسترجاع</a>
         <a href="https://malearnsa.com/privacy-policy.html">الخصوصية</a>
       </div>
-      <a href="/creative-ai-workshop/checkout.html" class="nav-cta" id="nav-cta">الدفعة الثانية — ١,٢٩٩ ر.س</a>
+      <a href="#pricing" class="nav-cta" id="nav-cta">الدفعة الثانية — ١,٢٩٩ ر.س</a>
     </div>
   </nav>
 
@@ -572,7 +667,7 @@
         </div>
         <div class="hero-date-item">
           <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-          <span id="hero-seats-text">٣٠ مقعد فقط</span> — أونلاين
+          ٣٠ مقعد فقط — أونلاين
         </div>
       </div>
 
@@ -581,7 +676,7 @@
         <div class="price-deadline">السعر قابل للتغيير في الدفعات القادمة</div>
       </div>
 
-      <a href="/creative-ai-workshop/checkout.html" class="btn-primary" id="hero-cta">احجز مقعدك الآن</a>
+      <a href="#pricing" class="btn-primary" id="hero-cta">احجز مقعدك الآن</a>
       <div class="hero-seats">الدفعة الأولى اكتملت · الدفعة الثانية مفتوحة الآن</div>
     </div>
   </section>
@@ -870,12 +965,12 @@
           <div style="text-align:left;margin-top:6px;font-size:0.82rem;color:var(--gold);">توفير ١,٤٩٧ ر.س</div>
         </div>
 
-        <a href="/creative-ai-workshop/checkout.html" class="btn-primary" id="bundle-cta"
+        <a href="#checkout" class="btn-primary" id="bundle-cta"
            style="width:100%;display:block;text-align:center;cursor:pointer;">
           احجز مقعدك — ١,٢٩٩ ر.س
         </a>
 
-        <div style="margin-top:16px;font-size:0.78rem;color:var(--grey);"><span id="card-seats-text">٣٠ مقعد فقط</span> · السعر قابل للتغيير في الدفعات القادمة</div>
+        <div style="margin-top:16px;font-size:0.78rem;color:var(--grey);">٣٠ مقعد فقط · السعر قابل للتغيير في الدفعات القادمة</div>
       </div>
 
       <!-- Sold-out state — reused pattern -->
@@ -904,8 +999,154 @@
       الدفعة الثانية —
       <span class="sticky-price-now">١,٢٩٩ ر.س</span>
     </div>
-    <a href="/creative-ai-workshop/checkout.html" class="sticky-bar-btn" id="sticky-cta">احجز مقعدك</a>
+    <a href="#pricing" class="sticky-bar-btn" id="sticky-cta">احجز مقعدك</a>
   </div>
+
+  <!-- ══ INLINE CHECKOUT MODAL ═══════════════════════════ -->
+  <div id="checkout-modal" class="checkout-modal-overlay" role="dialog" aria-modal="true" aria-labelledby="checkout-modal-title">
+    <div class="checkout-modal-content">
+      <button id="close-checkout-modal" class="checkout-modal-close" aria-label="إغلاق">&times;</button>
+      <div class="checkout-modal-header">
+        <p class="eyebrow">إتمام الشراء</p>
+        <h2 id="checkout-modal-title">ورشة صناعة الإلهام — الدفعة الثانية</h2>
+      </div>
+
+      <!-- STEP 1: Contact + Coupon + Payment buttons -->
+      <div class="card" id="step-contact">
+        <div class="co-section-title"><span class="co-step-badge">١</span>بياناتك</div>
+
+        <div class="co-field">
+          <label class="co-label" for="name">الاسم الكامل</label>
+          <input id="name" class="co-input" type="text" placeholder="ماجد عنقاوي" autocomplete="name">
+        </div>
+        <div class="co-field">
+          <label class="co-label" for="email">البريد الإلكتروني</label>
+          <input id="email" class="co-input" type="email" placeholder="you@example.com" dir="ltr" style="text-align:right;" autocomplete="email">
+        </div>
+        <div class="co-field">
+          <label class="co-label" for="phone">رقم الجوال</label>
+          <input id="phone" class="co-input" type="tel" placeholder="05xxxxxxxx" dir="ltr" style="text-align:right;" autocomplete="tel">
+        </div>
+
+        <div style="margin-top:18px;padding-top:18px;border-top:1px solid rgba(255,255,255,0.05);">
+          <label class="co-label">كود خصم (اختياري)</label>
+          <div class="co-coupon-row">
+            <input id="coupon-input" class="co-input" type="text" placeholder="" dir="ltr"
+              style="font-family:monospace;font-size:0.95rem;text-transform:uppercase;flex:1;">
+            <button id="coupon-btn" class="co-coupon-btn">تطبيق</button>
+          </div>
+          <p id="coupon-msg" style="display:none;font-size:0.8rem;margin-top:8px;"></p>
+        </div>
+
+        <!-- Module fills this with the configured methods (Moyasar, Bank, Tamara, PayPal) -->
+        <div id="ma-payment-methods" style="margin-top:20px;"></div>
+
+        <!-- Order summary inline (no sidebar in modal layout) -->
+        <div style="margin-top:18px;padding:14px 16px;background:rgba(201,168,76,0.06);border:1px solid rgba(201,168,76,0.2);border-radius:10px;font-size:0.85rem;">
+          <div style="display:flex;justify-content:space-between;color:var(--silver);">
+            <span>السعر</span>
+            <span id="original-price">١,٢٩٩ ر.س</span>
+          </div>
+          <div id="discount-row" style="display:none;justify-content:space-between;color:#4caf82;margin-top:6px;">
+            <span>الخصم</span>
+            <span id="discount-amount">-0 ر.س</span>
+          </div>
+          <div style="display:flex;justify-content:space-between;color:var(--ivory);font-weight:700;margin-top:10px;padding-top:10px;border-top:1px solid rgba(255,255,255,0.08);">
+            <span>الإجمالي</span>
+            <span id="total-price" style="color:var(--gold);">١,٢٩٩ ر.س</span>
+          </div>
+          <p id="summary-coupon" style="display:none;font-size:0.78rem;color:#4caf82;margin-top:8px;text-align:center;"></p>
+        </div>
+      </div>
+
+      <!-- STEP 2: Card payment (hidden until Continue) -->
+      <div class="card" id="step-payment" style="display:none;">
+        <div class="co-section-title" style="display:flex;justify-content:space-between;align-items:center;">
+          <span style="display:flex;align-items:center;gap:10px;">
+            <span class="co-step-badge">٢</span>الدفع بالبطاقة
+          </span>
+          <button id="edit-contact-btn" type="button" class="checkout-edit-btn">تعديل</button>
+        </div>
+        <div class="checkout-modal-summary">
+          <div><span class="label">الاسم:</span> <span id="sum-name"></span></div>
+          <div style="direction:ltr;text-align:right;"><span class="label">البريد:</span> <span id="sum-email"></span></div>
+          <div style="direction:ltr;text-align:right;"><span class="label">الجوال:</span> <span id="sum-phone"></span></div>
+          <div id="sum-coupon-row" style="display:none;color:#4caf82;"><span id="sum-coupon"></span></div>
+        </div>
+        <div id="moyasar-form" class="mysr-form"></div>
+      </div>
+
+      <!-- Hidden helper for module's mobile summary toggle -->
+      <span id="toggle-total" style="display:none;">١,٢٩٩ ر.س</span>
+    </div>
+  </div>
+
+  <!-- Checkout module config + script -->
+  <script>
+    window.MaCheckoutConfig = {
+      productId:     'creative-ai-workshop-t3',
+      productNameAr: 'ورشة صناعة الإلهام — الدفعة الثانية',
+      basePrice:     1299,
+      cohort:        'C2',
+      successUrl:    'https://malearnsa.com/creative-ai-workshop/success.html',
+      methods:       ['moyasar', 'bank', 'tamara', 'paypal']
+    };
+  </script>
+  <script src="https://malearnsa.com/checkout-module/v1/payments.js"></script>
+  <script>
+    if (window.MaCheckout && typeof window.MaCheckout.init === 'function') {
+      MaCheckout.init(window.MaCheckoutConfig);
+    }
+
+    // ── Open / close modal ─────────────────────────────
+    const checkoutModal = document.getElementById('checkout-modal');
+    function openCheckoutModal(e) {
+      if (e) e.preventDefault();
+      checkoutModal.classList.add('open');
+      document.body.classList.add('checkout-modal-open');
+    }
+    function closeCheckoutModal() {
+      checkoutModal.classList.remove('open');
+      document.body.classList.remove('checkout-modal-open');
+    }
+    ['nav-cta','hero-cta','sticky-cta','bundle-cta'].forEach(id => {
+      const el = document.getElementById(id);
+      if (el) el.addEventListener('click', openCheckoutModal);
+    });
+    document.getElementById('close-checkout-modal').addEventListener('click', closeCheckoutModal);
+    checkoutModal.addEventListener('click', (e) => {
+      if (e.target === checkoutModal) closeCheckoutModal();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && checkoutModal.classList.contains('open')) closeCheckoutModal();
+    });
+
+    // ── Auto-discount: detect existing دورة مدخل token by email ───────
+    // On email blur, check Apps Script. If buyer already owns the recorded
+    // course, auto-apply the ITCAIPRE coupon (299 SAR off).
+    const APPS_SCRIPT_BASE = 'https://script.google.com/macros/s/AKfycbznjcsYu8gLDZqFJGededAQaATad_L8vlhRQV04pOqh57HB5nFVRy9zUHAcg6goyj8DKA/exec';
+    const emailInput = document.getElementById('email');
+    let lastCheckedEmail = '';
+    emailInput.addEventListener('blur', async () => {
+      const email = emailInput.value.trim().toLowerCase();
+      if (!email || email === lastCheckedEmail || !email.includes('@')) return;
+      lastCheckedEmail = email;
+      try {
+        const res = await fetch(APPS_SCRIPT_BASE + '?action=check_existing_token&email=' + encodeURIComponent(email));
+        const data = await res.json();
+        if (data && data.has_existing_madkhal) {
+          const couponInput = document.getElementById('coupon-input');
+          const couponBtn = document.getElementById('coupon-btn');
+          if (couponInput && !couponInput.value) {
+            couponInput.value = 'ITCAIPRE';
+            if (couponBtn) couponBtn.click();
+          }
+        }
+      } catch (err) {
+        // Silent fail — discount auto-apply is a bonus, not a blocker
+      }
+    });
+  </script>
 
   <script>
     const nav = document.getElementById('nav');
@@ -934,47 +1175,28 @@
       observer.observe(el);
     });
 
-    // Live seats counter + sold-out detection — cohort-aware get_seats_left
-    // endpoint (Apps Script @28). Updates the two seat-counter spans on the
-    // page; if sold out, swaps CTAs to a waitlist mailto. Fails silently on
-    // network error (page degrades to static "30 مقعد فقط" text).
+    // Sold-out detection — uses cohort-aware get_seats_left endpoint (added 2026-05-04).
     (async () => {
       const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbznjcsYu8gLDZqFJGededAQaATad_L8vlhRQV04pOqh57HB5nFVRy9zUHAcg6goyj8DKA/exec';
       const WAITLIST_HREF = 'mailto:support@malearnsa.com?subject=' + encodeURIComponent('قائمة الانتظار — الدفعة الثالثة');
       try {
         const res = await fetch(APPS_SCRIPT_URL + '?action=get_seats_left&cohort=C2');
         const data = await res.json();
-        if (!data || typeof data.seats_left !== 'number') return;
-
-        // Convert digits to Arabic-Indic for display consistency
-        const toArDigits = (n) => String(n).replace(/[0-9]/g, (d) => '٠١٢٣٤٥٦٧٨٩'[Number(d)]);
-        const left = data.seats_left;
-        const total = data.seats_total || 30;
-
-        // Update both seat counter spans
-        const heroSeats = document.getElementById('hero-seats-text');
-        const cardSeats = document.getElementById('card-seats-text');
-        const seatsCopy = (left === total)
-          ? toArDigits(total) + ' مقعد فقط'
-          : 'متبقي ' + toArDigits(left) + ' من ' + toArDigits(total) + ' مقعد';
-        if (heroSeats) heroSeats.textContent = seatsCopy;
-        if (cardSeats) cardSeats.textContent = seatsCopy;
-
-        // Sold-out: swap CTAs
-        if (data.sold_out) {
-          ['nav-cta', 'hero-cta', 'sticky-cta'].forEach(id => {
-            const el = document.getElementById(id);
-            if (!el) return;
-            el.textContent = 'اكتملت الدفعة — قائمة الانتظار';
-            el.href = WAITLIST_HREF;
-          });
-          const bundleCta = document.getElementById('bundle-cta');
-          if (bundleCta) bundleCta.style.display = 'none';
-          const stamp = document.getElementById('pricing-soldout');
-          if (stamp) stamp.style.display = 'block';
-        }
+        if (!data || !data.sold_out) return;
+        ['nav-cta', 'hero-cta', 'sticky-cta'].forEach(id => {
+          const el = document.getElementById(id);
+          if (!el) return;
+          el.textContent = 'اكتملت الدفعة — قائمة الانتظار';
+          el.href = WAITLIST_HREF;
+        });
+        ['bundle-cta'].forEach(id => {
+          const el = document.getElementById(id);
+          if (el) el.style.display = 'none';
+        });
+        const stamp = document.getElementById('pricing-soldout');
+        if (stamp) stamp.style.display = 'block';
       } catch (err) {
-        // Fail open — keep static "30 مقعد فقط" text
+        // Fail open — keep normal CTAs if the API is unreachable
       }
     })();
   </script>
