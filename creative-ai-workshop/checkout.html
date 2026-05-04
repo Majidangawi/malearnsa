@@ -156,13 +156,13 @@
 <div class="orb" style="width:400px;height:400px;background:#C9A84C;bottom:-80px;left:-80px;opacity:0.08;animation-delay:3.5s;"></div>
 
 <header id="site-header">
-  <div class="logo-wrapper">
+  <a href="/creative-ai-workshop/" class="logo-wrapper" style="text-decoration:none;color:inherit;display:flex;align-items:center;gap:8px;" title="العودة إلى صفحة الورشة">
     <img class="logo-img" src="/MA Learn white-08.png" alt="MA LEARN" onerror="this.style.display='none'; this.nextElementSibling.style.display='block';">
-    <div class="logo-text">MA <span>|</span> LEARN</div>
-  </div>
+    <span class="logo-text">MA <span>|</span> LEARN</span>
+  </a>
   <nav>
+    <a href="/creative-ai-workshop/">الورشة</a>
     <a href="https://malearnsa.com/#courses">الدورات</a>
-    <a href="https://malearnsa.com/#about-me">عن ماجد</a>
     <a href="https://malearnsa.com/refund-policy.html">سياسة الاسترجاع</a>
     <a href="https://malearnsa.com/privacy-policy.html">الخصوصية</a>
   </nav>
@@ -340,40 +340,9 @@
   MaCheckout.init(window.MaCheckoutConfig);
 </script>
 
-<!-- Auto-discount: silent enrichment for buyers who already own دورة المدخل.
-     Fire-and-forget — failure or success NEVER blocks the checkout flow.
-     If detection works, ITCAIPRE coupon auto-applies. If it doesn't, customer
-     can still enter ITCAIPRE manually OR pay full price — no UX impact either way. -->
-<script>
-  (function () {
-    const APPS_SCRIPT_BASE = 'https://script.google.com/macros/s/AKfycbznjcsYu8gLDZqFJGededAQaATad_L8vlhRQV04pOqh57HB5nFVRy9zUHAcg6goyj8DKA/exec';
-    const emailEl  = document.getElementById('email');
-    const couponIn = document.getElementById('coupon-input');
-    const couponBt = document.getElementById('coupon-btn');
-    if (!emailEl || !couponIn || !couponBt) return;
-
-    let lastChecked = '';
-    emailEl.addEventListener('blur', async () => {
-      try {
-        const email = (emailEl.value || '').trim().toLowerCase();
-        if (!email || email === lastChecked || !email.includes('@')) return;
-        lastChecked = email;
-        // Skip if customer already typed a code manually
-        if (couponIn.value && couponIn.value.trim()) return;
-
-        const res = await fetch(APPS_SCRIPT_BASE + '?action=check_existing_token&email=' + encodeURIComponent(email));
-        if (!res.ok) return;
-        const data = await res.json();
-        if (data && data.has_existing_madkhal && !couponIn.value) {
-          couponIn.value = 'ITCAIPRE';
-          couponBt.click(); // triggers MaCheckout's normal validate-coupon flow
-        }
-      } catch (e) {
-        // Silent fail — customer experience unaffected
-      }
-    });
-  })();
-</script>
+<!-- Auto-discount intentionally disabled 2026-05-04. Snippet archived at
+     archives/snippets/auto-discount-itcaipre-20260504.html. Revive only
+     after fixing the uses_left leak (see archive comment for details). -->
 
 </body>
 </html>
