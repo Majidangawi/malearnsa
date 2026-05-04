@@ -381,7 +381,7 @@
       methods:              ['creditcard', 'applepay'],
       apple_pay: {
         country:                'SA',
-        label:                  cfg.productNameAr || 'MA Learn',
+        label:                  'MA Learn',
         validate_merchant_url:  'https://api.moyasar.com/v1/applepay/initiate',
         supported_networks:     ['mada', 'visa', 'mastercard']
       },
