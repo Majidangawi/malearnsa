@@ -288,6 +288,12 @@
       gap: 2px; margin-top: 44px;
     }
     @media (max-width: 640px) { .who-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 760px) {
+      .testimonial-grid { grid-template-columns: 1fr !important; }
+      .student-gallery { grid-template-columns: repeat(2, 1fr) !important; }
+    }
+    .student-thumb:hover img { transform: scale(1.04); }
+    .student-thumb:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
     .who-card { background: var(--card-bg); padding: 34px 30px; }
     .who-card-title {
       font-size: 0.72rem; letter-spacing: 0.12em;
@@ -581,16 +587,18 @@
         <div class="price-deadline">السعر قابل للتغيير في الدفعات القادمة</div>
       </div>
 
-      <!-- Live seats badge — prominent, gold pill under hero CTA area -->
-      <div id="seats-badge" style="display:inline-flex;align-items:center;gap:8px;margin-bottom:18px;padding:8px 18px;background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.4);border-radius:999px;font-size:0.88rem;font-weight:700;color:var(--gold);">
-        <span style="width:8px;height:8px;background:var(--gold);border-radius:50%;display:inline-block;animation:seats-pulse 1.8s ease-in-out infinite;"></span>
-        <span id="seats-badge-text">٣٠ مقعد متاح</span>
-      </div>
       <style>
         @keyframes seats-pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
       </style>
 
       <a href="https://checkout.malearnsa.com/creative-ai-workshop/checkout.html" class="btn-primary" id="hero-cta">احجز مقعدك الآن</a>
+
+      <!-- Live seats badge — prominent, gold pill under hero CTA -->
+      <div id="seats-badge" style="display:inline-flex;align-items:center;gap:8px;margin-top:18px;padding:8px 18px;background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.4);border-radius:999px;font-size:0.88rem;font-weight:700;color:var(--gold);">
+        <span style="width:8px;height:8px;background:var(--gold);border-radius:50%;display:inline-block;animation:seats-pulse 1.8s ease-in-out infinite;"></span>
+        <span id="seats-badge-text">٣٠ مقعد متاح</span>
+      </div>
+
       <div class="hero-seats">الدفعة الأولى اكتملت · الدفعة الثانية مفتوحة الآن</div>
     </div>
   </section>
@@ -750,7 +758,7 @@
       <h2 class="section-title">كلام الطلاب اللي خلصوا.</h2>
       <p class="section-body">٣ ليالٍ، أكثر من ٣٠ طالب، رسائل جتني بعد آخر جلسة بساعتين.</p>
 
-      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(280px, 1fr));gap:18px;margin-top:48px;">
+      <div class="testimonial-grid" style="display:grid;grid-template-columns:repeat(2, 1fr);gap:18px;margin-top:48px;">
         <div style="background:var(--card-bg);border:1px solid #1a1a1a;border-right:2px solid var(--gold);padding:30px 28px;">
           <p style="font-size:1rem;color:var(--ivory);line-height:1.85;margin-bottom:20px;">"نقلة نوعية بكل ما تحمله الكلمة من معنى. ألهمتنا فعلاً، ليس فقط بالمعلومات ولكن بروحك المعطاءة وحرصك على أن يخرج الجميع مستفيداً."</p>
           <p style="font-size:0.85rem;color:var(--gold);font-weight:700;letter-spacing:0.05em;">— محمد ع.</p>
@@ -783,25 +791,31 @@
       <h2 class="section-title">من بريف عميل، إلى مخرج كامل.</h2>
       <p class="section-body">كل صورة هنا طلعت من بين إيدي طالب — خلال ٣ أيام.</p>
 
-      <div style="display:grid;grid-template-columns:repeat(auto-fit, minmax(180px, 1fr));gap:14px;margin-top:48px;">
-        <picture style="display:block;aspect-ratio:4/5;overflow:hidden;background:#0a0a0a;">
+      <div class="student-gallery" style="display:grid;grid-template-columns:repeat(3, 1fr);gap:14px;margin-top:48px;">
+        <button type="button" class="student-thumb" data-src="images/student-1.jpg" aria-label="عرض بحجم كامل" style="display:block;aspect-ratio:4/5;overflow:hidden;background:#0a0a0a;border:0;padding:0;cursor:pointer;">
           <img src="images/student-1.jpg" alt="عمل طالب من الدفعة الأولى" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s ease;">
-        </picture>
-        <picture style="display:block;aspect-ratio:4/5;overflow:hidden;background:#0a0a0a;">
+        </button>
+        <button type="button" class="student-thumb" data-src="images/student-2.jpg" aria-label="عرض بحجم كامل" style="display:block;aspect-ratio:4/5;overflow:hidden;background:#0a0a0a;border:0;padding:0;cursor:pointer;">
           <img src="images/student-2.jpg" alt="عمل طالب من الدفعة الأولى" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s ease;">
-        </picture>
-        <picture style="display:block;aspect-ratio:4/5;overflow:hidden;background:#0a0a0a;">
+        </button>
+        <button type="button" class="student-thumb" data-src="images/student-3.jpg" aria-label="عرض بحجم كامل" style="display:block;aspect-ratio:4/5;overflow:hidden;background:#0a0a0a;border:0;padding:0;cursor:pointer;">
           <img src="images/student-3.jpg" alt="عمل طالب من الدفعة الأولى" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s ease;">
-        </picture>
-        <picture style="display:block;aspect-ratio:4/5;overflow:hidden;background:#0a0a0a;">
+        </button>
+        <button type="button" class="student-thumb" data-src="images/student-4.jpg" aria-label="عرض بحجم كامل" style="display:block;aspect-ratio:4/5;overflow:hidden;background:#0a0a0a;border:0;padding:0;cursor:pointer;">
           <img src="images/student-4.jpg" alt="عمل طالب من الدفعة الأولى" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s ease;">
-        </picture>
-        <picture style="display:block;aspect-ratio:4/5;overflow:hidden;background:#0a0a0a;">
+        </button>
+        <button type="button" class="student-thumb" data-src="images/student-5.jpg" aria-label="عرض بحجم كامل" style="display:block;aspect-ratio:4/5;overflow:hidden;background:#0a0a0a;border:0;padding:0;cursor:pointer;">
           <img src="images/student-5.jpg" alt="عمل طالب من الدفعة الأولى" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s ease;">
-        </picture>
-        <picture style="display:block;aspect-ratio:4/5;overflow:hidden;background:#0a0a0a;">
+        </button>
+        <button type="button" class="student-thumb" data-src="images/student-6.jpg" aria-label="عرض بحجم كامل" style="display:block;aspect-ratio:4/5;overflow:hidden;background:#0a0a0a;border:0;padding:0;cursor:pointer;">
           <img src="images/student-6.jpg" alt="عمل طالب من الدفعة الأولى" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s ease;">
-        </picture>
+        </button>
+      </div>
+
+      <!-- Lightbox modal for student artwork -->
+      <div id="art-lightbox" role="dialog" aria-modal="true" aria-label="عرض الصورة بحجم كامل" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.92);align-items:center;justify-content:center;padding:24px;">
+        <button type="button" id="art-lightbox-close" aria-label="إغلاق" style="position:absolute;top:18px;right:18px;width:44px;height:44px;border:1px solid rgba(255,255,255,0.3);background:rgba(0,0,0,0.4);color:#fff;font-size:1.6rem;line-height:1;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;">×</button>
+        <img id="art-lightbox-img" src="" alt="" style="max-width:100%;max-height:90vh;object-fit:contain;display:block;">
       </div>
     </div>
   </section>
@@ -1068,6 +1082,44 @@
       } catch (err) {
         // Fail open — keep static "30 مقعد فقط" text
       }
+    })();
+  </script>
+
+  <script>
+    // Artwork lightbox — clicking any student-thumb opens full-screen modal
+    (function () {
+      const lightbox = document.getElementById('art-lightbox');
+      const img      = document.getElementById('art-lightbox-img');
+      const closeBtn = document.getElementById('art-lightbox-close');
+      if (!lightbox || !img || !closeBtn) return;
+
+      function open(src, alt) {
+        img.src = src;
+        img.alt = alt || '';
+        lightbox.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+      }
+      function close() {
+        lightbox.style.display = 'none';
+        img.src = '';
+        document.body.style.overflow = '';
+      }
+
+      document.querySelectorAll('.student-thumb').forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          const src = btn.getAttribute('data-src');
+          const altImg = btn.querySelector('img');
+          open(src, altImg ? altImg.alt : '');
+        });
+      });
+
+      closeBtn.addEventListener('click', close);
+      lightbox.addEventListener('click', function (e) {
+        if (e.target === lightbox) close();
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && lightbox.style.display === 'flex') close();
+      });
     })();
   </script>
 </body>
