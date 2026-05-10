@@ -251,6 +251,12 @@
     height: 38vh;
     z-index: 1;
     overflow: hidden;
+    direction: ltr; /* parent inherits dir="rtl" from <body>; without
+                       this, an overflowing block child gets right-anchored,
+                       so at translation=0 the viewport showed the END of
+                       the track (cards 15-20) instead of cards 1-2. Most
+                       visible on mobile where the gap until "no content"
+                       is small → black screen at loop end. */
     -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 18%, #000 80%, transparent 100%);
             mask-image: linear-gradient(to bottom, transparent 0%, #000 18%, #000 80%, transparent 100%);
   }
