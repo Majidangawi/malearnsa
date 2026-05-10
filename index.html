@@ -256,7 +256,6 @@
   }
   .hero3-marquee-track {
     display: flex;
-    gap: 18px;
     width: max-content;
     height: 100%;
     align-items: center;
@@ -272,6 +271,8 @@
     border-radius: 16px;
     overflow: hidden;
     box-shadow: 0 10px 30px rgba(0,0,0,0.45), 0 0 0 1px rgba(201,168,76,0.08);
+    margin-right: 18px; /* gap-equivalent — lives on the card so the
+                           duplicate set wraps cleanly at translateX(-50%) */
   }
   .hero3-marquee-card:nth-child(odd)  { transform: rotate(-2deg); }
   .hero3-marquee-card:nth-child(even) { transform: rotate(5deg); }
@@ -703,8 +704,8 @@
     }
     .hero3-cta { padding: 13px 30px; font-size: 14px; }
     .hero3-marquee { height: 32vh; }
-    .hero3-marquee-card { height: clamp(160px, 24vh, 220px); border-radius: 12px; }
-    .hero3-marquee-track { gap: 12px; animation-duration: 50s; }
+    .hero3-marquee-card { height: clamp(160px, 24vh, 220px); border-radius: 12px; margin-right: 12px; }
+    .hero3-marquee-track { animation-duration: 50s; }
 
     /* About me */
     .about-me { padding: 64px 20px; }
@@ -902,11 +903,11 @@
   <div class="hero3-content">
     <div class="hero3-tagline">منصة التعلم الإبداعي — MA LEARN</div>
     <h1 class="hero3-title">
-      المبدع فيك
-      <span class="accent">لم يكتمل بعد</span>
+      مكانك الأول لتعلم الإبداع
+      <span class="accent">في زمن الذكاء الاصطناعي.</span>
     </h1>
     <p class="hero3-desc">
-      تعلّم من مصوّر أمضى أكثر من ١٥ عاماً في بناء صوته البصري — والآن حان وقتك.
+      دورات، جلسات مباشرة، وتجارب فردية — صُمّمت للمبدع العربي الذي يريد أن يتقدم، لا أن يُستبدل.
     </p>
     <a href="#courses" class="hero3-cta">اكتشف الدورات</a>
   </div>
