@@ -144,144 +144,77 @@
   nav a:hover { color: var(--gold); }
 
   /* ── SLIDESHOW ── */
-  .slideshow {
+  /* ── HERO 3 (animated marquee — temp hero until AI system ships) ── */
+  .hero3 {
     position: relative;
     width: 100%;
-    height: 100vh;
+    min-height: 100vh;
     overflow: hidden;
-    background: #050505;
-  }
-
-  .slide {
-    position: absolute;
-    inset: 0;
-    opacity: 0;
-    transition: opacity 1.6s cubic-bezier(0.4, 0, 0.2, 1);
-    will-change: opacity;
-    /* Inactive slides must not intercept any clicks */
-    pointer-events: none;
-  }
-
-  .slide.active {
-    opacity: 1;
-    pointer-events: auto;
-  }
-
-  .slide img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: center;
-    transform: scale(1.07);
-    transition: transform 8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
-    will-change: transform;
-  }
-
-  .slide.active img { transform: scale(1); }
-
-  /* Dark overlay — gradient + uniform dark layer */
-  .slide-overlay {
-    position: absolute;
-    inset: 0;
-    z-index: 2;
-    background:
-      linear-gradient(
-        to bottom,
-        rgba(8,8,8,0.72) 0%,
-        rgba(8,8,8,0.18) 30%,
-        rgba(8,8,8,0.18) 55%,
-        rgba(8,8,8,0.78) 100%
-      );
-    box-shadow: inset 0 0 0 9999px rgba(8,8,8,0.40);
-  }
-
-  /* ── SLIDE TEXT CONTENT ── */
-  .slide-content {
-    position: absolute;
-    inset: 0;
-    z-index: 5;
+    background: var(--bg);
     display: flex;
     flex-direction: column;
-    justify-content: center;
     align-items: center;
+    justify-content: center;
     text-align: center;
-    padding: 100px 48px 110px;
-    /* Inactive slide contents must never catch clicks */
-    pointer-events: none;
+    padding: 110px 24px 0;
   }
 
-  /* Only the active slide's content is clickable */
-  .slide.active .slide-content {
-    pointer-events: auto;
+  .hero3-content {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: clamp(40px, 6vw, 80px);
+    max-width: 920px;
   }
 
-  .slide-rule {
-    width: 1px;
-    height: 48px;
-    background: linear-gradient(to bottom, transparent, var(--gold));
-    margin: 0 auto 22px;
-    opacity: 0;
-    transform: scaleY(0);
-    transform-origin: top;
-    transition: opacity 0.8s ease 0.1s, transform 0.8s ease 0.1s;
-  }
-
-  .slide-eyebrow {
-    font-size: 11px;
+  .hero3-tagline {
+    display: inline-block;
+    border: 1px solid rgba(201,168,76,0.3);
+    background: rgba(14,14,14,0.55);
+    color: rgba(201,168,76,0.92);
+    padding: 7px 18px;
+    font-size: 12px;
     font-weight: 700;
-    letter-spacing: 4px;
-    color: var(--gold);
+    letter-spacing: 3px;
+    border-radius: 999px;
+    margin-bottom: 28px;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
     text-transform: uppercase;
-    margin-bottom: 20px;
     opacity: 0;
-    transform: translateY(14px);
-    transition: opacity 0.9s ease 0.3s, transform 0.9s ease 0.3s;
-    /* Prevent long eyebrow from overflowing */
-    max-width: 100%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    animation: hero3FadeIn 0.8s cubic-bezier(0.16,1,0.3,1) 0.1s forwards;
   }
 
-  .slide-title {
+  .hero3-title {
     font-family: 'GumelaArabic', 'Cairo', sans-serif;
     font-weight: 700;
-    /* clamp: min 30px, scales with viewport, max 88px */
-    font-size: clamp(30px, 6.5vw, 88px);
+    font-size: clamp(36px, 7vw, 84px);
     line-height: 1.18;
     color: var(--white);
     margin-bottom: 22px;
     word-break: keep-all;
     hyphens: none;
-    max-width: 820px;
     text-shadow: 0 2px 40px rgba(0,0,0,0.55);
     opacity: 0;
-    transform: translateY(18px);
-    transition: opacity 0.9s ease 0.5s, transform 0.9s ease 0.5s;
+    animation: hero3FadeIn 0.9s cubic-bezier(0.16,1,0.3,1) 0.3s forwards;
   }
+  .hero3-title .accent { color: var(--gold); display: block; }
 
-  .slide-title .accent { color: var(--gold); }
-
-  .slide-sub {
-    font-size: clamp(14px, 1.8vw, 19px);
+  .hero3-desc {
+    font-size: clamp(15px, 1.7vw, 19px);
     color: rgba(245,240,232,0.78);
-    /* Tighter max-width + padding so text stays inside on mobile */
-    max-width: 480px;
-    width: 100%;
+    max-width: 540px;
     line-height: 1.85;
     font-weight: 300;
-    margin-bottom: 38px;
-    word-break: keep-all;
-    text-shadow: 0 1px 20px rgba(0,0,0,0.6);
+    margin-bottom: 36px;
+    text-shadow: 0 1px 20px rgba(0,0,0,0.5);
     opacity: 0;
-    transform: translateY(14px);
-    transition: opacity 0.9s ease 0.7s, transform 0.9s ease 0.7s;
-    /* Ensure wrapping, not overflow */
-    overflow-wrap: break-word;
-    padding: 0 8px;
+    animation: hero3FadeIn 0.9s cubic-bezier(0.16,1,0.3,1) 0.5s forwards;
   }
 
-  .slide-cta {
+  .hero3-cta {
     display: inline-flex;
     align-items: center;
     gap: 10px;
@@ -292,112 +225,67 @@
     font-size: 16px;
     font-weight: 700;
     letter-spacing: 0.5px;
-    white-space: nowrap;
-    font-family: 'GumelaArabic', 'Cairo', sans-serif;
+    border-radius: 999px;
+    font-family: 'GumelaArabic','Cairo',sans-serif;
     opacity: 0;
-    transform: translateY(14px);
-    /* Two separate transitions — entrance + hover */
-    transition:
-      opacity 0.9s ease 0.9s,
-      transform 0.9s ease 0.9s,
-      background 0.3s,
-      box-shadow 0.3s;
+    animation: hero3FadeIn 0.9s cubic-bezier(0.16,1,0.3,1) 0.7s forwards;
+    transition: background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
   }
-
-  .slide-cta:hover {
+  .hero3-cta:hover {
     background: var(--gold-light);
-    box-shadow: 0 20px 60px rgba(201,168,76,0.35);
+    transform: scale(1.04);
+    box-shadow: 0 18px 50px rgba(201,168,76,0.30);
   }
+  .hero3-cta:active { transform: scale(0.96); }
 
-  /* Animate all in when slide is active */
-  .slide.active .slide-rule    { opacity: 1; transform: scaleY(1); }
-  .slide.active .slide-eyebrow { opacity: 1; transform: translateY(0); }
-  .slide.active .slide-title   { opacity: 1; transform: translateY(0); }
-  .slide.active .slide-sub     { opacity: 1; transform: translateY(0); }
-  .slide.active .slide-cta     { opacity: 1; transform: translateY(0); }
-
-  /* ── SLIDE COUNTER ── */
-  .slide-counter {
-    position: absolute;
-    bottom: 36px;
-    left: 48px;
-    z-index: 10;
-    display: flex;
-    align-items: center;
-    gap: 14px;
-    direction: ltr;
-  }
-
-  .counter-current {
-    font-size: 12px; font-weight: 700; color: var(--gold);
-    letter-spacing: 2px; font-family: 'Cairo', sans-serif; min-width: 20px;
-  }
-
-  .counter-bar {
-    width: 44px; height: 1px;
-    background: rgba(201,168,76,0.25);
-    position: relative; overflow: hidden;
-  }
-
-  .counter-bar-fill {
-    position: absolute; top: 0; left: 0;
-    height: 100%; background: var(--gold);
-    width: 0%;
-  }
-
-  .counter-total {
-    font-size: 12px; color: rgba(255,255,255,0.35);
-    letter-spacing: 2px; font-family: 'Cairo', sans-serif;
-  }
-
-  /* ── DOT NAVIGATION ── */
-  .slide-dots {
-    position: absolute;
-    bottom: 40px;
-    left: 50%;
-    transform: translateX(-50%);
-    z-index: 10;
-    display: flex;
-    gap: 10px;
-  }
-
-  .dot {
-    width: 6px; height: 6px; border-radius: 50%;
-    background: rgba(255,255,255,0.3);
-    cursor: pointer; transition: all 0.4s; border: none; padding: 0;
-  }
-
-  .dot.active { background: var(--gold); width: 22px; border-radius: 3px; }
-
-  /* ── SCROLL HINT ── */
-  .scroll-hint {
-    position: absolute; bottom: 36px; right: 48px; z-index: 10;
-    display: flex; flex-direction: column; align-items: center; gap: 8px;
-    opacity: 0; animation: fadeUp 1s ease forwards 2s;
-  }
-
-  .scroll-hint span {
-    font-size: 10px; letter-spacing: 3px;
-    color: rgba(255,255,255,0.35);
-    text-transform: uppercase; writing-mode: vertical-rl;
-  }
-
-  .scroll-dot {
-    width: 1px; height: 36px;
-    background: linear-gradient(to bottom, var(--gold), transparent);
-    animation: scrollDown 1.8s ease-in-out infinite;
-  }
-
-  @keyframes scrollDown {
-    0%   { transform: scaleY(0); transform-origin: top;    opacity: 1; }
-    50%  { transform: scaleY(1); transform-origin: top;    opacity: 1; }
-    51%  { transform: scaleY(1); transform-origin: bottom; opacity: 1; }
-    100% { transform: scaleY(0); transform-origin: bottom; opacity: 0; }
-  }
-
-  @keyframes fadeUp {
+  @keyframes hero3FadeIn {
     from { opacity: 0; transform: translateY(12px); }
     to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* Marquee strip at the bottom */
+  .hero3-marquee {
+    position: absolute;
+    bottom: 0; left: 0;
+    width: 100%;
+    height: 38vh;
+    z-index: 1;
+    overflow: hidden;
+    -webkit-mask-image: linear-gradient(to bottom, transparent 0%, #000 18%, #000 80%, transparent 100%);
+            mask-image: linear-gradient(to bottom, transparent 0%, #000 18%, #000 80%, transparent 100%);
+  }
+  .hero3-marquee-track {
+    display: flex;
+    gap: 18px;
+    width: max-content;
+    height: 100%;
+    align-items: center;
+    animation: hero3Scroll 60s linear infinite;
+    will-change: transform;
+    direction: ltr; /* always scroll left→right regardless of doc dir */
+  }
+  .hero3-marquee:hover .hero3-marquee-track { animation-play-state: paused; }
+  .hero3-marquee-card {
+    flex-shrink: 0;
+    height: clamp(190px, 28vh, 260px);
+    aspect-ratio: 3/4;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.45), 0 0 0 1px rgba(201,168,76,0.08);
+  }
+  .hero3-marquee-card:nth-child(odd)  { transform: rotate(-2deg); }
+  .hero3-marquee-card:nth-child(even) { transform: rotate(5deg); }
+  .hero3-marquee-card img {
+    width: 100%; height: 100%;
+    object-fit: cover; display: block;
+  }
+  @keyframes hero3Scroll {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); } /* track is duplicated → seamless loop */
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hero3-marquee-track { animation: none; }
+    .hero3-tagline, .hero3-title, .hero3-desc, .hero3-cta { animation: none; opacity: 1; transform: none; }
   }
 
   /* ── SCROLL REVEAL ── */
@@ -796,50 +684,27 @@
     }
     nav a:last-child { border-right: none; }
 
-    .slideshow { height: 100svh; }
-
-    /* ── KEY FIX: mobile slide content ──
-       Reduce padding so header/dots don't eat into space.
-       Smaller font sizes, tighter subtitle. */
-    .slide-content {
-      padding: 90px 20px 90px;
-      justify-content: center;
+    .hero3 { min-height: 100svh; padding-top: 90px; }
+    .hero3-content { margin-bottom: 30px; }
+    .hero3-tagline {
+      font-size: 10px; letter-spacing: 2px;
+      padding: 6px 14px; margin-bottom: 18px;
     }
-
-    .slide-rule { height: 32px; margin-bottom: 14px; }
-
-    .slide-eyebrow {
-      font-size: 10px;
-      letter-spacing: 0;
-      word-spacing: 0;
-      margin-bottom: 14px;
-      white-space: normal;
-      overflow: visible;
-      text-overflow: unset;
-    }
-
-    .slide-title {
-      font-size: clamp(28px, 9vw, 44px);
+    .hero3-title {
+      font-size: clamp(30px, 9vw, 48px);
       margin-bottom: 16px;
-      line-height: 1.2;
+      line-height: 1.22;
     }
-
-    .slide-sub {
+    .hero3-desc {
       font-size: 14px;
-      max-width: 100%;
-      padding: 0 4px;
-      margin-bottom: 28px;
+      padding: 0 8px;
+      margin-bottom: 26px;
       line-height: 1.75;
     }
-
-    .slide-cta {
-      padding: 13px 28px;
-      font-size: 14px;
-    }
-
-    .slide-counter { left: 16px; bottom: 20px; }
-    .scroll-hint { right: 16px; bottom: 20px; }
-    .slide-dots { bottom: 24px; }
+    .hero3-cta { padding: 13px 30px; font-size: 14px; }
+    .hero3-marquee { height: 32vh; }
+    .hero3-marquee-card { height: clamp(160px, 24vh, 220px); border-radius: 12px; }
+    .hero3-marquee-track { gap: 12px; animation-duration: 50s; }
 
     /* About me */
     .about-me { padding: 64px 20px; }
@@ -1028,97 +893,49 @@
 
 
 <!-- ══════════════════════════════════════════════
-     SLIDESHOW
-     ✏️ IMAGES:
-       Slide 1 → images/1.jpg   (new image you'll upload)
-       Slide 2 → images/2.jpg   (new image you'll upload)
-       Slide 3 → images/16.jpg  (keep — you on set)
-       Slide 4 → images/4.jpg   (new image you'll upload)
+     HERO 3 — animated marquee (temp hero until AI system ships)
+     Source spec: 21st.dev/community/components/ravikatiyar/hero-3
+     Images: /images/hero-marquee/marquee-1.jpg … marquee-10.jpg
 ══════════════════════════════════════════════ -->
-<section class="slideshow" id="slideshow">
+<section class="hero3" id="hero">
 
-  <!-- SLIDE 1 -->
-  <div class="slide active" data-index="0">
-    <img src="images/1.jpg" alt="الإبداع البصري" loading="eager">
-    <div class="slide-overlay"></div>
-    <div class="slide-content">
-      <div class="slide-rule"></div>
-      <p class="slide-eyebrow">منصة التعلم الإبداعي — MA LEARN</p>
-      <h1 class="slide-title">
-        المبدع فيك<br>
-        <span class="accent">لم يكتمل بعد</span>
-      </h1>
-      <p class="slide-sub">تعلّم من مصوّر أمضى أكثر من ١٥ عاماً في بناء صوته البصري — والآن حان وقتك</p>
-      <a href="#courses" class="slide-cta">اكتشف الدورات</a>
+  <div class="hero3-content">
+    <div class="hero3-tagline">منصة التعلم الإبداعي — MA LEARN</div>
+    <h1 class="hero3-title">
+      المبدع فيك
+      <span class="accent">لم يكتمل بعد</span>
+    </h1>
+    <p class="hero3-desc">
+      تعلّم من مصوّر أمضى أكثر من ١٥ عاماً في بناء صوته البصري — والآن حان وقتك.
+    </p>
+    <a href="#courses" class="hero3-cta">اكتشف الدورات</a>
+  </div>
+
+  <!-- Marquee — list rendered twice for seamless loop (translate -50%) -->
+  <div class="hero3-marquee" aria-hidden="true">
+    <div class="hero3-marquee-track">
+      <div class="hero3-marquee-card"><img src="/images/hero-marquee/marquee-1.jpg"  alt="" loading="eager"></div>
+      <div class="hero3-marquee-card"><img src="/images/hero-marquee/marquee-2.jpg"  alt="" loading="eager"></div>
+      <div class="hero3-marquee-card"><img src="/images/hero-marquee/marquee-3.jpg"  alt="" loading="lazy"></div>
+      <div class="hero3-marquee-card"><img src="/images/hero-marquee/marquee-4.jpg"  alt="" loading="lazy"></div>
+      <div class="hero3-marquee-card"><img src="/images/hero-marquee/marquee-5.jpg"  alt="" loading="lazy"></div>
+      <div class="hero3-marquee-card"><img src="/images/hero-marquee/marquee-6.jpg"  alt="" loading="lazy"></div>
+      <div class="hero3-marquee-card"><img src="/images/hero-marquee/marquee-7.jpg"  alt="" loading="lazy"></div>
+      <div class="hero3-marquee-card"><img src="/images/hero-marquee/marquee-8.jpg"  alt="" loading="lazy"></div>
+      <div class="hero3-marquee-card"><img src="/images/hero-marquee/marquee-9.jpg"  alt="" loading="lazy"></div>
+      <div class="hero3-marquee-card"><img src="/images/hero-marquee/marquee-10.jpg" alt="" loading="lazy"></div>
+      <!-- duplicate set for seamless loop -->
+      <div class="hero3-marquee-card"><img src="/images/hero-marquee/marquee-1.jpg"  alt="" loading="lazy"></div>
+      <div class="hero3-marquee-card"><img src="/images/hero-marquee/marquee-2.jpg"  alt="" loading="lazy"></div>
+      <div class="hero3-marquee-card"><img src="/images/hero-marquee/marquee-3.jpg"  alt="" loading="lazy"></div>
+      <div class="hero3-marquee-card"><img src="/images/hero-marquee/marquee-4.jpg"  alt="" loading="lazy"></div>
+      <div class="hero3-marquee-card"><img src="/images/hero-marquee/marquee-5.jpg"  alt="" loading="lazy"></div>
+      <div class="hero3-marquee-card"><img src="/images/hero-marquee/marquee-6.jpg"  alt="" loading="lazy"></div>
+      <div class="hero3-marquee-card"><img src="/images/hero-marquee/marquee-7.jpg"  alt="" loading="lazy"></div>
+      <div class="hero3-marquee-card"><img src="/images/hero-marquee/marquee-8.jpg"  alt="" loading="lazy"></div>
+      <div class="hero3-marquee-card"><img src="/images/hero-marquee/marquee-9.jpg"  alt="" loading="lazy"></div>
+      <div class="hero3-marquee-card"><img src="/images/hero-marquee/marquee-10.jpg" alt="" loading="lazy"></div>
     </div>
-  </div>
-
-  <!-- SLIDE 2 -->
-  <div class="slide" data-index="1">
-    <img src="images/2.jpg" alt="إضاءة احترافية" loading="lazy">
-    <div class="slide-overlay"></div>
-    <div class="slide-content">
-      <div class="slide-rule"></div>
-      <p class="slide-eyebrow">التصوير الاحترافي</p>
-      <h1 class="slide-title">
-        الضوء يصنع<br>
-        <span class="accent">الفارق</span>
-      </h1>
-      <p class="slide-sub">أكثر من ١٥ إعداد إضاءة احترافي — تعلّمها مرة واحدة واستخدمها طوال حياتك</p>
-      <a href="/beyond-lighting/" class="slide-cta">دورةأبعد من إمكانيات الإضاءة</a>
-    </div>
-  </div>
-
-  <!-- SLIDE 3 — keep image 16 (you directing on set) -->
-  <div class="slide" data-index="2">
-    <img src="images/16.jpg" alt="خلف الكاميرا" loading="lazy">
-    <div class="slide-overlay"></div>
-    <div class="slide-content">
-      <div class="slide-rule"></div>
-      <p class="slide-eyebrow">خلف الكاميرا</p>
-      <h1 class="slide-title">
-        تعلّم من<br>
-        <span class="accent">داخل الميدان</span>
-      </h1>
-      <p class="slide-sub">ماجد عنقاوي — مصوّر أزياء، سفير Fujifilm، وأكثر من ١٧ غلاف لمجلات محلية و عالمية</p>
-      <a href="#about-me" class="slide-cta">تعرّف عليّ</a>
-    </div>
-  </div>
-
-  <!-- SLIDE 4 -->
-  <div class="slide" data-index="3">
-    <img src="images/4.jpeg" alt="الذكاء الاصطناعي الإبداعي" loading="lazy">
-    <div class="slide-overlay"></div>
-    <div class="slide-content">
-      <div class="slide-rule"></div>
-      <p class="slide-eyebrow">الذكاء الاصطناعي الإبداعي</p>
-      <h1 class="slide-title">
-        مستقبل الإبداع<br>
-        <span class="accent">بين يديك</span>
-      </h1>
-      <p class="slide-sub">دورة الذكاء الاصطناعي للمبدعين — Midjourney وHiggsfield وأقوى أدوات الـ AI. قريباً </p>
-      <!-- ✏️ AI WAITLIST LINK — Notion page -->
-      <a href="https://enchanting-drip-88e.notion.site/320cb219078e8074ad73c5d240d3d03f?pvs=105" target="_blank" class="slide-cta">سجّل اهتمامك</a>
-    </div>
-  </div>
-
-  <!-- Controls -->
-  <div class="slide-counter">
-    <span class="counter-current">01</span>
-    <div class="counter-bar"><div class="counter-bar-fill" id="counter-fill"></div></div>
-    <span class="counter-total">04</span>
-  </div>
-
-  <div class="slide-dots">
-    <button class="dot active" data-slide="0" aria-label="Slide 1"></button>
-    <button class="dot" data-slide="1" aria-label="Slide 2"></button>
-    <button class="dot" data-slide="2" aria-label="Slide 3"></button>
-    <button class="dot" data-slide="3" aria-label="Slide 4"></button>
-  </div>
-
-  <div class="scroll-hint">
-    <span>تصفح</span>
-    <div class="scroll-dot"></div>
   </div>
 
 </section>
@@ -1366,58 +1183,6 @@
   window.addEventListener('scroll', () => {
     header.classList.toggle('scrolled', window.scrollY > 60);
   }, { passive: true });
-
-  // ── SLIDESHOW ────────────────────────────────────────
-  const slides   = document.querySelectorAll('.slide');
-  const dots     = document.querySelectorAll('.dot');
-  const counter  = document.querySelector('.counter-current');
-  const fill     = document.getElementById('counter-fill');
-  let current    = 0;
-  let timer      = null;
-
-  // ✏️ Duration per slide — was 7000ms, reduced 30% → 4900ms
-  const DURATION = 4900;
-
-  function goTo(index) {
-    slides[current].classList.remove('active');
-    dots[current].classList.remove('active');
-    current = (index + slides.length) % slides.length;
-    slides[current].classList.add('active');
-    dots[current].classList.add('active');
-    counter.textContent = String(current + 1).padStart(2, '0');
-    fill.style.transition = 'none';
-    fill.style.width = '0%';
-    requestAnimationFrame(() => {
-      requestAnimationFrame(() => {
-        fill.style.transition = `width ${DURATION - 500}ms linear`;
-        fill.style.width = '100%';
-      });
-    });
-  }
-
-  function startAuto() {
-    clearInterval(timer);
-    timer = setInterval(() => goTo(current + 1), DURATION);
-  }
-
-  dots.forEach(dot => {
-    dot.addEventListener('click', () => {
-      goTo(parseInt(dot.dataset.slide));
-      startAuto();
-    });
-  });
-
-  // Touch swipe
-  let touchStartX = 0;
-  const ss = document.getElementById('slideshow');
-  ss.addEventListener('touchstart', e => { touchStartX = e.touches[0].clientX; }, { passive: true });
-  ss.addEventListener('touchend', e => {
-    const dx = e.changedTouches[0].clientX - touchStartX;
-    if (Math.abs(dx) > 50) { goTo(dx > 0 ? current - 1 : current + 1); startAuto(); }
-  }, { passive: true });
-
-  goTo(0);
-  startAuto();
 
   // ── SCROLL REVEAL ────────────────────────────────────
   const observer = new IntersectionObserver((entries) => {
