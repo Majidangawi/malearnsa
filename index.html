@@ -428,65 +428,178 @@
 
   .courses-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2px;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 24px;
+    max-width: 1200px;
+    margin: 0 auto;
   }
 
+  /* ── COURSE CARD V2 (image-led, countdown for cohorts) ── */
   .course-card {
-    background: var(--bg2); padding: 44px 36px;
-    position: relative; overflow: hidden;
-    transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-    cursor: pointer; text-decoration: none;
-    display: block; color: inherit;
-    border-top: 1px solid rgba(201,168,76,0.2);
+    background: var(--bg2);
+    border: 1px solid rgba(201,168,76,0.18);
+    border-radius: 16px;
+    overflow: hidden;
+    text-decoration: none;
+    color: inherit;
+    display: flex; flex-direction: column;
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
+                border-color 0.3s ease,
+                box-shadow 0.45s ease;
+    box-shadow: 0 1px 0 rgba(255,255,255,0.02);
+    position: relative;
+  }
+  .course-card:hover {
+    transform: translateY(-6px) scale(1.015);
+    border-color: rgba(201,168,76,0.45);
+    box-shadow: 0 14px 36px rgba(0,0,0,0.45), 0 0 0 1px rgba(201,168,76,0.12);
   }
 
-  .course-card::before {
+  .course-img-wrap {
+    position: relative;
+    aspect-ratio: 16/10;
+    overflow: hidden;
+    background: var(--bg3);
+  }
+  .course-img-wrap img {
+    width: 100%; height: 100%;
+    object-fit: cover; display: block;
+    transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+  .course-card:hover .course-img-wrap img { transform: scale(1.06); }
+  .course-img-wrap::after {
     content: ''; position: absolute; inset: 0;
-    background: linear-gradient(135deg, rgba(201,168,76,0.06) 0%, transparent 60%);
-    opacity: 0; transition: opacity 0.4s;
+    background: linear-gradient(180deg, rgba(8,8,8,0) 55%, rgba(8,8,8,0.55) 100%);
+    pointer-events: none;
   }
 
-  .course-card:hover { background: var(--bg3); transform: translateY(-4px); }
-  .course-card:hover::before { opacity: 1; }
-  .course-card.coming-soon { opacity: 0.5; cursor: default; pointer-events: none; }
+  /* Status badge (top-right) */
+  .course-badge {
+    position: absolute; top: 14px; right: 14px;
+    font-size: 11px; font-weight: 700; letter-spacing: 0.05em;
+    padding: 6px 12px; border-radius: 999px;
+    background: rgba(8,8,8,0.78);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(201,168,76,0.35);
+    color: var(--gold);
+    z-index: 2;
+  }
+  .course-badge.urgent {
+    background: rgba(220,53,69,0.92);
+    border-color: rgba(255,89,89,0.4);
+    color: #fff;
+    animation: urgentPulse 1.4s ease-in-out infinite;
+  }
+  .course-badge.live {
+    background: rgba(76,175,82,0.18);
+    border-color: rgba(76,175,82,0.5);
+    color: #6ed591;
+    animation: livePulse 2s ease-in-out infinite;
+  }
+  @keyframes urgentPulse { 0%,100% { transform: scale(1); } 50% { transform: scale(1.06); } }
+  @keyframes livePulse   { 0%,100% { opacity: 1; }            50% { opacity: 0.6; } }
 
-  .course-number {
-    font-size: 64px; font-weight: 900;
-    color: transparent; -webkit-text-stroke: 1px rgba(201,168,76,0.2);
-    line-height: 1; margin-bottom: 20px;
-    direction: ltr; text-align: right;
+  .course-body {
+    padding: 22px 24px 24px;
+    display: flex; flex-direction: column; gap: 16px;
+    flex: 1;
+  }
+  .course-title {
+    font-size: 22px; font-weight: 700; line-height: 1.35;
+    color: var(--white); word-break: keep-all;
+    margin: 0;
+  }
+  .course-meta-row {
+    display: flex; flex-wrap: wrap; gap: 14px;
+    font-size: 13px; color: var(--muted);
+  }
+  .course-meta-row > span {
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .course-meta-row svg { color: var(--gold); flex-shrink: 0; }
+
+  /* Countdown grid (CIW only) */
+  .course-countdown-label {
+    display: inline-flex; align-items: center; gap: 6px;
+    font-size: 12px; font-weight: 600; color: var(--muted);
+    letter-spacing: 0.04em;
+  }
+  .course-countdown-label svg { color: var(--gold); }
+  .course-countdown-grid {
+    display: grid; grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+  }
+  .countdown-cell {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(201,168,76,0.15);
+    border-radius: 10px;
+    padding: 10px 4px;
+    text-align: center;
+    direction: ltr;
+  }
+  .countdown-num {
+    font-size: 22px; font-weight: 700; color: var(--white);
+    font-variant-numeric: tabular-nums; line-height: 1;
+    font-family: 'Cairo', Arial, sans-serif;
+  }
+  .countdown-label {
+    font-size: 10px; color: var(--muted); margin-top: 4px;
+    text-transform: uppercase; letter-spacing: 0.08em;
+  }
+  .countdown-cell.tick .countdown-num { animation: tickPulse 1s ease-in-out infinite; }
+  @keyframes tickPulse {
+    0%,100% { opacity: 1; transform: scale(1); }
+    50%     { opacity: 0.55; transform: scale(1.08); }
   }
 
-  .course-tag {
-    display: inline-block; font-size: 12px; font-weight: 700;
-    text-transform: uppercase;
-    padding: 5px 12px; margin-bottom: 18px;
-    border: 1px solid; white-space: nowrap;
+  /* Started state */
+  .course-started {
+    background: rgba(76,175,82,0.08);
+    border: 1px solid rgba(76,175,82,0.25);
+    border-radius: 10px;
+    padding: 14px 16px;
+    text-align: center;
   }
-  .course-tag.available { color: var(--gold); border-color: rgba(201,168,76,0.4); background: rgba(201,168,76,0.08); }
-  .course-tag.soon      { color: var(--muted); border-color: rgba(136,136,136,0.3); }
-  .course-tag.live      { color: #4CAF50; border-color: rgba(76,175,80,0.4); background: rgba(76,175,80,0.08); animation: livePulse 2s ease-in-out infinite; }
+  .course-started-title { font-size: 14px; font-weight: 700; color: #6ed591; margin-bottom: 4px; }
+  .course-started-sub   { font-size: 12px; color: var(--muted); }
 
-  @keyframes livePulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
-
-  .course-title { font-size: 26px; font-weight: 700; line-height: 1.4; margin-bottom: 14px; color: var(--white); word-break: keep-all; }
-  .course-desc  { font-size: 17px; color: var(--body); line-height: 1.8; font-weight: 400; margin-bottom: 28px; word-break: keep-all; }
-
-  .course-meta {
+  /* Evergreen "available now" block */
+  .course-availability {
     display: flex; align-items: center; justify-content: space-between;
-    padding-top: 20px; border-top: 1px solid rgba(255,255,255,0.06);
+    background: rgba(201,168,76,0.06);
+    border: 1px solid rgba(201,168,76,0.18);
+    border-radius: 10px;
+    padding: 12px 14px;
   }
+  .course-availability-text { font-size: 13px; color: var(--white); font-weight: 600; }
+  .course-availability-fact { font-size: 12px; color: var(--gold); font-weight: 700; }
 
-  .course-price { font-size: 28px; font-weight: 900; color: var(--gold); direction: ltr; }
-  .course-price span { font-size: 12px; font-weight: 400; color: var(--muted); margin-right: 3px; }
-
-  .course-arrow {
-    width: 44px; height: 44px; border: 1px solid rgba(201,168,76,0.3);
-    display: flex; align-items: center; justify-content: center;
-    transition: all 0.3s; color: var(--gold); font-size: 18px; flex-shrink: 0;
+  /* Footer row: price + CTA */
+  .course-foot {
+    display: flex; align-items: center; justify-content: space-between;
+    margin-top: auto;
+    padding-top: 14px;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    gap: 12px;
   }
-  .course-card:hover .course-arrow { background: var(--gold); color: #080808; border-color: var(--gold); }
+  .course-price { font-size: 22px; font-weight: 900; color: var(--gold); direction: ltr; line-height: 1; }
+  .course-price span { font-size: 11px; font-weight: 400; color: var(--muted); margin-right: 3px; }
+
+  .course-cta {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--gold); color: #080808;
+    font-family: 'Cairo', sans-serif; font-weight: 700; font-size: 13px;
+    padding: 10px 18px; border-radius: 999px;
+    transition: background 0.2s, transform 0.2s;
+    white-space: nowrap;
+  }
+  .course-card:hover .course-cta { background: var(--gold-light); transform: translateX(-3px); }
+
+  @media (max-width: 540px) {
+    .countdown-num { font-size: 18px; }
+    .course-body { padding: 18px 18px 20px; }
+    .course-title { font-size: 19px; }
+  }
 
   /* ── ABOUT ME SECTION ── */
   .about-me {
@@ -1022,42 +1135,111 @@
 
   <div class="courses-grid">
 
-    <a href="/beyond-lighting/" class="course-card reveal reveal-delay-1">
-      <div class="course-number">01</div>
-      <div class="course-tag available">متاح الآن</div>
-      <h3 class="course-title">أبعد من إمكانيات الإضاءة</h3>
-      <p class="course-desc">
-        أكثر من 15 إعداد إضاءة احترافي، 82 صفحة من المحتوى العملي، وفيديوهات تطبيقية — كل ما تحتاجه لتتحكم في الضوء وتصنع صوراً لا تُنسى.
-      </p>
-      <div class="course-meta">
-        <div class="course-price"><span>SAR</span>650</div>
-        <div class="course-arrow">←</div>
+    <!-- ───── CIW C2 — live cohort with countdown ───── -->
+    <a href="/creative-ai-workshop/" class="course-card reveal reveal-delay-1" id="card-ciw">
+      <div class="course-img-wrap">
+        <img src="/creative-ai-workshop/images/hero-desktop.jpg" alt="ورشة صناعة الإلهام" loading="lazy" decoding="async">
+        <div class="course-badge live" id="ciw-badge">قائمة الانتظار</div>
+      </div>
+      <div class="course-body">
+        <h3 class="course-title">ورشة صناعة الإلهام — الدفعة الثانية</h3>
+        <div class="course-meta-row">
+          <span>
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+            ٣١ مايو — ٢ يونيو
+          </span>
+          <span id="ciw-seats">
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+            ٣٠ مقعد فقط
+          </span>
+        </div>
+
+        <!-- Countdown (default state) -->
+        <div id="ciw-countdown-block">
+          <div class="course-countdown-label">
+            <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            <span>تبدأ بعد:</span>
+          </div>
+          <div class="course-countdown-grid" style="margin-top:10px;">
+            <div class="countdown-cell"><div class="countdown-num" id="ciw-d">--</div><div class="countdown-label">يوم</div></div>
+            <div class="countdown-cell"><div class="countdown-num" id="ciw-h">--</div><div class="countdown-label">ساعة</div></div>
+            <div class="countdown-cell"><div class="countdown-num" id="ciw-m">--</div><div class="countdown-label">دقيقة</div></div>
+            <div class="countdown-cell tick"><div class="countdown-num" id="ciw-s">--</div><div class="countdown-label">ثانية</div></div>
+          </div>
+        </div>
+
+        <!-- Started state (hidden by default) -->
+        <div id="ciw-started-block" class="course-started" style="display:none;">
+          <div class="course-started-title">الورشة بدأت!</div>
+          <div class="course-started-sub">انضم الآن للمشاركة</div>
+        </div>
+
+        <div class="course-foot">
+          <div class="course-price"><span>SAR</span>1,299</div>
+          <span class="course-cta" id="ciw-cta">احجز مقعدك ←</span>
+        </div>
       </div>
     </a>
 
-    <a class="course-card coming-soon reveal reveal-delay-2">
-      <div class="course-number">02</div>
-      <div class="course-tag available">متاح الآن</div>
-      <h3 class="course-title">كتاب أبعد من إمكانيات الإضاءة</h3>
-      <p class="course-desc">
-        82 صفحة من الإضاءة الاحترافية في ملف PDF — دليلك المرجعي الكامل لإعدادات الإضاءة، متاح للتحميل الفوري.
-      </p>
-      <div class="course-meta">
-        <div class="course-price"><span>SAR</span>150</div>
-        <div class="course-arrow">←</div>
+    <!-- ───── ITCAI — recorded, evergreen ───── -->
+    <a href="/intro-to-creative-ai/" class="course-card reveal reveal-delay-2">
+      <div class="course-img-wrap">
+        <img src="/intro-to-creative-ai/images/hero-desktop.jpg" alt="مدخل إلى الذكاء الاصطناعي الإبداعي" loading="lazy" decoding="async">
+        <div class="course-badge">متاحة الآن</div>
+      </div>
+      <div class="course-body">
+        <h3 class="course-title">مدخل إلى الذكاء الاصطناعي الإبداعي</h3>
+        <div class="course-meta-row">
+          <span>
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>
+            ١٧ درساً · ٦ وحدات
+          </span>
+          <span>
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            وصول مدى الحياة
+          </span>
+        </div>
+
+        <div class="course-availability">
+          <span class="course-availability-text">ابدأ فوراً — وصول الآن</span>
+          <span class="course-availability-fact">٤٤٩ ر.س</span>
+        </div>
+
+        <div class="course-foot">
+          <div class="course-price"><span>SAR</span>449</div>
+          <span class="course-cta">ابدأ الدورة ←</span>
+        </div>
       </div>
     </a>
 
-    <a href="/ciw-waitlist/" class="course-card reveal reveal-delay-3">
-      <div class="course-number">03</div>
-      <div class="course-tag live">قائمة الانتظار</div>
-      <h3 class="course-title">ورشة صناعة الإلهام</h3>
-      <p class="course-desc">
-        أنتج عملك الإبداعي بإستخدام أدوات الذكاء الإصطناعي من البريف إلى التسليم.
-      </p>
-      <div class="course-meta">
-        <div class="course-price" style="font-size: 16px; color: var(--gold);">٣٠ أبريل — ٢ مايو</div>
-        <div class="course-arrow">←</div>
+    <!-- ───── BL — recorded, evergreen ───── -->
+    <a href="/beyond-lighting/" class="course-card reveal reveal-delay-3">
+      <div class="course-img-wrap">
+        <img src="/beyond-lighting/course_assets/hero-poster.jpg" alt="أبعد من إمكانيات الإضاءة" loading="lazy" decoding="async">
+        <div class="course-badge">متاحة الآن</div>
+      </div>
+      <div class="course-body">
+        <h3 class="course-title">أبعد من إمكانيات الإضاءة</h3>
+        <div class="course-meta-row">
+          <span>
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+            ١٥+ إعداد إضاءة
+          </span>
+          <span>
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            ٨٢ صفحة + فيديوهات
+          </span>
+        </div>
+
+        <div class="course-availability">
+          <span class="course-availability-text">ابدأ فوراً — وصول الآن</span>
+          <span class="course-availability-fact">٦٥٠ ر.س</span>
+        </div>
+
+        <div class="course-foot">
+          <div class="course-price"><span>SAR</span>650</div>
+          <span class="course-cta">ابدأ الدورة ←</span>
+        </div>
       </div>
     </a>
 
@@ -1248,6 +1430,82 @@
   }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // ── CIW C2 — countdown + live seats ─────────────────────
+  // Cohort starts 2026-05-31 19:00 Asia/Riyadh = 16:00 UTC.
+  (function initCiwCard() {
+    const startUtc   = Date.UTC(2026, 4, 31, 16, 0, 0); // month is 0-indexed
+    const elDays     = document.getElementById('ciw-d');
+    const elHrs      = document.getElementById('ciw-h');
+    const elMin      = document.getElementById('ciw-m');
+    const elSec      = document.getElementById('ciw-s');
+    const elCountdown= document.getElementById('ciw-countdown-block');
+    const elStarted  = document.getElementById('ciw-started-block');
+    const elBadge    = document.getElementById('ciw-badge');
+    const elCta      = document.getElementById('ciw-cta');
+    const elSeats    = document.getElementById('ciw-seats');
+    if (!elDays) return;
+
+    const toAr = (n) => String(n).replace(/[0-9]/g, (d) => '٠١٢٣٤٥٦٧٨٩'[+d]);
+    const pad  = (n) => n < 10 ? '0' + n : String(n);
+
+    function tick() {
+      const diff = Math.max(0, Math.floor((startUtc - Date.now()) / 1000));
+      if (diff <= 0) {
+        if (elCountdown) elCountdown.style.display = 'none';
+        if (elStarted)   elStarted.style.display   = 'block';
+        if (elBadge) {
+          elBadge.textContent = 'بدأت الآن';
+          elBadge.classList.remove('live');
+          elBadge.classList.add('urgent');
+        }
+        if (elCta) elCta.textContent = 'انضم الآن ←';
+        return false;
+      }
+      const days = Math.floor(diff / 86400);
+      const hrs  = Math.floor((diff % 86400) / 3600);
+      const min  = Math.floor((diff % 3600)  / 60);
+      const sec  = diff % 60;
+      elDays.textContent = toAr(pad(days));
+      elHrs.textContent  = toAr(pad(hrs));
+      elMin.textContent  = toAr(pad(min));
+      elSec.textContent  = toAr(pad(sec));
+      // Urgency badge if under 24h
+      if (diff < 86400 && elBadge && !elBadge.classList.contains('urgent')) {
+        elBadge.textContent = 'تبدأ قريباً!';
+        elBadge.classList.remove('live');
+        elBadge.classList.add('urgent');
+      }
+      return true;
+    }
+    tick();
+    const interval = setInterval(() => { if (!tick()) clearInterval(interval); }, 1000);
+
+    // Live seats — same Apps Script endpoint the CIW landing page uses.
+    (async () => {
+      const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbznjcsYu8gLDZqFJGededAQaATad_L8vlhRQV04pOqh57HB5nFVRy9zUHAcg6goyj8DKA/exec';
+      try {
+        const res  = await fetch(APPS_SCRIPT_URL + '?action=get_seats_left&cohort=C2');
+        const data = await res.json();
+        if (!data || typeof data.seats_left !== 'number' || !elSeats) return;
+        const left  = data.seats_left;
+        const total = data.seats_total || 30;
+        const icon  = elSeats.querySelector('svg');
+        const text  = (left === total)
+          ? toAr(total) + ' مقعد فقط'
+          : 'متبقي ' + toAr(left) + ' من ' + toAr(total) + ' مقعد';
+        elSeats.innerHTML = '';
+        if (icon) elSeats.appendChild(icon);
+        elSeats.appendChild(document.createTextNode(' ' + text));
+        if (data.sold_out && elBadge) {
+          elBadge.textContent = 'اكتملت الدفعة';
+          elBadge.classList.remove('live');
+          elBadge.classList.add('urgent');
+          if (elCta) elCta.textContent = 'قائمة الانتظار ←';
+        }
+      } catch (_) { /* fail open — keep static "٣٠ مقعد فقط" */ }
+    })();
+  })();
 </script>
 
 
