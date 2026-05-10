@@ -1212,9 +1212,12 @@
       let w = 0;
       for (let i = 0; i < halfCount; i++) {
         const c = cards[i];
-        const rect = c.getBoundingClientRect();
-        const cs   = getComputedStyle(c);
-        w += rect.width + (parseFloat(cs.marginRight) || 0);
+        // offsetWidth = layout width *before* any transform (rotate).
+        // getBoundingClientRect().width returns the rotated axis-aligned
+        // bounding box, which is wider — that inflated value made the
+        // animation overshoot the seam and visibly reset.
+        const cs = getComputedStyle(c);
+        w += c.offsetWidth + (parseFloat(cs.marginRight) || 0);
       }
       return w;
     }
@@ -1241,9 +1244,11 @@
     wrap.addEventListener('mouseenter', () => animation && animation.pause());
     wrap.addEventListener('mouseleave', () => animation && animation.play());
 
-    // First measurement after fonts/images settle
-    if (document.readyState === 'complete') start();
-    else window.addEventListener('load', start);
+    // Start IMMEDIATELY — card layout is CSS-driven (aspect-ratio + height),
+    // so we don't need to wait for image bytes to download. The marquee
+    // moves while images stream in. rAF gives the browser a beat to apply
+    // initial layout before we measure.
+    requestAnimationFrame(start);
 
     // Re-tune on resize (debounced) — keeps pixel-perfect alignment
     // when card widths recompute via clamp/aspect-ratio.
