@@ -1207,19 +1207,22 @@
 
     function measureSetWidth() {
       const cards = track.querySelectorAll('.hero3-marquee-card');
-      if (cards.length < 2) return 0;
+      if (cards.length < 4) return 0;
       const halfCount = Math.floor(cards.length / 2);
-      let w = 0;
-      for (let i = 0; i < halfCount; i++) {
-        const c = cards[i];
-        // offsetWidth = layout width *before* any transform (rotate).
-        // getBoundingClientRect().width returns the rotated axis-aligned
-        // bounding box, which is wider — that inflated value made the
-        // animation overshoot the seam and visibly reset.
-        const cs = getComputedStyle(c);
-        w += c.offsetWidth + (parseFloat(cs.marginRight) || 0);
-      }
-      return w;
+      // Subpixel-precise loop offset: the layout distance from card 1's
+      // left edge to the duplicate set's first card (cards[halfCount]).
+      // Both cards have the same nth-child(odd) rotation (halfCount is
+      // even), so their getBoundingClientRect().left values are shifted
+      // by an identical amount due to rotate() — the *difference*
+      // equals the precise un-rotated pixel offset with subpixel
+      // accuracy. This avoids both issues we hit before:
+      //   1. offsetWidth rounding to integer (~2-3px error per loop),
+      //      which produced a small visible cut at the seam.
+      //   2. getBoundingClientRect().width inflation by rotated bbox,
+      //      which made the offset overshoot the seam entirely.
+      const a = cards[0].getBoundingClientRect();
+      const b = cards[halfCount].getBoundingClientRect();
+      return b.left - a.left;
     }
 
     function start() {
