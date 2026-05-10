@@ -259,11 +259,12 @@
     width: max-content;
     height: 100%;
     align-items: center;
-    animation: hero3Scroll 60s linear infinite;
     will-change: transform;
     direction: ltr; /* always scroll left→right regardless of doc dir */
+    /* Animation is driven by JS (Web Animations API) using a measured
+       pixel-perfect offset — see initHeroMarquee() at the bottom of the
+       page. Avoids subpixel jitter at the loop seam. */
   }
-  .hero3-marquee:hover .hero3-marquee-track { animation-play-state: paused; }
   .hero3-marquee-card {
     flex-shrink: 0;
     height: clamp(190px, 28vh, 260px);
@@ -271,8 +272,7 @@
     border-radius: 16px;
     overflow: hidden;
     box-shadow: 0 10px 30px rgba(0,0,0,0.45), 0 0 0 1px rgba(201,168,76,0.08);
-    margin-right: 18px; /* gap-equivalent — lives on the card so the
-                           duplicate set wraps cleanly at translateX(-50%) */
+    margin-right: 18px;
   }
   .hero3-marquee-card:nth-child(odd)  { transform: rotate(-2deg); }
   .hero3-marquee-card:nth-child(even) { transform: rotate(5deg); }
@@ -280,12 +280,7 @@
     width: 100%; height: 100%;
     object-fit: cover; display: block;
   }
-  @keyframes hero3Scroll {
-    from { transform: translateX(0); }
-    to   { transform: translateX(-50%); } /* track is duplicated → seamless loop */
-  }
   @media (prefers-reduced-motion: reduce) {
-    .hero3-marquee-track { animation: none; }
     .hero3-tagline, .hero3-title, .hero3-desc, .hero3-cta { animation: none; opacity: 1; transform: none; }
   }
 
@@ -1196,6 +1191,74 @@
   }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
 
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // ── HERO 3 MARQUEE — pixel-perfect seamless loop ─────────
+  // Measures the exact width of the first half of the duplicated card
+  // list (including each card's outer margin) and animates by that exact
+  // pixel value via WAAPI. Avoids subpixel rounding errors that
+  // translateX(-50%) can introduce at the wrap seam. Re-runs on resize.
+  (function initHeroMarquee() {
+    const track = document.querySelector('.hero3-marquee-track');
+    const wrap  = document.querySelector('.hero3-marquee');
+    if (!track || !wrap) return;
+
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)');
+    let animation = null;
+
+    function measureSetWidth() {
+      const cards = track.querySelectorAll('.hero3-marquee-card');
+      if (cards.length < 2) return 0;
+      const halfCount = Math.floor(cards.length / 2);
+      let w = 0;
+      for (let i = 0; i < halfCount; i++) {
+        const c = cards[i];
+        const rect = c.getBoundingClientRect();
+        const cs   = getComputedStyle(c);
+        w += rect.width + (parseFloat(cs.marginRight) || 0);
+      }
+      return w;
+    }
+
+    function start() {
+      if (reduced.matches) return;
+      const setWidth = measureSetWidth();
+      if (!setWidth) return;
+      if (animation) animation.cancel();
+      animation = track.animate(
+        [
+          { transform: 'translate3d(0, 0, 0)' },
+          { transform: `translate3d(-${setWidth}px, 0, 0)` }
+        ],
+        {
+          duration: 60000,        // 60s per loop — tweakable
+          iterations: Infinity,
+          easing: 'linear'
+        }
+      );
+    }
+
+    // Pause on hover (desktop only)
+    wrap.addEventListener('mouseenter', () => animation && animation.pause());
+    wrap.addEventListener('mouseleave', () => animation && animation.play());
+
+    // First measurement after fonts/images settle
+    if (document.readyState === 'complete') start();
+    else window.addEventListener('load', start);
+
+    // Re-tune on resize (debounced) — keeps pixel-perfect alignment
+    // when card widths recompute via clamp/aspect-ratio.
+    let rt;
+    window.addEventListener('resize', () => {
+      clearTimeout(rt);
+      rt = setTimeout(start, 250);
+    });
+
+    // Honor prefers-reduced-motion changes
+    reduced.addEventListener?.('change', () => {
+      if (reduced.matches && animation) animation.cancel();
+      else start();
+    });
+  })();
 
   // ── CIW C2 — countdown + live seats ─────────────────────
   // Cohort starts 2026-05-31 19:00 Asia/Riyadh = 16:00 UTC.
