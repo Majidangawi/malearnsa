@@ -16,3 +16,13 @@ projects/ma-learn-launch/tamara-apps-script.js
 # Local Apps Script backups (timestamped Code.js snapshots). Useful for
 # rollback but no need to ship to the public repo.
 archives/apps-script-backups/
+
+# macOS Finder metadata
+.DS_Store
+**/.DS_Store
+
+# CIW student gallery raw exports — kept locally for re-export.
+# The deployed site uses optimized variants (student-N-thumb.jpg
+# + student-N-full.jpg) which ARE committed.
+creative-ai-workshop/images/Student Work/
+creative-ai-workshop/images/_src_originals/
