@@ -283,6 +283,26 @@
 
     .field input[type="email"],
     .field input[type="tel"] { direction: ltr; text-align: right; }
+    .wa-optin {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin: 18px 0 8px;
+      font-size: 13px;
+      line-height: 1.5;
+      color: rgba(255,255,255,0.72);
+      cursor: pointer;
+      user-select: none;
+    }
+    .wa-optin input[type="checkbox"] {
+      flex-shrink: 0;
+      width: 18px;
+      height: 18px;
+      margin: 1px 0 0;
+      accent-color: #25D366;
+      cursor: pointer;
+    }
+    .wa-optin span { flex: 1; }
 
     /* Select arrow */
     .field.select-field {
@@ -458,7 +478,7 @@
       <p class="hero-headline">
         هنا نرسل <strong>عروضنا</strong>، <strong>خصوماتنا</strong>، <strong>إصداراتنا الجديدة</strong>،<br>
         ومميزات حصرية لأعضاء القائمة فقط.<br>
-        الانضمام مجاني — اللي عليك بس تنتبه لبريدك الإلكتروني.
+        التحديثات توصلك على الإيميل والواتساب — الانضمام مجاني.
       </p>
 
       <!-- ══ FORM ══ -->
@@ -696,6 +716,11 @@
             </div>
           </div>
 
+          <label class="wa-optin">
+            <input type="checkbox" id="fwa" name="whatsapp_optin" checked>
+            <span>أوافق على استلام تحديثات MA Learn على الواتساب على الرقم اللي سجلته فوق.</span>
+          </label>
+
           <button type="submit" class="btn-join" id="submitBtn">
             انضم لقائمة الانتظار
           </button>
@@ -750,6 +775,7 @@
       const email   = document.getElementById('femail').value.trim();
       const phone   = document.getElementById('fphone').value.trim();
       const country = document.getElementById('fcountry').value.trim();
+      const waOptin = document.getElementById('fwa').checked;
 
       const fields = [
         ['fname', name],
@@ -776,7 +802,8 @@
         email,
         phone,
         country,
-        workshop: 'MA Learn Waitlist'
+        workshop: 'MA Learn Waitlist',
+        whatsapp_optin: waOptin
       };
 
       try {
