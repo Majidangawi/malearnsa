@@ -83,7 +83,7 @@
 
   h1, h2, h3,
   .hero-title, .course-title,
-  .about-text h2, .store-text h3, .section-title {
+  .about-text h2, .section-title {
     font-family: 'GumelaArabic', 'Cairo', sans-serif;
     font-weight: 700;
   }
@@ -620,56 +620,6 @@
   /* ── ORIGINAL ABOUT (stats) strip — hidden, replaced by about-me ── */
   /* keeping class but not used anymore */
 
-  /* ── STORE ── */
-  .store-banner { max-width: 1200px; margin: 0 auto; padding: 80px 48px 100px; }
-
-  .store-inner {
-    background: var(--bg2); border: 1px solid rgba(201,168,76,0.2);
-    padding: 56px 64px; display: flex; align-items: center;
-    justify-content: space-between; gap: 48px;
-    position: relative; overflow: hidden;
-    text-align: right;
-  }
-
-  .store-inner::before {
-    content: ''; position: absolute;
-    right: 0; top: 0; bottom: 0; width: 4px;
-    background: var(--gold);
-  }
-
-  /* Subtle glow */
-  .store-inner::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(ellipse 60% 80% at 80% 50%, rgba(201,168,76,0.06) 0%, transparent 70%);
-    pointer-events: none;
-  }
-
-  .store-text h3 {
-    font-size: clamp(22px, 3vw, 32px);
-    font-weight: 900;
-    margin-bottom: 12px;
-    word-break: keep-all;
-    line-height: 1.3;
-  }
-
-  .store-text p  {
-    color: var(--body); font-size: 17px; font-weight: 400;
-    max-width: 540px; line-height: 1.8; word-break: keep-all;
-  }
-
-  .store-btn {
-    display: inline-flex; align-items: center; gap: 10px;
-    background: var(--gold); color: #080808;
-    text-decoration: none; padding: 18px 44px;
-    font-size: 17px; font-weight: 900;
-    white-space: nowrap; transition: all 0.3s;
-    font-family: 'GumelaArabic', 'Cairo', sans-serif; flex-shrink: 0;
-    letter-spacing: 0.5px;
-  }
-  .store-btn:hover { background: var(--gold-light); box-shadow: 0 20px 60px rgba(201,168,76,0.3); }
-
   /* Footer styles live in footer-module/v1/footer.css */
 
   /* ── MOBILE ── */
@@ -716,14 +666,6 @@
     .achieve-grid { grid-template-columns: 1fr 1fr; }
     .about-me-name { font-size: clamp(28px, 8vw, 42px); }
     .about-me-bio { font-size: 16px; }
-
-    /* Store */
-    .store-banner { padding: 48px 20px 64px; }
-    .store-inner { flex-direction: column; padding: 36px 24px; text-align: center; }
-    .store-inner::before { right: auto; left: 0; top: 0; bottom: auto; width: 100%; height: 3px; }
-    .store-text h3 { font-size: 22px; }
-    .store-text p { font-size: 15px; }
-    .store-btn { width: 100%; justify-content: center; padding: 16px 32px; }
 
     /* Courses */
     .section { padding: 64px 20px; }
@@ -887,7 +829,6 @@
   <nav>
     <a href="#courses">الدورات</a>
     <a href="#about-me">عن ماجد</a>
-    <a href="/beyond-lighting/">الدورات</a>
     <a href="refund-policy.html">سياسة الاسترجاع</a>
     <a href="privacy-policy.html">الخصوصية</a>
   </nav>
@@ -1155,22 +1096,6 @@
 
   </div>
 </section>
-
-
-<!-- ══════════════════════════════════════════════
-     STORE BANNER
-══════════════════════════════════════════════ -->
-<div class="store-banner">
-  <div class="store-inner reveal">
-    <div class="store-text">
-      <h3>ابدأ رحلتك الإبداعية اليوم</h3>
-      <p>
-        كل ما تحتاجه لتبني مسيرة إبداعية حقيقية — من أسرار الإضاءة إلى أدوات الذكاء الاصطناعي — في مكان واحد. الكتب والدورات جاهزة. السؤال: أنت جاهز؟
-      </p>
-    </div>
-    <a href="/beyond-lighting/checkout.html" class="store-btn">ابدأ الآن ←</a>
-  </div>
-</div>
 
 
 <!-- FOOTER -->
