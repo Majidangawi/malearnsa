@@ -289,11 +289,28 @@
     }
     @media (max-width: 640px) { .who-grid { grid-template-columns: 1fr; } }
     @media (max-width: 760px) {
-      .testimonial-grid { grid-template-columns: 1fr !important; }
+      .testimonial-grid { grid-template-columns: repeat(2, 1fr) !important; }
       .student-gallery { grid-template-columns: repeat(2, 1fr) !important; }
     }
-    .student-thumb:hover img { transform: scale(1.04); }
-    .student-thumb:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+    .student-thumb:hover img,
+    .testimonial-thumb:hover img { transform: scale(1.04); }
+    .student-thumb:focus-visible,
+    .testimonial-thumb:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+    .testimonial-thumb .play-overlay {
+      position: absolute; top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 56px; height: 56px;
+      background: rgba(0,0,0,0.6); border: 1.5px solid rgba(255,255,255,0.9);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      pointer-events: none; backdrop-filter: blur(6px);
+      transition: transform 0.3s ease, background 0.3s ease;
+    }
+    .testimonial-thumb:hover .play-overlay {
+      transform: translate(-50%, -50%) scale(1.08);
+      background: rgba(0,0,0,0.78);
+    }
+    .testimonial-thumb .play-overlay svg { width: 22px; height: 22px; fill: #fff; margin-inline-start: 3px; }
     /* 10th item sits centered in its own row (3-col grid leaves an orphan otherwise) */
     .student-gallery > .student-thumb:nth-child(10) { grid-column: 2 / 3; }
     @media (max-width: 760px) {
@@ -763,29 +780,45 @@
   <section class="testimonials" style="background:#0A0A0A;">
     <div class="container">
       <div class="section-label">من الدفعة الأولى</div>
-      <h2 class="section-title">كلام الطلاب اللي خلصوا.</h2>
-      <p class="section-body">٣ ليالٍ، أكثر من ٣٠ طالب، رسائل جتني بعد آخر جلسة بساعتين.</p>
+      <h2 class="section-title">تجربة المبدعين مع الورشة</h2>
+      <p class="section-body">٣ ليالٍ، أكثر من ٣٠ طالب — مبدعين شاركونا رحلتهم في صناعة الإلهام.</p>
 
-      <div class="testimonial-grid" style="display:grid;grid-template-columns:repeat(2, 1fr);gap:18px;margin-top:48px;">
-        <div style="background:var(--card-bg);border:1px solid #1a1a1a;border-right:2px solid var(--gold);padding:30px 28px;">
-          <p style="font-size:1rem;color:var(--ivory);line-height:1.85;margin-bottom:20px;">"نقلة نوعية بكل ما تحمله الكلمة من معنى. ألهمتنا فعلاً، ليس فقط بالمعلومات ولكن بروحك المعطاءة وحرصك على أن يخرج الجميع مستفيداً."</p>
-          <p style="font-size:0.85rem;color:var(--gold);font-weight:700;letter-spacing:0.05em;">— محمد ع.</p>
-        </div>
-
-        <div style="background:var(--card-bg);border:1px solid #1a1a1a;border-right:2px solid var(--gold);padding:30px 28px;">
-          <p style="font-size:1rem;color:var(--ivory);line-height:1.85;margin-bottom:20px;">"مهما قلت ما راح اقدر اعبر عن امتناني لعطائك واسلوبك والمعلومات اللي عطيتنا اياها وما هي غريبة عليك."</p>
-          <p style="font-size:0.85rem;color:var(--gold);font-weight:700;letter-spacing:0.05em;">— شعاع س.</p>
-        </div>
-
-        <div style="background:var(--card-bg);border:1px solid #1a1a1a;border-right:2px solid var(--gold);padding:30px 28px;">
-          <p style="font-size:1rem;color:var(--ivory);line-height:1.85;margin-bottom:20px;">"كيف غيرت طريقة تفكيري في الإخراج. قاعد بشتغل على المشروع وبدعيلك."</p>
-          <p style="font-size:0.85rem;color:var(--gold);font-weight:700;letter-spacing:0.05em;">— أحمد ك.</p>
-        </div>
-
-        <div style="background:var(--card-bg);border:1px solid #1a1a1a;border-right:2px solid var(--gold);padding:30px 28px;">
-          <p style="font-size:1rem;color:var(--ivory);line-height:1.85;margin-bottom:20px;">"ورشتك كانت ملهمة بشكل كبير، وفتحت لي آفاق جديدة في التفكير والإبداع. ممتنة لكل فكرة شاركتنا فيها — تجربة ثرية ومختلفة."</p>
-          <p style="font-size:0.85rem;color:var(--gold);font-weight:700;letter-spacing:0.05em;">— مصممة، الدفعة الأولى</p>
-        </div>
+      <div class="testimonial-grid" style="display:grid;grid-template-columns:repeat(4, 1fr);gap:14px;margin-top:48px;">
+        <button type="button" class="testimonial-thumb" data-type="video" data-src="testimonials/testimonial-vid-1.mp4" data-poster="testimonials/testimonial-vid-1-poster.jpg" aria-label="فيديو شهادة طالب" style="display:block;aspect-ratio:4/5;overflow:hidden;background:#0a0a0a;border:0;padding:0;cursor:pointer;position:relative;">
+          <img src="testimonials/testimonial-vid-1-poster-thumb.jpg" alt="فيديو شهادة من الدفعة الأولى" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s ease;">
+          <span class="play-overlay" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+        </button>
+        <button type="button" class="testimonial-thumb" data-type="image" data-src="images/testimonial-1-full.jpg" aria-label="عرض بحجم كامل" style="display:block;aspect-ratio:4/5;overflow:hidden;background:#0a0a0a;border:0;padding:0;cursor:pointer;">
+          <img src="images/testimonial-1-thumb.jpg" alt="شهادة طالب من الدفعة الأولى" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s ease;">
+        </button>
+        <button type="button" class="testimonial-thumb" data-type="image" data-src="images/testimonial-2-full.jpg" aria-label="عرض بحجم كامل" style="display:block;aspect-ratio:4/5;overflow:hidden;background:#0a0a0a;border:0;padding:0;cursor:pointer;">
+          <img src="images/testimonial-2-thumb.jpg" alt="شهادة طالب من الدفعة الأولى" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s ease;">
+        </button>
+        <button type="button" class="testimonial-thumb" data-type="image" data-src="images/testimonial-3-full.jpg" aria-label="عرض بحجم كامل" style="display:block;aspect-ratio:4/5;overflow:hidden;background:#0a0a0a;border:0;padding:0;cursor:pointer;">
+          <img src="images/testimonial-3-thumb.jpg" alt="شهادة طالب من الدفعة الأولى" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s ease;">
+        </button>
+        <button type="button" class="testimonial-thumb" data-type="image" data-src="images/testimonial-4-full.jpg" aria-label="عرض بحجم كامل" style="display:block;aspect-ratio:4/5;overflow:hidden;background:#0a0a0a;border:0;padding:0;cursor:pointer;">
+          <img src="images/testimonial-4-thumb.jpg" alt="شهادة طالب من الدفعة الأولى" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s ease;">
+        </button>
+        <button type="button" class="testimonial-thumb" data-type="video" data-src="testimonials/testimonial-vid-2.mp4" data-poster="testimonials/testimonial-vid-2-poster.jpg" aria-label="فيديو شهادة طالب" style="display:block;aspect-ratio:4/5;overflow:hidden;background:#0a0a0a;border:0;padding:0;cursor:pointer;position:relative;">
+          <img src="testimonials/testimonial-vid-2-poster-thumb.jpg" alt="فيديو شهادة من الدفعة الأولى" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s ease;">
+          <span class="play-overlay" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+        </button>
+        <button type="button" class="testimonial-thumb" data-type="image" data-src="images/testimonial-5-full.jpg" aria-label="عرض بحجم كامل" style="display:block;aspect-ratio:4/5;overflow:hidden;background:#0a0a0a;border:0;padding:0;cursor:pointer;">
+          <img src="images/testimonial-5-thumb.jpg" alt="شهادة طالب من الدفعة الأولى" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s ease;">
+        </button>
+        <button type="button" class="testimonial-thumb" data-type="image" data-src="images/testimonial-6-full.jpg" aria-label="عرض بحجم كامل" style="display:block;aspect-ratio:4/5;overflow:hidden;background:#0a0a0a;border:0;padding:0;cursor:pointer;">
+          <img src="images/testimonial-6-thumb.jpg" alt="شهادة طالب من الدفعة الأولى" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s ease;">
+        </button>
+        <button type="button" class="testimonial-thumb" data-type="image" data-src="images/testimonial-7-full.jpg" aria-label="عرض بحجم كامل" style="display:block;aspect-ratio:4/5;overflow:hidden;background:#0a0a0a;border:0;padding:0;cursor:pointer;">
+          <img src="images/testimonial-7-thumb.jpg" alt="شهادة طالب من الدفعة الأولى" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s ease;">
+        </button>
+        <button type="button" class="testimonial-thumb" data-type="image" data-src="images/testimonial-8-full.jpg" aria-label="عرض بحجم كامل" style="display:block;aspect-ratio:4/5;overflow:hidden;background:#0a0a0a;border:0;padding:0;cursor:pointer;">
+          <img src="images/testimonial-8-thumb.jpg" alt="شهادة طالب من الدفعة الأولى" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s ease;">
+        </button>
+        <button type="button" class="testimonial-thumb" data-type="image" data-src="images/testimonial-9-full.jpg" aria-label="عرض بحجم كامل" style="display:block;aspect-ratio:4/5;overflow:hidden;background:#0a0a0a;border:0;padding:0;cursor:pointer;">
+          <img src="images/testimonial-9-thumb.jpg" alt="شهادة طالب من الدفعة الأولى" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s ease;">
+        </button>
       </div>
     </div>
   </section>
@@ -795,9 +828,9 @@
   <!-- ══ STUDENT WORK GALLERY ═══════════════════════════ -->
   <section class="student-work">
     <div class="container">
-      <div class="section-label">شغل الدفعة الأولى</div>
+      <div class="section-label">أعمال الدفعة السابقة</div>
       <h2 class="section-title">من بريف عميل، إلى مخرج كامل.</h2>
-      <p class="section-body">كل صورة هنا طلعت من بين إيدي طالب — خلال ٣ أيام.</p>
+      <p class="section-body">كل صورة هنا طلعت من بين يدين ملهم — كجزء من تطبيقات الورشة.</p>
 
       <div class="student-gallery" style="display:grid;grid-template-columns:repeat(3, 1fr);gap:14px;margin-top:48px;">
         <button type="button" class="student-thumb" data-src="images/student-1-full.jpg" aria-label="عرض بحجم كامل" style="display:block;aspect-ratio:4/5;overflow:hidden;background:#0a0a0a;border:0;padding:0;cursor:pointer;">
@@ -832,10 +865,11 @@
         </button>
       </div>
 
-      <!-- Lightbox modal for student artwork -->
-      <div id="art-lightbox" role="dialog" aria-modal="true" aria-label="عرض الصورة بحجم كامل" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.92);align-items:center;justify-content:center;padding:24px;">
-        <button type="button" id="art-lightbox-close" aria-label="إغلاق" style="position:absolute;top:18px;right:18px;width:44px;height:44px;border:1px solid rgba(255,255,255,0.3);background:rgba(0,0,0,0.4);color:#fff;font-size:1.6rem;line-height:1;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;">×</button>
-        <img id="art-lightbox-img" src="" alt="" style="max-width:100%;max-height:90vh;object-fit:contain;display:block;">
+      <!-- Lightbox modal for student artwork + testimonial media -->
+      <div id="art-lightbox" role="dialog" aria-modal="true" aria-label="عرض بحجم كامل" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.92);align-items:center;justify-content:center;padding:24px;">
+        <button type="button" id="art-lightbox-close" aria-label="إغلاق" style="position:absolute;top:18px;right:18px;width:44px;height:44px;border:1px solid rgba(255,255,255,0.3);background:rgba(0,0,0,0.4);color:#fff;font-size:1.6rem;line-height:1;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2;">×</button>
+        <img id="art-lightbox-img" src="" alt="" style="max-width:100%;max-height:90vh;object-fit:contain;display:none;">
+        <video id="art-lightbox-video" controls playsinline preload="none" style="max-width:100%;max-height:90vh;display:none;background:#000;"></video>
       </div>
     </div>
   </section>
@@ -1106,30 +1140,55 @@
   </script>
 
   <script>
-    // Artwork lightbox — clicking any student-thumb opens full-screen modal
+    // Lightbox — clicking any .student-thumb or .testimonial-thumb opens full-screen modal.
+    // Photos render via <img>; videos render via <video controls autoplay>.
     (function () {
       const lightbox = document.getElementById('art-lightbox');
       const img      = document.getElementById('art-lightbox-img');
+      const video    = document.getElementById('art-lightbox-video');
       const closeBtn = document.getElementById('art-lightbox-close');
       if (!lightbox || !img || !closeBtn) return;
 
-      function open(src, alt) {
-        img.src = src;
-        img.alt = alt || '';
+      function open(src, alt, type, poster) {
+        if (type === 'video' && video) {
+          img.style.display = 'none';
+          if (poster) video.poster = poster;
+          video.src = src;
+          video.style.display = 'block';
+          video.load();
+          video.play().catch(function () { /* autoplay blocked — user can press play */ });
+        } else {
+          if (video) {
+            video.pause();
+            video.removeAttribute('src');
+            video.load();
+            video.style.display = 'none';
+          }
+          img.src = src;
+          img.alt = alt || '';
+          img.style.display = 'block';
+        }
         lightbox.style.display = 'flex';
         document.body.style.overflow = 'hidden';
       }
       function close() {
         lightbox.style.display = 'none';
         img.src = '';
+        if (video) {
+          video.pause();
+          video.removeAttribute('src');
+          video.load();
+        }
         document.body.style.overflow = '';
       }
 
-      document.querySelectorAll('.student-thumb').forEach(function (btn) {
+      document.querySelectorAll('.student-thumb, .testimonial-thumb').forEach(function (btn) {
         btn.addEventListener('click', function () {
-          const src = btn.getAttribute('data-src');
+          const type   = btn.getAttribute('data-type') || 'image';
+          const src    = btn.getAttribute('data-src');
+          const poster = btn.getAttribute('data-poster');
           const altImg = btn.querySelector('img');
-          open(src, altImg ? altImg.alt : '');
+          open(src, altImg ? altImg.alt : '', type, poster);
         });
       });
 

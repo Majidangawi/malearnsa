@@ -26,3 +26,9 @@ archives/apps-script-backups/
 # + student-N-full.jpg) which ARE committed.
 creative-ai-workshop/images/Student Work/
 creative-ai-workshop/images/_src_originals/
+
+# CIW testimonial raw exports — full-resolution screenshots and
+# uncompressed .MOV originals. Site uses the compressed mp4 + jpg
+# variants (testimonial-N-*.jpg, testimonial-vid-N.mp4) which ARE
+# committed.
+creative-ai-workshop/testimonials/_src_originals/
