@@ -1,0 +1,1821 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <!-- Meta Pixel Code -->
+  <script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '961157069802409');
+  fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=961157069802409&ev=PageView&noscript=1"
+  /></noscript>
+  <!-- End Meta Pixel Code -->
+
+  <meta charset="UTF-8">
+  <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>دليل البرومبت في Luma AI | MA Learn</title>
+  <meta name="description" content="دليل شامل لكتابة البرومبت في منصة Luma AI (Uni-1) — قوالب، أمثلة جاهزة للنسخ، مفردات الكاميرا والإضاءة، ومكتبة برومبتات تفاعلية.">
+  <meta name="author" content="ماجد عنقاوي — MA Learn">
+  <link rel="canonical" href="https://malearnsa.com/luma-prompt-guide.html">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="دليل البرومبت في Luma AI | MA Learn">
+  <meta property="og:description" content="دليل شامل لكتابة البرومبت في Luma AI — قوالب جاهزة، مكتبة أمثلة، ومفردات احترافية.">
+  <meta property="og:url" content="https://malearnsa.com/luma-prompt-guide.html">
+  <meta property="og:locale" content="ar_SA">
+  <meta property="og:site_name" content="MA Learn">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg: #080808;
+      --surface: #121212;
+      --surface-2: #181818;
+      --border: rgba(255,255,255,0.07);
+      --border-gold: rgba(201,168,76,0.2);
+      --gold: #C9A84C;
+      --gold-lum: #E8D08A;
+      --gold-soft: rgba(201,168,76,0.08);
+      --ivory: #F5F0E8;
+      --silver: #BBBBBB;
+      --grey: #777;
+      --muted: #888;
+      --green: #4CAF82;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: var(--bg);
+      color: var(--ivory);
+      min-height: 100vh;
+      direction: rtl;
+      line-height: 1.85;
+      font-size: 16px;
+      overflow-x: hidden;
+    }
+
+    /* Grain overlay */
+    body::after {
+      content: '';
+      position: fixed; inset: 0;
+      pointer-events: none; z-index: 9999; opacity: 0.025;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+    }
+
+    /* ── HEADER ── */
+    header {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(8,8,8,0.95); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      padding: 16px 40px;
+      display: flex; align-items: center; justify-content: space-between;
+    }
+    .logo-img { height: 26px; width: auto; }
+    header nav a {
+      color: var(--muted); text-decoration: none;
+      font-size: 14px; margin-right: 24px; transition: color 0.2s;
+    }
+    header nav a:hover { color: var(--gold); }
+    @media (max-width: 700px) {
+      header { padding: 12px 16px; }
+      header nav a { margin-right: 12px; font-size: 12px; }
+    }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 80px 40px 56px;
+      max-width: 900px; margin: 0 auto;
+      border-bottom: 1px solid var(--border);
+      text-align: center;
+      position: relative;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      width: 600px; height: 600px;
+      border-radius: 50%; filter: blur(140px);
+      background: radial-gradient(circle, rgba(201,168,76,0.10) 0%, transparent 70%);
+      top: 50%; left: 50%; transform: translate(-50%, -50%);
+      pointer-events: none; z-index: -1;
+    }
+    .breadcrumb {
+      font-size: 12px; color: var(--grey);
+      letter-spacing: 0.08em; margin-bottom: 18px;
+    }
+    .breadcrumb a { color: var(--grey); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--gold); }
+    .hero h1 {
+      font-size: clamp(1.9rem, 4.6vw, 3rem);
+      font-weight: 900; color: #fff; margin-bottom: 16px;
+      line-height: 1.25;
+    }
+    .hero h1 span { color: var(--gold); }
+    .hero .meta {
+      font-size: 13px; color: var(--grey);
+      letter-spacing: 0.06em; margin-bottom: 22px;
+    }
+    .hero .lead {
+      font-size: 1.05rem; color: var(--silver);
+      font-weight: 300; max-width: 700px; margin: 0 auto;
+    }
+
+    /* ── CONTENT WRAPPER ── */
+    .content {
+      max-width: 980px; margin: 0 auto;
+      padding: 56px 40px 80px;
+    }
+    @media (max-width: 700px) {
+      .content { padding: 40px 18px 60px; }
+      .hero { padding: 56px 20px 36px; }
+    }
+
+    /* Section heading */
+    .section { margin-bottom: 64px; scroll-margin-top: 80px; }
+    .section-kicker {
+      font-size: 12px; letter-spacing: 0.22em;
+      text-transform: uppercase; color: var(--gold);
+      margin-bottom: 10px; font-weight: 700;
+    }
+    h2.section-title {
+      font-size: clamp(1.5rem, 3.2vw, 2rem);
+      font-weight: 800; color: #fff;
+      margin-bottom: 12px; line-height: 1.35;
+    }
+    .section-intro {
+      color: var(--silver); font-weight: 300;
+      font-size: 1rem; margin-bottom: 30px;
+      max-width: 720px;
+    }
+
+    /* ── TABLE OF CONTENTS ── */
+    .toc {
+      background: linear-gradient(180deg, rgba(201,168,76,0.05), rgba(201,168,76,0.02));
+      border: 1px solid var(--border-gold);
+      border-radius: 14px;
+      padding: 28px 32px;
+      margin-bottom: 56px;
+    }
+    .toc-title {
+      font-size: 0.85rem; color: var(--gold);
+      font-weight: 700; letter-spacing: 0.15em;
+      text-transform: uppercase; margin-bottom: 14px;
+    }
+    .toc-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 10px 24px;
+    }
+    .toc a {
+      color: var(--silver); text-decoration: none;
+      font-size: 0.9rem; padding: 4px 0;
+      transition: color 0.2s; display: flex; align-items: center; gap: 8px;
+    }
+    .toc a:hover { color: var(--gold); }
+    .toc a .num {
+      color: var(--gold); font-weight: 700;
+      font-size: 0.75rem; min-width: 22px;
+    }
+
+    /* ── PRINCIPLE CARDS ── */
+    .principle-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+    }
+    .principle-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 22px 24px;
+      transition: border-color 0.25s;
+    }
+    .principle-card:hover { border-color: var(--border-gold); }
+    .principle-card .icon {
+      width: 36px; height: 36px;
+      border: 1px solid var(--border-gold);
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      margin-bottom: 14px;
+      color: var(--gold); font-size: 18px;
+    }
+    .principle-card h3 {
+      font-size: 1rem; font-weight: 700;
+      color: var(--ivory); margin-bottom: 8px;
+    }
+    .principle-card p {
+      font-size: 0.88rem; color: var(--silver);
+      font-weight: 300; line-height: 1.7;
+    }
+
+    /* ── TEMPLATE BLOCK ── */
+    .template {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      margin-bottom: 24px;
+      transition: border-color 0.25s;
+    }
+    .template:hover { border-color: var(--border-gold); }
+    .template-header {
+      padding: 20px 26px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .template-num {
+      display: inline-block;
+      background: var(--gold-soft);
+      border: 1px solid var(--border-gold);
+      color: var(--gold);
+      font-size: 0.7rem; font-weight: 700;
+      letter-spacing: 0.1em;
+      padding: 3px 10px; border-radius: 4px;
+      margin-bottom: 10px;
+    }
+    .template h3 {
+      font-size: 1.15rem; font-weight: 700;
+      color: var(--ivory); margin-bottom: 6px;
+    }
+    .template-desc {
+      font-size: 0.88rem; color: var(--silver);
+      font-weight: 300; line-height: 1.7;
+    }
+
+    .code-block {
+      position: relative;
+      background: #0a0a0a;
+      border-top: 1px solid var(--border);
+      padding: 22px 26px;
+      direction: ltr; text-align: left;
+    }
+    .code-label {
+      position: absolute; top: 10px; right: 14px;
+      font-size: 0.65rem; color: var(--grey);
+      letter-spacing: 0.18em; text-transform: uppercase;
+      font-family: 'Cairo', sans-serif;
+    }
+    .code-block pre {
+      font-family: 'SF Mono', SFMono-Regular, Menlo, 'Courier New', monospace;
+      font-size: 0.82rem;
+      color: #d8d8d8;
+      line-height: 1.85;
+      white-space: pre-wrap;
+      word-break: break-word;
+      margin: 0;
+    }
+    .code-block .placeholder { color: var(--gold); font-style: italic; }
+
+    .copy-row {
+      display: flex; gap: 10px;
+      padding: 14px 26px;
+      background: rgba(255,255,255,0.015);
+      border-top: 1px solid var(--border);
+      align-items: center; flex-wrap: wrap;
+    }
+    .copy-btn {
+      background: var(--gold);
+      color: #000;
+      border: none;
+      font-family: 'Cairo', sans-serif;
+      font-weight: 700;
+      font-size: 0.82rem;
+      padding: 9px 18px;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.15s;
+      display: inline-flex; align-items: center; gap: 6px;
+    }
+    .copy-btn:hover { background: var(--gold-lum); }
+    .copy-btn:active { transform: scale(0.97); }
+    .copy-btn.copied { background: var(--green); color: #fff; }
+    .copy-btn .icon { font-size: 14px; }
+    .copy-hint {
+      font-size: 0.78rem; color: var(--grey);
+      font-weight: 300;
+    }
+
+    /* Example block inside template */
+    .example-wrap {
+      padding: 20px 26px;
+      border-top: 1px solid var(--border);
+      background: rgba(255,255,255,0.012);
+    }
+    .example-label {
+      font-size: 0.7rem; color: var(--gold);
+      letter-spacing: 0.18em; text-transform: uppercase;
+      font-weight: 700; margin-bottom: 10px;
+    }
+    .example-text {
+      background: #0a0a0a;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 18px;
+      direction: ltr; text-align: left;
+      font-family: 'SF Mono', SFMono-Regular, Menlo, monospace;
+      font-size: 0.8rem; color: #d8d8d8;
+      line-height: 1.85;
+      margin-bottom: 12px;
+      word-break: break-word;
+    }
+
+    /* ── BLOCKS TABLE (anatomy) ── */
+    .blocks-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 14px;
+    }
+    .block-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px 20px;
+      transition: border-color 0.25s;
+    }
+    .block-card:hover { border-color: var(--border-gold); }
+    .block-card .label {
+      font-size: 0.7rem; letter-spacing: 0.15em;
+      color: var(--gold); font-weight: 700;
+      text-transform: uppercase; margin-bottom: 6px;
+    }
+    .block-card h4 {
+      font-size: 1.05rem; color: var(--ivory);
+      font-weight: 700; margin-bottom: 8px;
+    }
+    .block-card p {
+      font-size: 0.85rem; color: var(--silver);
+      font-weight: 300; margin-bottom: 8px;
+    }
+    .block-card .example-tag {
+      display: block;
+      font-family: 'SF Mono', monospace; direction: ltr;
+      font-size: 0.78rem;
+      color: var(--gold-lum);
+      background: rgba(201,168,76,0.06);
+      border-radius: 4px;
+      padding: 6px 10px; text-align: left;
+    }
+
+    /* ── DATA TABLE ── */
+    .data-table {
+      width: 100%;
+      border-collapse: separate;
+      border-spacing: 0;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 16px;
+    }
+    .data-table thead th {
+      background: rgba(201,168,76,0.06);
+      color: var(--gold);
+      font-size: 0.78rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      padding: 14px 18px;
+      text-align: right;
+      border-bottom: 1px solid var(--border-gold);
+    }
+    .data-table tbody td {
+      padding: 14px 18px;
+      font-size: 0.88rem;
+      color: var(--silver);
+      font-weight: 300;
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+    }
+    .data-table tbody tr:last-child td { border-bottom: none; }
+    .data-table tbody tr:hover { background: rgba(255,255,255,0.02); }
+    .data-table .mono {
+      font-family: 'SF Mono', monospace;
+      color: var(--gold-lum);
+      direction: ltr;
+      display: inline-block;
+    }
+    .table-scroll { overflow-x: auto; }
+
+    /* ── VOCAB CHIPS ── */
+    .vocab-block {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 22px 24px;
+      margin-bottom: 16px;
+    }
+    .vocab-block h4 {
+      font-size: 0.85rem; color: var(--gold);
+      letter-spacing: 0.15em; text-transform: uppercase;
+      font-weight: 700; margin-bottom: 14px;
+    }
+    .chip-row {
+      display: flex; flex-wrap: wrap; gap: 8px;
+    }
+    .chip {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      color: var(--ivory);
+      font-size: 0.82rem;
+      padding: 7px 14px;
+      border-radius: 999px;
+      direction: ltr;
+      font-family: 'SF Mono', monospace;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .chip:hover {
+      background: rgba(201,168,76,0.1);
+      border-color: var(--border-gold);
+      color: var(--gold-lum);
+    }
+    .chip.copied {
+      background: var(--green); color: #fff;
+      border-color: var(--green);
+    }
+
+    /* ── PROMPT LIBRARY GRID ── */
+    .filter-bar {
+      display: flex; gap: 8px; flex-wrap: wrap;
+      margin-bottom: 24px;
+      padding: 16px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+    }
+    .filter-btn {
+      font-family: 'Cairo', sans-serif;
+      font-size: 0.78rem; font-weight: 600;
+      color: var(--grey);
+      background: transparent;
+      border: 1px solid var(--border);
+      padding: 7px 16px;
+      border-radius: 6px;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .filter-btn:hover { border-color: var(--border-gold); color: var(--silver); }
+    .filter-btn.active {
+      background: rgba(201,168,76,0.12);
+      border-color: rgba(201,168,76,0.5);
+      color: var(--gold);
+    }
+
+    .lib-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 14px;
+    }
+    .lib-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 22px;
+      transition: all 0.25s;
+      display: flex; flex-direction: column;
+    }
+    .lib-card:hover {
+      border-color: var(--border-gold);
+      transform: translateY(-2px);
+    }
+    .lib-card.hidden { display: none; }
+    .lib-card .cat {
+      font-size: 0.65rem; color: var(--gold);
+      letter-spacing: 0.15em; text-transform: uppercase;
+      font-weight: 700; margin-bottom: 8px;
+    }
+    .lib-card h4 {
+      font-size: 0.95rem; color: var(--ivory);
+      font-weight: 700; margin-bottom: 10px;
+      line-height: 1.5;
+    }
+    .lib-card .prompt-preview {
+      font-family: 'SF Mono', monospace;
+      font-size: 0.75rem;
+      color: var(--silver);
+      direction: ltr; text-align: left;
+      background: rgba(0,0,0,0.4);
+      padding: 12px 14px;
+      border-radius: 6px;
+      margin-bottom: 14px;
+      line-height: 1.7;
+      flex: 1;
+      max-height: 180px;
+      overflow: hidden;
+      position: relative;
+    }
+    .lib-card .prompt-preview::after {
+      content: '';
+      position: absolute; bottom: 0; left: 0; right: 0;
+      height: 30px;
+      background: linear-gradient(180deg, transparent, var(--surface));
+      pointer-events: none;
+    }
+    .lib-card .copy-btn {
+      width: 100%;
+      justify-content: center;
+    }
+
+    /* ── DO / DONT ── */
+    .dual-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    .list-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 22px 24px;
+    }
+    .list-box.do { border-color: rgba(76,175,130,0.25); }
+    .list-box.dont { border-color: rgba(224,82,82,0.25); }
+    .list-box h3 {
+      font-size: 1rem; font-weight: 700;
+      margin-bottom: 14px;
+      display: flex; align-items: center; gap: 8px;
+    }
+    .list-box.do h3 { color: var(--green); }
+    .list-box.dont h3 { color: #e85252; }
+    .list-box ul { list-style: none; padding: 0; }
+    .list-box li {
+      font-size: 0.88rem; color: var(--silver);
+      font-weight: 300; padding: 7px 0;
+      padding-right: 22px; position: relative;
+      line-height: 1.7;
+    }
+    .list-box.do li::before {
+      content: '✓'; position: absolute; right: 0;
+      color: var(--green); font-weight: 700;
+    }
+    .list-box.dont li::before {
+      content: '✗'; position: absolute; right: 0;
+      color: #e85252; font-weight: 700;
+    }
+
+    /* ── TIPS QUOTES ── */
+    .tip-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+    }
+    .tip-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-right: 3px solid var(--gold);
+      border-radius: 8px;
+      padding: 18px 20px;
+    }
+    .tip-card p {
+      font-size: 0.88rem; color: var(--ivory);
+      font-style: italic; font-weight: 300;
+      line-height: 1.75;
+    }
+
+    /* ── WORKFLOW STEPS ── */
+    .workflow {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 24px 28px;
+      margin-bottom: 14px;
+    }
+    .workflow h4 {
+      font-size: 1rem; color: var(--gold);
+      font-weight: 700; margin-bottom: 12px;
+    }
+    .workflow-steps {
+      display: flex; flex-wrap: wrap; gap: 8px;
+      align-items: center;
+    }
+    .workflow-step {
+      background: rgba(201,168,76,0.08);
+      border: 1px solid var(--border-gold);
+      color: var(--ivory);
+      font-size: 0.85rem;
+      padding: 8px 14px;
+      border-radius: 6px;
+      font-weight: 600;
+    }
+    .workflow-arrow {
+      color: var(--gold); font-size: 1rem;
+    }
+
+    /* ── LENGTH TABLE ── */
+    .length-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 14px;
+    }
+    .length-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 22px;
+      text-align: center;
+    }
+    .length-card .type {
+      font-size: 0.75rem; color: var(--gold);
+      letter-spacing: 0.15em; text-transform: uppercase;
+      font-weight: 700; margin-bottom: 8px;
+    }
+    .length-card .range {
+      font-size: 1.6rem; color: var(--ivory);
+      font-weight: 800; margin-bottom: 6px;
+      direction: ltr;
+    }
+    .length-card .desc {
+      font-size: 0.78rem; color: var(--silver);
+      font-weight: 300;
+    }
+
+    /* ── COMPARISON STRONG/WEAK ── */
+    .compare-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 16px;
+    }
+    @media (max-width: 700px) {
+      .compare-grid { grid-template-columns: 1fr; }
+    }
+    .compare-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px 20px;
+    }
+    .compare-card.weak { border-color: rgba(224,82,82,0.25); }
+    .compare-card.strong { border-color: rgba(76,175,130,0.3); }
+    .compare-card .label {
+      font-size: 0.7rem; letter-spacing: 0.15em;
+      text-transform: uppercase; font-weight: 700;
+      margin-bottom: 8px;
+    }
+    .compare-card.weak .label { color: #e85252; }
+    .compare-card.strong .label { color: var(--green); }
+    .compare-card .text {
+      font-family: 'SF Mono', monospace;
+      direction: ltr; text-align: left;
+      font-size: 0.82rem; color: #d8d8d8;
+      line-height: 1.75;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed; bottom: 30px; left: 50%;
+      transform: translateX(-50%) translateY(100px);
+      background: var(--green); color: #fff;
+      padding: 12px 24px; border-radius: 8px;
+      font-size: 0.88rem; font-weight: 600;
+      z-index: 1000;
+      transition: transform 0.35s cubic-bezier(0.5, 0, 0.3, 1.4);
+      box-shadow: 0 6px 20px rgba(0,0,0,0.4);
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); }
+
+    /* CTA Banner */
+    .cta-banner {
+      background: linear-gradient(135deg, rgba(201,168,76,0.15), rgba(201,168,76,0.05));
+      border: 1px solid var(--border-gold);
+      border-radius: 14px;
+      padding: 36px 32px;
+      text-align: center;
+      margin-top: 56px;
+    }
+    .cta-banner h3 {
+      font-size: 1.4rem; color: var(--ivory);
+      font-weight: 800; margin-bottom: 10px;
+    }
+    .cta-banner p {
+      color: var(--silver); font-weight: 300;
+      max-width: 560px; margin: 0 auto 22px;
+      font-size: 0.95rem;
+    }
+    .cta-btn {
+      display: inline-block;
+      background: var(--gold);
+      color: #000;
+      text-decoration: none;
+      font-weight: 700;
+      padding: 13px 32px;
+      border-radius: 8px;
+      transition: background 0.2s;
+      font-size: 0.95rem;
+    }
+    .cta-btn:hover { background: var(--gold-lum); }
+  </style>
+
+  <link rel="stylesheet" href="https://malearnsa.com/footer-module/v1/footer.css">
+</head>
+<body>
+
+<!-- HEADER -->
+<header>
+  <img class="logo-img" src="https://raw.githubusercontent.com/Majidangawi/malearnsa/main/MA%20Learn%20white-08.png" alt="MA Learn" onerror="this.style.display='none'">
+  <nav>
+    <a href="https://malearnsa.com">الرئيسية</a>
+    <a href="https://malearnsa.com/#courses">الدورات</a>
+    <a href="https://malearnsa.com/refund-policy.html">سياسة الاسترجاع</a>
+    <a href="https://malearnsa.com/privacy-policy.html">الخصوصية</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<div class="hero">
+  <p class="breadcrumb"><a href="https://malearnsa.com">MA Learn</a> ← دليل البرومبت في Luma AI</p>
+  <h1>دليل البرومبت في <span>Luma AI</span></h1>
+  <p class="meta">UNI-1 PROMPTING GUIDE · مرجع كامل بالعربية</p>
+  <p class="lead">
+    كل ما تحتاجه لكتابة برومبت احترافي في منصة Luma AI: ثمانية قوالب جاهزة، مكتبة أمثلة قابلة للنسخ، مفردات الكاميرا والإضاءة، وأفضل الممارسات. لا تحتاج حيل برمجة برومبت — Luma يفهم نيتك ويفكر قبل أن يولّد بكسلاً واحداً.
+  </p>
+</div>
+
+<!-- CONTENT -->
+<div class="content">
+
+  <!-- TOC -->
+  <div class="toc">
+    <p class="toc-title">محتويات الدليل</p>
+    <div class="toc-grid">
+      <a href="#principles"><span class="num">01</span> المبادئ الأساسية</a>
+      <a href="#workflow"><span class="num">02</span> سير العمل: Create vs Modify</a>
+      <a href="#anatomy"><span class="num">03</span> تشريح البرومبت المثالي</a>
+      <a href="#templates"><span class="num">04</span> القوالب الثمانية</a>
+      <a href="#length"><span class="num">05</span> الأطوال الموصى بها</a>
+      <a href="#compare"><span class="num">06</span> ضعيف ⇄ قوي</a>
+      <a href="#references"><span class="num">07</span> الصور المرجعية</a>
+      <a href="#aspect"><span class="num">08</span> نسب العرض</a>
+      <a href="#vocab"><span class="num">09</span> مفردات احترافية</a>
+      <a href="#workflows"><span class="num">10</span> خمسة سيناريوهات</a>
+      <a href="#do-dont"><span class="num">11</span> افعل / لا تفعل</a>
+      <a href="#library"><span class="num">12</span> مكتبة برومبتات جاهزة</a>
+    </div>
+  </div>
+
+  <!-- 01 PRINCIPLES -->
+  <section class="section" id="principles">
+    <p class="section-kicker">01 — الأساس</p>
+    <h2 class="section-title">المبادئ الأساسية</h2>
+    <p class="section-intro">
+      Luma Uni-1 يفكّر في نيتك قبل أن يبدأ بالتوليد. وهذا يعني أنك لا تحتاج لحشو كلمات مفتاحية أو "حيل برومبت". اكتب كأنك تخاطب مدير فني محترف.
+    </p>
+    <div class="principle-grid">
+      <div class="principle-card">
+        <div class="icon">◎</div>
+        <h3>اكتب ما تريد، لا ما لا تريد</h3>
+        <p>لا تستخدم negative prompts مثل "no hands" أو "without blur" — Luma لا يدعمها. صف الناتج المرغوب مباشرة.</p>
+      </div>
+      <div class="principle-card">
+        <div class="icon">▣</div>
+        <h3>تصرّف كمدير إبداعي</h3>
+        <p>قدّم بريفاً واضحاً لفنان موهوب: موضوع، أسلوب، كاميرا، إضاءة، مزاج. لا تكتب كأنك تدخل أوامر في برنامج.</p>
+      </div>
+      <div class="principle-card">
+        <div class="icon">✦</div>
+        <h3>التكرار قوة، لا ضعف</h3>
+        <p>لا تتوقع الكمال من أول محاولة. القوة الحقيقية في تكرار التحسين — استخدم Modify بدل البداية من الصفر.</p>
+      </div>
+      <div class="principle-card">
+        <div class="icon">⟡</div>
+        <h3>المرجع يساوي ألف كلمة</h3>
+        <p>صورة مرجعية واحدة للستايل أقوى من فقرة كاملة من الوصف. استخدم حتى 9 مراجع في الـ Create.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 WORKFLOW -->
+  <section class="section" id="workflow">
+    <p class="section-kicker">02 — القرار الأول</p>
+    <h2 class="section-title">Create أم Modify؟</h2>
+    <p class="section-intro">
+      قبل كل برومبت، اسأل نفسك: هل أريد صورة جديدة بالكامل، أم تعديل صورة موجودة؟ هذا القرار يحدد النوع التقني للبرومبت.
+    </p>
+    <div class="compare-grid">
+      <div class="compare-card strong">
+        <p class="label">CREATE — type: "image"</p>
+        <p style="color:var(--silver);font-size:0.9rem;font-weight:300;line-height:1.75;">
+          تركيب جديد بالكامل. الصور المرجعية تُلهم فقط — لا يُحتفظ بأي بكسل من الإدخال. استخدمه عندما تريد <strong style="color:var(--ivory)">صورة جديدة مستوحاة</strong> من المرجع.
+        </p>
+      </div>
+      <div class="compare-card strong">
+        <p class="label">MODIFY — type: "image_edit"</p>
+        <p style="color:var(--silver);font-size:0.9rem;font-weight:300;line-height:1.75;">
+          تعديل صورة موجودة. التركيب يبقى كما هو ما لم تطلب تغييره. استخدمه عندما تريد <strong style="color:var(--ivory)">الناتج أن يشبه الإدخال</strong>.
+        </p>
+      </div>
+    </div>
+    <p style="color:var(--silver);font-size:0.92rem;font-weight:300;background:var(--gold-soft);border:1px solid var(--border-gold);border-radius:8px;padding:16px 20px;">
+      <strong style="color:var(--gold)">القاعدة الذهبية:</strong> إذا كان يجب أن يشبه الناتج الإدخال = Modify. إذا كان مستوحى منه لكن جديد = Create.
+    </p>
+  </section>
+
+  <!-- 03 ANATOMY -->
+  <section class="section" id="anatomy">
+    <p class="section-kicker">03 — البنية</p>
+    <h2 class="section-title">تشريح البرومبت المثالي</h2>
+    <p class="section-intro">
+      كل برومبت قوي يتكون من ثمانية عناصر بناء. لست مضطراً لاستخدام كلها في كل مرة — لكن كلما اكتمل البناء، كانت النتيجة أقرب لخيالك.
+    </p>
+    <div class="blocks-grid">
+      <div class="block-card">
+        <p class="label">Subject</p>
+        <h4>الموضوع</h4>
+        <p>من أو ما الذي في الصورة؟</p>
+        <span class="example-tag">A street musician playing violin</span>
+      </div>
+      <div class="block-card">
+        <p class="label">Style</p>
+        <h4>الأسلوب البصري</h4>
+        <p>الجمالية أو الوسيط البصري</p>
+        <span class="example-tag">Oil painting · 35mm film · Studio Ghibli</span>
+      </div>
+      <div class="block-card">
+        <p class="label">Composition</p>
+        <h4>التكوين</h4>
+        <p>زاوية الكاميرا والتأطير</p>
+        <span class="example-tag">Close-up portrait · aerial view</span>
+      </div>
+      <div class="block-card">
+        <p class="label">Lighting</p>
+        <h4>الإضاءة</h4>
+        <p>جودة الضوء واتجاهه (أقوى رافعة جودة)</p>
+        <span class="example-tag">Golden hour · dramatic side lighting</span>
+      </div>
+      <div class="block-card">
+        <p class="label">Environment</p>
+        <h4>البيئة</h4>
+        <p>أين تجري الصورة؟</p>
+        <span class="example-tag">Rainy Tokyo alley · brutalist interior</span>
+      </div>
+      <div class="block-card">
+        <p class="label">Mood</p>
+        <h4>المزاج</h4>
+        <p>الإحساس العاطفي</p>
+        <span class="example-tag">Nostalgic · tense · joyful and chaotic</span>
+      </div>
+      <div class="block-card">
+        <p class="label">Details</p>
+        <h4>التفاصيل</h4>
+        <p>قوام، إكسسوارات، ألوان محددة</p>
+        <span class="example-tag">Worn leather jacket · turquoise wall</span>
+      </div>
+      <div class="block-card">
+        <p class="label">Text</p>
+        <h4>النص داخل الصورة</h4>
+        <p>أي نص تريد كتابته يوضع داخل علامات اقتباس</p>
+        <span class="example-tag">"SALE 50% OFF"</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 04 TEMPLATES -->
+  <section class="section" id="templates">
+    <p class="section-kicker">04 — القوالب</p>
+    <h2 class="section-title">القوالب الثمانية للبرومبت</h2>
+    <p class="section-intro">
+      Luma يوصي بثمانية قوالب احترافية. اختر القالب بحسب مستوى السيطرة الذي تريده — من البداية السريعة إلى التحكم الكامل بصيغة JSON.
+    </p>
+
+    <!-- T1 -->
+    <div class="template">
+      <div class="template-header">
+        <span class="template-num">TEMPLATE 01</span>
+        <h3>The Fast Start — البداية السريعة</h3>
+        <p class="template-desc">أبسط قالب لاستكشاف الأفكار. يجمع كل العناصر الأساسية في سطر واحد متدفق.</p>
+      </div>
+      <div class="code-block">
+        <span class="code-label">STRUCTURE</span>
+<pre>A <span class="placeholder">[subject]</span>, in <span class="placeholder">[style]</span>, with <span class="placeholder">[lighting]</span>, <span class="placeholder">[camera/composition]</span>,
+<span class="placeholder">[environment/background]</span>, mood: <span class="placeholder">[emotion]</span>, details: <span class="placeholder">[key specifics]</span></pre>
+      </div>
+      <div class="copy-row">
+        <button class="copy-btn" data-copy="A [subject], in [style], with [lighting], [camera/composition], [environment/background], mood: [emotion], details: [key specifics]">
+          <span class="icon">⎘</span> نسخ القالب
+        </button>
+        <span class="copy-hint">انسخ ثم استبدل ما بين الأقواس</span>
+      </div>
+      <div class="example-wrap">
+        <p class="example-label">EXAMPLE</p>
+        <div class="example-text">A ceramic artist shaping a lopsided bowl, documentary photography style, soft window lighting, close-up shot, cluttered home studio background, mood: focused and quiet, details: clay-covered hands, imperfect texture, tools scattered on wooden table</div>
+        <button class="copy-btn" data-copy="A ceramic artist shaping a lopsided bowl, documentary photography style, soft window lighting, close-up shot, cluttered home studio background, mood: focused and quiet, details: clay-covered hands, imperfect texture, tools scattered on wooden table">
+          <span class="icon">⎘</span> نسخ المثال
+        </button>
+      </div>
+    </div>
+
+    <!-- T2 -->
+    <div class="template">
+      <div class="template-header">
+        <span class="template-num">TEMPLATE 02</span>
+        <h3>The Cinematic Control — التحكم السينمائي</h3>
+        <p class="template-desc">قالب منظم للسيطرة الكاملة. مثالي للأعمال التحريرية والإعلانية والصور التي تحتاج دقة إخراجية.</p>
+      </div>
+      <div class="code-block">
+        <span class="code-label">STRUCTURE</span>
+<pre>Subject: <span class="placeholder">[who/what]</span>
+Style: <span class="placeholder">[editorial / documentary / fine art / etc.]</span>
+Scene:
+  - Environment: <span class="placeholder">[where]</span>
+  - Time of day: <span class="placeholder">[lighting conditions]</span>
+  - Weather/atmosphere: <span class="placeholder">[mood elements]</span>
+Camera:
+  - Shot type: <span class="placeholder">[close-up / wide / medium / aerial]</span>
+  - Lens: <span class="placeholder">[wide angle / telephoto / macro]</span>
+  - Angle: <span class="placeholder">[eye level / low angle / overhead]</span>
+Details: <span class="placeholder">[specific textures, colors, props]</span>
+Mood: <span class="placeholder">[overall feeling]</span></pre>
+      </div>
+      <div class="copy-row">
+        <button class="copy-btn" data-copy="Subject: [who/what]
+Style: [editorial / documentary / fine art / etc.]
+Scene:
+  - Environment: [where]
+  - Time of day: [lighting conditions]
+  - Weather/atmosphere: [mood elements]
+Camera:
+  - Shot type: [close-up / wide / medium / aerial]
+  - Lens: [wide angle / telephoto / macro]
+  - Angle: [eye level / low angle / overhead]
+Details: [specific textures, colors, props]
+Mood: [overall feeling]">
+          <span class="icon">⎘</span> نسخ القالب
+        </button>
+      </div>
+      <div class="example-wrap">
+        <p class="example-label">EXAMPLE</p>
+        <div class="example-text">Subject: A retired boxer sitting alone in an empty gym.
+Style: Documentary photography, gritty and honest.
+Scene:
+  - Environment: Aging boxing gym with peeling paint
+  - Time of day: Late afternoon, golden light through dusty windows
+  - Weather/atmosphere: Quiet, contemplative.
+Camera:
+  - Shot type: Medium shot, waist up
+  - Lens: 50mm natural perspective
+  - Angle: Slightly low, looking up at the subject.
+Details: Worn leather gloves hanging nearby, sweat-stained bench, faded championship posters on walls.
+Mood: Dignified melancholy, the weight of a career</div>
+        <button class="copy-btn" data-copy="Subject: A retired boxer sitting alone in an empty gym.
+Style: Documentary photography, gritty and honest.
+Scene:
+  - Environment: Aging boxing gym with peeling paint
+  - Time of day: Late afternoon, golden light through dusty windows
+  - Weather/atmosphere: Quiet, contemplative.
+Camera:
+  - Shot type: Medium shot, waist up
+  - Lens: 50mm natural perspective
+  - Angle: Slightly low, looking up at the subject.
+Details: Worn leather gloves hanging nearby, sweat-stained bench, faded championship posters on walls.
+Mood: Dignified melancholy, the weight of a career">
+          <span class="icon">⎘</span> نسخ المثال
+        </button>
+      </div>
+    </div>
+
+    <!-- T3 -->
+    <div class="template">
+      <div class="template-header">
+        <span class="template-num">TEMPLATE 03</span>
+        <h3>The Direct Edit — التعديل المباشر</h3>
+        <p class="template-desc">للتعديلات الجراحية على صورة موجودة (Modify). كن محدداً جداً، وأخبر Luma بصراحة ماذا يبقى كما هو.</p>
+      </div>
+      <div class="code-block">
+        <span class="code-label">STRUCTURE</span>
+<pre>Change <span class="placeholder">[specific element]</span> to <span class="placeholder">[new version]</span>. Keep everything else the same.</pre>
+      </div>
+      <div class="copy-row">
+        <button class="copy-btn" data-copy="Change [specific element] to [new version]. Keep everything else the same.">
+          <span class="icon">⎘</span> نسخ القالب
+        </button>
+      </div>
+      <div class="example-wrap">
+        <p class="example-label">EXAMPLE</p>
+        <div class="example-text">Change the sky to a dramatic sunset with deep orange and purple clouds. Keep everything else the same.</div>
+        <button class="copy-btn" data-copy="Change the sky to a dramatic sunset with deep orange and purple clouds. Keep everything else the same.">
+          <span class="icon">⎘</span> نسخ المثال
+        </button>
+      </div>
+    </div>
+
+    <!-- T4 -->
+    <div class="template">
+      <div class="template-header">
+        <span class="template-num">TEMPLATE 04</span>
+        <h3>The Multi-Reference Fusion — دمج المراجع</h3>
+        <p class="template-desc">دمج عدة صور مرجعية، كل واحدة لها دور محدد (ستايل، شخصية، تكوين). يدعم حتى 9 مراجع في Create.</p>
+      </div>
+      <div class="code-block">
+        <span class="code-label">STRUCTURE</span>
+<pre>IMAGE1 (STYLE): <span class="placeholder">[description of style reference]</span>
+IMAGE2 (CHARACTER): <span class="placeholder">[description of character reference]</span>
+IMAGE3 (COMPOSITION): <span class="placeholder">[description of layout reference]</span>
+
+Create a <span class="placeholder">[subject]</span> that combines the visual style of IMAGE1,
+the character from IMAGE2, in the composition/layout of IMAGE3.
+<span class="placeholder">[Additional details about the scene.]</span></pre>
+      </div>
+      <div class="copy-row">
+        <button class="copy-btn" data-copy="IMAGE1 (STYLE): [description of style reference]
+IMAGE2 (CHARACTER): [description of character reference]
+IMAGE3 (COMPOSITION): [description of layout reference]
+
+Create a [subject] that combines the visual style of IMAGE1, the character from IMAGE2, in the composition/layout of IMAGE3. [Additional details about the scene.]">
+          <span class="icon">⎘</span> نسخ القالب
+        </button>
+      </div>
+    </div>
+
+    <!-- T5 -->
+    <div class="template">
+      <div class="template-header">
+        <span class="template-num">TEMPLATE 05</span>
+        <h3>The Layout Control — التحكم بالتخطيط</h3>
+        <p class="template-desc">عندما تحتاج تكويناً دقيقاً مع نصوص محددة (أغلفة مجلات، بوسترات، إعلانات). ضع النصوص بين علامات اقتباس بالضبط.</p>
+      </div>
+      <div class="code-block">
+        <span class="code-label">STRUCTURE</span>
+<pre>Create a <span class="placeholder">[format]</span> with the following layout:
+  - <span class="placeholder">[Position 1]</span>: <span class="placeholder">[element description]</span>
+  - <span class="placeholder">[Position 2]</span>: <span class="placeholder">[element description]</span>
+  - <span class="placeholder">[Position 3]</span>: <span class="placeholder">[element description]</span>
+Text: "<span class="placeholder">[exact text to render]</span>"
+Style: <span class="placeholder">[overall aesthetic]</span></pre>
+      </div>
+      <div class="copy-row">
+        <button class="copy-btn" data-copy='Create a [format] with the following layout:
+  - [Position 1]: [element description]
+  - [Position 2]: [element description]
+  - [Position 3]: [element description]
+Text: "[exact text to render]"
+Style: [overall aesthetic]'>
+          <span class="icon">⎘</span> نسخ القالب
+        </button>
+      </div>
+      <div class="example-wrap">
+        <p class="example-label">EXAMPLE</p>
+        <div class="example-text">Create a magazine cover with the following layout:
+  - Top third: Title "WILDLIGHT" in bold serif font
+  - Center: Portrait of a woman wearing an oversized vintage denim jacket
+  - Bottom: Subtitle "The Future of Desert Fashion — Spring 2026"
+Style: High-fashion editorial, muted earth tones, natural lighting</div>
+        <button class="copy-btn" data-copy='Create a magazine cover with the following layout:
+  - Top third: Title "WILDLIGHT" in bold serif font
+  - Center: Portrait of a woman wearing an oversized vintage denim jacket
+  - Bottom: Subtitle "The Future of Desert Fashion — Spring 2026"
+Style: High-fashion editorial, muted earth tones, natural lighting'>
+          <span class="icon">⎘</span> نسخ المثال
+        </button>
+      </div>
+    </div>
+
+    <!-- T6 -->
+    <div class="template">
+      <div class="template-header">
+        <span class="template-num">TEMPLATE 06</span>
+        <h3>The Storyboard Generator — مولّد القصة المصورة</h3>
+        <p class="template-desc">قوة Luma الخارقة: توليد قصة كاملة بعدة لوحات في صورة واحدة، مع المحافظة على الشخصية ثابتة عبر اللوحات.</p>
+      </div>
+      <div class="code-block">
+        <span class="code-label">STRUCTURE</span>
+<pre>Create a <span class="placeholder">[N]</span>-panel storyboard showing:
+Panel 1: <span class="placeholder">[scene]</span>.
+Panel 2: <span class="placeholder">[scene]</span>.
+Panel 3: <span class="placeholder">[scene]</span>.
+Consistent character throughout.
+Style: <span class="placeholder">[aesthetic]</span>.</pre>
+      </div>
+      <div class="copy-row">
+        <button class="copy-btn" data-copy="Create a [N]-panel storyboard showing:
+Panel 1: [scene].
+Panel 2: [scene].
+Panel 3: [scene].
+Consistent character throughout.
+Style: [aesthetic].">
+          <span class="icon">⎘</span> نسخ القالب
+        </button>
+      </div>
+      <div class="example-wrap">
+        <p class="example-label">EXAMPLE</p>
+        <div class="example-text">Create a 4-panel storyboard showing:
+Panel 1: A detective enters a dimly lit bar.
+Panel 2: She slides a photo across the counter to the bartender.
+Panel 3: The bartender recognizes the person and looks nervous.
+Panel 4: Close-up of the detective's knowing smile.
+Consistent character throughout: woman in her 40s, sharp features, dark trenchcoat.
+Style: Film noir, high contrast black and white.</div>
+        <button class="copy-btn" data-copy="Create a 4-panel storyboard showing:
+Panel 1: A detective enters a dimly lit bar.
+Panel 2: She slides a photo across the counter to the bartender.
+Panel 3: The bartender recognizes the person and looks nervous.
+Panel 4: Close-up of the detective's knowing smile.
+Consistent character throughout: woman in her 40s, sharp features, dark trenchcoat.
+Style: Film noir, high contrast black and white.">
+          <span class="icon">⎘</span> نسخ المثال
+        </button>
+      </div>
+    </div>
+
+    <!-- T7 -->
+    <div class="template">
+      <div class="template-header">
+        <span class="template-num">TEMPLATE 07</span>
+        <h3>The Creative Mode — الوضع الإبداعي</h3>
+        <p class="template-desc">عندما لا تعرف ماذا تريد بالضبط. اكتب إحساساً أو شعوراً أو فكرة مجردة، ودع Luma يستكشف نيتك.</p>
+      </div>
+      <div class="code-block">
+        <span class="code-label">STRUCTURE</span>
+<pre><span class="placeholder">[Vibe or feeling]</span>. <span class="placeholder">[A few evocative words or an abstract concept.]</span></pre>
+      </div>
+      <div class="copy-row">
+        <button class="copy-btn" data-copy="[Vibe or feeling]. [A few evocative words or an abstract concept.]">
+          <span class="icon">⎘</span> نسخ القالب
+        </button>
+      </div>
+      <div class="example-wrap">
+        <p class="example-label">EXAMPLE</p>
+        <div class="example-text">The feeling of waking up in a foreign city for the first time. Morning light. Unfamiliar rooftops. Coffee steam. Possibility.</div>
+        <button class="copy-btn" data-copy="The feeling of waking up in a foreign city for the first time. Morning light. Unfamiliar rooftops. Coffee steam. Possibility.">
+          <span class="icon">⎘</span> نسخ المثال
+        </button>
+      </div>
+    </div>
+
+    <!-- T8 -->
+    <div class="template">
+      <div class="template-header">
+        <span class="template-num">TEMPLATE 08</span>
+        <h3>The Structured JSON — صيغة JSON المنظمة</h3>
+        <p class="template-desc">للمحترفين والمستخدمين عبر API. تمنحك تحكماً برمجياً كاملاً بكل عنصر من عناصر البرومبت.</p>
+      </div>
+      <div class="code-block">
+        <span class="code-label">STRUCTURE</span>
+<pre>{
+  "subject": "...",
+  "style": "...",
+  "composition": "...",
+  "lighting": "...",
+  "color_palette": "...",
+  "mood": "...",
+  "details": ["...", "...", "..."],
+  "text_elements": ["..."],
+  "aspect_ratio": "..."
+}</pre>
+      </div>
+      <div class="copy-row">
+        <button class="copy-btn" data-copy='{
+  "subject": "...",
+  "style": "...",
+  "composition": "...",
+  "lighting": "...",
+  "color_palette": "...",
+  "mood": "...",
+  "details": ["...", "...", "..."],
+  "text_elements": ["..."],
+  "aspect_ratio": "..."
+}'>
+          <span class="icon">⎘</span> نسخ القالب
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 05 LENGTH -->
+  <section class="section" id="length">
+    <p class="section-kicker">05 — الطول</p>
+    <h2 class="section-title">الأطوال الموصى بها</h2>
+    <p class="section-intro">
+      طول البرومبت يختلف بحسب نوع المهمة. لا تقتصد، ولا تحشو. القاعدة: تفاصيل كافية لتوجيه Luma بدون تعارض.
+    </p>
+    <div class="length-grid">
+      <div class="length-card">
+        <p class="type">Text-to-Image</p>
+        <p class="range">80–250</p>
+        <p class="desc">كلمة — توليد من نص فقط</p>
+      </div>
+      <div class="length-card">
+        <p class="type">Reference-Guided</p>
+        <p class="range">100–300</p>
+        <p class="desc">كلمة — توليد مع مراجع بصرية</p>
+      </div>
+      <div class="length-card">
+        <p class="type">Modify / Edit</p>
+        <p class="range">30–100</p>
+        <p class="desc">كلمة — تعديل جراحي على صورة</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 COMPARE -->
+  <section class="section" id="compare">
+    <p class="section-kicker">06 — الفرق العملي</p>
+    <h2 class="section-title">برومبت ضعيف ⇄ برومبت قوي</h2>
+    <p class="section-intro">
+      ثلاث مقارنات حقيقية توضح الفرق بين البرومبت الكسول والبرومبت الاحترافي.
+    </p>
+
+    <div class="compare-grid">
+      <div class="compare-card weak">
+        <p class="label">WEAK</p>
+        <p class="text">cat in forest</p>
+      </div>
+      <div class="compare-card strong">
+        <p class="label">STRONG</p>
+        <p class="text">A tabby cat sitting on a mossy log in an ancient forest at golden hour, soft dappled light filtering through oak leaves, painterly impressionist style, warm amber tones, peaceful and serene mood</p>
+      </div>
+    </div>
+    <div style="text-align:left;direction:ltr;margin-bottom:18px;">
+      <button class="copy-btn" data-copy="A tabby cat sitting on a mossy log in an ancient forest at golden hour, soft dappled light filtering through oak leaves, painterly impressionist style, warm amber tones, peaceful and serene mood">
+        <span class="icon">⎘</span> Copy Strong
+      </button>
+    </div>
+
+    <div class="compare-grid">
+      <div class="compare-card weak">
+        <p class="label">WEAK</p>
+        <p class="text">product photo of sneaker</p>
+      </div>
+      <div class="compare-card strong">
+        <p class="label">STRONG</p>
+        <p class="text">A single white running sneaker on a concrete surface, outdoor urban environment, clean commercial photography, soft natural shadow, minimalist and modern feel, shallow depth of field</p>
+      </div>
+    </div>
+    <div style="text-align:left;direction:ltr;margin-bottom:18px;">
+      <button class="copy-btn" data-copy="A single white running sneaker on a concrete surface, outdoor urban environment, clean commercial photography, soft natural shadow, minimalist and modern feel, shallow depth of field">
+        <span class="icon">⎘</span> Copy Strong
+      </button>
+    </div>
+
+    <div class="compare-grid">
+      <div class="compare-card weak">
+        <p class="label">WEAK</p>
+        <p class="text">make a poster</p>
+      </div>
+      <div class="compare-card strong">
+        <p class="label">STRONG</p>
+        <p class="text">Create a movie poster for a sci-fi thriller. Title: "SIGNAL" in large distressed metallic font at the top. Central image: a lone astronaut standing before a massive alien structure on a barren planet. Color palette: deep navy, burnt orange, silver. Mood: awe and isolation. Tagline at bottom: "They weren't listening. They were waiting."</p>
+      </div>
+    </div>
+    <div style="text-align:left;direction:ltr;">
+      <button class="copy-btn" data-copy='Create a movie poster for a sci-fi thriller. Title: "SIGNAL" in large distressed metallic font at the top. Central image: a lone astronaut standing before a massive alien structure on a barren planet. Color palette: deep navy, burnt orange, silver. Mood: awe and isolation. Tagline at bottom: "They werent listening. They were waiting."'>
+        <span class="icon">⎘</span> Copy Strong
+      </button>
+    </div>
+  </section>
+
+  <!-- 07 REFERENCES -->
+  <section class="section" id="references">
+    <p class="section-kicker">07 — المراجع البصرية</p>
+    <h2 class="section-title">أدوار الصور المرجعية</h2>
+    <p class="section-intro">
+      Luma يدعم حتى 9 صور مرجعية في وضع Create و 8 في وضع Modify (لأن صورة الإدخال تحتل خانة). كل مرجع له دور محدد.
+    </p>
+    <div class="table-scroll">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>الدور</th>
+            <th>ما الذي يتحكم به</th>
+            <th>متى تستخدمه</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="mono">Style</span></td><td>الجمالية البصرية وطريقة المعالجة</td><td>"اجعله يبدو مثل هذا"</td></tr>
+          <tr><td><span class="mono">Character</span></td><td>الهوية، الوجه، الجسم، الملابس</td><td>ثبات الشخصية عبر مشاهد متعددة</td></tr>
+          <tr><td><span class="mono">Composition</span></td><td>التخطيط والترتيب المكاني</td><td>مطابقة تأطير أو هيكل محدد</td></tr>
+          <tr><td><span class="mono">Color palette</span></td><td>الألوان والدرجات</td><td>مطابقة ألوان البراند أو المزاج</td></tr>
+          <tr><td><span class="mono">Lighting</span></td><td>اتجاه الضوء وجودته</td><td>إعادة إنتاج إعداد إضاءة محدد</td></tr>
+          <tr><td><span class="mono">Texture</span></td><td>قوام الأسطح، المواد</td><td>مطابقة لمسة المواد</td></tr>
+          <tr><td><span class="mono">Mood</span></td><td>الشعور العاطفي العام</td><td>التقاط الأجواء</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div style="background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:24px 28px;margin-top:20px;">
+      <h4 style="color:var(--gold);font-size:0.95rem;margin-bottom:14px;letter-spacing:0.1em;">سير عمل ثبات الشخصية</h4>
+      <ol style="list-style:none;padding:0;counter-reset:step;">
+        <li style="padding:8px 0;padding-right:32px;position:relative;color:var(--silver);font-size:0.9rem;font-weight:300;line-height:1.7;counter-increment:step;">
+          <span style="position:absolute;right:0;top:6px;width:24px;height:24px;border-radius:50%;background:var(--gold-soft);border:1px solid var(--border-gold);color:var(--gold);font-size:0.75rem;font-weight:700;display:flex;align-items:center;justify-content:center;">١</span>
+          ولّد مرجع شخصية نظيف، مواجه للكاميرا.
+        </li>
+        <li style="padding:8px 0;padding-right:32px;position:relative;color:var(--silver);font-size:0.9rem;font-weight:300;line-height:1.7;">
+          <span style="position:absolute;right:0;top:6px;width:24px;height:24px;border-radius:50%;background:var(--gold-soft);border:1px solid var(--border-gold);color:var(--gold);font-size:0.75rem;font-weight:700;display:flex;align-items:center;justify-content:center;">٢</span>
+          أعد استخدامه كـ <span class="mono" style="color:var(--gold-lum);background:rgba(201,168,76,0.08);padding:2px 6px;border-radius:3px;">IMAGE1 (CHARACTER)</span> في كل مشهد.
+        </li>
+        <li style="padding:8px 0;padding-right:32px;position:relative;color:var(--silver);font-size:0.9rem;font-weight:300;line-height:1.7;">
+          <span style="position:absolute;right:0;top:6px;width:24px;height:24px;border-radius:50%;background:var(--gold-soft);border:1px solid var(--border-gold);color:var(--gold);font-size:0.75rem;font-weight:700;display:flex;align-items:center;justify-content:center;">٣</span>
+          أبقِ التسمية متطابقة عبر كل البرومبتات.
+        </li>
+        <li style="padding:8px 0;padding-right:32px;position:relative;color:var(--silver);font-size:0.9rem;font-weight:300;line-height:1.7;">
+          <span style="position:absolute;right:0;top:6px;width:24px;height:24px;border-radius:50%;background:var(--gold-soft);border:1px solid var(--border-gold);color:var(--gold);font-size:0.75rem;font-weight:700;display:flex;align-items:center;justify-content:center;">٤</span>
+          أضف تفاصيل المشهد الخاصة في النص.
+        </li>
+        <li style="padding:8px 0;padding-right:32px;position:relative;color:var(--silver);font-size:0.9rem;font-weight:300;line-height:1.7;">
+          <span style="position:absolute;right:0;top:6px;width:24px;height:24px;border-radius:50%;background:var(--gold-soft);border:1px solid var(--border-gold);color:var(--gold);font-size:0.75rem;font-weight:700;display:flex;align-items:center;justify-content:center;">٥</span>
+          الشخصية تبقى ثابتة، العالم يتغير.
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- 08 ASPECT RATIOS -->
+  <section class="section" id="aspect">
+    <p class="section-kicker">08 — التقنيات</p>
+    <h2 class="section-title">نسب العرض المدعومة</h2>
+    <p class="section-intro">
+      تسع نسب عرض مدعومة. اختر بحسب وجهة الناتج: سوشيال، طباعة، يوتيوب، أو إعلان.
+    </p>
+    <div class="table-scroll">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>النسبة</th>
+            <th>الاتجاه</th>
+            <th>الاستخدام</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td><span class="mono">1:1</span></td><td>مربع</td><td>منشورات سوشيال، أفاتار، أيقونات</td></tr>
+          <tr><td><span class="mono">16:9</span></td><td>أفقي عريض</td><td>أغلفة يوتيوب، عروض، صور سينمائية</td></tr>
+          <tr><td><span class="mono">9:16</span></td><td>طولي</td><td>Stories، TikTok، خلفيات جوال</td></tr>
+          <tr><td><span class="mono">3:2</span></td><td>أفقي كلاسيكي</td><td>تصوير، طباعة، أعمال تحريرية</td></tr>
+          <tr><td><span class="mono">2:3</span></td><td>طولي كلاسيكي</td><td>بورتريه، أغلفة كتب، بوسترات</td></tr>
+          <tr><td><span class="mono">2:1</span></td><td>عريض جداً</td><td>مشاهد بانورامية، بنرات</td></tr>
+          <tr><td><span class="mono">1:2</span></td><td>طويل جداً</td><td>بنرات عمودية، لافتات</td></tr>
+          <tr><td><span class="mono">3:1</span></td><td>عريض متطرف</td><td>هيدر المواقع، letterbox سينمائي</td></tr>
+          <tr><td><span class="mono">1:3</span></td><td>طويل متطرف</td><td>سكرولات عمودية، إنفوغرافيك طويل</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p style="color:var(--silver);font-size:0.88rem;font-weight:300;background:var(--gold-soft);border:1px solid var(--border-gold);border-radius:8px;padding:14px 18px;margin-top:14px;">
+      <strong style="color:var(--gold)">قاعدة المانجا:</strong> أسلوب المانجا متاح فقط بنسب طولية — <span class="mono" style="color:var(--gold-lum);">2:3</span>، <span class="mono" style="color:var(--gold-lum);">9:16</span>، <span class="mono" style="color:var(--gold-lum);">1:2</span>، أو <span class="mono" style="color:var(--gold-lum);">1:3</span>.
+    </p>
+  </section>
+
+  <!-- 09 VOCAB -->
+  <section class="section" id="vocab">
+    <p class="section-kicker">09 — المفردات</p>
+    <h2 class="section-title">مفردات احترافية جاهزة</h2>
+    <p class="section-intro">
+      هذه المفردات هي اللغة السرّية لمديري التصوير والإخراج. انقر على أي مفردة لنسخها.
+    </p>
+
+    <div class="vocab-block">
+      <h4>أنواع اللقطات — Shot Types</h4>
+      <div class="chip-row">
+        <span class="chip" data-copy="Close-up">Close-up</span>
+        <span class="chip" data-copy="Medium shot">Medium shot</span>
+        <span class="chip" data-copy="Waist up">Waist up</span>
+        <span class="chip" data-copy="Wide shot">Wide shot</span>
+        <span class="chip" data-copy="Aerial view">Aerial view</span>
+        <span class="chip" data-copy="Over-the-shoulder">Over-the-shoulder</span>
+      </div>
+    </div>
+
+    <div class="vocab-block">
+      <h4>أنواع العدسات — Lenses</h4>
+      <div class="chip-row">
+        <span class="chip" data-copy="Wide angle">Wide angle</span>
+        <span class="chip" data-copy="Telephoto">Telephoto</span>
+        <span class="chip" data-copy="Macro">Macro</span>
+        <span class="chip" data-copy="50mm natural perspective">50mm natural perspective</span>
+        <span class="chip" data-copy="85mm portrait lens">85mm portrait lens</span>
+        <span class="chip" data-copy="24mm wide">24mm wide</span>
+      </div>
+    </div>
+
+    <div class="vocab-block">
+      <h4>زوايا الكاميرا — Camera Angles</h4>
+      <div class="chip-row">
+        <span class="chip" data-copy="Eye level">Eye level</span>
+        <span class="chip" data-copy="Low angle">Low angle</span>
+        <span class="chip" data-copy="Overhead">Overhead</span>
+        <span class="chip" data-copy="Slightly low">Slightly low</span>
+        <span class="chip" data-copy="Dutch angle">Dutch angle</span>
+        <span class="chip" data-copy="Bird's eye view">Bird's eye view</span>
+      </div>
+    </div>
+
+    <div class="vocab-block">
+      <h4>التكوين والإطار — Composition</h4>
+      <div class="chip-row">
+        <span class="chip" data-copy="Rule of thirds">Rule of thirds</span>
+        <span class="chip" data-copy="Close-up portrait">Close-up portrait</span>
+        <span class="chip" data-copy="Shallow depth of field">Shallow depth of field</span>
+        <span class="chip" data-copy="Centered composition">Centered composition</span>
+        <span class="chip" data-copy="Negative space">Negative space</span>
+        <span class="chip" data-copy="Leading lines">Leading lines</span>
+      </div>
+    </div>
+
+    <div class="vocab-block">
+      <h4>الإضاءة — Lighting (أقوى رافعة جودة)</h4>
+      <div class="chip-row">
+        <span class="chip" data-copy="Golden hour">Golden hour</span>
+        <span class="chip" data-copy="Dramatic side lighting">Dramatic side lighting</span>
+        <span class="chip" data-copy="Soft diffused light">Soft diffused light</span>
+        <span class="chip" data-copy="Soft window lighting">Soft window lighting</span>
+        <span class="chip" data-copy="Late afternoon golden light through dusty windows">Late afternoon golden light through dusty windows</span>
+        <span class="chip" data-copy="Dappled light">Dappled light</span>
+        <span class="chip" data-copy="Backlit silhouette">Backlit silhouette</span>
+        <span class="chip" data-copy="High contrast chiaroscuro">High contrast chiaroscuro</span>
+        <span class="chip" data-copy="Soft natural shadow">Soft natural shadow</span>
+      </div>
+    </div>
+
+    <div class="vocab-block">
+      <h4>الأساليب البصرية — Styles</h4>
+      <div class="chip-row">
+        <span class="chip" data-copy="Documentary photography">Documentary photography</span>
+        <span class="chip" data-copy="Fine art">Fine art</span>
+        <span class="chip" data-copy="Editorial">Editorial</span>
+        <span class="chip" data-copy="Oil painting">Oil painting</span>
+        <span class="chip" data-copy="35mm film photography">35mm film photography</span>
+        <span class="chip" data-copy="Studio Ghibli">Studio Ghibli</span>
+        <span class="chip" data-copy="Painterly impressionist">Painterly impressionist</span>
+        <span class="chip" data-copy="Commercial photography">Commercial photography</span>
+        <span class="chip" data-copy="Film noir, high contrast black and white">Film noir</span>
+        <span class="chip" data-copy="High-fashion editorial">High-fashion editorial</span>
+        <span class="chip" data-copy="Ukiyo-e">Ukiyo-e</span>
+        <span class="chip" data-copy="Manga">Manga</span>
+      </div>
+    </div>
+
+    <div class="vocab-block">
+      <h4>المزاج — Mood</h4>
+      <div class="chip-row">
+        <span class="chip" data-copy="Nostalgic">Nostalgic</span>
+        <span class="chip" data-copy="Tense">Tense</span>
+        <span class="chip" data-copy="Joyful and chaotic">Joyful and chaotic</span>
+        <span class="chip" data-copy="Dignified melancholy">Dignified melancholy</span>
+        <span class="chip" data-copy="Quiet, contemplative">Quiet, contemplative</span>
+        <span class="chip" data-copy="Awe and isolation">Awe and isolation</span>
+        <span class="chip" data-copy="Peaceful and serene">Peaceful and serene</span>
+        <span class="chip" data-copy="Focused and quiet">Focused and quiet</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 WORKFLOWS -->
+  <section class="section" id="workflows">
+    <p class="section-kicker">10 — التطبيق</p>
+    <h2 class="section-title">خمسة سيناريوهات عملية</h2>
+    <p class="section-intro">
+      كيف تستخدم القوالب فعلياً؟ هذه خمسة مسارات اختبرها فريق Luma لتحويل الفكرة إلى ناتج نهائي.
+    </p>
+
+    <div class="workflow">
+      <h4>Workflow 1 — من الفكرة إلى الصورة النهائية</h4>
+      <div class="workflow-steps">
+        <span class="workflow-step">Fast Start</span><span class="workflow-arrow">→</span>
+        <span class="workflow-step">اختر الأفضل</span><span class="workflow-arrow">→</span>
+        <span class="workflow-step">Modify للتفاصيل</span><span class="workflow-arrow">→</span>
+        <span class="workflow-step">Modify النهائي</span>
+      </div>
+    </div>
+
+    <div class="workflow">
+      <h4>Workflow 2 — إبداع مدفوع بالمراجع</h4>
+      <div class="workflow-steps">
+        <span class="workflow-step">1-3 مراجع</span><span class="workflow-arrow">→</span>
+        <span class="workflow-step">Multi-Reference Fusion</span><span class="workflow-arrow">→</span>
+        <span class="workflow-step">توليد</span><span class="workflow-arrow">→</span>
+        <span class="workflow-step">Modify للضبط</span>
+      </div>
+    </div>
+
+    <div class="workflow">
+      <h4>Workflow 3 — إصلاح وتلميع</h4>
+      <div class="workflow-steps">
+        <span class="workflow-step">أي صورة</span><span class="workflow-arrow">→</span>
+        <span class="workflow-step">Direct Edit</span><span class="workflow-arrow">→</span>
+        <span class="workflow-step">تعديل واحد كل مرة</span>
+      </div>
+    </div>
+
+    <div class="workflow">
+      <h4>Workflow 4 — تكوين بدقة</h4>
+      <div class="workflow-steps">
+        <span class="workflow-step">رسم تخطيطي</span><span class="workflow-arrow">→</span>
+        <span class="workflow-step">Layout Control</span><span class="workflow-arrow">→</span>
+        <span class="workflow-step">ارفع الرسم كمرجع</span><span class="workflow-arrow">→</span>
+        <span class="workflow-step">ولّد وحسّن</span>
+      </div>
+    </div>
+
+    <div class="workflow">
+      <h4>Workflow 5 — استكشاف ⇄ تثبيت ⇄ تكرار</h4>
+      <div class="workflow-steps">
+        <span class="workflow-step">Creative Mode</span><span class="workflow-arrow">→</span>
+        <span class="workflow-step">احفظ الاتجاه المفضل</span><span class="workflow-arrow">→</span>
+        <span class="workflow-step">Cinematic Control</span><span class="workflow-arrow">→</span>
+        <span class="workflow-step">Modify للتنويعات</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- 11 DO / DONT -->
+  <section class="section" id="do-dont">
+    <p class="section-kicker">11 — القواعد</p>
+    <h2 class="section-title">افعل / لا تفعل</h2>
+    <p class="section-intro">
+      ورقة سريعة بكل ما يجب تجنبه وكل ما يجب الالتزام به.
+    </p>
+    <div class="dual-list">
+      <div class="list-box do">
+        <h3>✓ افعل</h3>
+        <ul>
+          <li>كن محدداً في الموضوع + الأسلوب + التكوين</li>
+          <li>ضع التعليمات المهمة في بداية البرومبت</li>
+          <li>استخدم المراجع البصرية للحصول على الثبات</li>
+          <li>صف العلاقات المكانية صراحة ("يسار"، "في المقدمة")</li>
+          <li>ضع النصوص بين علامات اقتباس: <span class="mono">"SALE 50% OFF"</span></li>
+          <li>حسّن بالتكرار — لا تبدأ من الصفر كل مرة</li>
+          <li>استخدم وصف التخطيط للتكوينات المعقدة</li>
+          <li>حدد الإضاءة دائماً — أقوى رافعة جودة</li>
+        </ul>
+      </div>
+      <div class="list-box dont">
+        <h3>✗ لا تفعل</h3>
+        <ul>
+          <li>لا تكتب negative prompts ("no hands"، "without blur") — غير مدعومة</li>
+          <li>لا تستخدم حشو كلمات من أدوات أخرى ("8k، ultra detailed، masterpiece")</li>
+          <li>لا تفرط في التعليمات المتعارضة</li>
+          <li>لا تتوقع الكمال من برومبت واحد — القوة في الـ workflow</li>
+          <li>لا تنسَ المزاج/الإحساس — يغير الناتج جذرياً</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12 LIBRARY -->
+  <section class="section" id="library">
+    <p class="section-kicker">12 — المكتبة</p>
+    <h2 class="section-title">مكتبة برومبتات جاهزة للنسخ</h2>
+    <p class="section-intro">
+      عشرات الأمثلة الجاهزة، مصنفة حسب النوع. انقر على أي بطاقة لنسخ البرومبت كاملاً.
+    </p>
+
+    <div class="filter-bar">
+      <button class="filter-btn active" data-filter="all">الكل</button>
+      <button class="filter-btn" data-filter="portrait">بورتريه</button>
+      <button class="filter-btn" data-filter="product">منتج</button>
+      <button class="filter-btn" data-filter="landscape">طبيعة</button>
+      <button class="filter-btn" data-filter="editorial">تحريري</button>
+      <button class="filter-btn" data-filter="poster">بوستر / نص</button>
+      <button class="filter-btn" data-filter="storyboard">قصة مصورة</button>
+      <button class="filter-btn" data-filter="creative">إبداعي</button>
+    </div>
+
+    <div class="lib-grid" id="lib-grid">
+
+      <div class="lib-card" data-cat="portrait">
+        <p class="cat">PORTRAIT</p>
+        <h4>الملاكم المعتزل</h4>
+        <div class="prompt-preview">Subject: A retired boxer sitting alone in an empty gym. Style: Documentary photography, gritty and honest. Camera: Medium shot, waist up, 50mm, slightly low angle. Mood: Dignified melancholy.</div>
+        <button class="copy-btn" data-copy="Subject: A retired boxer sitting alone in an empty gym. Style: Documentary photography, gritty and honest. Scene: aging boxing gym with peeling paint, late afternoon golden light through dusty windows, quiet contemplative. Camera: medium shot waist up, 50mm natural perspective, slightly low angle. Details: worn leather gloves hanging nearby, sweat-stained bench, faded championship posters on walls. Mood: dignified melancholy, the weight of a career."><span class="icon">⎘</span> نسخ البرومبت كاملاً</button>
+      </div>
+
+      <div class="lib-card" data-cat="portrait">
+        <p class="cat">PORTRAIT</p>
+        <h4>الفنان السيراميكي</h4>
+        <div class="prompt-preview">A ceramic artist shaping a lopsided bowl, documentary photography style, soft window lighting, close-up shot, cluttered home studio background, mood: focused and quiet.</div>
+        <button class="copy-btn" data-copy="A ceramic artist shaping a lopsided bowl, documentary photography style, soft window lighting, close-up shot, cluttered home studio background, mood: focused and quiet, details: clay-covered hands, imperfect texture, tools scattered on wooden table"><span class="icon">⎘</span> نسخ البرومبت كاملاً</button>
+      </div>
+
+      <div class="lib-card" data-cat="product">
+        <p class="cat">PRODUCT</p>
+        <h4>حذاء رياضي تجاري</h4>
+        <div class="prompt-preview">A single white running sneaker on a concrete surface, outdoor urban environment, clean commercial photography, soft natural shadow, minimalist and modern feel, shallow depth of field.</div>
+        <button class="copy-btn" data-copy="A single white running sneaker on a concrete surface, outdoor urban environment, clean commercial photography, soft natural shadow, minimalist and modern feel, shallow depth of field"><span class="icon">⎘</span> نسخ البرومبت كاملاً</button>
+      </div>
+
+      <div class="lib-card" data-cat="landscape">
+        <p class="cat">LANDSCAPE</p>
+        <h4>قطة في الغابة العتيقة</h4>
+        <div class="prompt-preview">A tabby cat sitting on a mossy log in an ancient forest at golden hour, soft dappled light filtering through oak leaves, painterly impressionist style, warm amber tones.</div>
+        <button class="copy-btn" data-copy="A tabby cat sitting on a mossy log in an ancient forest at golden hour, soft dappled light filtering through oak leaves, painterly impressionist style, warm amber tones, peaceful and serene mood"><span class="icon">⎘</span> نسخ البرومبت كاملاً</button>
+      </div>
+
+      <div class="lib-card" data-cat="editorial">
+        <p class="cat">EDITORIAL</p>
+        <h4>غلاف مجلة WILDLIGHT</h4>
+        <div class="prompt-preview">Create a magazine cover. Top third: Title "WILDLIGHT" in bold serif. Center: Portrait of a woman in oversized vintage denim jacket. Bottom: subtitle "The Future of Desert Fashion".</div>
+        <button class="copy-btn" data-copy='Create a magazine cover with the following layout: - Top third: Title "WILDLIGHT" in bold serif font - Center: Portrait of a woman wearing an oversized vintage denim jacket - Bottom: Subtitle "The Future of Desert Fashion — Spring 2026". Style: High-fashion editorial, muted earth tones, natural lighting'><span class="icon">⎘</span> نسخ البرومبت كاملاً</button>
+      </div>
+
+      <div class="lib-card" data-cat="poster">
+        <p class="cat">POSTER</p>
+        <h4>بوستر فيلم SIGNAL</h4>
+        <div class="prompt-preview">Create a movie poster for a sci-fi thriller. Title: "SIGNAL" in distressed metallic font. Central image: lone astronaut before a massive alien structure. Tagline: "They weren't listening. They were waiting."</div>
+        <button class="copy-btn" data-copy='Create a movie poster for a sci-fi thriller. Title: "SIGNAL" in large distressed metallic font at the top. Central image: a lone astronaut standing before a massive alien structure on a barren planet. Color palette: deep navy, burnt orange, silver. Mood: awe and isolation. Tagline at bottom: "They werent listening. They were waiting."'><span class="icon">⎘</span> نسخ البرومبت كاملاً</button>
+      </div>
+
+      <div class="lib-card" data-cat="storyboard">
+        <p class="cat">STORYBOARD</p>
+        <h4>قصة بوليسية بأربع لوحات</h4>
+        <div class="prompt-preview">4-panel storyboard. Panel 1: detective enters dimly lit bar. Panel 2: slides photo to bartender. Panel 3: bartender looks nervous. Panel 4: detective's knowing smile. Film noir.</div>
+        <button class="copy-btn" data-copy="Create a 4-panel storyboard showing: Panel 1: A detective enters a dimly lit bar. Panel 2: She slides a photo across the counter to the bartender. Panel 3: The bartender recognizes the person and looks nervous. Panel 4: Close-up of the detective's knowing smile. Consistent character throughout: woman in her 40s, sharp features, dark trenchcoat. Style: Film noir, high contrast black and white."><span class="icon">⎘</span> نسخ البرومبت كاملاً</button>
+      </div>
+
+      <div class="lib-card" data-cat="creative">
+        <p class="cat">CREATIVE</p>
+        <h4>الاستيقاظ في مدينة غريبة</h4>
+        <div class="prompt-preview">The feeling of waking up in a foreign city for the first time. Morning light. Unfamiliar rooftops. Coffee steam. Possibility.</div>
+        <button class="copy-btn" data-copy="The feeling of waking up in a foreign city for the first time. Morning light. Unfamiliar rooftops. Coffee steam. Possibility."><span class="icon">⎘</span> نسخ البرومبت كاملاً</button>
+      </div>
+
+      <div class="lib-card" data-cat="editorial">
+        <p class="cat">EDITORIAL</p>
+        <h4>تعديل سماء غروب درامية</h4>
+        <div class="prompt-preview">Change the sky to a dramatic sunset with deep orange and purple clouds. Keep everything else the same.</div>
+        <button class="copy-btn" data-copy="Change the sky to a dramatic sunset with deep orange and purple clouds. Keep everything else the same."><span class="icon">⎘</span> نسخ البرومبت كاملاً</button>
+      </div>
+
+      <div class="lib-card" data-cat="portrait">
+        <p class="cat">PORTRAIT</p>
+        <h4>موسيقي شارع — كمان تحت المطر</h4>
+        <div class="prompt-preview">A street musician playing violin under soft rain at dusk, neon reflections on wet asphalt, cinematic 35mm film photography, shallow depth of field, melancholic and poetic mood.</div>
+        <button class="copy-btn" data-copy="A street musician playing violin under soft rain at dusk, neon reflections on wet asphalt, cinematic 35mm film photography, shallow depth of field, dramatic side lighting from a nearby streetlamp, melancholic and poetic mood, details: weathered violin case open with coins inside, raindrops on the strings"><span class="icon">⎘</span> نسخ البرومبت كاملاً</button>
+      </div>
+
+      <div class="lib-card" data-cat="product">
+        <p class="cat">PRODUCT</p>
+        <h4>عطر فاخر — تكوين مينيمال</h4>
+        <div class="prompt-preview">A luxury perfume bottle on a polished marble surface, soft directional studio light, commercial photography, warm gold and ivory tones, shallow depth of field, premium and serene.</div>
+        <button class="copy-btn" data-copy="Subject: A luxury perfume bottle on a polished marble surface. Style: High-end commercial product photography, minimalist editorial. Scene: clean marble countertop, soft fabric draped to one side, warm ivory background gradient. Camera: close-up shot, 85mm lens, eye level, slight angle to show bottle profile. Lighting: soft directional studio light from upper-left, gentle reflection on bottle, soft natural shadow. Details: glass bottle reflections, golden cap, faint condensation on glass. Mood: premium and serene."><span class="icon">⎘</span> نسخ البرومبت كاملاً</button>
+      </div>
+
+      <div class="lib-card" data-cat="product">
+        <p class="cat">PRODUCT</p>
+        <h4>كوب قهوة — مزاج صباح</h4>
+        <div class="prompt-preview">An artisan ceramic coffee cup on a wooden table, morning sunlight through a window, steam rising, documentary lifestyle photography, warm soft tones, cozy and intimate mood.</div>
+        <button class="copy-btn" data-copy="An artisan ceramic coffee cup on a wooden table, morning sunlight through a window, steam rising gently, documentary lifestyle photography, warm soft tones, shallow depth of field, cozy and intimate mood, details: faint brushstrokes on the ceramic glaze, scattered coffee beans, linen napkin folded beside the cup"><span class="icon">⎘</span> نسخ البرومبت كاملاً</button>
+      </div>
+
+      <div class="lib-card" data-cat="landscape">
+        <p class="cat">LANDSCAPE</p>
+        <h4>صحراء عند الفجر</h4>
+        <div class="prompt-preview">A vast desert landscape at dawn, soft pink and lavender sky, sand dunes catching first light, fine art photography, peaceful and timeless mood, aerial perspective.</div>
+        <button class="copy-btn" data-copy="A vast desert landscape at dawn, soft pink and lavender sky, sand dunes catching first light with long shadows, fine art photography, peaceful and timeless mood, aerial perspective, wide shot, details: a single set of footprints crossing the foreground, distant mountains on the horizon"><span class="icon">⎘</span> نسخ البرومبت كاملاً</button>
+      </div>
+
+      <div class="lib-card" data-cat="landscape">
+        <p class="cat">LANDSCAPE</p>
+        <h4>زقاق طوكيو تحت المطر</h4>
+        <div class="prompt-preview">A rainy Tokyo alley at night, glowing neon signs in Japanese, reflections on wet pavement, cinematic 35mm film, moody and atmospheric, shallow depth of field.</div>
+        <button class="copy-btn" data-copy="A rainy Tokyo alley at night, glowing neon signs in Japanese, reflections on wet pavement, cinematic 35mm film photography, moody and atmospheric, shallow depth of field, low angle shot, details: a lone figure with an umbrella walking away, hanging lanterns, steam rising from a ramen shop entrance"><span class="icon">⎘</span> نسخ البرومبت كاملاً</button>
+      </div>
+
+      <div class="lib-card" data-cat="editorial">
+        <p class="cat">EDITORIAL</p>
+        <h4>أزياء صحراوية — تحريري</h4>
+        <div class="prompt-preview">A model in flowing earth-toned linen, standing on a sand dune at golden hour, high-fashion editorial photography, wind-blown fabric, dramatic side lighting, cinematic wide shot.</div>
+        <button class="copy-btn" data-copy="A model in flowing earth-toned linen garments, standing on a sand dune at golden hour, high-fashion editorial photography, wind-blown fabric catching light, dramatic side lighting, cinematic wide shot, muted desert palette of ochre/sand/clay, mood: bold and timeless, details: bare feet sinking into sand, jewelry catching light, low horizon line"><span class="icon">⎘</span> نسخ البرومبت كاملاً</button>
+      </div>
+
+      <div class="lib-card" data-cat="poster">
+        <p class="cat">POSTER</p>
+        <h4>بوستر ورشة تصوير</h4>
+        <div class="prompt-preview">Workshop poster. Top: "MASTER THE LIGHT" in elegant serif. Center: a hand reaching for light through window blinds. Bottom: "A 3-day photography intensive". Editorial style.</div>
+        <button class="copy-btn" data-copy='Create a workshop poster with the following layout: - Top: Title "MASTER THE LIGHT" in elegant serif font - Center: a hand reaching toward a beam of golden light through window blinds - Bottom: Subtitle "A 3-day photography intensive". Style: Editorial, warm ivory and gold palette, fine grain texture, minimalist and contemplative mood'><span class="icon">⎘</span> نسخ البرومبت كاملاً</button>
+      </div>
+
+      <div class="lib-card" data-cat="storyboard">
+        <p class="cat">STORYBOARD</p>
+        <h4>رحلة شخصية — 3 لوحات</h4>
+        <div class="prompt-preview">3-panel storyboard. Panel 1: young man packs a vintage suitcase. Panel 2: he stands at a train platform at dawn. Panel 3: he watches mountains pass through the window. Cinematic film grain.</div>
+        <button class="copy-btn" data-copy="Create a 3-panel storyboard showing: Panel 1: A young man carefully packs a vintage leather suitcase in a small bedroom. Panel 2: He stands alone at a train platform at dawn, holding the suitcase. Panel 3: He sits by the train window watching mountains pass by, his reflection in the glass. Consistent character throughout: man in his late 20s, light wool coat, thoughtful expression. Style: Cinematic, warm tones, soft film grain, melancholic mood."><span class="icon">⎘</span> نسخ البرومبت كاملاً</button>
+      </div>
+
+      <div class="lib-card" data-cat="creative">
+        <p class="cat">CREATIVE</p>
+        <h4>صوت الذاكرة</h4>
+        <div class="prompt-preview">The sound a forgotten song makes when it suddenly returns. Old radio. Dust in sunlight. A child's bedroom. The shape of memory.</div>
+        <button class="copy-btn" data-copy="The sound a forgotten song makes when it suddenly returns. Old radio. Dust in sunlight. A child's bedroom. The shape of memory."><span class="icon">⎘</span> نسخ البرومبت كاملاً</button>
+      </div>
+
+      <div class="lib-card" data-cat="creative">
+        <p class="cat">CREATIVE</p>
+        <h4>صمت ما قبل العاصفة</h4>
+        <div class="prompt-preview">The silence right before a storm breaks. Heavy air. Bent grass. A door left half-open. Anticipation made visible.</div>
+        <button class="copy-btn" data-copy="The silence right before a storm breaks. Heavy air. Bent grass. A door left half-open. Anticipation made visible."><span class="icon">⎘</span> نسخ البرومبت كاملاً</button>
+      </div>
+
+      <div class="lib-card" data-cat="editorial">
+        <p class="cat">EDITORIAL</p>
+        <h4>دمج مراجع متعددة</h4>
+        <div class="prompt-preview">IMAGE1 (STYLE): a film noir cinematography reference. IMAGE2 (CHARACTER): a portrait of a woman with dark hair. Create a scene combining the style of IMAGE1 with the character from IMAGE2.</div>
+        <button class="copy-btn" data-copy="IMAGE1 (STYLE): a film noir cinematography reference with deep shadows and dramatic contrast. IMAGE2 (CHARACTER): a portrait of a woman with dark hair and sharp features. IMAGE3 (COMPOSITION): a low-angle medium shot of a figure in a doorway. Create a scene that combines the visual style of IMAGE1, the character from IMAGE2, in the composition of IMAGE3. She stands in the doorway of an old detective office, dim light from a single bulb above, smoke curling in the foreground."><span class="icon">⎘</span> نسخ البرومبت كاملاً</button>
+      </div>
+
+      <div class="lib-card" data-cat="product">
+        <p class="cat">PRODUCT</p>
+        <h4>منتج تجميل — خلفية عضوية</h4>
+        <div class="prompt-preview">A glass skincare bottle on a smooth river stone, soft natural daylight, surrounded by botanical elements, clean editorial product photography, organic and luxurious mood.</div>
+        <button class="copy-btn" data-copy="A glass skincare bottle on a smooth river stone, soft natural daylight from the side, surrounded by fresh botanical elements (eucalyptus, dewy leaves), clean editorial product photography, organic and luxurious mood, shallow depth of field, soft cream and sage palette, details: water droplets on the bottle, soft shadow with gradient"><span class="icon">⎘</span> نسخ البرومبت كاملاً</button>
+      </div>
+
+      <div class="lib-card" data-cat="portrait">
+        <p class="cat">PORTRAIT</p>
+        <h4>بورتريه جدّة في مطبخها</h4>
+        <div class="prompt-preview">A grandmother kneading dough at a sunlit kitchen counter, documentary photography, soft window light, warm earth tones, intimate and timeless mood, close-up of hands.</div>
+        <button class="copy-btn" data-copy="A grandmother kneading dough at a sunlit kitchen counter, documentary photography, soft window light from the left, warm earth tones, intimate and timeless mood, close-up of weathered hands working the dough, details: flour on her apron, copper pots hanging in the background, a small herb pot on the windowsill, soft natural shadow"><span class="icon">⎘</span> نسخ البرومبت كاملاً</button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <div class="cta-banner">
+    <h3>تعلّم الذكاء الاصطناعي الإبداعي مع ماجد</h3>
+    <p>هذا الدليل جزء من رحلة أكبر. في دورات MA Learn تتعلم كيف توظف Luma و Midjourney و Higgsfield وغيرها لتنتج محتوى احترافي يستحق النشر.</p>
+    <a href="https://malearnsa.com/#courses" class="cta-btn">استكشف الدورات</a>
+  </div>
+
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast">تم النسخ ✓</div>
+
+<!-- FOOTER (MA Learn shared module v1) -->
+<div id="ma-footer"></div>
+<script src="https://malearnsa.com/footer-module/v1/footer.js"></script>
+
+<script>
+  // Copy buttons
+  document.querySelectorAll('[data-copy]').forEach(el => {
+    el.addEventListener('click', async () => {
+      const text = el.getAttribute('data-copy');
+      try {
+        await navigator.clipboard.writeText(text);
+      } catch (e) {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); } catch (_) {}
+        document.body.removeChild(ta);
+      }
+
+      // Visual feedback on the element
+      const originalHTML = el.innerHTML;
+      el.classList.add('copied');
+
+      if (el.classList.contains('copy-btn')) {
+        el.innerHTML = '<span class="icon">✓</span> تم النسخ';
+      }
+
+      setTimeout(() => {
+        el.classList.remove('copied');
+        if (el.classList.contains('copy-btn')) {
+          el.innerHTML = originalHTML;
+        }
+      }, 1500);
+
+      // Toast
+      const toast = document.getElementById('toast');
+      toast.classList.add('show');
+      clearTimeout(window._toastTimer);
+      window._toastTimer = setTimeout(() => {
+        toast.classList.remove('show');
+      }, 1800);
+    });
+  });
+
+  // Library filters
+  const filterBtns = document.querySelectorAll('.filter-btn');
+  const libCards = document.querySelectorAll('.lib-card');
+  filterBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      filterBtns.forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      const filter = btn.getAttribute('data-filter');
+      libCards.forEach(card => {
+        if (filter === 'all' || card.getAttribute('data-cat') === filter) {
+          card.classList.remove('hidden');
+        } else {
+          card.classList.add('hidden');
+        }
+      });
+    });
+  });
+</script>
+
+</body>
+</html>
