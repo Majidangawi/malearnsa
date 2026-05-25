@@ -740,7 +740,7 @@
   <h1>دليل البرومبت في <span>Luma AI</span></h1>
   <p class="meta">UNI-1 PROMPTING GUIDE · مرجع كامل بالعربية</p>
   <p class="lead">
-    كل ما تحتاجه لكتابة برومبت احترافي في منصة Luma AI: ثمانية قوالب جاهزة، مكتبة أمثلة قابلة للنسخ، مفردات الكاميرا والإضاءة، وأفضل الممارسات. لا تحتاج حيل برمجة برومبت — Luma يفهم نيتك ويفكر قبل أن يولّد بكسلاً واحداً.
+    دليل عربي طويل لمنصة Luma AI ووكيلها الإبداعي Uni-1: العقلية الصحيحة للتعامل مع الوكيل، رفع الملفات كقيود إبداعية، ثمانية قوالب برومبت، مكتبة أمثلة قابلة للنسخ، مفردات الكاميرا والإضاءة، البوردات والإنتاج بالحجم، وسير عمل حملة كاملة من البريف إلى التسليم.
   </p>
 </div>
 
@@ -752,17 +752,22 @@
     <p class="toc-title">محتويات الدليل</p>
     <div class="toc-grid">
       <a href="#principles"><span class="num">01</span> المبادئ الأساسية</a>
-      <a href="#workflow"><span class="num">02</span> سير العمل: Create vs Modify</a>
-      <a href="#anatomy"><span class="num">03</span> تشريح البرومبت المثالي</a>
-      <a href="#templates"><span class="num">04</span> القوالب الثمانية</a>
-      <a href="#length"><span class="num">05</span> الأطوال الموصى بها</a>
-      <a href="#compare"><span class="num">06</span> ضعيف ⇄ قوي</a>
-      <a href="#references"><span class="num">07</span> الصور المرجعية</a>
-      <a href="#aspect"><span class="num">08</span> نسب العرض</a>
-      <a href="#vocab"><span class="num">09</span> مفردات احترافية</a>
-      <a href="#workflows"><span class="num">10</span> خمسة سيناريوهات</a>
-      <a href="#do-dont"><span class="num">11</span> افعل / لا تفعل</a>
-      <a href="#library"><span class="num">12</span> مكتبة برومبتات جاهزة</a>
+      <a href="#teammate"><span class="num">02</span> الوكيل كزميل لا أداة</a>
+      <a href="#workflow"><span class="num">03</span> Create vs Modify</a>
+      <a href="#anatomy"><span class="num">04</span> تشريح البرومبت المثالي</a>
+      <a href="#templates"><span class="num">05</span> القوالب الثمانية</a>
+      <a href="#length"><span class="num">06</span> الأطوال الموصى بها</a>
+      <a href="#compare"><span class="num">07</span> ضعيف ⇄ قوي</a>
+      <a href="#references"><span class="num">08</span> الصور المرجعية</a>
+      <a href="#files"><span class="num">09</span> رفع الملفات كأصول</a>
+      <a href="#aspect"><span class="num">10</span> نسب العرض</a>
+      <a href="#vocab"><span class="num">11</span> مفردات احترافية</a>
+      <a href="#workflows"><span class="num">12</span> خمسة سيناريوهات</a>
+      <a href="#scale"><span class="num">13</span> البوردات والإنتاج بالحجم</a>
+      <a href="#campaign"><span class="num">14</span> سير عمل الحملة الكاملة</a>
+      <a href="#do-dont"><span class="num">15</span> افعل / لا تفعل</a>
+      <a href="#library"><span class="num">16</span> مكتبة برومبتات جاهزة</a>
+      <a href="#sources"><span class="num">★</span> المصادر</a>
     </div>
   </div>
 
@@ -797,9 +802,99 @@
     </div>
   </section>
 
-  <!-- 02 WORKFLOW -->
+  <!-- 02 TEAMMATE -->
+  <section class="section" id="teammate">
+    <p class="section-kicker">02 — العقلية</p>
+    <h2 class="section-title">التعامل مع الوكيل كزميل لا كأداة</h2>
+    <p class="section-intro">
+      جودة النتيجة = جودة البريف. تعامل مع Luma كأنه مدير فني محترف انضم لفريقك للتو — تحتاج أن تعطيه السياق، الهدف، والنقد البنّاء. هذه أهم نقلة ذهنية للمبتدئين، وهي مبنية مباشرة على دليل Luma "Treat the Agent Like a Teammate".
+    </p>
+
+    <div style="margin-bottom: 36px;">
+      <p style="color: var(--gold); font-size: 0.85rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 12px;">قالب البريف الأول — استخدمه قبل أي توليد</p>
+      <p style="color: var(--silver); font-weight: 300; margin-bottom: 16px;">
+        هذا البريف يحوّل المحادثة من "نفّذ" إلى "فكّر معي". يجبر الوكيل على فهم السياق قبل أن يولّد بكسلاً واحداً.
+      </p>
+      <div class="code-block">
+        <span class="code-label">BRIEF TEMPLATE</span>
+<pre>I want to create: <span class="placeholder">[وصف ما تصنع]</span>
+This is for: <span class="placeholder">[منشور / عرض / إعلان / حملة...]</span>
+The most important qualities are:
+  1. <span class="placeholder">[الجودة الأهم]</span>
+  2. <span class="placeholder">[الجودة الثانية]</span>
+  3. <span class="placeholder">[الجودة الثالثة]</span>
+
+Before generating anything, please:
+- Read every file I uploaded
+- Summarize what you understood in 3 bullets
+- Ask me your 3 most important clarifying questions
+- Do not generate yet</pre>
+      </div>
+      <div class="copy-row">
+        <button class="copy-btn" data-copy="I want to create: [description]
+This is for: [post / presentation / ad / campaign...]
+The most important qualities are:
+  1. [most important quality]
+  2. [second quality]
+  3. [third quality]
+
+Before generating anything, please:
+- Read every file I uploaded
+- Summarize what you understood in 3 bullets
+- Ask me your 3 most important clarifying questions
+- Do not generate yet"><span class="icon">⎘</span> نسخ القالب</button>
+      </div>
+    </div>
+
+    <div style="margin-bottom: 36px;">
+      <p style="color: var(--gold); font-size: 0.85rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 12px;">قالب التعليق على النتائج — استخدمه في كل دورة</p>
+      <p style="color: var(--silver); font-weight: 300; margin-bottom: 16px;">
+        النقد الفعّال له ثلاث خطوات. لا تكتفي بـ "غير عاجبني" — حدد ما يعمل، ما لا يعمل، والتعديل المطلوب فقط. هذا يحافظ على كل الإيجابيات ويعدّل المشكلة فقط.
+      </p>
+      <div class="code-block">
+        <span class="code-label">FEEDBACK TEMPLATE</span>
+<pre>I like: <span class="placeholder">[ما يعمل في النتيجة]</span>
+I don't like: <span class="placeholder">[ما لا يعمل]</span>
+Please adjust: <span class="placeholder">[التعديل المحدد فقط]</span>
+Keep everything else identical.
+Give me 4 versions to compare.</pre>
+      </div>
+      <div class="copy-row">
+        <button class="copy-btn" data-copy="I like: [what is working]
+I don't like: [what is not working]
+Please adjust: [the specific change only]
+Keep everything else identical.
+Give me 4 versions to compare."><span class="icon">⎘</span> نسخ القالب</button>
+      </div>
+    </div>
+
+    <div class="principle-grid">
+      <div class="principle-card">
+        <div class="icon">✎</div>
+        <h3>السياق قبل الأمر</h3>
+        <p>قبل أي طلب، اشرح ما تبني وما هدفه. الوكيل يستخدم السياق ليتخذ قرارات أفضل — تماماً كزميل بشري.</p>
+      </div>
+      <div class="principle-card">
+        <div class="icon">?</div>
+        <h3>اطلب أسئلة قبل العمل</h3>
+        <p>قول "ما أهم 3 أسئلة عندك قبل أن تبدأ؟" يكشف فجوات السياق قبل أن تحرق محاولات.</p>
+      </div>
+      <div class="principle-card">
+        <div class="icon">⊕</div>
+        <h3>اطلب 4 نسخ لا واحدة</h3>
+        <p>عدة نسخ تعطيك مقارنة فورية وتعلّمك ما يعمل أسرع من تكرار محاولة واحدة.</p>
+      </div>
+      <div class="principle-card">
+        <div class="icon">↻</div>
+        <h3>عدّل في حلقات لا في إعادات</h3>
+        <p>كل دورة نقد = تعديل صغير محدد. لا تطلب إعادة كاملة — ابنِ فوق ما يعمل.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 WORKFLOW -->
   <section class="section" id="workflow">
-    <p class="section-kicker">02 — القرار الأول</p>
+    <p class="section-kicker">03 — القرار الأول</p>
     <h2 class="section-title">Create أم Modify؟</h2>
     <p class="section-intro">
       قبل كل برومبت، اسأل نفسك: هل أريد صورة جديدة بالكامل، أم تعديل صورة موجودة؟ هذا القرار يحدد النوع التقني للبرومبت.
@@ -825,7 +920,7 @@
 
   <!-- 03 ANATOMY -->
   <section class="section" id="anatomy">
-    <p class="section-kicker">03 — البنية</p>
+    <p class="section-kicker">04 — البنية</p>
     <h2 class="section-title">تشريح البرومبت المثالي</h2>
     <p class="section-intro">
       كل برومبت قوي يتكون من ثمانية عناصر بناء. لست مضطراً لاستخدام كلها في كل مرة — لكن كلما اكتمل البناء، كانت النتيجة أقرب لخيالك.
@@ -884,7 +979,7 @@
 
   <!-- 04 TEMPLATES -->
   <section class="section" id="templates">
-    <p class="section-kicker">04 — القوالب</p>
+    <p class="section-kicker">05 — القوالب</p>
     <h2 class="section-title">القوالب الثمانية للبرومبت</h2>
     <p class="section-intro">
       Luma يوصي بثمانية قوالب احترافية. اختر القالب بحسب مستوى السيطرة الذي تريده — من البداية السريعة إلى التحكم الكامل بصيغة JSON.
@@ -1195,7 +1290,7 @@ Style: Film noir, high contrast black and white.">
 
   <!-- 05 LENGTH -->
   <section class="section" id="length">
-    <p class="section-kicker">05 — الطول</p>
+    <p class="section-kicker">06 — الطول</p>
     <h2 class="section-title">الأطوال الموصى بها</h2>
     <p class="section-intro">
       طول البرومبت يختلف بحسب نوع المهمة. لا تقتصد، ولا تحشو. القاعدة: تفاصيل كافية لتوجيه Luma بدون تعارض.
@@ -1221,7 +1316,7 @@ Style: Film noir, high contrast black and white.">
 
   <!-- 06 COMPARE -->
   <section class="section" id="compare">
-    <p class="section-kicker">06 — الفرق العملي</p>
+    <p class="section-kicker">07 — الفرق العملي</p>
     <h2 class="section-title">برومبت ضعيف ⇄ برومبت قوي</h2>
     <p class="section-intro">
       ثلاث مقارنات حقيقية توضح الفرق بين البرومبت الكسول والبرومبت الاحترافي.
@@ -1278,7 +1373,7 @@ Style: Film noir, high contrast black and white.">
 
   <!-- 07 REFERENCES -->
   <section class="section" id="references">
-    <p class="section-kicker">07 — المراجع البصرية</p>
+    <p class="section-kicker">08 — المراجع البصرية</p>
     <h2 class="section-title">أدوار الصور المرجعية</h2>
     <p class="section-intro">
       Luma يدعم حتى 9 صور مرجعية في وضع Create و 8 في وضع Modify (لأن صورة الإدخال تحتل خانة). كل مرجع له دور محدد.
@@ -1331,9 +1426,96 @@ Style: Film noir, high contrast black and white.">
     </div>
   </section>
 
-  <!-- 08 ASPECT RATIOS -->
+  <!-- 09 FILES -->
+  <section class="section" id="files">
+    <p class="section-kicker">09 — الملفات</p>
+    <h2 class="section-title">رفع الملفات: تحويل ما عندك إلى أصول إبداعية</h2>
+    <p class="section-intro">
+      الملفات التي ترفعها للوكيل تعمل كقيود إبداعية ومراجع ثابتة. هي تمنع الوكيل من "اختراع" تفاصيل العلامة التجارية أو الشخصيات أو المنتج، وتحوّل المعرفة التي عندك بالفعل إلى مادة قابلة للتوليد. القاعدة الذهبية: <strong style="color: var(--ivory)">ارفع أولاً، اسأل ثانياً، ولّد ثالثاً.</strong>
+    </p>
+
+    <div class="blocks-grid" style="margin-bottom: 36px;">
+      <div class="block-card">
+        <p class="label">Text</p>
+        <h4>نصوص</h4>
+        <p>PDFs، سكربتات، بريفات، عروض تقديمية، إرشادات علامة تجارية، ملاحظات اجتماعات، voiceover docs.</p>
+        <span class="example-tag">brand-guidelines.pdf · brief.md</span>
+      </div>
+      <div class="block-card">
+        <p class="label">Visual</p>
+        <h4>صور</h4>
+        <p>صور مرجعية، موودبوردات، ورقات شخصيات (character sheets)، صور منتج، لقطات شاشة.</p>
+        <span class="example-tag">moodboard.jpg · product-shot.png</span>
+      </div>
+      <div class="block-card">
+        <p class="label">Video</p>
+        <h4>فيديو</h4>
+        <p>مقاطع للريميكس، مراجع حركة، أعمال فيديو سابقة لاستخراج DNA الحركة منها.</p>
+        <span class="example-tag">motion-ref.mp4 · prior-work.mov</span>
+      </div>
+      <div class="block-card">
+        <p class="label">Audio</p>
+        <h4>صوت</h4>
+        <p>عينات صوتية، تسجيلات أولية (rough reads)، مراجع موسيقية، voiceover.</p>
+        <span class="example-tag">voice-sample.mp3 · music-ref.wav</span>
+      </div>
+    </div>
+
+    <div style="background: var(--surface-2); border: 1px solid var(--border-gold); border-radius: 12px; padding: 28px 32px; margin-bottom: 36px;">
+      <p style="color: var(--gold); font-size: 0.85rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 16px; text-align: center;">سير العمل الرسمي من Luma</p>
+      <p style="color: var(--ivory); font-size: 1.2rem; font-weight: 700; margin-bottom: 22px; text-align: center; letter-spacing: 0.04em;">Upload → Analyze → Convert → Create</p>
+      <ol style="color: var(--silver); font-weight: 300; padding-right: 22px; line-height: 2;">
+        <li><strong style="color: var(--ivory)">Upload</strong> — ارفع كل الملفات قبل أي طلب (مراجع + نص + موودبورد + منتج).</li>
+        <li><strong style="color: var(--ivory)">Analyze</strong> — اطلب من الوكيل أن يلخّص ما فهم ويستخرج القيود الإبداعية (لون، إضاءة، نبرة، قواعد).</li>
+        <li><strong style="color: var(--ivory)">Convert</strong> — حوّل ما لخّصه إلى بريف إبداعي، أو قائمة لقطات (shot list)، أو دليل أسلوب (style guide).</li>
+        <li><strong style="color: var(--ivory)">Create</strong> — بعد التأكد من فهم الوكيل، ابدأ التوليد. الفرق في الجودة هائل.</li>
+      </ol>
+    </div>
+
+    <p style="color: var(--gold); font-size: 0.85rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 14px;">ستة أوامر جاهزة بعد رفع الملفات</p>
+    <div class="lib-grid">
+      <div class="lib-card">
+        <p class="cat">SUMMARIZE</p>
+        <h4>لخّص دليل العلامة</h4>
+        <div class="prompt-preview">Summarize the uploaded brand guideline in 5 bullets. Extract: color palette with hex codes, voice/tone rules, hard-avoids, typography rules, logo placement rules.</div>
+        <button class="copy-btn" data-copy="Summarize the uploaded brand guideline in 5 bullets. Extract: 1) the color palette with hex codes, 2) the voice/tone rules, 3) the visual hard-avoids (what NOT to do), 4) typography rules, 5) any logo placement rules."><span class="icon">⎘</span> نسخ</button>
+      </div>
+      <div class="lib-card">
+        <p class="cat">EXTRACT DNA</p>
+        <h4>استخرج DNA المراجع</h4>
+        <div class="prompt-preview">Look at the reference images I uploaded. Extract the visual DNA: 1) Light, 2) Color, 3) Composition. Be specific — name the legend if you recognize one.</div>
+        <button class="copy-btn" data-copy="Look at the reference images I uploaded. Extract the visual DNA in 3 categories: 1) Light (source, direction, hardness, color temperature), 2) Color (palette, contrast, dominant hue), 3) Composition (framing, subject placement, negative space). Be specific and name the photographer or cinematographer style if you recognize one."><span class="icon">⎘</span> نسخ</button>
+      </div>
+      <div class="lib-card">
+        <p class="cat">SHOT LIST</p>
+        <h4>حوّل البريف إلى لقطات</h4>
+        <div class="prompt-preview">Based on the brief I uploaded, generate a shot list of 8 frames. For each: subject, angle, suggested lens, mood, one-line description.</div>
+        <button class="copy-btn" data-copy="Based on the brief I uploaded, generate a shot list of 8 frames. For each frame include: subject, camera angle, suggested lens, mood, and a one-line description of the moment. Format as a numbered list."><span class="icon">⎘</span> نسخ</button>
+      </div>
+      <div class="lib-card">
+        <p class="cat">CHARACTER SHEET</p>
+        <h4>ورقة شخصية ثابتة</h4>
+        <div class="prompt-preview">Use the uploaded portrait as the locked character. Create a 5-panel reference sheet (front, 3/4, profile, back, close-up) keeping identity perfect.</div>
+        <button class="copy-btn" data-copy="Use the uploaded portrait as the locked character reference. Create a 5-panel character reference sheet showing: 1) front view, 2) 3/4 view, 3) profile, 4) back view, 5) close-up of face. Keep the face identity perfectly consistent across all panels. Neutral grey background."><span class="icon">⎘</span> نسخ</button>
+      </div>
+      <div class="lib-card">
+        <p class="cat">CONTRADICTION CHECK</p>
+        <h4>كاشف التناقضات</h4>
+        <div class="prompt-preview">Compare the uploaded brand guideline with the new brief. List every contradiction. For each, recommend which source I should follow for this project.</div>
+        <button class="copy-btn" data-copy="Compare the uploaded brand guideline with the brief I just shared. List every contradiction between them. For each contradiction, recommend which source I should follow for this project and explain why."><span class="icon">⎘</span> نسخ</button>
+      </div>
+      <div class="lib-card">
+        <p class="cat">STYLE GUIDE</p>
+        <h4>دليل أسلوب من المراجع</h4>
+        <div class="prompt-preview">Build a visual style guide from the uploaded references: color palette with hex, light setup recipe, lens character, composition rules, hard avoids.</div>
+        <button class="copy-btn" data-copy="Build a complete visual style guide from the uploaded reference images. Include: 1) Color palette with hex codes (5 colors), 2) Light setup recipe (key, fill, edge), 3) Lens character (focal length, depth of field, distance), 4) Composition rules, 5) Hard avoids — what would break this style."><span class="icon">⎘</span> نسخ</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- 10 ASPECT RATIOS -->
   <section class="section" id="aspect">
-    <p class="section-kicker">08 — التقنيات</p>
+    <p class="section-kicker">10 — التقنيات</p>
     <h2 class="section-title">نسب العرض المدعومة</h2>
     <p class="section-intro">
       تسع نسب عرض مدعومة. اختر بحسب وجهة الناتج: سوشيال، طباعة، يوتيوب، أو إعلان.
@@ -1367,7 +1549,7 @@ Style: Film noir, high contrast black and white.">
 
   <!-- 09 VOCAB -->
   <section class="section" id="vocab">
-    <p class="section-kicker">09 — المفردات</p>
+    <p class="section-kicker">11 — المفردات</p>
     <h2 class="section-title">مفردات احترافية جاهزة</h2>
     <p class="section-intro">
       هذه المفردات هي اللغة السرّية لمديري التصوير والإخراج. انقر على أي مفردة لنسخها.
@@ -1471,7 +1653,7 @@ Style: Film noir, high contrast black and white.">
 
   <!-- 10 WORKFLOWS -->
   <section class="section" id="workflows">
-    <p class="section-kicker">10 — التطبيق</p>
+    <p class="section-kicker">12 — التطبيق</p>
     <h2 class="section-title">خمسة سيناريوهات عملية</h2>
     <p class="section-intro">
       كيف تستخدم القوالب فعلياً؟ هذه خمسة مسارات اختبرها فريق Luma لتحويل الفكرة إلى ناتج نهائي.
@@ -1527,9 +1709,183 @@ Style: Film noir, high contrast black and white.">
     </div>
   </section>
 
-  <!-- 11 DO / DONT -->
+  <!-- 13 SCALE -->
+  <section class="section" id="scale">
+    <p class="section-kicker">13 — التوسع</p>
+    <h2 class="section-title">البوردات والإنتاج بالحجم</h2>
+    <p class="section-intro">
+      من فكرة واحدة إلى حملة كاملة. Luma لم يُبنَ على فكرة "محادثة → صورة" بل "بورد → نظام إبداعي". Uni-1 وكيل متعدد الوسائط (نص + صورة + فيديو + صوت) ضمن نفس السياق، وكل ما تولّده يبقى مرئياً جنباً إلى جنب على البورد. هذا القسم يخرجك من عقلية الصورة الواحدة ويدخلك عقلية الحملة.
+    </p>
+
+    <div style="margin-bottom: 36px;">
+      <p style="color: var(--gold); font-size: 0.85rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 16px;">المراحل الثلاث للتوسع</p>
+      <div class="principle-grid">
+        <div class="principle-card">
+          <div class="icon">①</div>
+          <h3>Exploration — استكشاف</h3>
+          <p>برومبتات فضفاضة لاستكشاف الاتجاهات الواسعة. ولّد بكميات. لا تحاول الكمال. هدفك معرفة الاتجاه الذي يستحق الاستثمار.</p>
+        </div>
+        <div class="principle-card">
+          <div class="icon">②</div>
+          <h3>Refinement — تحسين</h3>
+          <p>بعد اختيار الاتجاه، عدّل عنصراً واحداً في كل دورة: إضاءة، تكوين، خلفية، مزاج. <strong>غيّر متغيراً واحداً فقط.</strong></p>
+        </div>
+        <div class="principle-card">
+          <div class="icon">③</div>
+          <h3>Production — إنتاج</h3>
+          <p>إعادة تأطير لكل المنصات، ترجمات، subtitles، اقتصاصات، CTAs. النسخة الواحدة تصبح حملة كاملة.</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="background: var(--surface-2); border: 1px solid var(--border-gold); border-radius: 12px; padding: 24px 28px; margin-bottom: 32px;">
+      <p style="color: var(--gold); font-size: 0.85rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 12px;">قاعدة ذهبية: شجّر، لا تكتب فوق</p>
+      <p style="color: var(--silver); font-weight: 300; line-height: 1.95;">
+        على البورد، احتفظ بكل النسخ في فروع منفصلة بدل أن تكتب على النتيجة. "Concept A" مع كل تعديلاته يبقى مرئياً جنباً إلى جنب مع "Concept B". هذا يعطيك مقارنة بصرية فورية ويمنع فقدان الأفكار الجيدة في طريق التطوير.
+      </p>
+    </div>
+
+    <div class="compare-grid" style="margin-bottom: 32px;">
+      <div class="compare-card strong">
+        <p class="label">PROMPT SCALE</p>
+        <p style="color:var(--silver);font-size:0.9rem;font-weight:300;line-height:1.85;">
+          <strong style="color:var(--ivory)">برومبت واحد → عدة نواتج.</strong> اطلب: "ولّد 4 نسخ بإضاءة مختلفة"، أو "أنتج المشهد بثلاث زوايا كاميرا"، أو "اعمل النسخة 1:1، 9:16، 16:9 من نفس البرومبت".
+        </p>
+      </div>
+      <div class="compare-card strong">
+        <p class="label">ASSET SCALE</p>
+        <p style="color:var(--silver);font-size:0.9rem;font-weight:300;line-height:1.85;">
+          <strong style="color:var(--ivory)">أصل بطل واحد → كل المتغيرات.</strong> بعد قفل صورة بطل واحدة، استخدمها كأساس لتوليد: متغيرات أسلوبية، إعادة تأطير، ترجمات، CTAs، subtitles — كل ذلك من مرجع واحد.
+        </p>
+      </div>
+    </div>
+
+    <p style="color: var(--gold); font-size: 0.85rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 12px;">إعادة التأطير لكل المنصات من برومبت واحد</p>
+    <p style="color: var(--silver); font-weight: 300; margin-bottom: 18px; line-height: 1.85;">
+      من نفس البرومبت أو نفس الصورة، اطلب: <span class="mono" style="color: var(--ivory)">1:1</span> (شبكة Instagram)، <span class="mono" style="color: var(--ivory)">9:16</span> (Stories + Reels + TikTok)، <span class="mono" style="color: var(--ivory)">16:9</span> (يوتيوب + ويب)، <span class="mono" style="color: var(--ivory)">4:5</span> (منشور بورتريه). صورة بطل واحدة تصبح 4 أصول.
+    </p>
+
+    <div class="code-block">
+      <span class="code-label">REFRAME — locked hero → multi-platform</span>
+<pre>Take the locked hero image. Generate 4 versions:
+1) 1:1 for Instagram grid — center the subject
+2) 9:16 for Stories — extend vertically, keep subject in top-third
+3) 16:9 for web — extend horizontally, breathing room left and right
+4) 4:5 for portrait post — slight extension top and bottom
+Do not crop the key subject. Maintain identical color and lighting.</pre>
+    </div>
+    <div class="copy-row">
+      <button class="copy-btn" data-copy="Take the locked hero image. Generate 4 versions:
+1) 1:1 for Instagram grid — center the subject
+2) 9:16 for Stories — extend vertically, keep subject in top-third
+3) 16:9 for web — extend horizontally, breathing room left and right
+4) 4:5 for portrait post — slight extension top and bottom
+Do not crop the key subject. Maintain identical color and lighting."><span class="icon">⎘</span> نسخ القالب</button>
+    </div>
+
+    <div style="margin-top: 36px; background: var(--gold-soft); border: 1px solid var(--border-gold); border-radius: 12px; padding: 24px 28px;">
+      <p style="color: var(--gold); font-size: 0.85rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 10px;">Character Franchising — ضرب الشخصية في حملات</p>
+      <p style="color: var(--silver); font-weight: 300; line-height: 1.95;">
+        ابنِ نظاماً مرجعياً واحداً لشخصية (ورقة الشخصية + موودبورد)، ثم وسّعها إلى بيئات متعددة، حالات عاطفية مختلفة، لغات، وحملات — مع الحفاظ على الهوية البصرية. هذا هو "franchising" الشخصية بمعناه الحرفي. مفيد جداً للحملات الطويلة والمحتوى التعليمي والسرد القصصي.
+      </p>
+    </div>
+
+    <div style="margin-top: 28px; background: var(--gold-soft); border: 1px solid var(--border-gold); border-radius: 12px; padding: 24px 28px;">
+      <p style="color: var(--gold); font-size: 0.85rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 10px;">Localization at Scale — توطين بالحجم</p>
+      <p style="color: var(--silver); font-weight: 300; line-height: 1.95;">
+        من فيديو واحد منتهي: ترجم السكربت، ولّد voiceover، طابق lip-sync الشخصيات، استبدل النصوص على الشاشة، عدّل subtitles. كل ذلك بدون إعادة إنتاج كاملة. مثالي للسوق العربي + الإنجليزي من نفس المادة.
+      </p>
+    </div>
+  </section>
+
+  <!-- 14 CAMPAIGN -->
+  <section class="section" id="campaign">
+    <p class="section-kicker">14 — التطبيق الكامل</p>
+    <h2 class="section-title">سير عمل الحملة الكاملة — عشر خطوات</h2>
+    <p class="section-intro">
+      كيف تأخذ كل ما سبق وتطبّقه على حملة فعلية، من البريف الأول إلى التسليم النهائي. هذا الترتيب اختُبر على مشاريع حقيقية ويحوّل المبتدئ إلى منتج بحملة كاملة في أسبوع.
+    </p>
+
+    <div style="display: flex; flex-direction: column; gap: 14px;">
+      <div style="background: var(--surface-2); border: 1px solid var(--border); border-radius: 10px; padding: 20px 24px; border-right: 3px solid var(--gold);">
+        <p style="color: var(--gold); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.2em; margin-bottom: 8px;">STEP 01</p>
+        <h3 style="color: var(--ivory); font-size: 1.1rem; margin-bottom: 6px; font-weight: 700;">عرّف الحملة في 5 أسطر</h3>
+        <p style="color: var(--silver); font-weight: 300; font-size: 0.93rem; line-height: 1.8;">ماذا نصنع؟ لمن؟ أين سيُنشر؟ ما أهم 3 صفات؟ ما هو ليس هذا؟ <strong style="color: var(--ivory)">اكتب قبل أن تفتح Luma.</strong></p>
+      </div>
+      <div style="background: var(--surface-2); border: 1px solid var(--border); border-radius: 10px; padding: 20px 24px; border-right: 3px solid var(--gold);">
+        <p style="color: var(--gold); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.2em; margin-bottom: 8px;">STEP 02</p>
+        <h3 style="color: var(--ivory); font-size: 1.1rem; margin-bottom: 6px; font-weight: 700;">اجمع المراجع</h3>
+        <p style="color: var(--silver); font-weight: 300; font-size: 0.93rem; line-height: 1.8;">5 مراجع لاتجاه أول + 5 مراجع لاتجاه ثانٍ + 2 "هارد أفويد" (مراجع تشبه شكلياً لكن خطأ). احفظهم في فولدر <span class="mono">01-references/</span>.</p>
+      </div>
+      <div style="background: var(--surface-2); border: 1px solid var(--border); border-radius: 10px; padding: 20px 24px; border-right: 3px solid var(--gold);">
+        <p style="color: var(--gold); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.2em; margin-bottom: 8px;">STEP 03</p>
+        <h3 style="color: var(--ivory); font-size: 1.1rem; margin-bottom: 6px; font-weight: 700;">اجمع مادة العلامة والمنتج</h3>
+        <p style="color: var(--silver); font-weight: 300; font-size: 0.93rem; line-height: 1.8;">صور المنتج، ورقة المواصفات، إرشادات العلامة، لقطات من حملاتهم السابقة، اللوغو. كل شيء في فولدر <span class="mono">02-brand/</span>.</p>
+      </div>
+      <div style="background: var(--surface-2); border: 1px solid var(--border); border-radius: 10px; padding: 20px 24px; border-right: 3px solid var(--gold);">
+        <p style="color: var(--gold); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.2em; margin-bottom: 8px;">STEP 04</p>
+        <h3 style="color: var(--ivory); font-size: 1.1rem; margin-bottom: 6px; font-weight: 700;">اكتب التريتمنت في فقرة</h3>
+        <p style="color: var(--silver); font-weight: 300; font-size: 0.93rem; line-height: 1.8;">فقرة واحدة عن: لون، ضوء، عدسة، مزاج، ومرجعين من السينما/الفوتوغرافيا. هذه الفقرة هي حجر الزاوية لكل ما يلي.</p>
+      </div>
+      <div style="background: var(--surface-2); border: 1px solid var(--border); border-radius: 10px; padding: 20px 24px; border-right: 3px solid var(--gold);">
+        <p style="color: var(--gold); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.2em; margin-bottom: 8px;">STEP 05</p>
+        <h3 style="color: var(--ivory); font-size: 1.1rem; margin-bottom: 6px; font-weight: 700;">افتح Luma وارفع كل شيء</h3>
+        <p style="color: var(--silver); font-weight: 300; font-size: 0.93rem; line-height: 1.8;">بورد جديد. ارفع المراجع، ثم مادة العلامة، ثم فقرة التريتمنت. <strong style="color: var(--ivory)">لا تطلب توليد حتى الآن.</strong></p>
+      </div>
+      <div style="background: var(--surface-2); border: 1px solid var(--border); border-radius: 10px; padding: 20px 24px; border-right: 3px solid var(--gold);">
+        <p style="color: var(--gold); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.2em; margin-bottom: 8px;">STEP 06</p>
+        <h3 style="color: var(--ivory); font-size: 1.1rem; margin-bottom: 6px; font-weight: 700;">ابرف الوكيل واطلب أسئلة</h3>
+        <p style="color: var(--silver); font-weight: 300; font-size: 0.93rem; line-height: 1.8;">استخدم قالب البريف من القسم 02. اطلب أن يلخّص ويسأل 3 أسئلة قبل التوليد. <strong style="color: var(--ivory)">هذه الخطوة توفّر 40% من المحاولات الضائعة.</strong></p>
+      </div>
+      <div style="background: var(--surface-2); border: 1px solid var(--border); border-radius: 10px; padding: 20px 24px; border-right: 3px solid var(--gold);">
+        <p style="color: var(--gold); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.2em; margin-bottom: 8px;">STEP 07</p>
+        <h3 style="color: var(--ivory); font-size: 1.1rem; margin-bottom: 6px; font-weight: 700;">ولّد 3 اتجاهات × 4 لقطات</h3>
+        <p style="color: var(--silver); font-weight: 300; font-size: 0.93rem; line-height: 1.8;">12 لقطة كاستكشاف. لا تقفل واحدة بعد. شجّر الكل على البورد بفروع منفصلة. اختر الاتجاه الأقوى وأخبر الوكيل صراحة: <span class="mono">"Lock direction B".</span></p>
+      </div>
+      <div style="background: var(--surface-2); border: 1px solid var(--border); border-radius: 10px; padding: 20px 24px; border-right: 3px solid var(--gold);">
+        <p style="color: var(--gold); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.2em; margin-bottom: 8px;">STEP 08</p>
+        <h3 style="color: var(--ivory); font-size: 1.1rem; margin-bottom: 6px; font-weight: 700;">حسّن الاتجاه المختار</h3>
+        <p style="color: var(--silver); font-weight: 300; font-size: 0.93rem; line-height: 1.8;">6 تحسينات بمتغير واحد كل مرة (إضاءة، زاوية، تفصيل). استخدم قالب التعليق (I like / I don't like / Adjust). تنتهي بـ 6 لقطات بطل مقفولة.</p>
+      </div>
+      <div style="background: var(--surface-2); border: 1px solid var(--border); border-radius: 10px; padding: 20px 24px; border-right: 3px solid var(--gold);">
+        <p style="color: var(--gold); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.2em; margin-bottom: 8px;">STEP 09</p>
+        <h3 style="color: var(--ivory); font-size: 1.1rem; margin-bottom: 6px; font-weight: 700;">أعد التأطير + ولّد لايف ستايل + فيديو</h3>
+        <p style="color: var(--silver); font-weight: 300; font-size: 0.93rem; line-height: 1.8;">6 لقطات بطل × 4 نسب (1:1، 4:5، 9:16، 16:9) = 24 أصلاً. أضف 6 لقطات لايف ستايل. أضف 3-5 فيديوهات: فيلم بطل، Reel × 2، Story loop.</p>
+      </div>
+      <div style="background: var(--surface-2); border: 1px solid var(--border); border-radius: 10px; padding: 20px 24px; border-right: 3px solid var(--gold);">
+        <p style="color: var(--gold); font-size: 0.72rem; font-weight: 700; letter-spacing: 0.2em; margin-bottom: 8px;">STEP 10</p>
+        <h3 style="color: var(--ivory); font-size: 1.1rem; margin-bottom: 6px; font-weight: 700;">سمِّ كل أصل بنظام واحد وسلِّم</h3>
+        <p style="color: var(--silver); font-weight: 300; font-size: 0.93rem; line-height: 1.8;">نظام تسمية مثل: <span class="mono">PROJ_01-still-hero_v3.png</span> · <span class="mono">PROJ_02-lifestyle-story_v1.mp4</span>. بدون نظام تسمية تضيع 5 ساعات في اليوم الثالث.</p>
+      </div>
+    </div>
+
+    <div style="margin-top: 40px; background: var(--gold-soft); border: 1px solid var(--border-gold); border-radius: 12px; padding: 26px 30px;">
+      <p style="color: var(--gold); font-size: 0.85rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 16px;">ما يعنيه "حملة كاملة" — عدّاد التسليم</p>
+      <table style="width: 100%; color: var(--silver); font-size: 0.92rem; font-weight: 300; border-collapse: collapse;">
+        <thead>
+          <tr style="border-bottom: 1px solid var(--border-gold);">
+            <th style="text-align: right; padding: 10px 0; color: var(--ivory); font-weight: 700;">الأصل</th>
+            <th style="text-align: right; padding: 10px 16px; color: var(--ivory); font-weight: 700;">العدد</th>
+            <th style="text-align: right; padding: 10px 0; color: var(--ivory); font-weight: 700;">النسبة + المدة</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td style="padding: 8px 0;">صور بطل (Still Hero)</td><td style="padding: 8px 16px; color: var(--gold); font-weight: 700;">6</td><td style="padding: 8px 0;">4:5 + إعادة تأطير لكل النسب</td></tr>
+          <tr><td style="padding: 8px 0;">ماكرو تفاصيل</td><td style="padding: 8px 16px; color: var(--gold); font-weight: 700;">3</td><td style="padding: 8px 0;">4:5 + 1:1</td></tr>
+          <tr><td style="padding: 8px 0;">صور لايف ستايل</td><td style="padding: 8px 16px; color: var(--gold); font-weight: 700;">6</td><td style="padding: 8px 0;">4:5 + 9:16</td></tr>
+          <tr><td style="padding: 8px 0;">فيلم بطل</td><td style="padding: 8px 16px; color: var(--gold); font-weight: 700;">1</td><td style="padding: 8px 0;">16:9 — 15–20 ثانية</td></tr>
+          <tr><td style="padding: 8px 0;">Reels</td><td style="padding: 8px 16px; color: var(--gold); font-weight: 700;">2</td><td style="padding: 8px 0;">9:16 — 9–12 ثانية</td></tr>
+          <tr><td style="padding: 8px 0;">Story loop</td><td style="padding: 8px 16px; color: var(--gold); font-weight: 700;">1</td><td style="padding: 8px 0;">9:16 — 3–5 ثوانٍ</td></tr>
+          <tr><td style="padding: 8px 0;">غلاف Carousel</td><td style="padding: 8px 16px; color: var(--gold); font-weight: 700;">1</td><td style="padding: 8px 0;">4:5</td></tr>
+        </tbody>
+      </table>
+      <p style="color: var(--silver); font-weight: 300; font-size: 0.92rem; margin-top: 18px;">المجموع = <strong style="color: var(--ivory)">17 صورة + 4 فيديوهات</strong>. كافٍ لكاديانس إطلاق 8 أيام بدون تكرار.</p>
+    </div>
+  </section>
+
+  <!-- 15 DO / DONT -->
   <section class="section" id="do-dont">
-    <p class="section-kicker">11 — القواعد</p>
+    <p class="section-kicker">15 — القواعد</p>
     <h2 class="section-title">افعل / لا تفعل</h2>
     <p class="section-intro">
       ورقة سريعة بكل ما يجب تجنبه وكل ما يجب الالتزام به.
@@ -1563,7 +1919,7 @@ Style: Film noir, high contrast black and white.">
 
   <!-- 12 LIBRARY -->
   <section class="section" id="library">
-    <p class="section-kicker">12 — المكتبة</p>
+    <p class="section-kicker">16 — المكتبة</p>
     <h2 class="section-title">مكتبة برومبتات جاهزة للنسخ</h2>
     <p class="section-intro">
       عشرات الأمثلة الجاهزة، مصنفة حسب النوع. انقر على أي بطاقة لنسخ البرومبت كاملاً.
@@ -1737,6 +2093,40 @@ Style: Film noir, high contrast black and white.">
       </div>
 
     </div>
+  </section>
+
+  <!-- SOURCES -->
+  <section class="section" id="sources" style="border-top: 1px solid var(--border); padding-top: 56px;">
+    <p class="section-kicker">المراجع</p>
+    <h2 class="section-title">مصادر هذا الدليل</h2>
+    <p class="section-intro">
+      هذا الدليل مبني على المقالات الرسمية من مركز تعلّم Luma AI، مع تكييف للمحتوى ليلائم المستخدم العربي والممارس المحترف. كل قسم في هذا الدليل يستند مباشرة إلى مقالة أو أكثر من المقالات التالية.
+    </p>
+    <ul style="color: var(--silver); font-weight: 300; padding-right: 24px; line-height: 2.2; list-style: none; padding-right: 0;">
+      <li style="padding: 12px 0; border-bottom: 1px solid var(--border);">
+        <a href="https://lumalabs.ai/learning-center/articles/welcome-to-luma-agents" target="_blank" rel="noopener" style="color: var(--gold); text-decoration: none; font-weight: 700;">Welcome to Luma Agents ↗</a>
+        <p style="color: var(--silver); font-size: 0.9rem; font-weight: 300; margin-top: 4px;">ما هي وكلاء Luma، كيف تعمل البوردات، الطبيعة متعددة الوسائط للوكيل. <span style="color: var(--grey);">يغذّي قسم 13.</span></p>
+      </li>
+      <li style="padding: 12px 0; border-bottom: 1px solid var(--border);">
+        <a href="https://lumalabs.ai/learning-center/articles/treat-the-agent-like-a-teammate" target="_blank" rel="noopener" style="color: var(--gold); text-decoration: none; font-weight: 700;">Treat the Agent Like a Teammate ↗</a>
+        <p style="color: var(--silver); font-size: 0.9rem; font-weight: 300; margin-top: 4px;">العقلية الصحيحة، قالب البريف، قالب التعليق، طلب الأسئلة قبل العمل. <span style="color: var(--grey);">يغذّي قسم 02.</span></p>
+      </li>
+      <li style="padding: 12px 0; border-bottom: 1px solid var(--border);">
+        <a href="https://lumalabs.ai/learning-center/articles/turn-your-files-into-creative-assets" target="_blank" rel="noopener" style="color: var(--gold); text-decoration: none; font-weight: 700;">Turn Your Files into Creative Assets ↗</a>
+        <p style="color: var(--silver); font-size: 0.9rem; font-weight: 300; margin-top: 4px;">رفع الملفات (نص، صورة، فيديو، صوت)، سير Upload → Analyze → Convert → Create، أوامر الاستخراج. <span style="color: var(--grey);">يغذّي قسم 09.</span></p>
+      </li>
+      <li style="padding: 12px 0; border-bottom: 1px solid var(--border);">
+        <a href="https://lumalabs.ai/learning-center/articles/creating-at-scale-in-luma" target="_blank" rel="noopener" style="color: var(--gold); text-decoration: none; font-weight: 700;">Creating at Scale in Luma ↗</a>
+        <p style="color: var(--silver); font-size: 0.9rem; font-weight: 300; margin-top: 4px;">المراحل الثلاث للتوسع، شجرة النسخ، إعادة التأطير لكل المنصات، Character Franchising، Localization at Scale. <span style="color: var(--grey);">يغذّي قسم 13 + 14.</span></p>
+      </li>
+      <li style="padding: 12px 0; border-bottom: 1px solid var(--border);">
+        <a href="https://lumalabs.ai/learning-center/articles/luma-uni-1-field-guide" target="_blank" rel="noopener" style="color: var(--gold); text-decoration: none; font-weight: 700;">Luma Uni-1 Field Guide ↗</a>
+        <p style="color: var(--silver); font-size: 0.9rem; font-weight: 300; margin-top: 4px;">القوالب الثمانية، تشريح البرومبت، خمسة سيناريوهات عمل (Idea→Final، Reference-Driven، Fix & Polish، Precision Composition، Explore→Lock→Iterate). <span style="color: var(--grey);">يغذّي أقسام 04 + 05 + 12.</span></p>
+      </li>
+    </ul>
+    <p style="color: var(--grey); font-size: 0.85rem; margin-top: 28px; font-style: italic;">
+      روجِع آخر مرة: 2026-05-25 · المصدر الرسمي: lumalabs.ai/learning-center
+    </p>
   </section>
 
   <!-- CTA -->
