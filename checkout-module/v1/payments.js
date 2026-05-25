@@ -381,6 +381,7 @@
     }));
 
     const formEl = document.getElementById('moyasar-form');
+    const buyerName  = document.getElementById('name').value.trim();
     const buyerEmail = document.getElementById('email').value.trim();
     const buyerPhone = document.getElementById('phone').value.trim();
     const priceSAR = (finalAmount / 100).toFixed(0);
@@ -392,7 +393,11 @@
       description:          description,
       publishable_api_key:  cfg.moyasarKey,
       callback_url:         cfg.successUrl,
-      metadata:             { email: buyerEmail, phone: buyerPhone, coupon: coupon },
+      // Moyasar metadata is the only persistent record of buyer identity
+      // we can recover server-side via the Moyasar API. Always include
+      // name so the webhook / rescue path can enroll without a Waitlist
+      // lookup. Added 2026-05-26 after Alaa + deekoart silent-fail incidents.
+      metadata:             { name: buyerName, email: buyerEmail, phone: buyerPhone, coupon: coupon, product: cfg.productId },
       supported_networks:   ['mada', 'visa', 'mastercard'],
       methods:              ['creditcard', 'applepay'],
       apple_pay: {
@@ -400,6 +405,38 @@
         label:                  'MA Learn',
         validate_merchant_url:  'https://api.moyasar.com/v1/applepay/initiate',
         supported_networks:     ['mada', 'visa', 'mastercard']
+      },
+      // CRITICAL: on_completed fires BEFORE the callback_url redirect, with
+      // the Apple Pay sheet still alive. Returning a promise makes Moyasar
+      // wait for our complete_purchase call to land. This means the Apps
+      // Script row + email + token + Daftra invoice are committed BEFORE
+      // the buyer's browser navigates anywhere — surviving the most
+      // common silent-fail mode (Apple Pay sheet dismiss / iOS Safari tab
+      // freeze / network drop during redirect).
+      //
+      // The success.html page will still ALSO call complete_purchase, but
+      // paymentAlreadyProcessed() in Apps Script dedupes — second call is
+      // a no-op. Belt and braces.
+      //
+      // Added 2026-05-26 after second Apple Pay silent-fail (deekoart).
+      // History: every Apple Pay payment since 2026-04-15 has had
+      // callback_url: null in Moyasar's records (the Moyasar JS lib uses
+      // callback_url client-side only for Apple Pay). We were relying on
+      // a single browser-side fetch on success.html that drops ~5-10% of
+      // Apple Pay buyers depending on tab lifecycle.
+      on_completed: function(payment) {
+        var params = new URLSearchParams({
+          action:     'complete_purchase',
+          name:       buyerName,
+          email:      buyerEmail,
+          phone:      buyerPhone,
+          product:    cfg.productId,
+          amount:     (finalAmount / 100).toFixed(2),
+          coupon:     coupon,
+          payment_id: payment.id
+        });
+        return fetch(cfg.appsScriptUrl + '?' + params.toString())
+          .catch(function() { /* swallow; success.html will retry */ });
       }
     });
 
