@@ -32,3 +32,12 @@ creative-ai-workshop/images/_src_originals/
 # variants (testimonial-N-*.jpg, testimonial-vid-N.mp4) which ARE
 # committed.
 creative-ai-workshop/testimonials/_src_originals/
+
+# Google OAuth client credentials (never commit)
+client_secret_*.apps.googleusercontent.com.json
+client_secret.json
+credentials.json
+token*.json
+*.iam.gserviceaccount.com.json
+ma-ea-gmail-mcp-*.json
+service-account-key.json
