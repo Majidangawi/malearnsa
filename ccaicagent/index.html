@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+<meta http-equiv="X-Content-Type-Options" content="nosniff">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<title>دليل بناء الوكيل الإبداعي الذكي على جهازك بإستخدام Claude Code | MA Learn</title>
+<meta name="description" content="دليل شامل لبناء وكيل إبداعي بالذكاء الاصطناعي باستخدام Claude Code مع Higgsfield وFal.ai">
+<meta name="author" content="ماجد عنقاوي — MA Learn">
+<link rel="canonical" href="https://malearnsa.com/ccaicagent/">
+
+<!-- Open Graph -->
+<meta property="og:type" content="article">
+<meta property="og:title" content="دليل بناء الوكيل الإبداعي الذكي على جهازك بإستخدام Claude Code">
+<meta property="og:description" content="دليل شامل لبناء وكيل إبداعي بالذكاء الاصطناعي باستخدام Claude Code مع Higgsfield وFal.ai">
+<meta property="og:url" content="https://malearnsa.com/ccaicagent/">
+<meta property="og:image" content="https://malearnsa.com/images/og-malearn.jpg">
+<meta property="og:locale" content="ar_SA">
+<meta property="og:site_name" content="MA Learn">
+
+<!-- Meta Pixel -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '961157069802409');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=961157069802409&ev=PageView&noscript=1"/></noscript>
+
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-TZ9839RVDJ"></script>
+<script>
+window.dataLayer = window.dataLayer || [];
+function gtag(){dataLayer.push(arguments);}
+gtag('js', new Date());
+gtag('config', 'G-TZ9839RVDJ');
+</script>
+
+<!-- Cairo from Google Fonts -->
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+
+<!-- Shared MA Learn footer module -->
+<link rel="stylesheet" href="https://malearnsa.com/footer-module/v1/footer.css">
+
+<style>
+  :root {
+    --gold: #C9A84C;
+    --gold-light: #E8D08A;
+    --bg: #080808;
+    --bg2: #0E0E0E;
+    --bg3: #141414;
+    --white: #F5F0E8;
+    --muted: #888;
+    --body: #BBBBBB;
+  }
+
+  @font-face {
+    font-family: 'GumelaArabic';
+    src: url('/fonts/gumela-arabic-bold.otf') format('opentype');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap;
+  }
+  @font-face {
+    font-family: 'GumelaArabic';
+    src: url('/fonts/gumela-arabic-light.otf') format('opentype');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--white);
+    font-family: 'GumelaArabic', 'Cairo', sans-serif;
+    font-weight: 300;
+    min-height: 100vh;
+    overflow-x: hidden;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+    direction: rtl;
+    line-height: 1.85;
+    font-size: 17px;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 1000;
+    opacity: 0.4;
+  }
+
+  h1, h2, h3,
+  .hero-title, .phase-title, .section-title {
+    font-family: 'GumelaArabic', 'Cairo', sans-serif;
+    font-weight: 700;
+  }
+
+  a { color: var(--gold); text-decoration: none; transition: color 0.2s; }
+  a:hover { color: var(--gold-light); text-decoration: underline; }
+
+  /* Progress bar */
+  .progress {
+    position: fixed;
+    top: 0; right: 0; left: 0;
+    height: 3px;
+    background: transparent;
+    z-index: 250;
+  }
+  .progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(to left, var(--gold), var(--gold-light));
+    transition: width 0.1s;
+  }
+
+  /* HEADER — matches malearnsa.com */
+  header.site-header {
+    position: fixed;
+    top: 0; width: 100%;
+    z-index: 200;
+    padding: 20px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background 0.4s, padding 0.4s;
+  }
+  header.site-header.scrolled {
+    background: rgba(8,8,8,0.96);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    padding: 14px 48px;
+    border-bottom: 1px solid rgba(201,168,76,0.1);
+  }
+  .logo-img { height: 36px; max-height: 36px; width: auto; max-width: 160px; object-fit: contain; display: block; }
+  .logo-wrapper { height: 36px; display: flex; align-items: center; overflow: hidden; }
+  .logo-text { font-size: 20px; font-weight: 900; letter-spacing: 4px; color: var(--gold); text-transform: uppercase; display: none; }
+  .logo-text span { color: var(--white); opacity: 0.4; font-weight: 300; }
+  header.site-header nav { display: flex; align-items: center; }
+  header.site-header nav a {
+    color: rgba(245,240,232,0.75); text-decoration: none; font-size: 16px;
+    margin-right: 32px; transition: color 0.3s; white-space: nowrap;
+  }
+  header.site-header nav a:hover { color: var(--gold); text-decoration: none; }
+  @media (max-width: 720px) {
+    header.site-header { padding: 12px 16px; flex-wrap: wrap; gap: 6px; }
+    header.site-header.scrolled { padding: 8px 16px; }
+    header.site-header nav a { font-size: 13px; margin-right: 14px; }
+  }
+
+  /* Hero */
+  .hero {
+    padding: 130px 24px 60px;
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto;
+    border-bottom: 1px solid rgba(201,168,76,0.15);
+  }
+  .hero .tagline {
+    display: inline-block;
+    border: 1px solid rgba(201,168,76,0.3);
+    background: rgba(14,14,14,0.55);
+    color: rgba(201,168,76,0.92);
+    padding: 7px 18px;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 3px;
+    border-radius: 999px;
+    margin-bottom: 28px;
+    text-transform: uppercase;
+  }
+  .hero h1 {
+    color: var(--white);
+    font-size: clamp(28px, 5vw, 44px);
+    font-weight: 700;
+    line-height: 1.3;
+    margin: 0 0 22px;
+  }
+  .hero .sub {
+    color: var(--body);
+    font-size: clamp(15px, 1.7vw, 19px);
+    line-height: 1.8;
+    margin: 0 auto 32px;
+    max-width: 700px;
+    font-weight: 300;
+  }
+  .hero .meta {
+    color: var(--muted);
+    font-size: 14px;
+    letter-spacing: 0.5px;
+  }
+  .hero .meta span { margin: 0 10px; }
+
+  /* TOC */
+  .toc {
+    max-width: 900px;
+    margin: 60px auto 40px;
+    padding: 28px 32px;
+    background: var(--bg2);
+    border: 1px solid rgba(201,168,76,0.15);
+    border-radius: 12px;
+  }
+  .toc h2 {
+    color: var(--gold);
+    font-size: 14px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin: 0 0 16px;
+    font-weight: 700;
+  }
+  .toc ol {
+    margin: 0;
+    padding-right: 20px;
+    columns: 2;
+    column-gap: 32px;
+  }
+  .toc li { margin-bottom: 8px; break-inside: avoid; }
+  .toc a {
+    color: var(--white);
+    text-decoration: none;
+    font-size: 15px;
+    transition: color 0.15s;
+  }
+  .toc a:hover { color: var(--gold); text-decoration: none; }
+  @media (max-width: 700px) { .toc ol { columns: 1; } }
+
+  /* Main content */
+  .container {
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 40px 24px 80px;
+  }
+
+  section { margin-bottom: 80px; scroll-margin-top: 100px; }
+
+  .phase-num {
+    display: inline-block;
+    color: var(--gold);
+    font-size: 13px;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+    font-weight: 700;
+  }
+  h2.phase-title {
+    color: var(--white);
+    font-size: clamp(24px, 4vw, 32px);
+    font-weight: 700;
+    margin: 0 0 12px;
+    line-height: 1.3;
+  }
+  .phase-summary {
+    color: var(--body);
+    font-size: 17px;
+    margin: 0 0 32px;
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  h3 {
+    color: var(--white);
+    font-size: 21px;
+    margin: 42px 0 14px;
+    font-weight: 700;
+  }
+
+  p { margin: 16px 0; color: var(--body); }
+  strong { color: var(--white); font-weight: 600; }
+
+  ol, ul { padding-right: 24px; padding-left: 0; color: var(--body); }
+  li { margin-bottom: 14px; }
+  ol ol, ol ul, ul ol, ul ul { margin-top: 10px; }
+
+  /* Cards */
+  .card {
+    background: var(--bg2);
+    border: 1px solid rgba(201,168,76,0.18);
+    border-right: 3px solid var(--gold);
+    border-radius: 8px;
+    padding: 22px 26px;
+    margin: 18px 0;
+  }
+  .card h4 {
+    margin: 0 0 12px;
+    color: var(--white);
+    font-size: 18px;
+    font-weight: 700;
+    font-family: 'GumelaArabic', 'Cairo', sans-serif;
+  }
+  .card-tag {
+    display: inline-block;
+    background: rgba(201,168,76,0.12);
+    color: var(--gold);
+    padding: 3px 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 700;
+    margin-right: 8px;
+    vertical-align: middle;
+    letter-spacing: 0.3px;
+  }
+  .card ol { padding-right: 20px; }
+  .card li { margin-bottom: 8px; color: var(--body); }
+
+  /* Callouts */
+  .callout {
+    padding: 16px 20px;
+    border-radius: 8px;
+    margin: 22px 0;
+    border-right: 4px solid;
+  }
+  .callout-label {
+    display: block;
+    margin-bottom: 6px;
+    font-size: 12px;
+    letter-spacing: 1.2px;
+    font-weight: 700;
+  }
+  .callout-tip {
+    background: rgba(201,168,76,0.08);
+    border-color: var(--gold);
+    color: var(--body);
+  }
+  .callout-tip .callout-label { color: var(--gold); }
+  .callout-warn {
+    background: rgba(245,166,35,0.08);
+    border-color: #f5a623;
+    color: var(--body);
+  }
+  .callout-warn .callout-label { color: #f5c065; }
+  .callout-info {
+    background: rgba(90,158,239,0.08);
+    border-color: #5a9eef;
+    color: var(--body);
+  }
+  .callout-info .callout-label { color: #87b8f0; }
+  .callout strong { color: var(--white); }
+
+  /* Code blocks */
+  .code-wrap {
+    position: relative;
+    margin: 20px 0;
+    direction: ltr;
+    text-align: left;
+  }
+  pre {
+    background: var(--bg3);
+    color: var(--white);
+    padding: 20px 24px;
+    padding-right: 90px;
+    border-radius: 8px;
+    overflow-x: auto;
+    font-size: 14.5px;
+    line-height: 1.6;
+    border: 1px solid rgba(201,168,76,0.15);
+    margin: 0;
+    font-family: "SF Mono", Menlo, Monaco, Consolas, monospace;
+    white-space: pre;
+    direction: ltr;
+  }
+  .copy-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background: rgba(201,168,76,0.12);
+    color: var(--gold);
+    border: 1px solid rgba(201,168,76,0.3);
+    padding: 7px 16px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 12px;
+    font-family: 'GumelaArabic','Cairo',sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.4px;
+    transition: all 0.15s;
+    direction: rtl;
+  }
+  .copy-btn:hover {
+    background: var(--gold);
+    color: #080808;
+    border-color: var(--gold);
+  }
+  .copy-btn.copied {
+    background: #87de9b;
+    color: #080808;
+    border-color: #87de9b;
+  }
+
+  code:not(pre code) {
+    background: rgba(201,168,76,0.1);
+    color: var(--gold);
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 0.92em;
+    font-family: "SF Mono", Menlo, Monaco, Consolas, monospace;
+    direction: ltr;
+    display: inline-block;
+  }
+  a code { color: var(--gold) !important; }
+  a:hover code { color: var(--gold-light) !important; }
+
+  .key {
+    display: inline-block;
+    background: var(--bg3);
+    color: var(--white);
+    padding: 2px 9px;
+    border-radius: 4px;
+    font-size: 0.82em;
+    border: 1px solid rgba(201,168,76,0.25);
+    border-bottom-width: 2px;
+    margin: 0 2px;
+    direction: ltr;
+    font-family: 'GumelaArabic','Cairo',sans-serif;
+  }
+
+  hr {
+    border: none;
+    border-top: 1px solid rgba(201,168,76,0.12);
+    margin: 60px 0;
+  }
+
+  /* Back to top */
+  .top-btn {
+    position: fixed;
+    bottom: 24px;
+    left: 24px;
+    background: var(--gold);
+    color: #080808;
+    border: none;
+    padding: 12px 22px;
+    border-radius: 999px;
+    cursor: pointer;
+    font-family: 'GumelaArabic','Cairo',sans-serif;
+    font-size: 13px;
+    font-weight: 700;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+    opacity: 0;
+    transition: opacity 0.2s, background 0.2s, transform 0.2s;
+    z-index: 50;
+  }
+  .top-btn.visible { opacity: 1; }
+  .top-btn:hover { background: var(--gold-light); transform: scale(1.04); }
+
+  @media (max-width: 600px) {
+    .hero { padding: 110px 20px 48px; }
+    h2.phase-title { font-size: 26px; }
+    .toc { padding: 20px; }
+    pre { padding-right: 80px; font-size: 13px; }
+    .container { padding: 30px 20px 60px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="progress"><div class="progress-fill"></div></div>
+
+<!-- HEADER (matches malearnsa.com) -->
+<header id="site-header" class="site-header">
+  <div class="logo-wrapper">
+    <a href="https://malearnsa.com">
+      <img
+        class="logo-img"
+        src="/MA Learn white-08.png"
+        alt="MA LEARN"
+        onerror="this.style.display='none'; this.nextElementSibling.style.display='block';"
+      />
+    </a>
+    <div class="logo-text">MA <span>|</span> LEARN</div>
+  </div>
+  <nav>
+    <a href="https://malearnsa.com/#courses">الدورات</a>
+    <a href="https://malearnsa.com/#about-me">عن ماجد</a>
+    <a href="https://malearnsa.com/refund-policy.html">سياسة الاسترجاع</a>
+    <a href="https://malearnsa.com/privacy-policy.html">الخصوصية</a>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="tagline">MA Learn · دليل عملي</div>
+  <h1>دليل بناء الوكيل الإبداعي الذكي على جهازك بإستخدام Claude Code</h1>
+  <p class="sub">
+    دليل خطوة بخطوة لبناء قالب مشروع متكامل يستخدم Claude Code مع Higgsfield وFal.ai —
+    تبنيه مرة واحدة، وتستخدمه في كل مشروع جديد بعدها.
+  </p>
+  <div class="meta">
+    <span>المدة: 90 دقيقة تقريبًا</span>
+    <span>·</span>
+    <span>المستوى: مبتدئ</span>
+    <span>·</span>
+    <span>لـ macOS وWindows</span>
+  </div>
+</section>
+
+<!-- TOC -->
+<nav class="toc">
+  <h2>محتوى الدليل</h2>
+  <ol>
+    <li><a href="#phase-1">المتطلبات الأساسية</a></li>
+    <li><a href="#phase-2">تثبيت Claude Code في VS Code</a></li>
+    <li><a href="#phase-3">تثبيت وربط Higgsfield CLI</a></li>
+    <li><a href="#phase-4">إنشاء مجلد القالب + تثبيت Skills</a></li>
+    <li><a href="#phase-5">توليد ملف README.md</a></li>
+    <li><a href="#phase-6">توليد ملف CLAUDE.md</a></li>
+    <li><a href="#phase-7">ربط Fal.ai بالمشروع</a></li>
+    <li><a href="#phase-8">إضافة صورة المرجع</a></li>
+    <li><a href="#phase-9">تكرار القالب (اللحظة السحرية)</a></li>
+    <li><a href="#phase-10">توليد 5 صور بـ Fal.ai</a></li>
+    <li><a href="#phase-11">توليد 5 صور بـ Higgsfield</a></li>
+    <li><a href="#phase-12">الخطوات التالية</a></li>
+  </ol>
+</nav>
+
+<!-- MAIN CONTENT -->
+<main class="container">
+
+<section>
+  <h2 class="phase-title" style="font-size: 26px;">وش راح نبني اليوم؟</h2>
+  <p>
+    راح نبني <strong>قالب مشروع إبداعي</strong> داخل Claude Code — مجلد متكامل يحتوي على
+    تعليمات الذكاء الاصطناعي، صيغة الـ Prompt الخاصة فيك، ومفاتيح الربط مع أداتين قويتين
+    لتوليد الصور:
+  </p>
+  <ul>
+    <li><strong>Higgsfield AI</strong> — لتوليد الصور مع صورة مرجعية</li>
+    <li><strong>Fal.ai</strong> (موديل FLUX) — لتوليد الصور من النص فقط بدون مرجع</li>
+  </ul>
+  <p>
+    بعد ما نبني القالب، نسوي <strong>نسخة (Duplicate)</strong> منه ونحوّلها لمشروع شغّال —
+    كل ما تبي مشروع جديد، تنسخ المجلد وتشتغل. ما يحتاج إعادة تركيب أو تركيب مفاتيح من جديد.
+  </p>
+  <div class="callout callout-info">
+    <span class="callout-label">قبل ما تبدأ</span>
+    خذلك خمس دقائق وراجع <a href="#phase-1">المتطلبات الأساسية</a> أولًا —
+    كل التحضيرات تسويها مرة واحدة فقط في حياتك.
+  </div>
+</section>
+
+<hr>
+
+<!-- PHASE 1 -->
+<section id="phase-1">
+  <div class="phase-num">المرحلة 1</div>
+  <h2 class="phase-title">المتطلبات الأساسية</h2>
+  <p class="phase-summary">
+    3 حسابات + 3 أدوات تركّبها على جهازك. تركيبة لمرة وحدة بس — بعدها كل مشاريعك
+    الجاية تشتغل بدون أي إعداد.
+  </p>
+
+  <h3>أ. الحسابات المطلوبة</h3>
+
+  <div class="card">
+    <h4>1. حساب Anthropic <span class="card-tag">لـ Claude Code + Claude</span></h4>
+    <ol>
+      <li>افتح الرابط: <a href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a></li>
+      <li>اضغط على <strong>Sign Up</strong> (أو Sign In إذا عندك حساب).</li>
+      <li>استخدم البريد الإلكتروني أو Google.</li>
+      <li>أكّد بريدك إذا طلب منك ذلك.</li>
+    </ol>
+    <div class="callout callout-tip">
+      <span class="callout-label">معلومة</span>
+      نفس الحساب يفتحلك Claude (المحادثة) وClaude Code (الإضافة في VS Code).
+    </div>
+    <div class="callout callout-info">
+      <span class="callout-label">للسعوديين وأهل الخليج · مهم</span>
+      إذا ما يوصلك رمز التحقق (OTP) على رقم جوالك أثناء التسجيل، Anthropic عندهم حل رسمي:
+      عبّي <a href="https://docs.google.com/forms/d/e/1FAIpQLSdaK8KdXLL_BX1GY26NmntfyCq1EUGx_M_lxYnxuFiW0tgy4w/viewform" target="_blank" rel="noopener">نموذج Google Form هذا</a>،
+      وخلال يوم إلى يومين عمل راح يوصلك رابط تسجيل بدون الحاجة لرقم الجوال.
+    </div>
+  </div>
+
+  <div class="card">
+    <h4>2. حساب Higgsfield <span class="card-tag">لتوليد الصور بالمرجع</span></h4>
+    <ol>
+      <li>افتح: <a href="https://higgsfield.ai/" target="_blank" rel="noopener">higgsfield.ai</a></li>
+      <li>اضغط <strong>Sign Up</strong>.</li>
+      <li>سجّل بـ Google أو البريد.</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h4>3. حساب Fal.ai <span class="card-tag">لتوليد الصور بـ FLUX</span></h4>
+    <ol>
+      <li>افتح: <a href="https://fal.ai/" target="_blank" rel="noopener">fal.ai</a></li>
+      <li>اضغط <strong>Sign Up</strong>.</li>
+      <li>سجّل بـ Google أو البريد.</li>
+      <li>راح يعطيك <strong>كريديت مجاني</strong> للبداية — كافي تجرّب فيه الدليل كامل.</li>
+    </ol>
+  </div>
+
+  <h3>ب. البرامج المطلوبة</h3>
+
+  <div class="card">
+    <h4>4. VS Code <span class="card-tag">المحرر</span></h4>
+    <ol>
+      <li>افتح: <a href="https://code.visualstudio.com/download" target="_blank" rel="noopener">code.visualstudio.com/download</a></li>
+      <li>اضغط <strong>Download for Mac</strong> (أو Windows / Linux حسب جهازك).</li>
+      <li>افتح الملف اللي حمّلته — راح يطلع لك تطبيق <code>Visual Studio Code</code>.</li>
+      <li>اسحبه على مجلد <strong>Applications</strong>.</li>
+      <li>افتحه مرة من Applications تتأكد إنه يشتغل.</li>
+    </ol>
+  </div>
+
+  <div class="card">
+    <h4>5. Node.js <span class="card-tag">مطلوب لـ Higgsfield CLI</span></h4>
+    <ol>
+      <li>افتح: <a href="https://nodejs.org/en" target="_blank" rel="noopener">nodejs.org</a></li>
+      <li>اضغط الزر الأخضر الكبير <strong>LTS</strong> (الإصدار المستقر).</li>
+      <li>افتح ملف التثبيت → Continue → Continue → Install (أدخل كلمة السر إذا طلب).</li>
+      <li>افتح Terminal وتأكد بالأمرين هذولا:
+        <div class="code-wrap">
+          <button class="copy-btn">نسخ</button>
+<pre>node --version
+npm --version</pre>
+        </div>
+        كلاهما لازم يطلع لك رقم إصدار.
+      </li>
+    </ol>
+    <div class="callout callout-tip">
+      <span class="callout-label">وش يسوي Node.js؟</span>
+      Node.js يخليك تركّب أدوات سطر الأوامر — نحتاجه لأن Higgsfield CLI مبني عليه. ما يحتاج تفهم تقنيًا — ركّبه ونساه.
+    </div>
+    <div class="callout callout-warn">
+      <span class="callout-label">لو طلعت "command not found"</span>
+      اقفل نافذة Terminal وافتح وحدة جديدة — أحيانًا الأداة الجديدة ما تظهر إلا بعد ما تفتح Terminal جديد.
+    </div>
+  </div>
+
+  <div class="card">
+    <h4>6. تطبيق Claude للسطح المكتب <span class="card-tag">اختياري — claude.ai في المتصفح يكفي</span></h4>
+    <ol>
+      <li>افتح: <a href="https://claude.ai/download" target="_blank" rel="noopener">claude.ai/download</a></li>
+      <li>حمّل النسخة لـ Mac (أو Windows).</li>
+      <li>افتح ملف التثبيت واسحب التطبيق إلى Applications.</li>
+      <li>افتح التطبيق وسجل الدخول بحساب Anthropic.</li>
+    </ol>
+    <div class="callout callout-tip">
+      <span class="callout-label">المتصفح يكفي</span>
+      لو ما تبي تركّب تطبيق جديد، بس احفظ <a href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a> في المفضلة. نحتاجه في المرحلتين 5 و6 لتوليد ملفين. كلاهما يشتغل نفس الشي.
+    </div>
+  </div>
+
+  <div class="callout callout-info" style="margin-top: 30px;">
+    <span class="callout-label">انتهت الإعدادات الأساسية</span>
+    خلصنا 3 حسابات + 3 برامج. هذا الإعداد لمرة وحدة بس. كل اللي جاي بعد كذا هو البناء الفعلي.
+  </div>
+</section>
+
+<hr>
+
+<!-- PHASE 2 -->
+<section id="phase-2">
+  <div class="phase-num">المرحلة 2</div>
+  <h2 class="phase-title">تثبيت Claude Code في VS Code</h2>
+  <p class="phase-summary">
+    إضافة Claude Code تدخل داخل VS Code وتعطيك واجهة محادثة تقدر تكلّمها بالعربي أو الإنجليزي،
+    وهي تشتغل بالملفات والأوامر بدالك.
+  </p>
+
+  <ol>
+    <li>افتح <strong>VS Code</strong> من Applications.</li>
+    <li>اضغط على أيقونة <strong>Extensions</strong> في الشريط الجانبي (الأيقونة اللي شكلها 4 مربعات).</li>
+    <li>اكتب في خانة البحث: <code>Claude</code></li>
+    <li>تأكد إن اسم الناشر <strong>"Anthropic"</strong>.
+      <div class="callout callout-warn">
+        <span class="callout-label">مهم</span>
+        دايمًا تأكد من اسم الناشر. فيه نسخ مزيفة من الإضافات المشهورة — النسخة الصحيحة دايمًا اسم ناشرها <strong>Anthropic</strong>.
+      </div>
+    </li>
+    <li>اضغط <strong>Install</strong> وانتظر شوي.</li>
+    <li>بعد التثبيت، اضغط على أيقونة Claude اللي ظهرت في الشريط الجانبي.</li>
+    <li>اضغط <strong>Sign in</strong> — راح يفتح لك صفحة في المتصفح. سجل دخولك بحساب Anthropic.</li>
+    <li>ارجع لـ VS Code — تطلع لك واجهة المحادثة جاهزة.</li>
+  </ol>
+
+  <div class="callout callout-tip">
+    <span class="callout-label">تم</span>
+    Claude الآن مدمج في VS Code. يشتغل زي المحادثة — بس يقدر يقرأ ملفاتك، يعدّل عليها، يشغّل أوامر، ويستخدم الإنترنت.
+  </div>
+</section>
+
+<hr>
+
+<!-- PHASE 3 -->
+<section id="phase-3">
+  <div class="phase-num">المرحلة 3</div>
+  <h2 class="phase-title">تثبيت وربط Higgsfield CLI</h2>
+  <p class="phase-summary">
+    Higgsfield CLI هو أداة سطر أوامر — تركّبها مرة وحدة على جهازك وتشتغل في كل مشاريعك.
+    معلومات كاملة عن الأداة في <a href="https://higgsfield.ai/cli" target="_blank" rel="noopener">higgsfield.ai/cli</a>.
+  </p>
+
+  <ol>
+    <li>افتح <strong>Terminal داخل VS Code</strong>: من القائمة <strong>View → Terminal</strong>
+      (أو اضغط <span class="key">Ctrl</span> + <span class="key">`</span>).
+    </li>
+
+    <li>ركّب Higgsfield CLI بهذا الأمر:
+      <div class="code-wrap">
+        <button class="copy-btn">نسخ</button>
+<pre>npm install -g @higgsfield/cli</pre>
+      </div>
+      يأخذ 30–60 ثانية. راح تشوف شريط تحميل.
+    </li>
+
+    <li>تأكد إن التركيب نجح:
+      <div class="code-wrap">
+        <button class="copy-btn">نسخ</button>
+<pre>higgsfield --version</pre>
+      </div>
+      لازم يطلع رقم إصدار.
+    </li>
+
+    <li>سجل دخول حساب Higgsfield في الـ CLI:
+      <div class="code-wrap">
+        <button class="copy-btn">نسخ</button>
+<pre>higgsfield auth login</pre>
+      </div>
+      راح يفتح لك صفحة في المتصفح — سجل دخولك بحساب Higgsfield.
+    </li>
+
+    <li>تأكد إن تسجيل الدخول نجح:
+      <div class="code-wrap">
+        <button class="copy-btn">نسخ</button>
+<pre>higgsfield auth status</pre>
+      </div>
+      يطلع لك "authenticated".
+    </li>
+  </ol>
+
+  <div class="callout callout-tip">
+    <span class="callout-label">تم</span>
+    Higgsfield الآن مربوط بجهازك. ما راح تحتاج تسوي هذي الخطوة مرة ثانية — كل مشاريعك الجاية تستخدمه مباشرة.
+  </div>
+</section>
+
+<hr>
+
+<!-- PHASE 4 -->
+<section id="phase-4">
+  <div class="phase-num">المرحلة 4</div>
+  <h2 class="phase-title">إنشاء مجلد القالب + تثبيت Higgsfield Skills</h2>
+  <p class="phase-summary">
+    هنا نبني المجلد الأساسي للقالب. كل مشروع جديد بعد كذا راح يكون نسخة من هذا المجلد.
+  </p>
+
+  <h3>أ. إنشاء المجلد وهيكله</h3>
+
+  <ol>
+    <li>افتح <strong>Finder</strong> (أو File Explorer لـ Windows). روح على سطح المكتب (Desktop).</li>
+    <li>اضغط زر الفأرة الأيمن → <strong>New Folder</strong>. سمّه بالضبط: <code>creative agent template</code> واضغط Enter.</li>
+    <li>افتح المجلد، وسوِّ المجلدات الفرعية التالية بنفس الطريقة:
+      <ul>
+        <li><code>assets</code> (داخل المجلد الرئيسي)</li>
+        <li>داخل <code>assets/</code> سوِّ 3 مجلدات: <code>references</code>, <code>models</code>, <code>products</code></li>
+        <li>وفي المجلد الرئيسي أيضًا: <code>generated-images</code></li>
+      </ul>
+      شكل المجلد النهائي:
+      <div class="code-wrap">
+        <button class="copy-btn">نسخ</button>
+<pre>creative agent template/
+├── assets/
+│   ├── references/
+│   ├── models/
+│   └── products/
+└── generated-images/</pre>
+      </div>
+    </li>
+    <li>اسحب المجلد على أيقونة VS Code (أو من VS Code: File → Open Folder → اختر المجلد).</li>
+    <li>VS Code يسألك "Do you trust the authors?" — اضغط <strong>"Yes, I trust the authors"</strong>.</li>
+    <li>راح يظهر اسم المجلد في الشريط الجانبي مع المجلدات الفرعية اللي سويتها.</li>
+  </ol>
+
+  <div class="callout callout-tip">
+    <span class="callout-label">إذا ما تشوف المجلدات المخفية</span>
+    على Mac: اضغط <span class="key">Cmd</span> + <span class="key">Shift</span> + <span class="key">.</span> (نقطة) — يظهر ويخفي المجلدات المخفية في Finder.<br>
+    على Windows: من شريط View → Show → Hidden items.
+  </div>
+
+  <h3>ب. تثبيت Higgsfield Skills داخل القالب</h3>
+
+  <p>
+    الـ Skills هي حزم جاهزة تعلّم Claude يستخدم Higgsfield بشكل ممتاز — تحسين تلقائي للـ prompts،
+    اختيار الموديل المناسب، ومخرجات أنظف. نركّبها داخل القالب مرة وحدة، وكل نسخة من هذا القالب
+    تستفيد منها تلقائيًا.
+  </p>
+
+  <ol>
+    <li>افتح Terminal داخل VS Code (إذا مسكّر).</li>
+
+    <li>تأكد إنك داخل مجلد القالب:
+      <div class="code-wrap">
+        <button class="copy-btn">نسخ</button>
+<pre>pwd</pre>
+      </div>
+      لازم يطلع المسار اللي ينتهي بـ <code>creative agent template</code>.
+      <div class="callout callout-warn">
+        <span class="callout-label">ليش هذي الخطوة مهمة</span>
+        أمر التثبيت يحط الملفات داخل المجلد اللي إنت فيه. لو كنت في مجلد ثاني، الـ skills راح تنزل في غير المكان الصحيح.
+      </div>
+    </li>
+
+    <li>ركّب حزمة Higgsfield Skills:
+      <div class="code-wrap">
+        <button class="copy-btn">نسخ</button>
+<pre>npx skills add higgsfield-ai/skills</pre>
+      </div>
+      يأخذ 30–60 ثانية. بعد ما يخلّص راح تشوف 4 مجلدات جديدة داخل <code>.claude/skills/</code>:
+      <ul>
+        <li><code>higgsfield-generate</code> — توليد عام للصور والفيديو</li>
+        <li><code>higgsfield-soul-id</code> — لثبات الوجه/الشخصية</li>
+        <li><code>higgsfield-product-photoshoot</code> — تصوير منتجات احترافي</li>
+        <li><code>higgsfield-marketplace-cards</code> — صور منتجات للمتاجر</li>
+      </ul>
+    </li>
+
+    <li>تأكد من ظهور المجلدات:
+      <div class="code-wrap">
+        <button class="copy-btn">نسخ</button>
+<pre>ls .claude/skills</pre>
+      </div>
+      لازم تشوف الأربع مجلدات.
+    </li>
+  </ol>
+
+  <div class="callout callout-tip">
+    <span class="callout-label">معلومات مهمة عن الـ Skills</span>
+    <strong>1.</strong> الـ skills محصورة داخل هذا المجلد فقط — مو في النظام كله.<br>
+    <strong>2.</strong> مشاريعك الثانية على نفس الجهاز ما تتأثر.<br>
+    <strong>3.</strong> لما نكرر القالب لاحقًا (المرحلة 9)، الـ skills تيجي معه تلقائيًا.
+  </div>
+</section>
+
+<hr>
+
+<!-- PHASE 5 -->
+<section id="phase-5">
+  <div class="phase-num">المرحلة 5</div>
+  <h2 class="phase-title">توليد ملف README.md عبر Claude</h2>
+  <p class="phase-summary">
+    ملف README.md يشرح المشروع بلغة بسيطة للبشر. بدل ما نكتبه من الصفر، نطلب من Claude يكتبه لنا.
+  </p>
+
+  <ol>
+    <li>في VS Code، اضغط أيقونة <strong>New File</strong>. سمّه بالضبط: <code>README.md</code>
+      (كل الحروف كبيرة، و<code>.md</code> صغيرة). اتركه فاضي.
+    </li>
+
+    <li>افتح <strong>تطبيق Claude</strong> أو <a href="https://claude.ai" target="_blank" rel="noopener">claude.ai</a> في المتصفح.</li>
+
+    <li>الصق هذا الـ Prompt في محادثة Claude:
+      <div class="code-wrap">
+        <button class="copy-btn">نسخ</button>
+<pre>Generate a README.md file for a "creative agent template" project that I'll use as a reusable starting point for image-generation work in Claude Code (VS Code extension).
+
+Project structure:
+- README.md (this file) — explains what the project is
+- CLAUDE.md — the prompt formula and rules Claude follows
+- .env — holds the Fal.ai API key (will be created later)
+- .gitignore — keeps .env private
+- assets/references/ — reference images for Higgsfield
+- assets/models/ — model photos / face references
+- assets/products/ — product images
+- generated-images/ — where the AI saves its output
+
+What this template does:
+- Generates editorial images using two AI tools:
+  - Higgsfield AI (works with a reference image)
+  - Fal.ai (FLUX model, text-to-image)
+- Both tools follow the same prompt formula in CLAUDE.md
+- This folder is a TEMPLATE — duplicate it to create a new project
+
+How to use a project (after duplicating):
+- Open the project folder in VS Code
+- Open the Claude Code chat panel
+- Drop assets into assets/references/, assets/models/, assets/products/
+- Type plain-language requests like "Generate 5 images with Higgsfield using assets/references/reference.jpg" or "Generate 5 images with Fal.ai"
+
+Format: clean Markdown, short, beginner-friendly. No emojis. No code fences wrapping the whole output.</pre>
+      </div>
+    </li>
+
+    <li>Claude يرد عليك بملف README جاهز. انسخ الرد.</li>
+
+    <li>ارجع لـ VS Code، اضغط داخل ملف README.md الفاضي، والصق بـ <span class="key">Cmd</span> + <span class="key">V</span>.
+      <div class="callout callout-warn">
+        <span class="callout-label">احذف الأقواس إذا موجودة</span>
+        أحيانًا Claude يحط النص داخل ``` (ثلاث علامات backtick) — احذفها من البداية والنهاية، خل النص الـ Markdown فقط.
+      </div>
+    </li>
+
+    <li>احفظ الملف بـ <span class="key">Cmd</span> + <span class="key">S</span>.</li>
+  </ol>
+</section>
+
+<hr>
+
+<!-- PHASE 6 -->
+<section id="phase-6">
+  <div class="phase-num">المرحلة 6</div>
+  <h2 class="phase-title">توليد ملف CLAUDE.md (دماغ المشروع)</h2>
+  <p class="phase-summary">
+    ملف CLAUDE.md هو أهم ملف في المشروع — هو الدماغ. يحتوي على صيغة الـ prompt الخاصة فيك،
+    والمتغيرات اللي يبدّل بينها Claude، وتعليمات استخدام أداتين الذكاء الاصطناعي.
+  </p>
+
+  <ol>
+    <li>في VS Code، سوّ ملف جديد اسمه <code>CLAUDE.md</code> (كل الحروف كبيرة). اتركه فاضي.</li>
+
+    <li>ارجع لتطبيق Claude، وافتح محادثة جديدة (أو استمر في المحادثة الحالية).</li>
+
+    <li>الصق هذا الـ Prompt (يحتوي على صيغة التصوير الفني):
+      <div class="code-wrap">
+        <button class="copy-btn">نسخ</button>
+<pre>Generate a CLAUDE.md file for a "creative agent template" project in Claude Code (VS Code extension). This single file is the project's brain — it tells Claude everything needed to generate images using two AI tools.
+
+Include these sections:
+
+## 1. Project description
+A brief one-paragraph description: an editorial image generation workspace that uses Higgsfield AI (with reference images) and Fal.ai (FLUX text-to-image). Both follow a shared prompt formula.
+
+## 2. Prompt formula (USE THIS EXACT STRUCTURE — do not reword)
+[image type], [camera angle], [subject focus], [clothing], [action/pose], [environment], [colour tone], [lighting and mood], [visual effects], [film stock + lens]
+
+## 3. Variable examples
+For each variable above, list 5–6 high-quality editorial example values (Vogue / fashion campaigns / Kodak Portra, Cinestill film stocks / golden hour, blue hour lighting / brutalist, Mediterranean, desert environments — that quality level).
+
+## 4. How to call Higgsfield
+This project has Higgsfield skills installed at .claude/skills/ — use them instead of calling the Higgsfield CLI directly.
+
+When the user asks for editorial / fashion / lifestyle images, invoke the higgsfield-generate skill via the Skill tool. Pass it the generated prompt and (if available) the reference image path from assets/references/.
+
+For product / brand shots, use the higgsfield-product-photoshoot skill instead.
+
+The skill handles all Higgsfield CLI details, prompt enhancement, and mode selection automatically.
+
+Save output files to ./generated-images/ with the naming convention: higgsfield-01-[image-type].png, higgsfield-02-..., etc.
+
+## 5. How to call Fal.ai
+When the user asks for Fal.ai (or FLUX), use curl. Load FAL_KEY from .env first:
+
+set -a; source .env; set +a
+curl -s -X POST "https://fal.run/fal-ai/flux/dev" \
+  -H "Authorization: Key $FAL_KEY" \
+  -H "Content-Type: application/json" \
+  -d '{"prompt":"[generated prompt]","image_size":"landscape_16_9","num_images":1}'
+
+Each call returns JSON containing .images[0].url. Download the image:
+
+curl -s -o ./generated-images/fal-[NN]-[image-type].png "[image-url]"
+
+## 6. Rules
+- Always follow the prompt formula structure exactly. Fill every bracket.
+- Generate exactly the number of images the user asks for.
+- Each image must use a different combination of variables.
+- Save outputs to ./generated-images/ — create the folder if it doesn't exist.
+- File naming: higgsfield-NN-[image-type].png or fal-NN-[image-type].png
+- Never echo FAL_KEY in output.
+- Reference images live in ./assets/references/.
+
+## 7. Tool selection logic
+- If the user says "Higgsfield" → use the Higgsfield section.
+- If the user says "Fal.ai" or "FLUX" → use the Fal.ai section.
+- If the user provides a reference image but no tool → default to Higgsfield.
+- If the user provides no reference and no tool hint → default to Fal.ai.
+
+Format as clean Markdown with H2 section headers. No emojis. No code fences wrapping the whole output — just raw Markdown.</pre>
+      </div>
+      <div class="callout callout-warn">
+        <span class="callout-label">الصيغة لازم تبقى كما هي بالضبط</span>
+        الـ Prompt يطلب من Claude ما يغيّر صيغة الـ formula. لو غيّرها، الصق الـ prompt مرة ثانية وأضف: "use the formula EXACTLY as I wrote it."
+      </div>
+    </li>
+
+    <li>Claude يرد بملف CLAUDE.md متكامل. تأكد إن الـ formula صحيحة وانسخ الرد.</li>
+
+    <li>ارجع لـ VS Code، الصق في ملف CLAUDE.md، احذف أقواس الـ code إذا موجودة.</li>
+
+    <li>احفظ بـ <span class="key">Cmd</span> + <span class="key">S</span>.</li>
+
+    <li>اختبر إن Claude Code يقرأ الملف. في محادثة Claude Code داخل VS Code، اكتب:
+      <div class="code-wrap">
+        <button class="copy-btn">نسخ</button>
+<pre>وش يسوي هذا المشروع وأي أدوات يستخدم؟</pre>
+      </div>
+    </li>
+
+    <li>Claude يرد ويوصف لك الـ formula والأداتين والقواعد. من هذي اللحظة، كل مرة تكلّم Claude داخل هذا المجلد — أو أي مجلد ننسخه منه — Claude يعرف وش يسوي.</li>
+  </ol>
+</section>
+
+<hr>
+
+<!-- PHASE 7 -->
+<section id="phase-7">
+  <div class="phase-num">المرحلة 7</div>
+  <h2 class="phase-title">ربط Fal.ai بالمشروع</h2>
+  <p class="phase-summary">
+    نعطي Claude مفتاح Fal.ai، ونطلب منه يحفظه بأمان داخل المشروع. المفتاح يصير جزء من القالب —
+    أي نسخة جديدة تستخدمه مباشرة.
+  </p>
+
+  <ol>
+    <li>روح على لوحة تحكم <a href="https://fal.ai/dashboard" target="_blank" rel="noopener">Fal.ai</a> → API Keys → اضغط <strong>Add Key</strong> → انسخ المفتاح.</li>
+
+    <li>في محادثة Claude Code داخل VS Code، الصق هذي الرسالة — <strong>غيّر YOUR-KEY-HERE</strong> بمفتاحك الفعلي:
+      <div class="code-wrap">
+        <button class="copy-btn">نسخ</button>
+<pre>I want to use Fal.ai for image generation in this project.
+
+Here is my Fal.ai API key: YOUR-KEY-HERE
+
+Please do the following:
+1. Create a .env file in the project root with FAL_KEY set to this value.
+2. Create or update .gitignore to include .env so the key is never shared.
+3. Do NOT print the key back to me in your response.
+4. Confirm everything is ready.</pre>
+      </div>
+      <div class="callout callout-warn">
+        <span class="callout-label">حذار من المفتاح</span>
+        المفتاح هذا حساس — لا تشاركه مع أحد، ولا ترفعه على GitHub أو أي مكان عام. هذا اللي يخلينا نحطه في ملف <code>.env</code> ونحط الـ <code>.env</code> داخل <code>.gitignore</code>.
+      </div>
+    </li>
+
+    <li>Claude راح يسوي التالي تلقائيًا:
+      <ul>
+        <li>ينشئ ملف <code>.env</code> داخل المشروع ويحط فيه المفتاح</li>
+        <li>ينشئ/يحدّث ملف <code>.gitignore</code> ويضيف <code>.env</code> فيه</li>
+        <li>يأكد إن كل شي جاهز</li>
+      </ul>
+      راح تشوف ملفين جديدين في شجرة الملفات.
+    </li>
+
+    <li><strong>لا تفتح ملف .env أبدًا</strong> أمام أحد — يحتوي على مفتاحك. خله مغلق دايمًا.
+      <div class="callout callout-info">
+        <span class="callout-label">معلومة تقنية: .gitignore</span>
+        ملف <code>.gitignore</code> هو ملف خاص يقول لـ Git "تجاهل هذي الملفات لما تشارك المشروع". وضع <code>.env</code> فيه قاعدة عالمية — كل مطوّر في العالم يتبعها. للتو تعلّمت ممارسة احترافية حقيقية.
+      </div>
+    </li>
+  </ol>
+
+  <div class="callout callout-tip">
+    <span class="callout-label">ليش نحط المفتاح داخل القالب</span>
+    ملف <code>.env</code> الآن جزء من القالب. لما ننسخ المجلد لمشروع جديد (المرحلة 9)، المفتاح ييجي معه — تركيب لمرة وحدة، استخدام لانهائي.
+  </div>
+</section>
+
+<hr>
+
+<!-- PHASE 8 -->
+<section id="phase-8">
+  <div class="phase-num">المرحلة 8</div>
+  <h2 class="phase-title">إضافة صورة مرجعية لـ assets/</h2>
+  <p class="phase-summary">
+    نحط صورة واحدة كمرجع داخل القالب — مثال يبدأ منه أي مشروع جديد. تقدر تبدّلها لاحقًا.
+  </p>
+
+  <ol>
+    <li>جهّز صورة مرجعية (PNG أو JPG، نظيفة).</li>
+
+    <li>اسحب الصورة من Finder إلى شجرة الملفات في VS Code، حطها داخل <code>assets/references/</code>.</li>
+
+    <li>سمّها <code>reference.jpg</code> (اضغط زر الفأرة الأيمن → Rename) — يخلي المسار بسيط دايمًا.</li>
+  </ol>
+
+  <div class="callout callout-tip">
+    <span class="callout-label">لما تبدأ مشروع حقيقي</span>
+    تبدّل الصورة بصورة موديل، منتج، أو مرجع براند — حسب المشروع. المسار يبقى نفسه، فالقالب يشتغل دايمًا.
+  </div>
+</section>
+
+<hr>
+
+<!-- PHASE 9 -->
+<section id="phase-9">
+  <div class="phase-num">المرحلة 9 · اللحظة السحرية</div>
+  <h2 class="phase-title">تكرار القالب لمشروع جديد</h2>
+  <p class="phase-summary">
+    هنا اللي بنينا له طول الوقت. ننسخ مجلد القالب، نعيد تسميته، ويصير عندنا مشروع جديد —
+    بكل الإعدادات، المفاتيح، والصيغة موجودة من ثانية الإنشاء.
+  </p>
+
+  <ol>
+    <li>روح على Finder، اضغط على مجلد <code>creative agent template</code> مرة وحدة.</li>
+
+    <li>اضغط <span class="key">Cmd</span> + <span class="key">D</span> (أو زر الفأرة الأيمن → Duplicate).
+      راح تطلع نسخة اسمها <code>creative agent template copy</code>.
+    </li>
+
+    <li>أعد تسمية النسخة لاسم مشروعك الجديد — مثلًا <code>Project — Editorial Shoot 01</code>. اضغط Enter.</li>
+
+    <li>افتح المجلد الجديد وشوف — README, CLAUDE.md, .env, .gitignore, assets, generated-images,
+      ومجلد .claude مع كل الـ Higgsfield skills. <strong>كل شي موجود.</strong>
+      نفس الدماغ، نفس المفتاح، نفس الصيغة، نفس الـ skills. <strong>مشروع جديد كاملًا.</strong>
+    </li>
+
+    <li>افتح المشروع الجديد في VS Code (اسحبه على أيقونة VS Code أو File → Open Folder).</li>
+
+    <li>اضغط <strong>"Yes, I trust the authors"</strong> إذا طلب.</li>
+
+    <li><strong>اختياري</strong>: عدّل عنوان README في النسخة الجديدة ليطابق اسم المشروع. احفظ.
+      تقدر تبدّل صورة المرجع أيضًا لو تبي.
+    </li>
+  </ol>
+
+  <div class="callout callout-tip">
+    <span class="callout-label">تخيّل</span>
+    كل صباح اثنين، عميل جديد وبريف جديد، تنسخ المجلد، تحط مراجع العميل، وعندك مساحة عمل
+    إبداعية كاملة جاهزة في 30 ثانية.
+  </div>
+</section>
+
+<hr>
+
+<!-- PHASE 10 -->
+<section id="phase-10">
+  <div class="phase-num">المرحلة 10</div>
+  <h2 class="phase-title">توليد 5 صور بـ Fal.ai</h2>
+  <p class="phase-summary">
+    أول توليد داخل المشروع الجديد. توليد نص-إلى-صورة — ما يحتاج مرجع.
+  </p>
+
+  <ol>
+    <li>في محادثة Claude Code داخل المشروع الجديد، اكتب:
+      <div class="code-wrap">
+        <button class="copy-btn">نسخ</button>
+<pre>Generate 5 images with Fal.ai using the formula in CLAUDE.md</pre>
+      </div>
+      أو بالعربي:
+      <div class="code-wrap">
+        <button class="copy-btn">نسخ</button>
+<pre>ولّد 5 صور بـ Fal.ai باستخدام الصيغة الموجودة في CLAUDE.md</pre>
+      </div>
+    </li>
+
+    <li>راح يسوي Claude التالي تلقائيًا:
+      <ul>
+        <li>يقرأ CLAUDE.md</li>
+        <li>يشوف إنك تبي Fal.ai → يروح لقسم Fal.ai</li>
+        <li>يحمّل FAL_KEY من ملف .env</li>
+        <li>يكتب 5 prompts مختلفة باستخدام الصيغة، يبدّل المتغيرات في كل وحدة</li>
+        <li>يستدعي Fal.ai 5 مرات ويحمّل الصور</li>
+      </ul>
+    </li>
+
+    <li>لما تظهر الصور في <code>generated-images/</code>، اضغط على وحدة منهم تشوفها.</li>
+  </ol>
+
+  <div class="callout callout-tip">
+    <span class="callout-label">لحظة الإنجاز</span>
+    جملة وحدة دخلت. خمس صور احترافية طلعت. من مشروع جديد سوّيناه قبل 60 ثانية.
+  </div>
+
+  <div class="callout callout-warn">
+    <span class="callout-label">لو فشل Fal.ai</span>
+    أكثر سبب شائع: ملف .env مو موجود في هذا المجلد، أو المفتاح فيه غلطة. اطلب من Claude في
+    المحادثة: "Fal.ai فشل، تأكد من إعداد .env" — وخله يحل المشكلة.
+  </div>
+</section>
+
+<hr>
+
+<!-- PHASE 11 -->
+<section id="phase-11">
+  <div class="phase-num">المرحلة 11</div>
+  <h2 class="phase-title">توليد 5 صور بـ Higgsfield</h2>
+  <p class="phase-summary">
+    نفس المشروع، أداة مختلفة. هذي المرة باستخدام صورة المرجع.
+  </p>
+
+  <ol>
+    <li>في محادثة Claude Code، اكتب:
+      <div class="code-wrap">
+        <button class="copy-btn">نسخ</button>
+<pre>Now generate 5 images with Higgsfield using assets/references/reference.jpg</pre>
+      </div>
+      أو بالعربي:
+      <div class="code-wrap">
+        <button class="copy-btn">نسخ</button>
+<pre>والحين ولّد 5 صور بـ Higgsfield باستخدام assets/references/reference.jpg</pre>
+      </div>
+    </li>
+
+    <li>راح يسوي Claude التالي:
+      <ul>
+        <li>يقرأ CLAUDE.md مرة ثانية</li>
+        <li>يشوف إنك تبي Higgsfield + صورة مرجع → يروح لقسم Higgsfield</li>
+        <li>يكتب 5 prompts باستخدام الصيغة</li>
+        <li>يستدعي higgsfield-generate skill خمس مرات مع كل prompt + صورة المرجع</li>
+      </ul>
+    </li>
+
+    <li>افتح مجلد <code>generated-images/</code> — الآن عندك 10 صور:
+      5 بـ <code>fal-</code> و5 بـ <code>higgsfield-</code>.
+    </li>
+  </ol>
+
+  <div class="callout callout-tip">
+    <span class="callout-label">لاحظ الفرق</span>
+    Higgsfield تمسك بالمرجع — نفس الشخصية، نفس الهوية. Fal.ai يبدأ من الصفر — خيال صرف من الـ prompt.
+    أداتين، قدرتين مختلفتين، نفس الـ workflow، نفس المجلد.
+  </div>
+</section>
+
+<hr>
+
+<!-- PHASE 12 -->
+<section id="phase-12">
+  <div class="phase-num">المرحلة 12</div>
+  <h2 class="phase-title">الخطوات التالية</h2>
+  <p class="phase-summary">
+    اللي بنيته اليوم هو منصة كاملة لإبداعك. هنا أفكار وش تسوي بعدين.
+  </p>
+
+  <h3>وش بنينا اليوم؟</h3>
+  <ul>
+    <li>3 حسابات + 3 برامج (إعداد لمرة وحدة)</li>
+    <li>Claude Code داخل VS Code</li>
+    <li>Higgsfield CLI مركّب ومربوط</li>
+    <li>قالب مشروع إبداعي قابل للتكرار — README, CLAUDE.md, مفتاح Fal.ai, مجلدات assets, Higgsfield skills</li>
+    <li>نسخت القالب وسوّيت مشروع جديد في ثوانٍ</li>
+    <li>10 صور بأداتين مختلفتين، بمجرد كتابة جمل بسيطة</li>
+  </ul>
+
+  <h3>الفكرة الكبرى</h3>
+  <p>
+    <strong>ابنِ القالب مرة وحدة. استخدمه للأبد.</strong> كل مشروع جديد يبدأ من نفس الأساس — صيغتك،
+    أدواتك، هيكل مجلداتك. بس تحط الأصول الجديدة وتبدأ شغل.
+  </p>
+
+  <h3>أفكار لمشاريع تستخدم نفس القالب</h3>
+  <ul>
+    <li><strong>كمبين علامة تجارية</strong> — انسخ القالب، حط مراجع العميل في <code>assets/references/</code>،
+      اطلب من Claude يولد 10 صور إعلانية بأسلوب الموسم.</li>
+    <li><strong>كتالوج منتجات</strong> — حط صور المنتجات في <code>assets/products/</code> واستخدم
+      <code>higgsfield-product-photoshoot</code> skill لتوليد صور احترافية للمتجر.</li>
+    <li><strong>سيشن تصوير افتراضي</strong> — قبل التصوير الحقيقي، استخدم القالب توليد مودبورد
+      من 20 صورة بـ Fal.ai تجرّب فيها الإضاءة والمزاج.</li>
+    <li><strong>محتوى سوشيال</strong> — انسخ القالب لكل شهر، عدّل الصيغة بقليل من التغييرات
+      الموسمية، وولّد محتوى الشهر كامل بضغطة.</li>
+  </ul>
+
+  <h3>الخطوة التالية</h3>
+  <p>
+    عدّل الصيغة في CLAUDE.md حسب أسلوبك الخاص. غيّر المتغيرات. جرّب موديلات Fal.ai الثانية
+    (<code>flux-pro/v1.1</code> للجودة، <code>flux/schnell</code> للسرعة). أضف skills ثانية من
+    <a href="https://higgsfield.ai/cli" target="_blank" rel="noopener">higgsfield-ai/skills</a>
+    أو ابنِ skills خاصة فيك.
+  </p>
+  <p>
+    <strong>القالب ملكك. خلّه يطلع لك.</strong>
+  </p>
+</section>
+
+</main>
+
+<!-- MA Learn shared footer module -->
+<div id="ma-footer"></div>
+<script src="https://malearnsa.com/footer-module/v1/footer.js"></script>
+
+<button class="top-btn" id="topBtn">↑ للأعلى</button>
+
+<script>
+  // Header scroll behavior (matches malearnsa.com)
+  const header = document.getElementById('site-header');
+  window.addEventListener('scroll', () => {
+    header.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // Copy buttons
+  document.querySelectorAll('.copy-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const pre = btn.parentElement.querySelector('pre');
+      const text = pre.textContent;
+      navigator.clipboard.writeText(text).then(() => {
+        const originalText = btn.textContent;
+        btn.textContent = 'تم النسخ';
+        btn.classList.add('copied');
+        setTimeout(() => {
+          btn.textContent = originalText;
+          btn.classList.remove('copied');
+        }, 1400);
+      }).catch(() => {
+        btn.textContent = 'خطأ';
+        setTimeout(() => { btn.textContent = 'نسخ'; }, 1400);
+      });
+    });
+  });
+
+  // Progress bar
+  const progressFill = document.querySelector('.progress-fill');
+  window.addEventListener('scroll', () => {
+    const total = document.body.scrollHeight - window.innerHeight;
+    const current = window.scrollY;
+    const percent = (current / total) * 100;
+    progressFill.style.width = percent + '%';
+  });
+
+  // Back to top
+  const topBtn = document.getElementById('topBtn');
+  window.addEventListener('scroll', () => {
+    if (window.scrollY > 600) topBtn.classList.add('visible');
+    else topBtn.classList.remove('visible');
+  });
+  topBtn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+
+  // Smooth scroll for in-page anchor links
+  document.querySelectorAll('a[href^="#"]').forEach(link => {
+    link.addEventListener('click', (e) => {
+      const target = document.querySelector(link.getAttribute('href'));
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth' });
+      }
+    });
+  });
+</script>
+
+</body>
+</html>
