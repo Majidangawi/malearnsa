@@ -149,6 +149,25 @@
       '  <span class="co-tamara-divider-line"></span>',
       '  <span class="co-tamara-badge">٣ أقساط · بدون فوائد</span>',
       '</button>',
+      // Inline country picker — hidden by default. Shown only after the buyer
+      // clicks the Tamara button. Lets UAE customers proceed via Tamara with
+      // their own country (which Tamara would otherwise lock to Saudi Arabia
+      // because we send country_code: "SA"). SA stays the default — SA buyers
+      // experience adds one tap on "السعودية" before the redirect.
+      // Added 2026-05-28 after UAE customer interest + Tamara phone-country lock complaint.
+      '<div id="tamara-country-picker" style="display:none;margin-top:12px;">',
+      '  <p style="font-size:0.82rem;color:var(--silver,#cccccc);font-weight:500;margin:0 0 8px 0;text-align:center;font-family:Cairo,sans-serif;">اختر دولتك للمتابعة</p>',
+      '  <div class="co-tamara-country-row">',
+      '    <button class="co-tamara-country-btn" onclick="MaCheckout.confirmTamaraCountry(\'SA\')" aria-label="Saudi Arabia">',
+      '      <span style="font-size:1.4rem;line-height:1;">🇸🇦</span>',
+      '      <span>السعودية</span>',
+      '    </button>',
+      '    <button class="co-tamara-country-btn" onclick="MaCheckout.confirmTamaraCountry(\'AE\')" aria-label="United Arab Emirates">',
+      '      <span style="font-size:1.4rem;line-height:1;">🇦🇪</span>',
+      '      <span>الإمارات</span>',
+      '    </button>',
+      '  </div>',
+      '</div>',
       '<p id="tamara-msg" style="display:none;"></p>'
     ].join('\n');
   }
@@ -522,18 +541,46 @@
   }
 
   // ────────────────────────────────────────────────────────
-  // TAMARA
+  // TAMARA — two-step flow as of 2026-05-28:
+  //   1. proceedWithTamara() validates buyer + reveals country picker
+  //   2. confirmTamaraCountry(country) fires the API call
+  // Tamara's hosted checkout locks the phone country to whatever we send
+  // in country_code/locale/currency, so this picker lets UAE customers
+  // pay via Tamara with their own +971 phone. SA stays default.
   // ────────────────────────────────────────────────────────
-  async function proceedWithTamara() {
+  // Snapshot of the Tamara button's original HTML — captured the first time
+  // proceedWithTamara fires so we can restore it on any error path.
+  let _tamaraOriginalHTML = null;
+
+  function proceedWithTamara() {
+    // Validate buyer (requirePhone=true) before showing the country picker.
     const buyer = getBuyer_(true);
     if (!buyer) return;
     const btn = document.getElementById('tamara-btn');
-    const msg = document.getElementById('tamara-msg');
+    if (btn && _tamaraOriginalHTML === null) _tamaraOriginalHTML = btn.innerHTML;
+    const picker = document.getElementById('tamara-country-picker');
+    if (picker) picker.style.display = 'block';
+    // Dim the Tamara button to signal it's been engaged.
+    if (btn) { btn.disabled = true; btn.style.opacity = '0.6'; }
+  }
+
+  async function confirmTamaraCountry(country) {
+    const buyer = getBuyer_(true);
+    if (!buyer) return;
+    const btn    = document.getElementById('tamara-btn');
+    const picker = document.getElementById('tamara-country-picker');
+    const msg    = document.getElementById('tamara-msg');
     const finalAmount = finalAmountHalalas_();
     const coupon = couponCode_();
-    const originalHTML = btn.innerHTML;
-    btn.disabled = true;
-    btn.innerHTML = 'جارٍ الاتصال بتمارا...';
+    const originalHTML = _tamaraOriginalHTML || (btn ? btn.innerHTML : '');
+
+    // Re-enable Tamara button styling but keep it disabled while we work.
+    if (btn) {
+      btn.disabled = true;
+      btn.style.opacity = '1';
+      btn.innerHTML = 'جارٍ الاتصال بتمارا...';
+    }
+    if (picker) picker.style.display = 'none';
     if (msg) msg.style.display = 'none';
 
     try {
@@ -546,7 +593,8 @@
           phone:   buyer.phone,
           product: cfg.productId,
           amount:  finalAmount / 100,
-          coupon
+          coupon,
+          country: country || 'SA'
         })
       });
       const rawText = await res.text();
@@ -677,6 +725,7 @@
     editContact: editContact,
     proceedWithBankTransfer: proceedWithBankTransfer,
     proceedWithTamara: proceedWithTamara,
+    confirmTamaraCountry: confirmTamaraCountry,
     // Internal — exposed for debugging
     _state: () => ({ cfg, appliedCoupon, baseAmountHalalas, storageKey })
   };

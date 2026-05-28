@@ -149,6 +149,26 @@
 }
 #tamara-msg { font-size: 0.78rem; color: #e74c3c; margin-top: 8px; text-align: center; }
 
+/* ── Tamara inline country picker (UAE support, 2026-05-28) ──────── */
+.co-tamara-country-row {
+  display: flex; gap: 10px;
+}
+.co-tamara-country-btn {
+  flex: 1;
+  background: rgba(255,255,255,0.04);
+  color: #fff;
+  border: 1px solid rgba(74,58,255,0.45);
+  padding: 11px 14px;
+  font-family: 'Cairo', sans-serif;
+  font-size: 0.88rem; font-weight: 600;
+  cursor: pointer; border-radius: 8px;
+  transition: background 0.18s, border-color 0.18s, transform 0.1s;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  min-height: 44px;
+}
+.co-tamara-country-btn:hover  { background: rgba(74,58,255,0.16); border-color: #4A3AFF; }
+.co-tamara-country-btn:active { transform: scale(0.98); }
+
 /* ── PayPal section ───────────────────────────────────────────────── */
 .co-paypal-wrap {
   background: rgba(255,255,255,0.04);
