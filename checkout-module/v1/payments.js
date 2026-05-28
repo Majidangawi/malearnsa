@@ -587,14 +587,19 @@
       const res = await fetch(cfg.appsScriptUrl + '?action=tamara_create_order', {
         method: 'POST',
         body: JSON.stringify({
-          action:  'tamara_create_order',
-          name:    buyer.name,
-          email:   buyer.email,
-          phone:   buyer.phone,
-          product: cfg.productId,
-          amount:  finalAmount / 100,
+          action:      'tamara_create_order',
+          name:        buyer.name,
+          email:       buyer.email,
+          phone:       buyer.phone,
+          product:     cfg.productId,
+          amount:      finalAmount / 100,
           coupon,
-          country: country || 'SA'
+          country:     country || 'SA',
+          // Pass the live success URL so Tamara redirects back to a real
+          // page on success/failure/cancel. Without this, the backend
+          // falls back to a per-product map. Fixed 2026-05-28 after the
+          // hosted-checkout redirect was landing on a 404 path.
+          success_url: cfg.successUrl
         })
       });
       const rawText = await res.text();
