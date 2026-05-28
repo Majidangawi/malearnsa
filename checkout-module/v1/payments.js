@@ -596,10 +596,13 @@
           coupon,
           country:     country || 'SA',
           // Pass the live success URL so Tamara redirects back to a real
-          // page on success/failure/cancel. Without this, the backend
-          // falls back to a per-product map. Fixed 2026-05-28 after the
-          // hosted-checkout redirect was landing on a 404 path.
-          success_url: cfg.successUrl
+          // page on success. Without this, the backend falls back to a
+          // per-product map. Fixed 2026-05-28.
+          success_url:  cfg.successUrl,
+          // On cancel/failure, send buyer back to this exact checkout page
+          // so they can immediately retry with a different gateway.
+          // localStorage preserves their name/email/phone for re-population.
+          checkout_url: window.location.origin + window.location.pathname
         })
       });
       const rawText = await res.text();
