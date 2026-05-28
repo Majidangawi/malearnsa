@@ -425,6 +425,21 @@
       // a single browser-side fetch on success.html that drops ~5-10% of
       // Apple Pay buyers depending on tab lifecycle.
       on_completed: function(payment) {
+        // CRITICAL: gate on payment.status === 'paid' — Moyasar fires
+        // on_completed for failed payments too (3DS auth expiration,
+        // declined cards, etc.). Without this gate we enroll buyers
+        // whose money never reached us.
+        //
+        // Regression caught 2026-05-28 — busns.org@gmail.com payment
+        // b5df5d61... failed (3DS expired) but was enrolled because
+        // the original on_completed handler (added 2026-05-26 for the
+        // Alaa + deekoart Apple Pay silent-fail fix) didn't check
+        // status. He retried successfully with payment 11307174... but
+        // by then we'd already written a Customers row + Daftra invoice
+        // for the failed first attempt.
+        if (!payment || payment.status !== 'paid') {
+          return Promise.resolve(payment);
+        }
         var params = new URLSearchParams({
           action:     'complete_purchase',
           name:       buyerName,
