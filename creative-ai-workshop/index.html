@@ -1088,6 +1088,20 @@
     (async () => {
       const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbznjcsYu8gLDZqFJGededAQaATad_L8vlhRQV04pOqh57HB5nFVRy9zUHAcg6goyj8DKA/exec';
       const WAITLIST_HREF = 'mailto:support@malearnsa.com?subject=' + encodeURIComponent('قائمة الانتظار — الدفعة الثالثة');
+
+      // ── MANUAL CLOSE — C2 gateway closed 2026-05-31 (workshop started). ──
+      // Forces the sold-out UI regardless of live seat count (closed at 29/30
+      // by Majid's request so no one buys mid-delivery). Delete this block to reopen.
+      const FORCE_SOLD_OUT = true;
+      if (FORCE_SOLD_OUT) {
+        ['hero-seats-text','card-seats-text'].forEach(id => { const el = document.getElementById(id); if (el) el.textContent = 'اكتملت الدفعة الثانية'; });
+        const fb = document.getElementById('seats-badge-text'); if (fb) fb.textContent = 'اكتملت الدفعة';
+        ['nav-cta','hero-cta','sticky-cta'].forEach(id => { const el = document.getElementById(id); if (el) { el.textContent = 'اكتملت الدفعة — قائمة الانتظار'; el.href = WAITLIST_HREF; } });
+        const bundleCta = document.getElementById('bundle-cta'); if (bundleCta) bundleCta.style.display = 'none';
+        const stamp = document.getElementById('pricing-soldout'); if (stamp) stamp.style.display = 'block';
+        return;
+      }
+
       try {
         const res = await fetch(APPS_SCRIPT_URL + '?action=get_seats_left&cohort=C2');
         const data = await res.json();
