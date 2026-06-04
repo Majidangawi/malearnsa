@@ -643,7 +643,19 @@
       type: 'textarea', placeholder: 'مثال: كمبين فاشن متكامل (٨ صور + ريل ٣٠ ثانية) بأسلوب خاص فيني، جاهز أنزله في بورتفوليو وأقدمه لعميل.', required: true,
     },
     {
-      id: 'commitment', step: 9,
+      id: 'package', step: 9,
+      title: 'أي باقة تناسبك؟',
+      help: 'الباقتين تبدأ بمكالمة قصيرة نتعرّف فيها على مستواك وأهدافك من التدريب.',
+      type: 'package', required: true,
+      options: [
+        { value: 'basic',  label: 'الباقة الأساسية للتدريب الفردي', price: '٤٠٠٠ ريال',
+          desc: 'تدريب فردي ١:١ مبني على هدفك. تأكد مكانك الآن، وأول جلسة نقيّم فيها مستواك ونفصّل لك الخطة.' },
+        { value: 'custom', label: 'الباقة المخصصة للتدريب الفردي', price: 'تبدأ من ٦٠٠٠ ريال',
+          desc: 'منهج متقدم ومخصص بالكامل. نتواصل معك خلال ٢٤ ساعة لمكالمة قصيرة نفصّل فيها برنامجك وسعره.' },
+      ],
+    },
+    {
+      id: 'commitment', step: 10,
       title: 'كم وقت تقدر تستثمر بين الجلسات؟',
       help: 'صراحتك هنا تضمن إن البرنامج يكون واقعي. التعلم الإبداعي يحتاج تنفيذ، مو حضور بس.',
       type: 'commitment', required: true,
@@ -661,7 +673,7 @@
       ],
     },
     {
-      id: 'start_date', step: 10,
+      id: 'start_date', step: 11,
       title: 'متى تحب تبدأ التدريب؟',
       help: 'هذا تفضيلك. ماجد بيراجع طلبك ويتفق معك على التاريخ النهائي في رده.',
       type: 'start_date', required: true,
@@ -759,6 +771,21 @@
         </div>
       `).join('');
       inputHtml = `<div class="choice-stack" id="choiceStack">${items}</div><p class="error-msg" id="qError"></p>`;
+    } else if (q.type === 'package') {
+      const sel = state.answers[q.id];
+      const items = q.options.map(o => `
+        <div class="choice ${sel === o.value ? 'selected' : ''}" data-value="${o.value}" style="align-items:flex-start;gap:12px;">
+          <span class="dot" style="margin-top:4px;flex:0 0 auto;"></span>
+          <span style="flex:1;">
+            <span style="display:flex;justify-content:space-between;gap:10px;align-items:baseline;">
+              <strong style="font-size:1.02em;color:var(--ivory);">${o.label}</strong>
+              <span style="color:var(--gold);font-weight:700;white-space:nowrap;">${o.price}</span>
+            </span>
+            <span style="display:block;margin-top:7px;font-size:0.84em;color:#9a958c;line-height:1.7;">${o.desc}</span>
+          </span>
+        </div>
+      `).join('');
+      inputHtml = `<div class="choice-stack" id="choiceStack">${items}</div><p class="error-msg" id="qError"></p>`;
     } else if (q.type === 'commitment') {
       const selH = state.answers[q.id + '_hours'];
       const selD = state.answers[q.id + '_days'];
@@ -812,7 +839,7 @@
     document.getElementById('backBtn').addEventListener('click', prev);
     document.getElementById('nextBtn').addEventListener('click', next);
 
-    if (q.type === 'choice') {
+    if (q.type === 'choice' || q.type === 'package') {
       document.querySelectorAll('#choiceStack .choice').forEach(el => {
         el.addEventListener('click', () => {
           document.querySelectorAll('#choiceStack .choice').forEach(e => e.classList.remove('selected'));
@@ -865,11 +892,50 @@
 
   function renderSuccess() {
     setProgress(-1);
-    stage.innerHTML = `
+        const pkg = state.answers.package || '';
+    const nm = escapeHtml(state.answers.name || '');
+    const CHECKOUT_URL = 'https://checkout.malearnsa.com/1-on-1/checkout.html';
+    let successInner;
+    if (pkg === 'basic') {
+      successInner = `
+      <div class="panel">
+        <div class="success-icon">✓</div>
+        <p class="step-tag">طلبك جاهز · الباقة الأساسية</p>
+        <h2 class="q-title">خطوة وحدة وتأكد مكانك يا ${nm}.</h2>
+        <p class="q-help">
+          اخترت <strong style="color:var(--gold);">الباقة الأساسية للتدريب الفردي — ٤٠٠٠ ريال</strong>.
+          تأكد مكانك الآن، وأول جلسة معنا نقيّم مستواك ونفصّل لك الخطة.
+        </p>
+        <div class="nav-row" style="justify-content:flex-start;margin-top:24px;gap:14px;flex-wrap:wrap;">
+          <a href="${CHECKOUT_URL}" class="btn btn-primary" style="text-decoration:none;display:inline-block;">أكّد مكانك وادفع ←</a>
+          <a href="https://malearnsa.com" class="btn btn-ghost" style="text-decoration:none;display:inline-block;">لاحقاً</a>
+        </div>
+        <p class="q-help" style="margin-top:18px;font-size:0.85em;color:#9a958c;">
+          أرسلنا رابط الدفع على إيميلك بعد.
+          مو متأكد إذا الأساسية تناسبك؟
+          <a href="https://wa.me/966560440113" style="color:var(--gold);text-decoration:none;">احجز مكالمة قصيرة قبل</a>.
+        </p>
+      </div>`;
+    } else if (pkg === 'custom') {
+      successInner = `
+      <div class="panel">
+        <div class="success-icon">✓</div>
+        <p class="step-tag">تم استلام طلبك · الباقة المخصصة</p>
+        <h2 class="q-title">استلمنا طلبك يا ${nm}.</h2>
+        <p class="q-help">
+          اخترت <strong style="color:var(--gold);">الباقة المخصصة للتدريب الفردي</strong>.
+          ماجد بيتواصل معك خلال ٢٤ ساعة على الواتساب أو الإيميل، نسوي مكالمة قصيرة نفصّل فيها برنامجك وسعره ونبدأ.
+        </p>
+        <div class="nav-row" style="justify-content:flex-start;margin-top:20px;">
+          <a href="https://malearnsa.com" class="btn btn-ghost" style="text-decoration:none;display:inline-block;">العودة للرئيسية</a>
+        </div>
+      </div>`;
+    } else {
+      successInner = `
       <div class="panel">
         <div class="success-icon">✓</div>
         <p class="step-tag">تم استلام طلبك</p>
-        <h2 class="q-title">شكراً ${escapeHtml(state.answers.name || '')}.</h2>
+        <h2 class="q-title">شكراً ${nm}.</h2>
         <p class="q-help">
           بنراجعه في أسرع وقت ويوصلك الرد خلال ٤٨ ساعة على الواتساب أو الإيميل.
           أرسلنا لك نسخة من طلبك على إيميلك.
@@ -877,8 +943,9 @@
         <div class="nav-row" style="justify-content:flex-start;margin-top:20px;">
           <a href="https://malearnsa.com" class="btn btn-ghost" style="text-decoration:none;display:inline-block;">العودة للرئيسية</a>
         </div>
-      </div>
-    `;
+      </div>`;
+    }
+    stage.innerHTML = successInner;
     // FB Pixel + GA conversion event
     try { if (window.fbq) fbq('track', 'Lead', { content_name: '1-on-1 Application' }); } catch (_) {}
     try { if (window.gtag) gtag('event', 'generate_lead', { content_name: '1-on-1 Application' }); } catch (_) {}
@@ -895,6 +962,7 @@
       ai_level: state.answers.ai_level || '',
       tools_interest: state.answers.tools || '',
       output_goal: state.answers.output_goal || '',
+      package: state.answers.package || '',
       commitment: {
         hours_per_day: state.answers.commitment_hours || '',
         days_per_week: state.answers.commitment_days || '',
@@ -949,7 +1017,7 @@
 
   function validateCurrent() {
     const q = QUESTIONS[state.index];
-    if (q.type === 'choice') {
+    if (q.type === 'choice' || q.type === 'package') {
       if (!state.answers[q.id] && q.required) { showError('الرجاء اختيار إجابة.'); return false; }
       return true;
     }
