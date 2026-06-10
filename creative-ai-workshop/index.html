@@ -1089,15 +1089,11 @@
       const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbznjcsYu8gLDZqFJGededAQaATad_L8vlhRQV04pOqh57HB5nFVRy9zUHAcg6goyj8DKA/exec';
       const WAITLIST_HREF = 'https://malearnsa.com/waitlist/';
 
-      // ── C3 launch — OPEN. get_seats_left isn't reliably per-cohort aware for C3
-      // yet (MAL-192), so keep the static "٣٠ مقعد فقط" and do NOT auto-close —
-      // matches the checkout's C3 force-open. Re-enable the live counter + sold-out
-      // swap below (cohort=C3) once per-cohort seats are confirmed.
-      const C3_FORCE_OPEN = true;
-      if (C3_FORCE_OPEN) return;
-
+      // ── C3 — live counter + sold-out swap ACTIVE (token-validator v44:
+      // getSeatsLeft is cohort-aware AND doors-close aware — sold_out flips at
+      // seats==0 OR Sun Jul 5 18:30 KSA, whichever first; B4 rule).
       try {
-        const res = await fetch(APPS_SCRIPT_URL + '?action=get_seats_left&cohort=C2');
+        const res = await fetch(APPS_SCRIPT_URL + '?action=get_seats_left&cohort=C3');
         const data = await res.json();
         if (!data || typeof data.seats_left !== 'number') return;
 
