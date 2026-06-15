@@ -1,0 +1,137 @@
+name: CCS weekly review
+
+# Saturday content-learning loop (the deterministic data layer of CCS).
+# Pulls @majidangawi's last ~14 days of Instagram posts via Apify, matches each
+# to its Content Calendar row in Notion, and writes IG URL + Views/Likes/Comments
+# back into that row (Status -> Published). It NEVER publishes content anywhere.
+#
+# After the pull it opens a tracking issue with the run summary + unmatched list.
+# That issue is Layan's trigger to run the judgment half (lesson synthesis,
+# scorecard, virality calibration — steps 4-6 of the ccs-performance-review skill).
+#
+# Fridays-off respected: runs Saturday.
+# Cron: 06:23 UTC Saturday  ==  09:23 KSA Saturday (off-:00 to avoid GH peak).
+
+on:
+  schedule:
+    - cron: "23 6 * * 6"
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: "Dry run (pull + match, no Notion writes)"
+        type: boolean
+        default: false
+
+permissions:
+  issues: write
+
+jobs:
+  weekly-review:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Run CCS weekly review
+        id: run
+        env:
+          APIFY_API_TOKEN: ${{ secrets.APIFY_API_TOKEN }}
+          NOTION_API_TOKEN: ${{ secrets.NOTION_API_TOKEN }}
+        run: |
+          set -o pipefail
+          ARGS=""
+          if [ "${{ github.event.inputs.dry_run }}" = "true" ]; then ARGS="--dry-run"; fi
+          # stderr = progress (visible in logs), last stdout line = JSON summary.
+          node scripts/ccs-weekly-review.mjs $ARGS > summary.json 2> >(tee run.log >&2) || echo "script exited non-zero"
+          # Keep only the last stdout line (the JSON summary).
+          tail -n 1 summary.json > summary.last.json
+          mv summary.last.json summary.json
+          echo "summary_path=summary.json" >> "$GITHUB_OUTPUT"
+
+      - name: Open tracking issue
+        if: always()
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const fs = require('fs');
+            let s = {};
+            try { s = JSON.parse(fs.readFileSync('summary.json', 'utf8')); }
+            catch (e) { s = { ok: false, error: 'Could not parse run summary: ' + e.message }; }
+
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('en-CA', { timeZone: 'Asia/Riyadh' }); // YYYY-MM-DD KSA
+            const title = `CCS weekly review — ${dateStr}`;
+
+            const L = [];
+            if (!s.ok) {
+              L.push(`⚠️ **The weekly pull did not complete cleanly.**`, ``);
+              L.push('```', String(s.error || 'unknown error'), '```', ``);
+            } else {
+              L.push(`**Account:** @${s.account} · **Lookback:** ${s.lookback}${s.dryRun ? ' · _(dry run — no writes)_' : ''}`);
+              L.push(`**Pulled:** ${s.postsPulled} posts · **Candidate rows:** ${s.candidateRows} · **Matched + written:** ${s.matchedCount}`);
+              L.push(``);
+
+              L.push(`### ✅ Matched (metrics + IG link written to Notion)`);
+              if ((s.matched || []).length === 0) {
+                L.push(`_None this week._`);
+              } else {
+                L.push(`| Content row | IG post | Views | Likes | Comments | Conf |`);
+                L.push(`|---|---|---|---|---|---|`);
+                for (const m of s.matched) {
+                  const name = (m.rowName || '').replace(/\|/g, '\\|').slice(0, 60);
+                  const err = m.patchError ? ` ⚠️ ${m.patchError}` : '';
+                  L.push(`| [${name}](${m.rowUrl}) | [post](${m.postUrl}) | ${m.views ?? '—'} | ${m.likes ?? '—'} | ${m.comments ?? '—'} | ${m.confidence}${err} |`);
+                }
+              }
+              L.push(``);
+
+              L.push(`### ❓ Unmatched IG posts (need a manual link — never guess-linked)`);
+              if ((s.unmatchedPosts || []).length === 0) {
+                L.push(`_None._`);
+              } else {
+                for (const p of s.unmatchedPosts) {
+                  const pin = p.pinned ? ' _(pinned/old)_' : '';
+                  L.push(`- [${(p.caption || '(no caption)').replace(/\n/g, ' ').slice(0, 90)}](${p.url})${pin} — views ${p.views ?? '—'}, likes ${p.likes ?? '—'}, comments ${p.comments ?? '—'} (${p.timestamp || 'no date'})`);
+                }
+              }
+              L.push(``);
+
+              L.push(`### 📋 Unmatched Notion rows (Ready/Published, still no IG URL)`);
+              if ((s.unmatchedRows || []).length === 0) {
+                L.push(`_None._`);
+              } else {
+                for (const r of s.unmatchedRows) {
+                  L.push(`- [${(r.name || '(untitled)').slice(0, 70)}](${r.rowUrl}) — ${r.status}${r.pubDate ? ', pub ' + r.pubDate : ''}`);
+                }
+              }
+            }
+
+            L.push(``, `---`, ``);
+            L.push(`**Layan — your turn (the judgment half):** run steps 4–6 of \`.claude/skills/ccs-performance-review/SKILL.md\`:`);
+            L.push(`> Run the CCS weekly review lesson synthesis. The data layer already wrote metrics + IG links into the Content Calendar. Compare each post's actual performance against its pre-publish Virality score, distill 3 concrete lessons, update \`marketing/ccs-learning-log.md\` AND the Notion mirror, and report the week's winner + lesson to Majid.`);
+            L.push(``);
+            L.push(`Manually link any unmatched post above to its Content Calendar row, then close this issue.`);
+            L.push(``);
+            L.push(`_Saves / Shares / Reach are not in this pull — Apify can't see them. Graph API is a future Maher build._`);
+
+            const body = L.join('\n');
+
+            // Avoid duplicate issue if re-run same day.
+            const existing = await github.rest.issues.listForRepo({
+              owner: context.repo.owner, repo: context.repo.repo,
+              state: 'open', labels: 'ccs-review', per_page: 20,
+            });
+            if (existing.data.some(i => i.title === title)) {
+              console.log(`Issue already open: ${title}`);
+              return;
+            }
+            const res = await github.rest.issues.create({
+              owner: context.repo.owner, repo: context.repo.repo,
+              title, body, labels: ['ccs-review', 'content'],
+            });
+            console.log(`Opened #${res.data.number}: ${res.data.html_url}`);
