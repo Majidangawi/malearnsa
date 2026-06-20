@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>إخراج Seedance 2.0 — اكتب البرومبت السينمائي كأنك مخرج</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  @font-face{font-family:'Gumela';src:url('../fonts/gumela-arabic-bold.otf') format('opentype');font-weight:700;font-display:swap}
+  @font-face{font-family:'Gumela';src:url('../fonts/gumela-arabic-regular.otf') format('opentype');font-weight:400;font-display:swap}
+  @font-face{font-family:'Gumela';src:url('../fonts/gumela-arabic-light.otf') format('opentype');font-weight:300;font-display:swap}
+  :root{
+    --bg:#080808; --bg2:#121212; --bg3:#1a1a1a;
+    --ink:#F5F0E8; --ink2:#cbc6bc; --ink3:#8a857c; --silver:#BBBBBB;
+    --gold:#C9A84C; --gold-lum:#E8D08A;
+    --gold-soft:rgba(201,168,76,.12);
+    --line:rgba(245,240,232,.09);
+    --line-gold:rgba(201,168,76,.24);
+    --font:'Gumela','Cairo',sans-serif;
+    --mono:'JetBrains Mono',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg); color:var(--ink); font-family:var(--font);
+    direction:rtl; font-size:17px; line-height:1.85; -webkit-font-smoothing:antialiased; overflow-x:hidden;
+  }
+  #progress{position:fixed;top:0;right:0;height:2px;width:0;background:linear-gradient(90deg,var(--gold-lum),var(--gold));z-index:100;transition:width .1s linear}
+  .wrap{max-width:860px;margin:0 auto;padding:0 28px}
+  /* latin token isolation */
+  .ltr{unicode-bidi:isolate;direction:ltr}
+  code,.mono{font-family:var(--mono)}
+
+  /* HERO */
+  header.hero{position:relative;padding:128px 0 88px;text-align:center;overflow:hidden}
+  header.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 50% 0%,rgba(201,168,76,.17),transparent 70%);pointer-events:none}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.18em;color:var(--gold);margin-bottom:30px;position:relative;direction:ltr}
+  header.hero h1{font-family:'Gumela','Cairo',sans-serif;font-weight:700;font-size:clamp(40px,8vw,74px);line-height:1.12;position:relative}
+  header.hero h1 .accent{color:var(--gold-lum);display:inline-block;direction:ltr;font-family:var(--mono);font-weight:500;font-size:.82em;letter-spacing:-.01em}
+  .hero-sub{margin:30px auto 0;max-width:640px;font-size:clamp(18px,2.4vw,21px);color:var(--ink2);line-height:1.7;position:relative}
+  .thesis{margin:46px auto 0;max-width:700px;padding:26px 32px;position:relative;border:1px solid var(--line-gold);border-radius:18px;background:var(--gold-soft);font-family:'Gumela','Cairo',sans-serif;font-size:20px;color:var(--ink);line-height:1.75}
+
+  /* TOC */
+  nav.toc{margin:70px auto 0;max-width:860px;padding:0 28px}
+  nav.toc .toc-label{font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--ink3);margin-bottom:18px;direction:ltr}
+  nav.toc ol{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:2px 36px}
+  nav.toc a{display:flex;gap:14px;align-items:baseline;text-decoration:none;color:var(--ink2);padding:10px 0;border-bottom:1px solid var(--line);transition:color .2s;font-size:16px}
+  nav.toc a:hover{color:var(--gold-lum)}
+  nav.toc a .n{font-family:var(--mono);font-size:12px;color:var(--gold);min-width:22px;direction:ltr}
+
+  /* SECTIONS */
+  section{padding:76px 0 8px}
+  .sec-head{display:flex;align-items:baseline;gap:18px;margin-bottom:30px}
+  .sec-num{font-family:var(--mono);font-weight:500;font-size:34px;color:var(--gold);line-height:1;opacity:.92;direction:ltr}
+  .sec-title{font-family:'Gumela','Cairo',sans-serif;font-weight:700;font-size:clamp(27px,4.4vw,37px);line-height:1.3}
+  h3{font-family:'Gumela','Cairo',sans-serif;font-weight:700;font-size:20px;margin:38px 0 12px;color:var(--ink)}
+  h3 .pin{color:var(--gold);font-family:var(--mono);font-size:14px;margin-left:8px;direction:ltr;display:inline-block}
+  p{margin:0 0 16px;color:var(--ink2)}
+  p strong,li strong{color:var(--ink);font-weight:700}
+  .g{color:var(--gold-lum);font-weight:600}
+
+  ul.clean{list-style:none;margin:0 0 18px}
+  ul.clean li{position:relative;padding-inline-start:24px;margin-bottom:11px;color:var(--ink2)}
+  ul.clean li::before{content:"";position:absolute;inset-inline-start:4px;top:13px;width:6px;height:6px;border-radius:50%;background:var(--gold)}
+
+  /* formula */
+  .formula{background:var(--bg2);border:1px solid var(--line-gold);border-radius:14px;padding:22px 24px;margin:22px 0}
+  .formula .lbl{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;color:var(--gold);margin-bottom:14px;direction:ltr}
+  .formula code{font-family:'Gumela','Cairo',sans-serif;font-size:16px;line-height:2.1;color:var(--ink);display:block;direction:rtl}
+  .formula code b{color:var(--gold-lum);font-weight:700}
+  .formula.ltr-block code{direction:rtl;text-align:right}
+  /* timed rows */
+  .trow{display:flex;gap:14px;align-items:baseline;padding:5px 0;line-height:1.7}
+  .trow .ts{font-family:var(--mono);font-size:13.5px;color:var(--gold);direction:ltr;min-width:74px;flex-shrink:0}
+  .trow .td{color:var(--ink)}
+  .cmap{font-family:'Gumela','Cairo',sans-serif;line-height:2;color:var(--ink)}
+  .cmap .tk{font-family:var(--mono);font-size:14px;color:var(--gold-lum);direction:ltr;unicode-bidi:isolate}
+
+  /* note */
+  .note{border-inline-start:3px solid var(--gold);background:linear-gradient(to left,var(--gold-soft),transparent);padding:17px 22px;border-radius:14px;margin:22px 0}
+  .note .nt{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--gold);margin-bottom:6px;direction:ltr}
+  .note p{margin:0;color:var(--ink);font-size:16.5px}
+
+  /* tables */
+  .tbl{width:100%;border-collapse:collapse;margin:20px 0;font-size:15.5px}
+  .tbl th{text-align:start;font-family:'Gumela','Cairo',sans-serif;font-size:13px;letter-spacing:0;color:var(--gold);font-weight:700;padding:12px 14px;border-bottom:1px solid var(--line-gold);vertical-align:bottom}
+  .tbl td{padding:14px 14px;border-bottom:1px solid var(--line);color:var(--ink2);vertical-align:top}
+  .tbl td:first-child{color:var(--ink);font-weight:600}
+  .tbl tr:last-child td{border-bottom:none}
+  .tbl .en{font-family:var(--mono);font-size:12px;color:var(--ink3);direction:ltr;unicode-bidi:isolate}
+  .scroll-x{overflow-x:auto}
+
+  /* chips */
+  .bank{margin:16px 0 28px}
+  .bank .bank-h{font-family:'Gumela','Cairo',sans-serif;font-weight:700;color:var(--ink);font-size:16px;margin-bottom:11px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{font-family:var(--mono);font-size:12.5px;color:var(--ink);background:var(--bg3);border:1px solid var(--line);border-radius:999px;padding:6px 13px;transition:.2s;direction:ltr;unicode-bidi:isolate}
+  .chip:hover{border-color:var(--line-gold);color:var(--gold-lum)}
+
+  /* worked example */
+  .script{background:var(--bg2);border:1px solid var(--line);border-radius:16px;padding:26px 26px 22px;margin:22px 0}
+  .script .scr-h{font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;color:var(--gold);margin-bottom:18px;display:flex;justify-content:space-between;gap:12px;direction:ltr}
+  .preamble{font-size:16px;color:var(--ink2);line-height:1.95;margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--line)}
+  .preamble b{color:var(--gold-lum);font-weight:700}
+  .beat{display:grid;grid-template-columns:78px 1fr;gap:16px;padding:12px 0;border-bottom:1px dashed var(--line)}
+  .beat:last-child{border-bottom:none}
+  .beat .ts{font-family:var(--mono);font-size:13px;color:var(--gold);padding-top:2px;direction:ltr}
+  .beat .bd{font-size:16px;color:var(--ink2);line-height:1.8}
+  .beat.climax .ts{color:var(--gold-lum)}
+  .beat.climax .bd{color:var(--ink)}
+  .trans{display:inline-block;font-family:var(--mono);font-size:11.5px;color:var(--gold);background:var(--gold-soft);border:1px solid var(--line-gold);border-radius:6px;padding:1px 9px;margin-inline-start:4px;direction:ltr;unicode-bidi:isolate}
+  .check-line{font-family:var(--mono);font-size:12.5px;color:var(--ink3);line-height:1.9;direction:rtl}
+
+  /* duo */
+  .duo{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:20px 0}
+  .duo .col{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:18px 20px}
+  .duo .col.good{border-color:var(--line-gold)}
+  .duo .col .ch{font-family:'Gumela','Cairo',sans-serif;font-size:13px;font-weight:700;margin-bottom:10px}
+  .duo .col.good .ch{color:var(--gold)}
+  .duo .col.bad .ch{color:#c07a7a}
+  .duo .col p{font-size:15px;margin:0;color:var(--ink2);line-height:1.9}
+  .duo .col p .en{font-family:var(--mono);font-size:13.5px;color:var(--ink);direction:ltr;unicode-bidi:isolate}
+
+  /* checklist */
+  ol.check{list-style:none;counter-reset:c;margin:18px 0}
+  ol.check li{counter-increment:c;position:relative;padding:12px 0 12px 0;padding-inline-start:48px;border-bottom:1px solid var(--line);color:var(--ink2);font-size:16px;line-height:1.8}
+  ol.check li::before{content:counter(c,decimal-leading-zero);position:absolute;inset-inline-start:0;top:13px;font-family:var(--mono);font-size:12px;color:var(--gold);border:1px solid var(--line-gold);border-radius:6px;width:30px;height:26px;display:flex;align-items:center;justify-content:center;direction:ltr}
+
+  /* footer */
+  footer{margin-top:88px;padding:60px 0 80px;border-top:1px solid var(--line);text-align:center;position:relative}
+  footer::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 50% 100% at 50% 100%,rgba(201,168,76,.10),transparent 70%);pointer-events:none}
+  .brandmark{font-family:var(--mono);font-size:23px;letter-spacing:.12em;color:var(--ink);position:relative;direction:ltr}
+  .brandmark b{color:var(--gold)}
+  .slogan{font-family:'Gumela','Cairo',sans-serif;font-weight:700;font-size:22px;color:var(--gold-lum);margin:16px 0 6px;position:relative}
+  .foot-meta{font-family:'Gumela','Cairo',sans-serif;font-size:13px;color:var(--ink3);margin-top:16px;position:relative;line-height:1.8}
+
+  @media(max-width:640px){
+    body{font-size:16px}
+    nav.toc ol{grid-template-columns:1fr}
+    .duo{grid-template-columns:1fr}
+    .beat{grid-template-columns:60px 1fr;gap:12px}
+    header.hero{padding:96px 0 64px}
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">MA Learn · صناعة سينمائية بالذكاء الاصطناعي</div>
+    <h1>الإخراج مع<br><span class="accent">Seedance 2.0</span></h1>
+    <p class="hero-sub">كيف تكتب برومبت سينمائي كأنك مخرج — لا كأنك بس تصف مشهد. الدليل الكامل لصناعة الفيديو من النص، الصورة، والمرجع.</p>
+    <div class="thesis">البرومبت مو وصف لصورة. البرومبت قائمة لقطات (<span class="ltr">shot list</span>). لما تكتب لـ <span class="ltr">Seedance 2.0</span> تلبس أربع قبعات في نفس الوقت: مخرج، ومدير تصوير، ومونتير، وراوي قصة.</div>
+  </div>
+</header>
+
+<nav class="toc">
+  <div class="toc-label">الدليل</div>
+  <ol>
+    <li><a href="#what"><span class="n">01</span><span>وش يقدر يسويه Seedance 2.0</span></a></li>
+    <li><a href="#mindset"><span class="n">02</span><span>عقلية المخرج</span></a></li>
+    <li><a href="#structure"><span class="n">03</span><span>البنية السينمائية الأساسية</span></a></li>
+    <li><a href="#principles"><span class="n">04</span><span>ست قواعد ما تتغير أبداً</span></a></li>
+    <li><a href="#blocks"><span class="n">05</span><span>الثمان كتل بالتفصيل</span></a></li>
+    <li><a href="#timing"><span class="n">06</span><span>اللقطات المتعددة والـ storyboard الزمني</span></a></li>
+    <li><a href="#characters"><span class="n">07</span><span>الشخصيات: الربط والتسمية</span></a></li>
+    <li><a href="#reference"><span class="n">08</span><span>طرق المراجع وخياراتها</span></a></li>
+    <li><a href="#vocab"><span class="n">09</span><span>قاموس المخرج</span></a></li>
+    <li><a href="#example"><span class="n">10</span><span>برومبت كامل، مركّب من الصفر</span></a></li>
+    <li><a href="#checklist"><span class="n">11</span><span>قائمة الفحص قبل الإطلاق</span></a></li>
+  </ol>
+</nav>
+
+<main class="wrap">
+
+  <!-- 01 -->
+  <section id="what">
+    <div class="sec-head"><div class="sec-num">01</div><h2 class="sec-title">وش يقدر يسويه Seedance 2.0 فعلاً</h2></div>
+    <p>قبل لا تكتب ولا كلمة، اعرف آلتك. <span class="ltr">Seedance 2.0</span> يولّد الفيديو بثلاث طرق — والطريقة الثالثة هي اللي تفرّق بين الهاوي والمخرج.</p>
+    <div class="scroll-x">
+    <table class="tbl">
+      <tr><th>الوضع</th><th>تعطيه</th><th>الأفضل لـ</th></tr>
+      <tr><td>نص-إلى-فيديو <span class="en">(T2V)</span></td><td>برومبت مكتوب بس</td><td>اختراع مشهد من الصفر</td></tr>
+      <tr><td>صورة-إلى-فيديو <span class="en">(I2V)</span></td><td>صورة ثابتة + برومبت</td><td>تحريك فريم محدد عاجبك أصلاً</td></tr>
+      <tr><td>مرجع-إلى-فيديو <span class="en">(R2V)</span></td><td>حتى 9 صور و/أو 3 فيديوهات + برومبت</td><td>الثبات — نفس الوجه، اللبس، المنتج، الحركة، أو الأسلوب عبر اللقطات</td></tr>
+    </table>
+    </div>
+    <p>الأشياء اللي يبدع فيها فعلاً — اتكئ عليها، لأن الموديل يكافئك عليها:</p>
+    <ul class="clean">
+      <li><strong>اتباع التعليمات المركّبة</strong> — الحركة، التعبير، الكاميرا، والإضاءة كلها تتنفّذ مع بعض في برومبت واحد.</li>
+      <li><strong>واقعية الخامات</strong> — انعكاسات طبيعية، حُبيبات (<span class="ltr">grain</span>)، قماش، بشرة، وضوء. ملمس <span class="ltr">CG</span> سينمائي.</li>
+      <li><strong>لغة لقطات احترافية</strong> — لقطات قريبة، لقطات دوران (<span class="ltr">orbit</span>)، <span class="ltr">bullet time</span>، وتسلسلات متعددة اللقطات ثابتة.</li>
+      <li><strong>ثبات الشخصية</strong> — الهوية تثبت طول المقطع، بأخطاء بنيوية وقفزات بصرية أقل.</li>
+      <li><strong>تفاصيل المشاعر</strong> — تعبير وجه حقيقي ومقروء وتدفّق عاطفي، مو وجه جامد كالقناع.</li>
+      <li><strong>حوار وسرد قصصي مستقل</strong> — اعطه خطوط عريضة، وهو يرتّب الشخصيات والجمل والمشاهد.</li>
+      <li><strong>الصوت، الموسيقى، والمؤثرات (<span class="ltr">SFX</span>)</strong> — أصوات شخصيات مميزة، موسيقى مناسبة، وصوت ملتزم بالحركة.</li>
+    </ul>
+    <div class="note"><div class="nt">اعرف حدودك</div><p>كل مقطع <strong>من 4 إلى 15 ثانية</strong>. خلّ البرومبت الواحد بين <strong>3 و5 لقطات</strong> — تتجاوزها وكل لقطة تخسر تفاصيلها. هذين الرقمين يشكّلون كل قرار جاي تحت.</p></div>
+  </section>
+
+  <!-- 02 -->
+  <section id="mindset">
+    <div class="sec-head"><div class="sec-num">02</div><h2 class="sec-title">عقلية المخرج</h2></div>
+    <p>أغلب الناس يكتبون البرومبت مثل سايح يوصف بطاقة بريدية: «لقطة سينمائية جميلة لامرأة، أجواء حزينة، أتموسفير، <span class="ltr">4K</span>». والموديل يرجّع لك بالضبط اللي طلبته — شيء عام ما له طعم.</p>
+    <p>المخرج ما يوصف صورة. المخرج <span class="g">يحدّد لقطة</span>. أثمن عادة تقدر تبنيها:</p>
+    <div class="note"><div class="nt">القاعدة اللي تحت كل القواعد</div><p>المحدّد يغلب المبهم، في كل مرة. «<span class="ltr">dolly-in</span> بطيء من لقطة خصر إلى لقطة قريبة» بيغلب دايماً «الكاميرا تقرّب». كلمة «سينمائي» لحالها كسل — سمِّ اللقطة، الضوء، العدسة، والحركة.</p></div>
+    <div class="formula"><div class="lbl">الصنعة كلها في سطر</div><code>البرومبت السينمائي = <b>إخراج</b> + <b>مونتاج</b> + <b>تصوير سينمائي</b> + <b>سرد قصصي</b>، مدموجين.</code></div>
+    <p>كل كتلة بتتعلّمها هي وحدة من هذي القبعات الأربع. تفوّت قبعة، واللقطة تطلع باهتة.</p>
+  </section>
+
+  <!-- 03 -->
+  <section id="structure">
+    <div class="sec-head"><div class="sec-num">03</div><h2 class="sec-title">البنية السينمائية الأساسية</h2></div>
+    <p>البرومبت القوي يحمل ثمان كتل (<span class="ltr">blocks</span>)، بهذا الترتيب. الموديل أكثر ما يكون حسّاس لِما يجي <strong>أول</strong>، فقدّم أهم شيء للقطتك في البداية.</p>
+    <div class="formula"><div class="lbl">البنية</div><code><b>[المشهد]</b> + <b>[الموضوع]</b> + <b>[الحركة]</b> + <b>[نوع اللقطة]</b> + <b>[الإضاءة]</b> + <b>[حركة الكاميرا]</b> + <b>[الأسلوب / الجودة]</b> + <b>[الصوت]</b></code></div>
+    <p>لاحظ الكتلتين اللي أغلب الناس يدمجونها — والمفروض لا:</p>
+    <ul class="clean">
+      <li><strong>نوع اللقطة</strong> هو <span class="g">التكوين</span> — وش داخل الكادر (واسعة، متوسطة، قريبة، فوق-الكتف).</li>
+      <li><strong>حركة الكاميرا</strong> هي <span class="g">الحركة</span> — كيف تتصرّف الكاميرا (<span class="ltr">dolly</span>، <span class="ltr">tracking</span>، <span class="ltr">handheld</span>، <span class="ltr">orbit</span>).</li>
+    </ul>
+    <p>اللقطة المتوسطة فوق-الكتف ممكن تكون ثابتة (<span class="ltr">locked-off</span>) أو <span class="ltr">push-in</span> بطيء. قرّر الاثنين، كل وحدة بروحها. هذا اللي يفرّق بين «صورة» و«لقطة».</p>
+    <div class="scroll-x">
+    <table class="tbl">
+      <tr><th>الكتلة</th><th>شغلها</th><th>مثال مقتطف</th></tr>
+      <tr><td>المشهد</td><td>تثبّت العالم</td><td>«بار جاز خافت الإضاءة في نيويورك الأربعينات»</td></tr>
+      <tr><td>الموضوع</td><td>تحدّد الهوية</td><td>«امرأة شابة بفستان أحمر، شعرها منسدل»</td></tr>
+      <tr><td>الحركة</td><td>تعطيه زمن</td><td>«تلتفت ببطء نحو الكاميرا بابتسامة فيها معرفة»</td></tr>
+      <tr><td>نوع اللقطة</td><td>تأطّره</td><td>«لقطة متوسطة، زاوية منخفضة بسيطة»</td></tr>
+      <tr><td>الإضاءة</td><td>تضبط المزاج</td><td>«ضوء خلفي ذهبي دافئ، <span class="en">bokeh</span> ناعم»</td></tr>
+      <tr><td>حركة الكاميرا</td><td>تضيف حياة</td><td>«<span class="en">dolly-in</span> بطيء إلى لقطة قريبة»</td></tr>
+      <tr><td>الأسلوب / الجودة</td><td>اللمسة الأخيرة</td><td>«سينمائي، <span class="en">film grain</span>، عمق ميدان ضحل»</td></tr>
+      <tr><td>الصوت</td><td>يختم الانغماس</td><td>تهمس: «كنت أنتظرك.»</td></tr>
+    </table>
+    </div>
+  </section>
+
+  <!-- 04 -->
+  <section id="principles">
+    <div class="sec-head"><div class="sec-num">04</div><h2 class="sec-title">ست قواعد ما تتغير أبداً</h2></div>
+    <ul class="clean">
+      <li><strong>ابنِ من البسيط ← المعقّد.</strong> ابدأ خفيف، زِد التفاصيل، راقب وش يسوي الموديل، وكرّر.</li>
+      <li><strong>حافظ على الترتيب.</strong> المشهد ← الموضوع ← الحركة ← اللقطة ← الأجواء. البنية تساعد الموديل يفهم قصدك.</li>
+      <li><strong>قدّم الكلمة المفتاحية.</strong> أهم عنصر يروح أول البرومبت.</li>
+      <li><strong>المحدّد قبل المبهم.</strong> سمِّ الحركة، العدسة، الضوء — لا ترضى أبداً بـ«سينمائي».</li>
+      <li><strong>لا تناقض.</strong> لا تطلب «ثابت تماماً» و«حركة سريعة» في نفس النَفَس.</li>
+      <li><strong>لغة وحدة لكل برومبت.</strong> لا تخلط اللغات في نص البرومبت؛ يشوّش الفهم.</li>
+    </ul>
+  </section>
+
+  <!-- 05 -->
+  <section id="blocks">
+    <div class="sec-head"><div class="sec-num">05</div><h2 class="sec-title">الثمان كتل بالتفصيل</h2></div>
+    <p>كل كتلة لها نموذج ذهني وأبعاد تستاهل تسمّيها. هنا تتحوّل البرومبتات الباهتة إلى مُخرَجة.</p>
+
+    <h3><span class="pin">▸</span>المشهد يجي أول</h3>
+    <p>هو يثبّت كل اللي بعده. حدّد <span class="g">الموقع، الحجم، وقت اليوم، الطقس، وعناصر الخلفية</span>. «شارع» ما يساوي شيء. «زقاق ضيّق مبلّل بالمطر وقت الـ <span class="ltr">blue hour</span>، لافتات نيون تنزف على الأسفلت المبلّل، بخار يطلع من فتحة تهوية» — هذا عالم.</p>
+
+    <h3><span class="pin">▸</span>الموضوع لازم يكون ملموس</h3>
+    <p>هذا تأمينك ضد الانحراف (<span class="ltr">drift</span>). حدّد <span class="g">الصفات الجسدية، اللبس، الحالة، والوضع العاطفي</span>. «الحالة» هي اللي ينساها الناس — مبلّل، مغبّر، منهك، مكوي للتو. هي تقول للموديل القصة اللي صارت على الجسم.</p>
+
+    <h3><span class="pin">▸</span>الحركة تصنع الزمن</h3>
+    <p>الحركة هي اللي تعطي المقطع مدّته. حدّد <span class="g">الحركة، التسلسل، التفاعل، والسلوك العاطفي</span>. لسلسلة أفعال، استخدم روابط زمنية — <span class="g">أول… بعدها… وأخيراً</span> — عشان المشاهد تترابط بنظافة بدل ما تتلخبط.</p>
+
+    <h3><span class="pin">▸</span>نوع اللقطة يتحكّم بالتكوين</h3>
+    <p>سمِّ التأطير وعلاقة المشاهد بالموضوع: واسعة جداً، واسعة، متوسطة، قريبة، فوق-الكتف. الـ <span class="ltr">over-the-shoulder</span> مثلاً، يحدّد فوراً وجهة النظر والتوتر بين موضوعين.</p>
+
+    <h3><span class="pin">▸</span>الإضاءة تحدّد العاطفة</h3>
+    <p>الضوء يحمل المزاج أكثر من أي صفة. استخدم مصطلحات مدير التصوير — <span class="g">إضاءة حجمية (<span class="ltr">volumetric</span>)، <span class="ltr">rim light</span>، ضوء خلفي، انعكاسات نيون، تباين عالي</span>. نفس الوجه يقرأ حنون تحت ضوء خلفي ناعم، وخطير تحت ضوء جانبي قاسي.</p>
+
+    <h3><span class="pin">▸</span>حركة الكاميرا تصنع الإحساس السينمائي</h3>
+    <p>دايماً حدّد كيف تتصرّف الكاميرا: <span class="g"><span class="ltr">dolly</span>، <span class="ltr">tracking</span>، <span class="ltr">pan</span>، <span class="ltr">tilt</span>، <span class="ltr">handheld</span>، جوية (<span class="ltr">aerial</span>)، <span class="ltr">POV</span>، أو <span class="ltr">slow motion</span></span>. الكادر الثابت يقرأ مثل لقطة أرشيفية؛ والـ <span class="ltr">push-in</span> البطيء يقرأ سينما.</p>
+
+    <h3><span class="pin">▸</span>الأسلوب والجودة — اللمسة الأخيرة</h3>
+    <p>حدّد <span class="g">مستوى الواقعية، الدقة، طابع العدسة، والملمس</span>. <span class="ltr">Seedance</span> ثابت عبر مدى ضخم — فيلم واقعي فوتوغرافي، <span class="ltr">impasto</span> على طريقة فان غوخ، <span class="ltr">claymation</span>، <span class="ltr">VHS</span> من التسعينات، رسم بالحبر. سمِّ الطابع بدقّة، وهو يثبت عليه.</p>
+
+    <h3><span class="pin">▸</span>الصوت يكمّل المشهد</h3>
+    <p>حدّد <span class="g">الصوت المحيط، المؤثرات الصوتية، الموسيقى، والحوار</span>. اكتب الحوار <strong>مباشرة بين قوسين</strong> — والموديل يطابق الصوت لعمر الشخصية وجنسها وشخصيتها كما وصفتها. طابق الـ <span class="ltr">SFX</span> مع الحركة على الشاشة: الأكل يستاهل صوت مضغ، والاصطدام يستاهل صوت معدن.</p>
+
+    <h3><span class="pin">▸</span>التعبير العاطفي — الروح</h3>
+    <p><span class="ltr">Seedance</span> يقرأ العاطفة قريب من ممثّل حقيقي. أخرِجها: <span class="g">تعبير الوجه، التحوّلات العاطفية، لغة الجسد</span>. «رباطة جأشها تتصدّع — الابتسامة تثبت ثانية زيادة، وبعدها عيونها تفضحها» — هذا أداء، مو وجه.</p>
+
+    <h3><span class="pin">▸</span>الواقعية الفيزيائية — سمِّ الفيزياء</h3>
+    <p>لما تذكر كيف تطيع الأشياء قوانين الفيزياء، ترفع الواقعية أكثر من أي وسم «<span class="ltr">8K</span>». اذكر <span class="g">الجاذبية، الحركة، الارتطام، التفاعل مع البيئة</span> — «القارورة تتدحرج، ترتد، تضرب درجة وتتكسّر، والكرات تتناثر على الأرض» — هذا يعطي الموديل قوانين يلتزم فيها.</p>
+  </section>
+
+  <!-- 06 -->
+  <section id="timing">
+    <div class="sec-head"><div class="sec-num">06</div><h2 class="sec-title">اللقطات المتعددة والـ storyboard الزمني</h2></div>
+    <p>عشان تخرج أكثر من لقطة في مقطع واحد، بطّل تكتب كلام سردي وابدأ تكتب <span class="ltr">storyboard</span>. علّم كل لقطة بـ <span class="g">مدى زمني بين قوسين</span>. قوس واحد = لقطة واحدة.</p>
+    <div class="formula"><div class="lbl">طريقة الكتل الزمنية</div>
+      <div class="trow"><span class="ts">[0–2s]</span><span class="td">[نوع اللقطة] — [مين] — [الحركة]</span></div>
+      <div class="trow"><span class="ts">[2–4s]</span><span class="td">…</span></div>
+      <div class="trow"><span class="ts">[4–6s]</span><span class="td">…</span></div>
+      <div class="trow"><span class="ts">[6–9s]</span><span class="td">…</span></div>
+      <div class="trow"><span class="ts">[9–12s]</span><span class="td">…</span></div>
+      <div class="trow"><span class="ts">[12–15s]</span><span class="td" style="color:var(--gold-lum);font-weight:700">[الذروة]</span></div>
+    </div>
+    <ul class="clean">
+      <li><strong>كل كتلة هي لقطة وحدة.</strong> اوصف مين وين، يسوي وش، مصوّر كيف.</li>
+      <li><strong>خلّك بين 3–5 لقطات</strong> حتى لو طوابعك الزمنية دقيقة — جمّع المشاهد، لا تكسّرها.</li>
+      <li><strong>التفاوت في الفترات مقصود.</strong> كتل قصيرة بالبداية (قطعات سريعة)، وثبات أطول بالنهاية، كل ما يتحلّ التوتر.</li>
+      <li><strong>سمِّ انتقالاتك:</strong> <span class="ltr">match cut</span>، <span class="ltr">whip pan</span>، تجميد بطيء عند الارتطام، <span class="ltr">smash cut</span>، <span class="ltr">cut to</span>.</li>
+    </ul>
+    <h3>ليش الذروة تجلس بالنهاية</h3>
+    <p>الفيديو القصير سرد مضغوط: <span class="g">تقديم ← بناء ← تصعيد ← ذروة</span>. حُط الجائزة — الكشف، التحوّل، لحظة البطل — في <strong>الكتلة الأخيرة</strong>. تقدّم الذروة وتقتل نسبة المشاهدة لين النهاية.</p>
+  </section>
+
+  <!-- 07 -->
+  <section id="characters">
+    <div class="sec-head"><div class="sec-num">07</div><h2 class="sec-title">الشخصيات: الربط والتسمية</h2></div>
+    <p>أول ما يصير في المقطع أكثر من شخصية، تقنيتين يمنعون هوياتها من إنها تتداخل مع بعض.</p>
+
+    <h3>١ — اربط كل شخصية بمراجعها</h3>
+    <p>أعلن جدول ربط <strong>قبل</strong> كتلك الزمنية. اقسم كل هوية إلى مرجع وجه ومرجع جسم واربطهم بشكل صريح.</p>
+    <div class="formula"><div class="lbl">ربط الشخصيات</div>
+      <div class="cmap">
+        ربط الشخصيات:<br>
+        الشخصية <span class="tk">A</span> (الدور) تستخدم <span class="tk">@Image1</span> (وجه) + <span class="tk">@Image2</span> (جسم).<br>
+        الشخصية <span class="tk">B</span> (الدور) تستخدم <span class="tk">@Image3</span> (وجه) + <span class="tk">@Image4</span> (جسم).<br>
+        لا تبدّل الهويات أبداً.
+      </div>
+    </div>
+
+    <h3>٢ — سمِّهم، وأعد استخدام الأسماء</h3>
+    <p>استخدم <span class="g">أسماء عَلَم ثابتة ومرقّمة</span> وكرّرها في كل مشهد بلا استثناء. الأسماء العامة تخلّي الموديل يعيد توليد الوجه بين اللقطات — وهذا بالضبط كيف تنحرف الهويات.</p>
+    <div class="duo">
+      <div class="col good"><div class="ch">✓ صح</div><p><span class="en">"Ken 1 attacks. Ken 2 blocks."</span><br><span class="en">"Ken 1 and Ken 2 face each other. They draw swords."</span></p></div>
+      <div class="col bad"><div class="ch">✕ غلط</div><p>«الرجّال يهاجم.»<br>«شخصية ثانية ترد.»</p></div>
+    </div>
+    <p>اسم مرقّم مُسمّى ومُشار له باستمرار يثبّت الموضوع عبر المقطع كله. أرخص وأقوى أداة ثبات عندك.</p>
+  </section>
+
+  <!-- 08 -->
+  <section id="reference">
+    <div class="sec-head"><div class="sec-num">08</div><h2 class="sec-title">طرق المراجع وخياراتها</h2></div>
+    <p>المرجع-إلى-فيديو (<span class="ltr">R2V</span>) هو اللي يحوّل <span class="ltr">Seedance</span> إلى أداة دقيقة. تقدر تغذّيه صور ثابتة، فيديوهات، أو الاثنين، وتقول له بالضبط وش ياخذ من كل وحدة.</p>
+
+    <h3>وش تقدر تغذّيه</h3>
+    <div class="scroll-x">
+    <table class="tbl">
+      <tr><th>المُدخل</th><th>الحد</th></tr>
+      <tr><td>الصور</td><td>حتى 9</td></tr>
+      <tr><td>الفيديوهات</td><td>حتى 3 — كل وحدة 2–15 ثانية، المجموع ≤ 15 ثانية</td></tr>
+      <tr><td>الصوت</td><td>يوصف في البرومبت (ما يترفع)</td></tr>
+      <tr><td>الطول المُولّد</td><td>4–15 ثانية، على كيفك</td></tr>
+    </table>
+    </div>
+    <p>لازم تعطي <strong>مرجع واحد على الأقل</strong> من أي نوع. عنصرين تحكّم يخلّون المراجع دقيقة:</p>
+    <ul class="clean">
+      <li><strong>وسّم مواضيعك</strong> بـ <span class="g"><span class="ltr">[@name]</span></span> — مثلاً <span class="ltr" style="font-family:var(--mono);color:var(--gold-lum)">[@lady rabbit]</span> — عشان حركات البرومبت تربط بالعنصر الصح.</li>
+      <li><strong>اعطِ كل صورة دور</strong> بكلمات واضحة: «الصورة الأولى مرجع الشخصية، والثانية مرجع المشهد». هذا أساس كل لقطة متعددة المراجع.</li>
+    </ul>
+
+    <h3>قدرات المراجع الخمس</h3>
+    <div class="scroll-x">
+    <table class="tbl">
+      <tr><th>القدرة</th><th>وش تسوي</th><th>الحركة الأساسية</th></tr>
+      <tr><td>صورة ← فيديو</td><td>1–9 صور ثابتة تصير مقطع متحرّك، محافظ على مظهرها وأسلوبها</td><td>اوصف الحركة؛ وسّم المواضيع بـ <span class="en">[@tag]</span>؛ اعطِ كل صورة دورها</td></tr>
+      <tr><td>فيديو ← فيديو</td><td>1–3 مقاطع تقود مقطع جديد، محافظة على الموضوع / الحركة / الإيقاع / التكوين</td><td>حدّد أي صفات تحافظ عليها؛ أضف صورة ثابتة كمرسى مظهر إذا احتجت</td></tr>
+      <tr><td>تعديل الفيديو</td><td>غيّر صورة أو صوت مقطع المُدخل بالتعليمات</td><td>قُل «وش تغيّر» و«إلى وش» — بدّل الموضوع، الخلفية، الإضاءة، ترجم نص، احذف عناصر</td></tr>
+      <tr><td>نقل الفيديو <span class="en">(Migration)</span></td><td>انقل صفة — حركة، أسلوب، إيقاع مونتاج، شغل كاميرا — إلى محتوى جديد</td><td>«الـ [شغل الكاميرا / الأسلوب / المونتاج] حق الفيديو المرجع» + هدفك</td></tr>
+      <tr><td>تمديد الفيديو</td><td>مدّد المقطع للأمام أو للخلف (حتى 30 ثانية بالمجموع)</td><td>اوصف الاتجاه الجديد، متصل بالفريم الأول/الأخير، مع مشاهد الحركة الرئيسية</td></tr>
+    </table>
+    </div>
+
+    <h3>الفريم الأول والأخير</h3>
+    <p>اعطِ <span class="ltr">Seedance</span> صورة افتتاحية وصورة ختامية، وهو يستوفي (<span class="ltr">interpolates</span>) الرحلة اللي بينهم. السر في البرومبت: <span class="g">اوصف منطق الحركة بين الاثنين</span>. «من وقفة الثبات في الصورة الأولى، يجمع طاقته وينتقل إلى القفزة الطائرة في الثانية» — كل ما وضّحت هذا الجسر، طلعت النتيجة أنعم.</p>
+
+    <div class="note"><div class="nt">ملاحظة المخرج</div><p>نمط عملي للثبات: صورة بطل واحدة معتمدة كـ <strong>مرسى المظهر</strong>، مع صور موزّعة الأدوار للوجه، اللبس، وأي منتج — وكل وحدة مسمّاة في البرومبت بالضبط بوش تثبّت منها. الحركة اللي تبيها من مقطع مرجع تنحط في <strong>كلماتك</strong> (توجيه الكاميرا + توقيت كل مشهد)، توصف لا بس تتعرض.</p></div>
+  </section>
+
+  <!-- 09 -->
+  <section id="vocab">
+    <div class="sec-head"><div class="sec-num">09</div><h2 class="sec-title">قاموس المخرج</h2></div>
+    <p>استخدم هذي بدل «سينمائي». الموديل يعرفها بدقّة. (نخليها بالإنجليزي — هي توكنات يقرأها الموديل حرفياً.)</p>
+    <div class="bank"><div class="bank-h">حركة الكاميرا</div><div class="chips">
+      <span class="chip">tracking shot</span><span class="chip">dolly in / out</span><span class="chip">pan</span><span class="chip">tilt</span><span class="chip">zoom</span><span class="chip">crane</span><span class="chip">aerial</span><span class="chip">handheld</span><span class="chip">bullet time</span><span class="chip">first-person POV</span><span class="chip">orbit</span><span class="chip">slow motion</span>
+    </div></div>
+    <div class="bank"><div class="bank-h">نوع اللقطة</div><div class="chips">
+      <span class="chip">extreme wide</span><span class="chip">wide / full shot</span><span class="chip">medium shot</span><span class="chip">close-up</span><span class="chip">extreme close-up</span><span class="chip">over-the-shoulder</span>
+    </div></div>
+    <div class="bank"><div class="bank-h">الضوء والأجواء</div><div class="chips">
+      <span class="chip">cinematic lighting</span><span class="chip">volumetric light</span><span class="chip">Tyndall effect</span><span class="chip">rim light</span><span class="chip">backlight</span><span class="chip">neon reflections</span><span class="chip">high contrast</span><span class="chip">golden hour</span><span class="chip">soft bokeh</span>
+    </div></div>
+    <div class="bank"><div class="bank-h">جودة الصورة</div><div class="chips">
+      <span class="chip">4K</span><span class="chip">8K</span><span class="chip">photorealistic</span><span class="chip">shallow depth of field</span><span class="chip">film grain</span><span class="chip">depth of field</span>
+    </div></div>
+    <div class="bank"><div class="bank-h">طوابع الأسلوب</div><div class="chips">
+      <span class="chip">film noir</span><span class="chip">documentary</span><span class="chip">Wes Anderson symmetry</span><span class="chip">Japanese animation</span><span class="chip">claymation</span><span class="chip">oil-painting impasto</span><span class="chip">watercolor</span><span class="chip">ink wash</span><span class="chip">1980s synthwave</span><span class="chip">1990s VHS</span><span class="chip">Super 8</span><span class="chip">cyberpunk</span><span class="chip">miniature model</span>
+    </div></div>
+  </section>
+
+  <!-- 10 -->
+  <section id="example">
+    <div class="sec-head"><div class="sec-num">10</div><h2 class="sec-title">برومبت كامل، مركّب من الصفر</h2></div>
+    <p>هذا كل شيء يشتغل مع بعض — أول لقطة واحدة متصلة، وبعدها قطعة متعددة اللقطات مع الـ <span class="ltr">storyboard</span> الزمني وربط الشخصيات.</p>
+
+    <h3>المثال أ — لقطة واحدة متصلة</h3>
+    <div class="script">
+      <div class="scr-h"><span>لقطة واحدة · ~6 ثوانٍ</span><span>I2V / T2V</span></div>
+      <div class="preamble">امرأة بفستان حرير زمرّدي منساب تقف على حافة شرفة سطح وقت الـ <b>golden hour</b>، أفق مدينة ناعم خلفها. تلتفت ببطء نحو الكاميرا، شعرها يطير في النسيم الدافئ، وابتسامة هادئة فيها معرفة تتشكّل. <b>لقطة متوسطة</b> تنساب إلى <b>dolly-in بطيء إلى لقطة قريبة</b>. <b>ضوء خلفي ذهبي دافئ</b>، <span class="ltr">bokeh</span> ناعم، <span class="ltr">lens flare</span> خفيف. سينمائي، <span class="ltr">film grain</span> ناعم، عمق ميدان ضحل، <span class="ltr">4K</span>. محيط: نسيم خفيف، طنين مدينة بعيد.</div>
+      <div class="check-line">المشهد ✓ الموضوع ✓ الحركة ✓ نوع اللقطة ✓ الكاميرا ✓ الإضاءة ✓ الأسلوب ✓ الصوت ✓</div>
+    </div>
+
+    <h3>المثال ب — متعدد اللقطات مع شخصيات</h3>
+    <div class="script">
+      <div class="scr-h"><span>متعدد اللقطات · 15 ثانية</span><span>R2V · 4 مراجع صور</span></div>
+      <div class="preamble">
+        <b>ربط الشخصيات:</b> مارا (المبارِزة) تستخدم <span class="ltr">@Image1</span> (وجه) + <span class="ltr">@Image2</span> (جسم). كاي (الخصم) يستخدم <span class="ltr">@Image3</span> (وجه) + <span class="ltr">@Image4</span> (جسم). لا تبدّل الهويات أبداً.<br>
+        <b>الأسلوب:</b> مدينة نيون مغروقة بالمطر، تباين عالي، VFX سينمائي، 4K. <b>الإضاءة:</b> rim light نيون بارد، انعكاسات مبلّلة.
+      </div>
+      <div class="beat"><div class="ts">[0–2s]</div><div class="bd">لقطة تأسيسية واسعة — مارا تدخل الكادر على سطح، طرف معطفها يتحرّك في الريح. dolly-in بطيء.</div></div>
+      <div class="beat"><div class="ts">[2–5s]</div><div class="bd">لقطة متوسطة لاثنين — مارا وكاي يواجهون بعض عبر السطح المبلّل؛ يسحبون نصالهم. <span class="trans">Whip pan</span></div></div>
+      <div class="beat"><div class="ts">[5–9s]</div><div class="bd">over-the-shoulder على مارا — أول اشتباك، شرر يتطاير، النصال ترتد بثقل حقيقي. اهتزاز handheld.</div></div>
+      <div class="beat"><div class="ts">[9–12s]</div><div class="bd">tracking — كاي يردّ، حطام ينفجر؛ الكاميرا تدور حول الارتطام. <span class="trans">slow-motion freeze</span></div></div>
+      <div class="beat climax"><div class="ts">[12–15s]</div><div class="bd">CLIMAX — لقطة قريبة جداً لعيون مارا، النيون منعكس فيها؛ رباطة جأشها تستقر على عزم. push-in بطيء، cut to black.</div></div>
+    </div>
+    <div class="note"><div class="nt">اقرأه مرّة ثانية</div><p>كل مشهد يسمّي <strong>مين</strong> (بالاسم العَلَم)، <strong>نوع اللقطة</strong>، <strong>الحركة</strong>، <strong>الكاميرا</strong>، و<strong>انتقال</strong> — والجائزة تنزل في الكتلة الأخيرة. هذا مقطع مُخرَج، مو موصوف.</p></div>
+  </section>
+
+  <!-- 11 -->
+  <section id="checklist">
+    <div class="sec-head"><div class="sec-num">11</div><h2 class="sec-title">قائمة الفحص قبل الإطلاق</h2></div>
+    <p>شغّلها قبل لا تولّد. عشرين ثانية هنا توفّر عليك إعادة توليد بعدين.</p>
+    <ol class="check">
+      <li>أي وضع — <span class="ltr">T2V</span>، <span class="ltr">I2V</span>، أو <span class="ltr">R2V</span>؟ (<span class="ltr">R2V</span> إذا عندك مراجع.)</li>
+      <li>قدّم أهم كتلة؛ وحافظ على ترتيب المشهد ← الموضوع ← الحركة ← اللقطة ← الإضاءة ← الكاميرا ← الأسلوب ← الصوت.</li>
+      <li>سمِّ <strong>نوع اللقطة وحركة الكاميرا كل وحدة بروحها</strong> — لا «سينمائي» لحاله أبداً.</li>
+      <li>المشهد يحمل الحجم + الطقس؛ والموضوع يحمل الحالة + الوضع العاطفي.</li>
+      <li>أفعال متعددة؟ استخدم «أول… بعدها… وأخيراً».</li>
+      <li>متعدد اللقطات؟ استخدم كتل زمنية بين قوسين، ≤ 5 لقطات، والذروة في الكتلة الأخيرة.</li>
+      <li>أكثر من شخصية؟ اربط <span class="ltr">@face + @body</span> واستخدم أسماء عَلَم مرقّمة في كل مشهد.</li>
+      <li>اذكر الفيزياء — الجاذبية، الارتطام، التفاعل مع البيئة.</li>
+      <li>تستخدم مراجع؟ اعطِ كل وحدة دور، ووسّم المواضيع بـ <span class="ltr">[@tag]</span>.</li>
+      <li>الصوت: الحوار بين قوسين، والمؤثرات (<span class="ltr">SFX</span>) ملتزمة بالحركة.</li>
+      <li>لا تناقضات؛ لغة وحدة طول البرومبت.</li>
+      <li>اقرأه مرّة ثانية كقائمة لقطات — هل مخرج شغّال بيفهمه؟</li>
+    </ol>
+    <div class="note"><div class="nt">الخلاصة</div><p>أنت أبداً ما تصف صورة. أنت تسلّم طاقم تصوير قائمة لقطات. اكتبها مثل ما يقولها المخرج — و<span class="ltr">Seedance 2.0</span> بيصوّرها.</p></div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="brandmark">MA<b>·</b>LEARN</div>
+    <div class="slogan">صناعة الإلهام</div>
+    <div class="foot-meta">صناعة سينمائية بالذكاء الاصطناعي · إخراج Seedance 2.0 · دليل من ماجد عنقاوي</div>
+  </div>
+</footer>
+
+<script>
+  const bar=document.getElementById('progress');
+  const onScroll=()=>{const h=document.documentElement;const max=h.scrollHeight-h.clientHeight;bar.style.width=(max>0?(h.scrollTop/max*100):0)+'%';};
+  document.addEventListener('scroll',onScroll,{passive:true});onScroll();
+</script>
+</body>
+</html>
