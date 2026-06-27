@@ -601,48 +601,26 @@
         </div>
         <div class="hero-date-item">
           <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-          <span id="hero-seats-text">٢٠ مقعد متبقي</span> — أونلاين
+          <span id="hero-seats-text">٣٠ مقعد فقط</span> — أونلاين
         </div>
       </div>
 
       <div class="hero-price-block">
         <div class="price-early">١,٢٩٩ <span>ر.س</span></div>
-        <!-- Tamara installments line — surfaced next to price (was buried in FAQ) -->
-        <div class="tamara-line">أو قسّطها مع <strong>Tamara</strong> — ابدأ بـ ~٣٢٥ ر.س اليوم · ٤ دفعات</div>
         <div class="price-deadline">السعر قابل للتغيير في الدفعات القادمة</div>
       </div>
 
       <style>
         @keyframes seats-pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.4; } }
-        .tamara-line { font-size:0.82rem; color:var(--gold); font-weight:600; margin-top:8px; letter-spacing:0.01em; }
-        .tamara-line strong { font-weight:700; }
-        /* Countdown to enrollment close */
-        #countdown-wrap { margin-top:18px; }
-        .countdown-label { font-size:0.78rem; color:var(--silver); margin-bottom:8px; letter-spacing:0.02em; }
-        .countdown-grid { display:inline-flex; gap:10px; }
-        .cd-unit { min-width:54px; padding:8px 6px; background:rgba(201,168,76,0.10); border:1px solid rgba(201,168,76,0.35); border-radius:8px; }
-        .cd-num { font-family:'Gumela','Cairo',sans-serif; font-size:1.5rem; font-weight:700; color:var(--gold); line-height:1; }
-        .cd-cap { font-size:0.66rem; color:var(--silver); margin-top:4px; }
       </style>
 
       <a href="https://checkout.malearnsa.com/creative-ai-workshop/checkout.html" class="btn-primary" id="hero-cta">احجز مقعدك الآن</a>
-
-      <!-- Countdown to enrollment close (target = ENROLL_CLOSE constant in script) -->
-      <div id="countdown-wrap">
-        <div class="countdown-label">يغلق التسجيل خلال</div>
-        <div class="countdown-grid" id="countdown" aria-live="polite">
-          <div class="cd-unit"><div class="cd-num" id="cd-d">--</div><div class="cd-cap">يوم</div></div>
-          <div class="cd-unit"><div class="cd-num" id="cd-h">--</div><div class="cd-cap">ساعة</div></div>
-          <div class="cd-unit"><div class="cd-num" id="cd-m">--</div><div class="cd-cap">دقيقة</div></div>
-          <div class="cd-unit"><div class="cd-num" id="cd-s">--</div><div class="cd-cap">ثانية</div></div>
-        </div>
-      </div>
 
       <!-- Live seats badge — prominent, gold pill under hero CTA -->
       <div style="margin-top:18px;">
         <div id="seats-badge" style="display:inline-flex;align-items:center;gap:8px;padding:8px 18px;background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.4);border-radius:999px;font-size:0.88rem;font-weight:700;color:var(--gold);">
           <span style="width:8px;height:8px;background:var(--gold);border-radius:50%;display:inline-block;animation:seats-pulse 1.8s ease-in-out infinite;"></span>
-          <span id="seats-badge-text">٢٠ مقعد متبقي من ٣٠</span>
+          <span id="seats-badge-text">٣٠ مقعد متاح</span>
         </div>
       </div>
 
@@ -1036,8 +1014,6 @@
             <span style="color:var(--gold);font-size:2.4rem;font-weight:700;line-height:1;">١,٢٩٩ <span style="font-size:0.95rem;color:var(--silver);font-weight:400;">ر.س</span></span>
           </div>
           <div style="text-align:left;margin-top:6px;font-size:0.82rem;color:var(--gold);">توفير ٤,٥٤٨ ر.س</div>
-          <!-- Tamara installments line — surfaced next to price (was buried in FAQ) -->
-          <div style="text-align:center;margin-top:14px;padding-top:12px;border-top:1px solid rgba(201,168,76,0.15);font-size:0.85rem;color:var(--gold);font-weight:600;">أو قسّطها مع <strong style="font-weight:700;">Tamara</strong> — ابدأ بـ ~٣٢٥ ر.س اليوم · ٤ دفعات</div>
         </div>
 
         <a href="https://checkout.malearnsa.com/creative-ai-workshop/checkout.html" class="btn-primary" id="bundle-cta"
@@ -1045,45 +1021,22 @@
           احجز مقعدك — ١,٢٩٩ ر.س
         </a>
 
-        <div style="margin-top:16px;font-size:0.85rem;color:var(--gold);font-weight:700;"><span id="card-seats-text">٢٠ مقعد متبقي</span></div>
+        <div style="margin-top:16px;font-size:0.85rem;color:var(--gold);font-weight:700;"><span id="card-seats-text">٣٠ مقعد فقط</span></div>
         <div style="margin-top:4px;font-size:0.75rem;color:var(--grey);">السعر قابل للتغيير في الدفعات القادمة</div>
       </div>
 
-      <!-- ══ NON-BUYER "STAY IN TOUCH" CAPTURE ═══════════════════════════
-           For visitors not ready to pay 1,299 today. INTERIM capture — the
-           free lead magnet isn't chosen yet, so this just collects the contact
-           and tags the source. Reuses the EXISTING CIW waitlist Apps Script
-           (same endpoint + payload shape as malearnsa.com/waitlist/), so the
-           existing buyer-suppression / leak-clean steps (phone+email vs LIVE
-           Customers sheet) apply unchanged. NO new backend was built.
-           TO ATTACH A LEAD MAGNET LATER: change the success message below and
-           add a one-line redirect/download in the submit handler (marked ★). -->
-      <div id="staytouch" style="max-width:620px;margin:40px auto 0;text-align:center;padding:32px 24px;border:1px solid rgba(201,168,76,0.30);border-radius:12px;background:rgba(201,168,76,0.04);">
-        <div id="staytouch-form-wrap">
-          <div style="font-family:'Gumela','Cairo',sans-serif;font-weight:700;font-size:1.15rem;color:var(--ivory);margin-bottom:8px;">مو جاهز تحجز الحين؟</div>
-          <p style="font-size:0.9rem;color:var(--silver);line-height:1.8;margin-bottom:20px;">
-            سجّل وخلّك على تواصل — وأول من يعرف بالتفاصيل، العروض، والهدايا.
-          </p>
-          <form id="staytouchForm" novalidate style="display:flex;flex-direction:column;gap:10px;max-width:420px;margin:0 auto;">
-            <input type="text" id="st-name" name="name" placeholder="الاسم" autocomplete="name"
-              style="padding:13px 16px;border:1px solid rgba(201,168,76,0.30);border-radius:8px;background:#0d0d0d;color:var(--ivory);font-family:inherit;font-size:0.95rem;">
-            <input type="email" id="st-email" name="email" placeholder="البريد الإلكتروني" required autocomplete="email" inputmode="email"
-              style="padding:13px 16px;border:1px solid rgba(201,168,76,0.30);border-radius:8px;background:#0d0d0d;color:var(--ivory);font-family:inherit;font-size:0.95rem;">
-            <input type="tel" id="st-phone" name="phone" placeholder="رقم الجوال (اختياري — للواتساب)" autocomplete="tel" inputmode="tel"
-              style="padding:13px 16px;border:1px solid rgba(201,168,76,0.30);border-radius:8px;background:#0d0d0d;color:var(--ivory);font-family:inherit;font-size:0.95rem;">
-            <button type="submit" id="st-btn"
-              style="margin-top:4px;padding:14px 20px;border:none;border-radius:8px;background:var(--gold);color:#0a0a0a;font-family:'Gumela','Cairo',sans-serif;font-weight:700;font-size:0.95rem;cursor:pointer;">
-              خلّني على تواصل
-            </button>
-          </form>
-          <p style="margin-top:14px;font-size:0.78rem;color:var(--grey);">
-            تبغى مقعد في الدفعة الرابعة؟ <a href="https://malearnsa.com/waitlist/" style="color:var(--gold);text-decoration:underline;">سجّل في قائمة الانتظار</a>
-          </p>
+      <!-- Sold-out state — reused pattern -->
+      <div id="pricing-soldout" style="display:none;max-width:620px;margin:32px auto 0;text-align:center;padding:32px 20px;border:1px solid rgba(201,168,76,0.35);border-radius:12px;background:rgba(201,168,76,0.05);">
+        <div style="display:inline-block;border:3px solid rgba(201,168,76,0.5);border-radius:8px;padding:10px 26px;transform:rotate(-4deg);margin-bottom:18px;">
+          <span style="font-size:1.4rem;font-weight:700;color:var(--gold);letter-spacing:0.05em;">الدفعة الثالثة اكتملت</span>
         </div>
-        <div id="staytouch-success" style="display:none;padding:18px 0;">
-          <div style="font-family:'Gumela','Cairo',sans-serif;font-weight:700;font-size:1.1rem;color:var(--gold);margin-bottom:8px;">تم! صرت على تواصل ✦</div>
-          <p style="font-size:0.9rem;color:var(--silver);line-height:1.7;">بنرسل لك أول ما يصير عندنا جديد. تابع <strong style="color:var(--ivory);">@majidangawi</strong> على إنستقرام.</p>
-        </div>
+        <p style="font-size:0.9rem;color:var(--silver);line-height:1.8;margin-bottom:20px;">
+          سجّل اهتمامك في الدفعة الرابعة — السعر قابل للتغيير.
+        </p>
+        <a href="https://malearnsa.com/waitlist/"
+           style="display:inline-block;background:rgba(201,168,76,0.12);border:1px solid rgba(201,168,76,0.35);color:var(--gold);padding:12px 28px;border-radius:8px;text-decoration:none;font-size:0.9rem;font-weight:700;">
+          سجّل في قائمة الانتظار
+        </a>
       </div>
     </div>
   </section>
@@ -1128,68 +1081,41 @@
       observer.observe(el);
     });
 
-    // ═══════════════════════════════════════════════════════════════════
-    // C3 (الدفعة الثالثة) — OPEN STATE. Hardened 2026-06-27.
-    //
-    // The page is HONESTLY OPEN. Two independent, isolated widgets:
-    //   1) Countdown to enrollment close (ENROLL_CLOSE).
-    //   2) Live seat counter — NUMBER DISPLAY ONLY. It NEVER swaps a CTA to
-    //      the waitlist and NEVER reveals the sold-out block. The old version
-    //      did, and a stale/early sold-out flip turned every primary CTA into
-    //      a waitlist link mid-sale. That swap path is deliberately removed.
-    //
-    // To update the seat number by hand if the live endpoint is ever wrong,
-    // just change SEATS_LEFT_FALLBACK / SEATS_TOTAL below and the three static
-    // spans in the HTML (hero-seats-text, seats-badge-text, card-seats-text).
-    // ═══════════════════════════════════════════════════════════════════
-
-    // ── 1) COUNTDOWN — enrollment closes the night before delivery (Jul 5).
-    //    EDIT THIS ONE CONSTANT to move the deadline. KSA = Asia/Riyadh = UTC+3.
-    const ENROLL_CLOSE = new Date('2026-07-04T23:59:00+03:00');
-    (function countdown() {
-      const dEl = document.getElementById('cd-d');
-      const hEl = document.getElementById('cd-h');
-      const mEl = document.getElementById('cd-m');
-      const sEl = document.getElementById('cd-s');
-      const wrap = document.getElementById('countdown-wrap');
-      if (!dEl || !wrap) return;
-      const toAr = (n) => String(n).padStart(2, '0').replace(/[0-9]/g, (d) => '٠١٢٣٤٥٦٧٨٩'[Number(d)]);
-      function tick() {
-        const diff = ENROLL_CLOSE.getTime() - Date.now();
-        if (diff <= 0) {
-          // Deadline passed — hide the timer, leave CTAs untouched (still open / Majid's call).
-          wrap.style.display = 'none';
-          return;
-        }
-        const days = Math.floor(diff / 86400000);
-        const hrs  = Math.floor((diff % 86400000) / 3600000);
-        const mins = Math.floor((diff % 3600000) / 60000);
-        const secs = Math.floor((diff % 60000) / 1000);
-        dEl.textContent = toAr(days);
-        hEl.textContent = toAr(hrs);
-        mEl.textContent = toAr(mins);
-        sEl.textContent = toAr(secs);
-      }
-      tick();
-      setInterval(tick, 1000);
-    })();
-
-    // ── 2) SEAT COUNTER — number display only, no CTA swap, fail-safe to honest static.
-    const SEATS_LEFT_FALLBACK = 20;  // honest hardcoded floor (30 cap − 10 sold @ 2026-06-27)
-    const SEATS_TOTAL = 30;
+    // Live seats counter + sold-out detection — cohort-aware get_seats_left
+    // endpoint (Apps Script @28). Updates the two seat-counter spans on the
+    // page; if sold out, swaps CTAs to a waitlist mailto. Fails silently on
+    // network error (page degrades to static "30 مقعد فقط" text).
     (async () => {
       const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbznjcsYu8gLDZqFJGededAQaATad_L8vlhRQV04pOqh57HB5nFVRy9zUHAcg6goyj8DKA/exec';
-      const toArDigits = (n) => String(n).replace(/[0-9]/g, (d) => '٠١٢٣٤٥٦٧٨٩'[Number(d)]);
+      const WAITLIST_HREF = 'https://malearnsa.com/waitlist/';
 
-      function paint(left, total) {
-        const heroSeats = document.getElementById('hero-seats-text');
-        const cardSeats = document.getElementById('card-seats-text');
-        const badgeText = document.getElementById('seats-badge-text');
-        const seatsCopy = toArDigits(left) + ' مقعد متبقي';
-        const badgeCopy = toArDigits(left) + ' مقعد متبقي من ' + toArDigits(total);
-        if (heroSeats) heroSeats.textContent = seatsCopy + ' — أونلاين';
+      // ── C3 — live counter + sold-out swap ACTIVE (token-validator v44:
+      // getSeatsLeft is cohort-aware AND doors-close aware — sold_out flips at
+      // seats==0 OR Sun Jul 5 18:30 KSA, whichever first; B4 rule).
+      try {
+        const res = await fetch(APPS_SCRIPT_URL + '?action=get_seats_left&cohort=C3');
+        const data = await res.json();
+        if (!data || typeof data.seats_left !== 'number') return;
+
+        // Convert digits to Arabic-Indic for display consistency
+        const toArDigits = (n) => String(n).replace(/[0-9]/g, (d) => '٠١٢٣٤٥٦٧٨٩'[Number(d)]);
+        const left = data.seats_left;
+        const total = data.seats_total || 30;
+
+        // Update all seat counter elements
+        const heroSeats   = document.getElementById('hero-seats-text');
+        const cardSeats   = document.getElementById('card-seats-text');
+        const badgeText   = document.getElementById('seats-badge-text');
+        const seatsCopy   = (left === total)
+          ? toArDigits(total) + ' مقعد فقط'
+          : 'متبقي ' + toArDigits(left) + ' من ' + toArDigits(total) + ' مقعد';
+        const badgeCopy   = (left === total)
+          ? toArDigits(total) + ' مقعد متاح'
+          : toArDigits(left) + ' مقعد متبقي من ' + toArDigits(total);
+        if (heroSeats) heroSeats.textContent = seatsCopy;
         if (cardSeats) cardSeats.textContent = seatsCopy;
         if (badgeText) badgeText.textContent = badgeCopy;
+
         // Urgency: under 10 seats — flip badge to red-orange
         if (left > 0 && left < 10) {
           const badge = document.getElementById('seats-badge');
@@ -1201,78 +1127,23 @@
             if (dot) dot.style.background = '#ff7a30';
           }
         }
-      }
 
-      // Start from the honest static fallback (already in the HTML).
-      try {
-        const res = await fetch(APPS_SCRIPT_URL + '?action=get_seats_left&cohort=C3');
-        const data = await res.json();
-        // Use the live NUMBER only when valid and still open. We deliberately
-        // ignore data.sold_out here — sold-out handling is Majid/Noor's manual
-        // call (flip C3_FORCE_OPEN logic + edit the static spans), never an
-        // auto CTA→waitlist swap on this page again.
-        if (data && typeof data.seats_left === 'number' && data.seats_left > 0 && !data.doors_closed) {
-          paint(data.seats_left, data.seats_total || SEATS_TOTAL);
-        }
-        // else: keep the honest static "20 مقعد متبقي" already rendered.
-      } catch (err) {
-        // Network error — static fallback stands. Page stays OPEN.
-      }
-    })();
-  </script>
-
-  <script>
-    // ── NON-BUYER "STAY IN TOUCH" capture handler.
-    // Reuses the existing CIW waitlist Apps Script (same endpoint + payload as
-    // malearnsa.com/waitlist/), no new backend. Source-tagged so this interim
-    // capture is segmentable and stays inside the existing suppression flow.
-    (function () {
-      const STAYTOUCH_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby2tDtm76JhBU-cwT6wnFVTp5ysYxsf73ZKGxoY-ZadbswSXRK_CkjpgkDbds4cJCO0/exec';
-      const form = document.getElementById('staytouchForm');
-      if (!form) return;
-      const btn = document.getElementById('st-btn');
-
-      form.addEventListener('submit', async function (e) {
-        e.preventDefault();
-        const name  = document.getElementById('st-name').value.trim();
-        const email = document.getElementById('st-email').value.trim();
-        const phone = document.getElementById('st-phone').value.trim();
-
-        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-          const el = document.getElementById('st-email');
-          el.style.borderColor = 'rgba(220,80,60,0.7)';
-          setTimeout(() => el.style.borderColor = '', 2000);
-          return;
-        }
-
-        btn.disabled = true;
-        btn.textContent = 'جاري التسجيل...';
-
-        const payload = {
-          name: name || '',
-          email,
-          phone: phone || '',
-          country: '',
-          // Source tag — keeps this interim capture segmentable from the
-          // real C4 waitlist while sharing the same sheet + suppression flow.
-          workshop: 'CIW C3 Landing — Stay In Touch',
-          whatsapp_optin: !!phone
-        };
-
-        try {
-          await fetch(STAYTOUCH_SCRIPT_URL, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'text/plain' },
-            body: JSON.stringify(payload)
+        // Sold-out: swap CTAs
+        if (data.sold_out) {
+          ['nav-cta', 'hero-cta', 'sticky-cta'].forEach(id => {
+            const el = document.getElementById(id);
+            if (!el) return;
+            el.textContent = 'اكتملت الدفعة — قائمة الانتظار';
+            el.href = WAITLIST_HREF;
           });
-        } catch (_) { /* no-cors: treat any result as success */ }
-
-        // ★ LEAD MAGNET HOOK: when a freebie is chosen, deliver it here in one
-        //   line — e.g. window.location.href = '<download-or-thankyou-url>';
-        document.getElementById('staytouch-form-wrap').style.display = 'none';
-        document.getElementById('staytouch-success').style.display = 'block';
-      });
+          const bundleCta = document.getElementById('bundle-cta');
+          if (bundleCta) bundleCta.style.display = 'none';
+          const stamp = document.getElementById('pricing-soldout');
+          if (stamp) stamp.style.display = 'block';
+        }
+      } catch (err) {
+        // Fail open — keep static "30 مقعد فقط" text
+      }
     })();
   </script>
 
