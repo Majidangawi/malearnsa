@@ -629,7 +629,7 @@ The backbone of the platform. One Apps Script handles validate_token, complete_p
 **Constants (top of `Code.js`):**
 
 ```js
-const ADMIN_TOKEN     = 'MAL-ADMIN-2026';       // shared secret for admin_* GET/POST endpoints
+const ADMIN_TOKEN     = '<ADMIN_TOKEN - vault: TOKEN_VALIDATOR_ADMIN_TOKEN>';       // shared secret for admin_* GET/POST endpoints
 const MAIN_SHEET_ID   = '1nkrwK-KJ7nD2kv_8zdYiLqot6RFoH-v67VpmjCzvYi0';
 const TOKENS_SHEET    = 'Tokens';
 const CUSTOMERS_SHEET = 'Customers';
@@ -661,7 +661,7 @@ Public:
 - `get_course_lessons` — token-authorized curriculum fetch
 - `mint_supabase_token` — HS256 JWT minting for chat (public because gated on valid MA Learn token)
 
-Admin (all require `admin_token=MAL-ADMIN-2026`):
+Admin (all require `admin_token=<ADMIN_TOKEN - vault: TOKEN_VALIDATOR_ADMIN_TOKEN>`):
 - Lesson management: `admin_get_lessons`, `add_lesson`, `delete_lesson`, `save_content`, `get_content`, `admin_toggle_lesson`, `save_lesson_media`, `admin_reorder_lessons`
 - Coupons: `admin_create_coupon`, `admin_update_coupon`, `admin_delete_coupon`
 - Link-in-bio: `admin_add_linkbio`, `admin_update_linkbio`, `admin_delete_linkbio`, `admin_update_linkbio_header`, `admin_increment_linkbio_click`
@@ -1027,7 +1027,7 @@ Process: scrape current product prices/URLs → regenerate llms.txt + llms-full.
 
 ### 22.1 Admin auth
 
-- `ADMIN_TOKEN` constant (`MAL-ADMIN-2026`) in Apps Script — gates all `admin_*` endpoints. Passed as query/body param. Not a secret in the strict sense but treat as one: if leaked, rotate (change constant + redeploy + update all callers including dashboard backend env var).
+- `ADMIN_TOKEN` constant (`<ADMIN_TOKEN - vault: TOKEN_VALIDATOR_ADMIN_TOKEN>`) in Apps Script — gates all `admin_*` endpoints. Passed as query/body param. Not a secret in the strict sense but treat as one: if leaked, rotate (change constant + redeploy + update all callers including dashboard backend env var).
 
 ### 22.2 Student auth (player + chat)
 
@@ -1039,7 +1039,7 @@ Process: scrape current product prices/URLs → regenerate llms.txt + llms-full.
 
 | Secret | Location | Purpose |
 |---|---|---|
-| `ADMIN_TOKEN` (`MAL-ADMIN-2026`) | Code.js const + dashboard backend env | Admin endpoint gate |
+| `ADMIN_TOKEN` (`<ADMIN_TOKEN - vault: TOKEN_VALIDATOR_ADMIN_TOKEN>`) | Code.js const + dashboard backend env | Admin endpoint gate |
 | `SUPABASE_JWT_SECRET` | Apps Script Script Properties | HS256 signing for chat JWTs |
 | `CHAT_ARCHIVE_SECRET` | Apps Script Script Properties + Supabase env | Edge Function → Apps Script archive call |
 | `CHAT_ARCHIVE_SHEET_ID` | Apps Script Script Properties | Archive destination |

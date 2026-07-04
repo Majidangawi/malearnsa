@@ -1,6 +1,23 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
+  <!-- Meta Pixel Code -->
+  <script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '961157069802409');
+  fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=961157069802409&ev=PageView&noscript=1"
+  /></noscript>
+  <!-- End Meta Pixel Code -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>تم التسجيل بنجاح | MA Learn</title>
@@ -100,7 +117,7 @@
       </h1>
 
       <p style="font-size:1rem;color:var(--silver);font-weight:300;line-height:1.8;margin-bottom:32px;">
-        أهلاً بك في ورشة الذكاء الاصطناعي الإبداعي.<br>
+        أهلاً بك في ورشة صناعة الإلهام.<br>
         راجع إيميلك — وصلك تأكيد التسجيل وهديتك الخاصة.
       </p>
 
@@ -145,9 +162,9 @@
         <div class="step">
           <div class="step-num">٢</div>
           <div>
-            <p style="font-size:0.9rem;font-weight:400;margin-bottom:4px;">ابدأ الهدية فوراً</p>
+            <p style="font-size:0.9rem;font-weight:400;margin-bottom:4px;">هديتك — دورة مدخل إلى الذكاء الاصطناعي الإبداعي</p>
             <p style="font-size:0.8rem;color:var(--silver);font-weight:300;line-height:1.7;">
-              رابط دورة "مدخل إلى الذكاء الاصطناعي الإبداعي" جاهز في إيميلك — ابدأ الآن
+              ٦ محاور — المحور ١ + ٢ جاهز لك الآن في إيميلك. باقي المحاور تنفتح تباعاً قبل الورشة المباشرة، والمحور السادس (التطبيق العملي) بعد انتهاء الورشة كهدية التخرّج.
             </p>
           </div>
         </div>
@@ -182,7 +199,7 @@
   </div>
 
   <script>
-    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzXC4Ef5WxNX0aPov7Q1Kdn2DiXuODd74w3iOCtovrw86o9grwVREqNsRdhlyQkoBnQ/exec';
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbznjcsYu8gLDZqFJGededAQaATad_L8vlhRQV04pOqh57HB5nFVRy9zUHAcg6goyj8DKA/exec';
 
     const params        = new URLSearchParams(window.location.search);
     const paymentId     = params.get('id');
@@ -208,6 +225,7 @@
           url.searchParams.set('payment_id', paymentId);
 
           await fetch(url.toString());
+          if (window.fbq) fbq('track', 'Purchase', { value: parseFloat(customer.amount) || 0, currency: 'SAR', content_name: 'ورشة صناعة الإلهام' });
           localStorage.removeItem('ma_customer');
         } catch (e) {
           // Fail silently — show success regardless (payment already confirmed by Moyasar)
@@ -242,14 +260,14 @@
   <p style="font-size:0.7rem;color:#444;direction:ltr;margin-bottom:14px;">support@malearnsa.com &nbsp;·&nbsp; +966 560 440 113</p>
   <div style="display:inline-flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:8px;">
   <a href="https://malearnsa.com/brand_assets/Freelance-certificate-2026.pdf" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:12px;background:#ffffff;border-radius:10px;padding:10px 16px;direction:rtl;text-decoration:none;">
-    <img src="/brand_assets/Freelance.jpg" alt="وثيقة العمل الحر" style="height:44px;width:auto;display:block;">
+    <img src="https://malearnsa.com/brand_assets/Freelance.jpg" alt="وثيقة العمل الحر" style="height:44px;width:auto;display:block;">
     <div style="border-right:1px solid #ddd;padding-right:12px;text-align:right;">
       <p style="font-size:0.55rem;color:#888;margin:0 0 3px 0;font-family:Cairo,Arial,sans-serif;line-height:1;">رقم الوثيقة</p>
       <p style="font-size:0.75rem;font-weight:700;color:#222;margin:0;font-family:Arial,sans-serif;letter-spacing:0.5px;line-height:1;">FL-163949047</p>
     </div>
   </a>
   <a href="https://malearnsa.com/brand_assets/SCBC-Certificate-2026.pdf" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:12px;background:#ffffff;border-radius:10px;padding:10px 16px;direction:rtl;text-decoration:none;">
-    <img src="/brand_assets/SCBC.png" alt="SCBC" style="height:44px;width:auto;display:block;">
+    <img src="https://malearnsa.com/brand_assets/SCBC.png" alt="SCBC" style="height:44px;width:auto;display:block;">
     <div style="border-right:1px solid #ddd;padding-right:12px;text-align:right;">
       <p style="font-size:0.55rem;color:#888;margin:0 0 3px 0;font-family:Cairo,Arial,sans-serif;line-height:1;">رقم الترخيص</p>
       <p style="font-size:0.75rem;font-weight:700;color:#222;margin:0;font-family:Arial,sans-serif;letter-spacing:0.5px;line-height:1;">0000276647</p>

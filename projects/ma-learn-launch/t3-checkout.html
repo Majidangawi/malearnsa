@@ -481,7 +481,7 @@
 </footer>
 
   <script>
-    const APPS_SCRIPT_URL   = 'https://script.google.com/macros/s/AKfycbzt5pyO7CpSVFRgH-CaCT-N5G6m-NBXiU6RA_0xXU5vl3IRSP_i3zFNdc0p3saXCwpcIg/exec';
+    const APPS_SCRIPT_URL   = 'https://script.google.com/macros/s/AKfycbznjcsYu8gLDZqFJGededAQaATad_L8vlhRQV04pOqh57HB5nFVRy9zUHAcg6goyj8DKA/exec';
     const MOYASAR_KEY       = 'pk_live_ciyD54kvT4b6bWev3RNzEjzLXpJPC8DmnbgcW47H';
     const PRICE_REGULAR     = 99900;  // halalas
     const PRODUCT_ID        = 'creative-ai-workshop-t3';
@@ -507,7 +507,7 @@
 
     async function checkSeats() {
       try {
-        const res  = await fetch(`${APPS_SCRIPT_URL}?action=get_seats_left`);
+        const res  = await fetch(`${APPS_SCRIPT_URL}?action=get_seats_left&cohort=C3`);
         const data = await res.json();
 
         document.getElementById('loading-seats').style.display = 'none';

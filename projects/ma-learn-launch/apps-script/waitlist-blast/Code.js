@@ -433,6 +433,16 @@ function sendFinalReminderBlast() {
   return summary;
 }
 
+// One-shot resend — sends the final reminder to a single email,
+// bypassing the col I SENT check. Does not touch the sheet.
+function resendFinalToOne() {
+  const EMAIL = 'Razanalnoor88@gmail.com';
+  const NAME  = 'Razan';
+  const html = buildFinalReminderEmailHtml(NAME);
+  sendViaGmailApi(EMAIL, FINAL_SUBJECT, html);
+  Logger.log('Resent final reminder to ' + EMAIL);
+}
+
 function buildFinalReminderEmailHtml(firstName) {
   const greeting = firstName
     ? 'السلام عليكم ورحمة الله وبركاته ' + firstName + '،'

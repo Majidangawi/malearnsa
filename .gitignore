@@ -41,3 +41,59 @@ token*.json
 *.iam.gserviceaccount.com.json
 ma-ea-gmail-mcp-*.json
 service-account-key.json
+# Service-account / credential JSONs of any naming — belt and suspenders.
+# Live copies belong in ~/.config/ma-ea/, never in this repo.
+*Sheets.json
+*service*account*.json
+*-sa.json
+*.sa.json
+
+# Knowledge migrated to MA Brain (kept on disk, never re-commit)
+CLAUDE.md
+context/
+decisions/log.md
+
+# ═══════════════════════════════════════════════════════════════════
+# PRIVATE — NEVER PUBLISH TO THE PUBLIC malearnsa REPO (added 2026-07-04)
+# NOTE: already-tracked site files under projects/, docs/, prompt-pack/
+# stay tracked (gitignore only blocks NEW untracked files). To add a new
+# public site file under these, use `git add -f <path>`.
+# ═══════════════════════════════════════════════════════════════════
+# Agent fleet, skills, internal automation
+.agents/
+.claude/skills/
+.claude/agents/
+.claude/rules/
+.claude/worktrees/
+skills-lock.json
+# Internal strategy / ops / finance
+launches/
+strategy/
+cfo/
+briefings/
+research/
+marketing/
+exports/
+invoices/
+uploads/
+_attachments_inbox/
+MCPs/
+Courses/
+.firecrawl/
+# Team working folders (spaces in names)
+/Hala - Community/
+/Nahar - Art Director/
+/Odai skills/
+/Partner Portal - Partner Marketing Kit/
+/Unfinished Conversations/
+# Internal reference library + brand source (not site assets)
+references/
+brand_assets/
+# Mixed dirs — tracked site files survive; new untracked stays private
+projects/
+docs/
+archives/
+# Root-level working scratch
+morning-briefing*.html
+MA-Learn_Creative-Industry_Context-Map.md
+ma-learn-hero-implementation-plan.md

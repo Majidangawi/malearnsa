@@ -1,278 +1,862 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
+  <!-- Meta Pixel Code -->
+  <script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '961157069802409');
+  fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=961157069802409&ev=PageView&noscript=1"
+  /></noscript>
+  <!-- End Meta Pixel Code -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>مدخل إلى الذكاء الاصطناعي الإبداعي | MA Learn</title>
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;700&display=swap" rel="stylesheet">
+  <title>MA Learn — مشغّل الدورة</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
   <style>
-    @font-face { font-family:'Gumela'; src:url('brand_assets/gumela-arabic-bold.otf') format('opentype'); font-weight:700; }
-    @font-face { font-family:'Gumela'; src:url('brand_assets/gumela-arabic-regular.otf') format('opentype'); font-weight:400; }
-    @font-face { font-family:'Gumela'; src:url('brand_assets/gumela-arabic-light.otf') format('opentype'); font-weight:300; }
+    /* ─── TOKENS ─────────────────────────────────── */
     :root {
-      --bg:#080808; --surface:#111; --surface2:#171717;
-      --gold:#C9A84C; --ivory:#F5F0E8; --silver:#BBBBBB; --grey:#888;
-      --border:rgba(201,168,76,0.12); --green:#4CAF82;
+      --bg:        #080808;
+      --surface:   #111111;
+      --surface2:  #181818;
+      --surface3:  #1e1e1e;
+      --border:    rgba(201,168,76,0.12);
+      --gold:      #C9A84C;
+      --gold-lt:   #E8D08A;
+      --ivory:     #F5F0E8;
+      --silver:    #BBBBBB;
+      --grey:      #666666;
+      --green:     #4CAF82;
+      --nav-h:     56px;
+      --sidebar-w: 300px;
+      --bar-h:     3px;
     }
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
-    html,body{height:100%;}
-    body{font-family:'Gumela','Cairo',sans-serif;background:var(--bg);color:var(--ivory);direction:rtl;}
 
-    .layout{display:grid;grid-template-rows:56px 1fr;height:100vh;}
-    .layout-body{display:grid;grid-template-columns:320px 1fr;overflow:hidden;}
-
-    .top-nav{background:rgba(8,8,8,0.95);border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;padding:0 24px;backdrop-filter:blur(12px);}
-    .top-nav .course-name{font-size:0.85rem;font-weight:400;}
-    .top-nav .progress-text{font-size:0.75rem;color:var(--grey);font-weight:300;}
-
-    .sidebar{background:var(--surface);border-left:1px solid var(--border);overflow-y:auto;display:flex;flex-direction:column;}
-    .sidebar-header{padding:20px 20px 16px;border-bottom:1px solid var(--border);font-size:0.7rem;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;}
-
-    .module-group{border-bottom:1px solid var(--border);}
-    .module-title{padding:14px 20px;font-size:0.85rem;font-weight:700;display:flex;align-items:center;justify-content:space-between;cursor:pointer;user-select:none;transition:background 0.2s;}
-    .module-title:hover{background:rgba(255,255,255,0.02);}
-    .module-title span{color:var(--grey);font-size:0.7rem;font-weight:300;}
-
-    .lesson-list{display:none;}
-    .lesson-list.open{display:block;}
-    .lesson-item{padding:11px 20px 11px 28px;font-size:0.8rem;color:var(--silver);font-weight:300;cursor:pointer;display:flex;align-items:center;gap:10px;transition:background 0.2s,color 0.2s;border-right:3px solid transparent;}
-    .lesson-item:hover{background:rgba(201,168,76,0.05);color:var(--ivory);}
-    .lesson-item.active{background:rgba(201,168,76,0.08);color:var(--gold);border-right-color:var(--gold);}
-    .lesson-item .dot{width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.15);flex-shrink:0;}
-    .lesson-item.active .dot{background:var(--gold);}
-    .lesson-item.watched .dot{background:rgba(201,168,76,0.5);}
-    .lesson-item.coming-soon{opacity:0.4;cursor:default;}
-    .lesson-item.coming-soon:hover{background:transparent;color:var(--silver);}
-
-    .main-content{overflow-y:auto;display:flex;flex-direction:column;}
-
-    .video-area{background:#000;position:relative;}
-    .video-wrapper{width:100%;max-width:100%;aspect-ratio:16/9;position:relative;}
-    .video-wrapper iframe{position:absolute;inset:0;width:100%;height:100%;border:none;}
-    .video-placeholder{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;background:var(--surface2);color:var(--grey);font-size:0.9rem;font-weight:300;gap:12px;}
-    .video-placeholder .icon{font-size:3rem;opacity:0.4;}
-
-    .lesson-info{padding:28px 32px;flex:1;}
-    .lesson-module-tag{font-size:0.7rem;color:var(--gold);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:8px;}
-    .lesson-title{font-size:1.4rem;font-weight:700;margin-bottom:12px;}
-    .lesson-desc{font-size:0.875rem;color:var(--silver);font-weight:300;line-height:1.9;max-width:700px;}
-
-    /* PDF download button */
-    .pdf-btn{
-      display:inline-flex;align-items:center;gap:8px;
-      background:rgba(201,168,76,0.1);border:1px solid rgba(201,168,76,0.3);
-      color:var(--gold);padding:9px 20px;border-radius:6px;
-      text-decoration:none;font-size:0.82rem;font-weight:700;
-      transition:all 0.2s;margin-top:16px;
+    /* ─── RESET ──────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+    body {
+      font-family: 'Cairo', sans-serif;
+      background: var(--bg);
+      color: var(--ivory);
+      direction: rtl;
+      overflow: hidden;
     }
-    .pdf-btn:hover{background:rgba(201,168,76,0.18);border-color:rgba(201,168,76,0.5);}
 
-    .lesson-nav{display:flex;gap:12px;margin-top:28px;padding-top:24px;border-top:1px solid var(--border);}
-    .nav-btn{padding:10px 24px;font-size:0.85rem;font-family:'Gumela','Cairo',sans-serif;border:1px solid var(--border);background:transparent;color:var(--silver);cursor:pointer;border-radius:0;transition:all 0.2s;}
-    .nav-btn:hover{border-color:rgba(201,168,76,0.4);color:var(--ivory);}
-    .nav-btn.primary{background:var(--gold);color:#000;border-color:var(--gold);font-weight:700;}
-    .nav-btn.primary:hover{background:#E8D08A;}
-    .nav-btn:disabled{opacity:0.3;cursor:not-allowed;}
+    /* ─── TOP NAV ────────────────────────────────── */
+    .top-nav {
+      position: fixed; top: 0; left: 0; right: 0;
+      height: var(--nav-h);
+      background: rgba(8,8,8,0.97);
+      border-bottom: 1px solid var(--border);
+      backdrop-filter: blur(14px);
+      display: flex; align-items: center;
+      padding: 0 18px; gap: 14px;
+      z-index: 200;
+    }
+    .nav-logo { height: 24px; width: auto; flex-shrink: 0; }
+    .nav-divider { width: 1px; height: 18px; background: var(--border); flex-shrink: 0; }
+    .nav-course {
+      font-size: 0.8rem; color: var(--silver); font-weight: 400;
+      flex: 1; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+    }
+    .nav-right { display: flex; align-items: center; gap: 14px; flex-shrink: 0; }
+    .nav-progress-text { font-size: 0.72rem; color: var(--grey); }
+    .nav-hamburger {
+      display: none; background: none; border: none;
+      color: var(--silver); cursor: pointer; padding: 6px;
+      font-size: 1.3rem; line-height: 1;
+    }
 
-    .overlay{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:1000;text-align:center;padding:32px;}
-    .overlay.hidden{display:none;}
-    .spinner{width:40px;height:40px;border-radius:50%;border:2px solid rgba(201,168,76,0.2);border-top-color:var(--gold);animation:spin 0.8s linear infinite;margin-bottom:20px;}
-    @keyframes spin{to{transform:rotate(360deg);}}
+    /* Gold progress bar — below nav */
+    .progress-bar-track {
+      position: fixed; top: var(--nav-h); left: 0; right: 0;
+      height: var(--bar-h); background: rgba(201,168,76,0.1); z-index: 199;
+    }
+    .progress-bar-fill {
+      height: 100%; background: var(--gold);
+      transition: width 0.4s ease; width: 0%;
+    }
 
-    @media(max-width:768px){
-      .layout-body{grid-template-columns:1fr;}
-      .sidebar{display:none;}
-      .lesson-info{padding:20px;}
+    /* ─── LAYOUT ─────────────────────────────────── */
+    .layout {
+      display: flex;
+      height: 100vh; height: 100svh;
+      padding-top: calc(var(--nav-h) + var(--bar-h));
+    }
+
+    /* ─── SIDEBAR ────────────────────────────────── */
+    .sidebar {
+      width: var(--sidebar-w); min-width: var(--sidebar-w);
+      background: var(--surface);
+      border-left: 1px solid var(--border);
+      display: flex; flex-direction: column;
+      overflow: hidden;
+      flex-shrink: 0;
+      transition: transform 0.3s ease;
+    }
+    .sidebar-header {
+      padding: 14px 18px;
+      font-size: 0.68rem; color: var(--gold);
+      letter-spacing: 0.1em; text-transform: uppercase;
+      border-bottom: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+      flex-shrink: 0;
+    }
+    .sidebar-watched { font-size: 0.7rem; color: var(--grey); letter-spacing: 0; text-transform: none; }
+
+    .sidebar-scroll { overflow-y: auto; flex: 1; }
+    .sidebar-scroll::-webkit-scrollbar { width: 3px; }
+    .sidebar-scroll::-webkit-scrollbar-thumb { background: rgba(201,168,76,0.2); }
+
+    /* Module group */
+    .module-group { border-bottom: 1px solid var(--border); }
+    .module-title {
+      padding: 11px 18px;
+      font-size: 0.8rem; font-weight: 600; color: var(--ivory);
+      display: flex; align-items: center; gap: 8px;
+      cursor: pointer; user-select: none;
+      transition: background 0.15s;
+    }
+    .module-title:hover { background: rgba(255,255,255,0.02); }
+    .module-meta { margin-right: auto; display: flex; align-items: center; gap: 8px; }
+    .module-count { font-size: 0.65rem; color: var(--grey); font-weight: 400; }
+    .module-check {
+      width: 16px; height: 16px; border-radius: 50%;
+      border: 1.5px solid rgba(201,168,76,0.25);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; font-size: 0.55rem; color: transparent;
+      transition: all 0.3s;
+    }
+    .module-check.done { background: var(--green); border-color: var(--green); color: #fff; }
+    .module-chevron {
+      font-size: 0.6rem; color: var(--grey);
+      transition: transform 0.25s; flex-shrink: 0;
+    }
+    .module-title.open .module-chevron { transform: rotate(180deg); }
+
+    .lesson-list { display: none; }
+    .lesson-list.open { display: block; }
+
+    /* Lesson item */
+    .lesson-item {
+      padding: 9px 18px 9px 22px;
+      font-size: 0.77rem; color: var(--silver); font-weight: 400;
+      cursor: pointer;
+      display: flex; align-items: center; gap: 10px;
+      transition: background 0.12s, color 0.12s;
+      border-right: 3px solid transparent;
+      line-height: 1.4;
+    }
+    .lesson-item:hover { background: rgba(201,168,76,0.05); color: var(--ivory); }
+    .lesson-item.active { background: rgba(201,168,76,0.09); color: var(--gold); border-right-color: var(--gold); }
+    .lesson-item.watched:not(.active) .lesson-dot { background: rgba(76,175,130,0.7); }
+    .lesson-item.coming-soon { opacity: 0.4; cursor: default; pointer-events: none; }
+
+    .lesson-dot {
+      width: 7px; height: 7px; border-radius: 50%;
+      background: rgba(255,255,255,0.12); flex-shrink: 0;
+      transition: background 0.3s;
+    }
+    .lesson-item.active .lesson-dot { background: var(--gold); }
+    .lesson-num { font-size: 0.62rem; color: var(--grey); flex-shrink: 0; min-width: 18px; }
+    .lesson-title-text { flex: 1; }
+    .lesson-soon-tag {
+      font-size: 0.6rem; color: var(--grey);
+      background: rgba(255,255,255,0.05);
+      padding: 2px 6px; border-radius: 3px; flex-shrink: 0;
+    }
+
+    /* ─── MOBILE OVERLAY ─────────────────────────── */
+    .sidebar-overlay {
+      display: none; position: fixed; inset: 0;
+      background: rgba(0,0,0,0.6); z-index: 150;
+      backdrop-filter: blur(2px);
+    }
+    .sidebar-overlay.active { display: block; }
+
+    /* ─── MAIN CONTENT ───────────────────────────── */
+    .main-content {
+      flex: 1; overflow-y: auto; display: flex; flex-direction: column;
+      min-width: 0;
+    }
+    .main-content::-webkit-scrollbar { width: 4px; }
+    .main-content::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.06); }
+
+    /* Video */
+    .video-area { background: #000; flex-shrink: 0; }
+    .video-wrapper { width: 100%; aspect-ratio: 16/9; position: relative; }
+    .video-wrapper iframe {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%; border: none;
+    }
+    .video-placeholder {
+      position: absolute; inset: 0;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      background: var(--surface2); color: var(--grey);
+      font-size: 0.88rem; font-weight: 300; gap: 10px;
+    }
+    .video-placeholder-icon { font-size: 2.8rem; opacity: 0.35; }
+
+    /* Lesson body */
+    .lesson-body { padding: 24px 32px 40px; max-width: 860px; }
+
+    .lesson-meta-row {
+      display: flex; align-items: center; gap: 12px;
+      margin-bottom: 10px;
+    }
+    .lesson-module-tag {
+      font-size: 0.65rem; color: var(--gold);
+      letter-spacing: 0.1em; text-transform: uppercase;
+    }
+    .lesson-num-badge {
+      font-size: 0.65rem; color: var(--grey);
+      background: rgba(255,255,255,0.05);
+      padding: 2px 8px; border-radius: 3px;
+    }
+
+    .lesson-title {
+      font-size: 1.35rem; font-weight: 700;
+      margin-bottom: 16px; line-height: 1.4;
+    }
+
+    /* Action bar */
+    .action-bar {
+      display: flex; align-items: center; gap: 12px;
+      flex-wrap: wrap; margin-bottom: 20px;
+    }
+    .mark-complete-btn {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: var(--gold); color: #000;
+      border: none; padding: 9px 20px;
+      font-family: 'Cairo', sans-serif; font-size: 0.82rem; font-weight: 700;
+      cursor: pointer; border-radius: 5px; transition: all 0.2s;
+    }
+    .mark-complete-btn:hover { background: var(--gold-lt); }
+    .mark-complete-btn.done {
+      background: rgba(76,175,130,0.15);
+      color: var(--green); border: 1px solid rgba(76,175,130,0.35);
+      cursor: default;
+    }
+    .mark-complete-btn.done:hover { background: rgba(76,175,130,0.15); }
+
+    .pdf-btn {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: rgba(201,168,76,0.08); border: 1px solid rgba(201,168,76,0.25);
+      color: var(--gold); padding: 9px 18px; border-radius: 5px;
+      text-decoration: none; font-size: 0.8rem; font-weight: 600;
+      transition: all 0.2s;
+    }
+    .pdf-btn:hover { background: rgba(201,168,76,0.16); border-color: rgba(201,168,76,0.45); }
+
+    /* Description */
+    .lesson-desc {
+      font-size: 0.875rem; color: var(--silver);
+      font-weight: 300; line-height: 1.9;
+      margin-bottom: 24px;
+    }
+
+    /* Rich content from Apps Script */
+    .lesson-content {
+      font-size: 0.875rem; color: var(--silver);
+      font-weight: 300; line-height: 1.9;
+      border-top: 1px solid var(--border);
+      padding-top: 24px; margin-bottom: 32px;
+    }
+    .lesson-content:empty { display: none; }
+    .lesson-content h3 { color: var(--ivory); font-size: 1rem; margin-bottom: 10px; }
+    .lesson-content ul, .lesson-content ol { padding-right: 20px; margin-bottom: 12px; }
+    .lesson-content li { margin-bottom: 5px; }
+    .lesson-content strong { color: var(--ivory); font-weight: 600; }
+    .lesson-content code {
+      background: var(--surface3); color: var(--gold-lt);
+      padding: 2px 6px; border-radius: 3px; font-size: 0.82rem;
+      font-family: monospace;
+    }
+
+    /* Lesson navigation */
+    .lesson-nav {
+      display: flex; gap: 10px; align-items: center;
+      padding-top: 20px; border-top: 1px solid var(--border);
+    }
+    .nav-btn {
+      padding: 10px 22px; font-size: 0.82rem;
+      font-family: 'Cairo', sans-serif; font-weight: 600;
+      border: 1px solid var(--border); background: transparent;
+      color: var(--silver); cursor: pointer; border-radius: 5px;
+      transition: all 0.2s;
+    }
+    .nav-btn:hover:not(:disabled) { border-color: rgba(201,168,76,0.4); color: var(--ivory); }
+    .nav-btn.primary { background: var(--gold); color: #000; border-color: var(--gold); }
+    .nav-btn.primary:hover:not(:disabled) { background: var(--gold-lt); }
+    .nav-btn:disabled { opacity: 0.28; cursor: not-allowed; }
+
+    .nav-btn-auto {
+      margin-right: auto;
+      display: flex; align-items: center; gap: 6px;
+      font-size: 0.72rem; color: var(--grey); cursor: pointer;
+      background: none; border: none; font-family: 'Cairo', sans-serif;
+    }
+    .nav-btn-auto .toggle {
+      width: 28px; height: 16px; border-radius: 8px;
+      background: rgba(255,255,255,0.1); position: relative;
+      transition: background 0.2s;
+    }
+    .nav-btn-auto.on .toggle { background: rgba(201,168,76,0.5); }
+    .nav-btn-auto .toggle::after {
+      content: ''; position: absolute; top: 2px; right: 2px;
+      width: 12px; height: 12px; border-radius: 50%;
+      background: var(--grey); transition: transform 0.2s, background 0.2s;
+    }
+    .nav-btn-auto.on .toggle::after { transform: translateX(-12px); background: var(--gold); }
+
+    /* ─── LOADING / DENIED OVERLAYS ──────────────── */
+    .overlay {
+      position: fixed; inset: 0; background: var(--bg);
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      z-index: 1000; text-align: center; padding: 32px;
+    }
+    .overlay.hidden { display: none; }
+    .spinner {
+      width: 38px; height: 38px; border-radius: 50%;
+      border: 2px solid rgba(201,168,76,0.15);
+      border-top-color: var(--gold);
+      animation: spin 0.75s linear infinite; margin-bottom: 18px;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* Toast */
+    .toast {
+      position: fixed; bottom: 28px; left: 50%; transform: translateX(-50%) translateY(80px);
+      background: var(--surface); border: 1px solid var(--border);
+      border-right: 3px solid var(--green);
+      color: var(--ivory); font-size: 0.82rem; font-weight: 400;
+      padding: 11px 22px; border-radius: 6px; z-index: 500;
+      transition: transform 0.35s ease, opacity 0.35s ease; opacity: 0;
+      white-space: nowrap;
+    }
+    .toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
+
+    /* ─── RESPONSIVE ─────────────────────────────── */
+    @media (max-width: 768px) {
+      .sidebar {
+        position: fixed; top: calc(var(--nav-h) + var(--bar-h)); bottom: 0; right: 0;
+        z-index: 160; transform: translateX(100%);
+      }
+      .sidebar.mobile-open { transform: translateX(0); }
+      .nav-hamburger { display: block; }
+      .lesson-body { padding: 18px 18px 32px; }
+      .lesson-title { font-size: 1.1rem; }
     }
   </style>
 </head>
 <body>
 
+  <!-- Overlays -->
   <div id="loading-overlay" class="overlay">
     <div class="spinner"></div>
-    <p style="font-size:0.85rem;color:var(--grey);font-weight:300;">جاري التحقق...</p>
+    <p style="font-size:0.82rem;color:var(--grey);font-weight:300;">جاري التحقق...</p>
   </div>
 
   <div id="access-denied" class="overlay hidden">
-    <div style="font-size:3rem;margin-bottom:24px;">&#x1F512;</div>
-    <h2 style="font-size:1.6rem;font-weight:700;margin-bottom:12px;">رابط الوصول غير صحيح</h2>
-    <p style="font-size:0.9rem;color:var(--silver);font-weight:300;line-height:1.8;max-width:400px;margin-bottom:32px;">
+    <div style="font-size:2.8rem;margin-bottom:20px;">&#x1F512;</div>
+    <h2 style="font-size:1.5rem;font-weight:700;margin-bottom:10px;">رابط الوصول غير صحيح</h2>
+    <p style="font-size:0.87rem;color:var(--silver);font-weight:300;line-height:1.85;max-width:380px;margin-bottom:28px;">
       هذا الرابط غير صالح أو منتهي الصلاحية.<br>
       تحقق من الإيميل اللي وصلك عند الشراء.
     </p>
-    <a href="https://courses.malearnsa.com" style="background:var(--gold);color:#000;font-weight:700;padding:14px 36px;text-decoration:none;font-family:'Gumela','Cairo',sans-serif;">اشتري الدورة</a>
+    <a href="https://malearnsa.com" style="background:var(--gold);color:#000;font-weight:700;padding:12px 32px;text-decoration:none;border-radius:5px;">العودة للموقع</a>
   </div>
 
-  <div class="layout" id="course-layout" style="display:none;">
-    <nav class="top-nav">
-      <div class="course-name">مدخل إلى الذكاء الاصطناعي الإبداعي</div>
-      <div style="display:flex;align-items:center;gap:16px;">
-        <span class="progress-text" id="progress-text">الدرس 1 من 19</span>
-        <img src="brand_assets/logo-malearn-white.png" alt="MA Learn" style="height:28px;width:auto;" onerror="this.style.display='none'">
-      </div>
-    </nav>
+  <!-- Toast notification -->
+  <div class="toast" id="toast"></div>
 
-    <div class="layout-body">
-      <aside class="sidebar" id="sidebar">
-        <div class="sidebar-header">محتوى الدورة</div>
-        <div id="curriculum-list"></div>
-      </aside>
+  <!-- Progress bar -->
+  <div class="progress-bar-track">
+    <div class="progress-bar-fill" id="progress-fill"></div>
+  </div>
 
-      <main class="main-content">
-        <div class="video-area">
-          <div class="video-wrapper">
-            <div class="video-placeholder" id="video-placeholder">
-              <span class="icon">▶</span>
-              <span>اختر درساً للبدء</span>
-            </div>
-            <div id="video-container" style="display:none;position:absolute;inset:0;">
-              <iframe id="video-iframe" allowfullscreen allow="autoplay; encrypted-media"></iframe>
-            </div>
-          </div>
-        </div>
-
-        <div class="lesson-info">
-          <p class="lesson-module-tag" id="lesson-module">—</p>
-          <h2 class="lesson-title" id="lesson-title">اختر درساً من القائمة</h2>
-          <p class="lesson-desc" id="lesson-desc">اختر أي درس من القائمة على اليسار لتبدأ المشاهدة.</p>
-          <div id="pdf-area" style="display:none;margin-top:4px;">
-            <a id="pdf-btn" href="#" target="_blank" class="pdf-btn">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="13" x2="15" y2="13"/><line x1="9" y1="17" x2="15" y2="17"/><polyline points="9 9 10 9 10 9"/></svg>
-              تحميل ملف الدرس PDF
-            </a>
-          </div>
-          <div class="lesson-nav">
-            <button class="nav-btn" id="btn-prev" onclick="navigateLesson(-1)" disabled>→ السابق</button>
-            <button class="nav-btn primary" id="btn-next" onclick="navigateLesson(1)" disabled>التالي ←</button>
-          </div>
-        </div>
-      </main>
+  <!-- Top nav -->
+  <nav class="top-nav" id="top-nav" style="display:none;">
+    <img class="nav-logo" src="brand_assets/logo-malearn-white.png" alt="MA Learn"
+         onerror="this.style.display='none'">
+    <div class="nav-divider"></div>
+    <span class="nav-course" id="nav-course-name">MA Learn</span>
+    <div class="nav-right">
+      <span class="nav-progress-text" id="nav-progress-text"></span>
+      <button class="nav-hamburger" id="hamburger-btn" onclick="toggleSidebar()" aria-label="القائمة">☰</button>
     </div>
+  </nav>
+
+  <!-- Layout -->
+  <div class="layout" id="course-layout" style="display:none;">
+
+    <!-- Sidebar overlay (mobile) -->
+    <div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
+
+    <!-- Sidebar -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <span>محتوى الدورة</span>
+        <span class="sidebar-watched" id="sidebar-watched"></span>
+      </div>
+      <div class="sidebar-scroll">
+        <div id="curriculum-list"></div>
+      </div>
+    </aside>
+
+    <!-- Main -->
+    <main class="main-content" id="main-content">
+
+      <!-- Video -->
+      <div class="video-area">
+        <div class="video-wrapper">
+          <div class="video-placeholder" id="video-placeholder">
+            <span class="video-placeholder-icon">▶</span>
+            <span>اختر درساً للبدء</span>
+          </div>
+          <iframe id="video-iframe" allowfullscreen
+            allow="autoplay; encrypted-media; picture-in-picture"
+            style="display:none;"></iframe>
+        </div>
+      </div>
+
+      <!-- Lesson info -->
+      <div class="lesson-body">
+        <div class="lesson-meta-row">
+          <span class="lesson-module-tag" id="lesson-module-tag"></span>
+          <span class="lesson-num-badge" id="lesson-num-badge"></span>
+        </div>
+        <h1 class="lesson-title" id="lesson-title">اختر درساً من القائمة</h1>
+
+        <!-- Action bar -->
+        <div class="action-bar" id="action-bar" style="display:none;">
+          <button class="mark-complete-btn" id="mark-complete-btn" onclick="markComplete()">
+            <span id="mark-icon">○</span>
+            <span id="mark-label">تم الانتهاء من الدرس</span>
+          </button>
+          <a class="pdf-btn" id="pdf-btn" href="#" target="_blank" style="display:none;">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
+              <polyline points="14 2 14 8 20 8"/>
+            </svg>
+            تحميل PDF
+          </a>
+        </div>
+
+        <p class="lesson-desc" id="lesson-desc"></p>
+
+        <!-- Rich content area -->
+        <div class="lesson-content" id="lesson-content"></div>
+
+        <!-- Nav -->
+        <div class="lesson-nav" id="lesson-nav" style="display:none;">
+          <button class="nav-btn" id="btn-prev" onclick="navigateLesson(-1)" disabled>→ السابق</button>
+          <button class="nav-btn primary" id="btn-next" onclick="navigateLesson(1)" disabled>التالي ←</button>
+          <button class="nav-btn-auto" id="auto-advance-btn" onclick="toggleAutoAdvance()">
+            <span>انتقال تلقائي</span>
+            <span class="toggle"></span>
+          </button>
+        </div>
+      </div>
+
+    </main>
   </div>
 
   <script>
-    // ═══════════════════════════════════════════════════
-    // HARDCODED CURRICULUM (fallback if API unavailable)
-    // ═══════════════════════════════════════════════════
-    const HARDCODED_CURRICULUM = [
-      { module:'الوحدة 1 — مقدمة', module_order:1, lessons:[
-        { id:1, lesson_order:1, title:'ليش خايف من الـ AI؟', video_id:'', pdf_url:'', active:true, desc:'نفهم سبب الخوف والتشويش من الذكاء الاصطناعي، ونحدد كيف نتعامل مع هذا العالم الجديد بثقة.' }
-      ]},
-      { module:'الوحدة 2 — خريطة الذكاء الاصطناعي للمبدعين', module_order:2, lessons:[
-        { id:2, lesson_order:1, title:'العقلية والتوقعات', video_id:'', pdf_url:'', active:true, desc:'كيف تفكر في الذكاء الاصطناعي كمبدع — ما هو، ما هو مو، وش تتوقع منه وش ما تتوقع.' },
-        { id:3, lesson_order:2, title:'الفئة الأولى — شريك التفكير (LLM)', video_id:'', pdf_url:'', active:true, desc:'نماذج اللغة الكبيرة — ما هي وكيف تستخدمها في عملك الإبداعي اليومي.' },
-        { id:4, lesson_order:3, title:'الفئة الثانية — الاستوديو (Video / Photo / Edit)', video_id:'', pdf_url:'', active:true, desc:'أدوات توليد الصور والفيديو والتحرير — خريطة شاملة لكل ما تحتاجه.' },
-        { id:5, lesson_order:4, title:'الفئة الثالثة — أنظمة سير العمل', video_id:'', pdf_url:'', active:true, desc:'كيف تربط الأدوات مع بعض في منظومة عمل متكاملة.' },
-        { id:6, lesson_order:5, title:'تفصيل بناء منظومتك الخاصة', video_id:'', pdf_url:'', active:true, desc:'خطوة بخطوة — كيف تختار أدواتك وتبني منظومتك الشخصية.' },
-        { id:7, lesson_order:6, title:'البرومبت — للـ LLM والصور والفيديو', video_id:'', pdf_url:'', active:true, desc:'أساسيات كتابة البرومبت لكل فئة من الأدوات — عملي ومباشر.' }
-      ]},
-      { module:'الوحدة 3 — شريك التفكير', module_order:3, lessons:[
-        { id:8, lesson_order:1, title:'Claude', video_id:'', pdf_url:'', active:true, desc:'كيف تستخدم Claude في بناء البريفات الإبداعية، الأفكار، والاستراتيجية.' },
-        { id:9, lesson_order:2, title:'Gemini (incl. Gems)', video_id:'', pdf_url:'', active:true, desc:'Gemini وGems — كيف تبني مساعداً إبداعياً مخصص لك.' },
-        { id:10, lesson_order:3, title:'Firefly Boards', video_id:'', pdf_url:'', active:true, desc:'Adobe Firefly Boards لبناء مود بوردات وأفكار بصرية بسرعة.' }
-      ]},
-      { module:'الوحدة 4 — توليد الصور والفيديوهات', module_order:4, lessons:[
-        { id:11, lesson_order:1, title:'Midjourney', video_id:'', pdf_url:'', active:true, desc:'Midjourney للتصور المسبق والمود بوردات والحملات البصرية.' },
-        { id:12, lesson_order:2, title:'Higgsfield', video_id:'', pdf_url:'', active:true, desc:'Higgsfield للفيديو الإبداعي — ما يميزه وكيف تستفيد منه.' },
-        { id:13, lesson_order:3, title:'Veo & Kling', video_id:'', pdf_url:'', active:true, desc:'أدوات الفيديو — Veo وKling ومقارنة عملية بينهم.' },
-        { id:14, lesson_order:4, title:'Upscaling — Topaz, Magnific, Skin Realism', video_id:'', pdf_url:'', active:true, desc:'رفع جودة الصور — Topaz وMagnific وSkin Realism.' },
-        { id:15, lesson_order:5, title:'Image Retouching — Retouch4ME, Evoto', video_id:'', pdf_url:'', active:true, desc:'ريتوش الصور بالذكاء الاصطناعي — Retouch4ME وEvoto.' }
-      ]},
-      { module:'الوحدة 5 — بناء أنظمة سير العمل', module_order:5, lessons:[
-        { id:16, lesson_order:1, title:'المنصات المختلفة', video_id:'', pdf_url:'', active:true, desc:'كيف تربط أدوات مختلفة في سير عمل متكامل عبر منصات متعددة.' },
-        { id:17, lesson_order:2, title:'منصة موحدة (Figmaweave / Freepik Spaces)', video_id:'', pdf_url:'', active:true, desc:'العمل من منصة واحدة — Figmaweave وFreepik Spaces.' }
-      ]},
-      { module:'الوحدة 6 — التطبيق العملي', module_order:6, lessons:[
-        { id:18, lesson_order:1, title:'مشروع LUMA — حملة أزياء (صور فقط)', video_id:'', pdf_url:'', active:true, desc:'من البريف للنتيجة — حملة أزياء كاملة باستخدام ChatGPT وMidjourney وLightroom AI.' },
-        { id:19, lesson_order:2, title:'مشروع MEEM و SAFI — فيديو + صور وفيديو', video_id:'', pdf_url:'', active:true, desc:'مشروعان عمليان — فيديو منتج قهوة وحملة إطلاق سيروم عناية بالبشرة.' }
-      ]}
-    ];
+    // ════════════════════════════════════════════════
+    // COURSE CONFIG — add new courses here
+    // ════════════════════════════════════════════════
+    const COURSE_CONFIG = {
+      'intro-to-creative-ai': {
+        name:            'مدخل إلى الذكاء الاصطناعي الإبداعي',
+        bunnyLibraryId:  null,          // UPDATE: paste Bunny library ID when created
+        playerType:      'youtube'      // 'bunny' | 'youtube' — change when Bunny lib is ready
+      },
+      'beyond-lighting': {
+        name:            'أبعد من إمكانيات الإضاءة',
+        bunnyLibraryId:  634652,
+        playerType:      'bunny'
+      }
+    };
 
-    // ═══════════════════════════════════════════════════
-    // CONFIG
-    // ═══════════════════════════════════════════════════
-    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzXC4Ef5WxNX0aPov7Q1Kdn2DiXuODd74w3iOCtovrw86o9grwVREqNsRdhlyQkoBnQ/exec';
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbznjcsYu8gLDZqFJGededAQaATad_L8vlhRQV04pOqh57HB5nFVRy9zUHAcg6goyj8DKA/exec';
 
-    let curriculum         = HARDCODED_CURRICULUM;
-    let currentLessonIndex = 0;
+    // ════════════════════════════════════════════════
+    // HARDCODED CURRICULUM FALLBACK
+    // ════════════════════════════════════════════════
+    const FALLBACK_CURRICULUM = {
+      'intro-to-creative-ai': [
+        { module:'الوحدة 1 — مقدمة', module_order:1, lessons:[
+          { id:'l1', lesson_order:1, title:'ليش خايف من الـ AI؟', video_id:'', pdf_url:'', active:true, desc:'نفهم سبب الخوف والتشويش من الذكاء الاصطناعي، ونحدد كيف نتعامل مع هذا العالم الجديد بثقة.' }
+        ]},
+        { module:'الوحدة 2 — خريطة الذكاء الاصطناعي للمبدعين', module_order:2, lessons:[
+          { id:'l2', lesson_order:1, title:'العقلية والتوقعات', video_id:'', pdf_url:'', active:true, desc:'كيف تفكر في الذكاء الاصطناعي كمبدع — ما هو، ما هو مو، وش تتوقع منه.' },
+          { id:'l3', lesson_order:2, title:'الفئة الأولى — شريك التفكير (LLM)', video_id:'', pdf_url:'', active:true, desc:'نماذج اللغة الكبيرة — ما هي وكيف تستخدمها في عملك الإبداعي اليومي.' },
+          { id:'l4', lesson_order:3, title:'الفئة الثانية — الاستوديو (Video / Photo / Edit)', video_id:'', pdf_url:'', active:true, desc:'أدوات توليد الصور والفيديو والتحرير — خريطة شاملة.' },
+          { id:'l5', lesson_order:4, title:'الفئة الثالثة — أنظمة سير العمل', video_id:'', pdf_url:'', active:true, desc:'كيف تربط الأدوات مع بعض في منظومة عمل متكاملة.' },
+          { id:'l6', lesson_order:5, title:'تفصيل بناء منظومتك الخاصة', video_id:'', pdf_url:'', active:true, desc:'خطوة بخطوة — كيف تختار أدواتك وتبني منظومتك الشخصية.' },
+          { id:'l7', lesson_order:6, title:'البرومبت — للـ LLM والصور والفيديو', video_id:'', pdf_url:'', active:true, desc:'أساسيات كتابة البرومبت لكل فئة من الأدوات — عملي ومباشر.' }
+        ]},
+        { module:'الوحدة 3 — شريك التفكير', module_order:3, lessons:[
+          { id:'l8',  lesson_order:1, title:'Claude', video_id:'', pdf_url:'', active:true, desc:'كيف تستخدم Claude في بناء البريفات الإبداعية، الأفكار، والاستراتيجية.' },
+          { id:'l9',  lesson_order:2, title:'Gemini (incl. Gems)', video_id:'', pdf_url:'', active:true, desc:'Gemini وGems — كيف تبني مساعداً إبداعياً مخصص لك.' },
+          { id:'l10', lesson_order:3, title:'Firefly Boards', video_id:'', pdf_url:'', active:true, desc:'Adobe Firefly Boards لبناء مود بوردات وأفكار بصرية بسرعة.' }
+        ]},
+        { module:'الوحدة 4 — توليد الصور والفيديوهات', module_order:4, lessons:[
+          { id:'l11', lesson_order:1, title:'Midjourney', video_id:'', pdf_url:'', active:true, desc:'Midjourney للتصور المسبق والمود بوردات والحملات البصرية.' },
+          { id:'l12', lesson_order:2, title:'Higgsfield', video_id:'', pdf_url:'', active:true, desc:'Higgsfield للفيديو الإبداعي — ما يميزه وكيف تستفيد منه.' },
+          { id:'l13', lesson_order:3, title:'Veo & Kling', video_id:'', pdf_url:'', active:true, desc:'أدوات الفيديو — Veo وKling ومقارنة عملية بينهم.' },
+          { id:'l14', lesson_order:4, title:'Upscaling — Topaz, Magnific, Skin Realism', video_id:'', pdf_url:'', active:true, desc:'رفع جودة الصور — Topaz وMagnific وSkin Realism.' },
+          { id:'l15', lesson_order:5, title:'Image Retouching — Retouch4ME, Evoto', video_id:'', pdf_url:'', active:true, desc:'ريتوش الصور بالذكاء الاصطناعي — Retouch4ME وEvoto.' }
+        ]},
+        { module:'الوحدة 5 — بناء أنظمة سير العمل', module_order:5, lessons:[
+          { id:'l16', lesson_order:1, title:'المنصات المختلفة', video_id:'', pdf_url:'', active:true, desc:'كيف تربط أدوات مختلفة في سير عمل متكامل.' },
+          { id:'l17', lesson_order:2, title:'منصة موحدة (Figmaweave / Freepik Spaces)', video_id:'', pdf_url:'', active:true, desc:'العمل من منصة واحدة.' }
+        ]},
+        { module:'الوحدة 6 — التطبيق العملي', module_order:6, lessons:[
+          { id:'l18', lesson_order:1, title:'مشروع LUMA — حملة أزياء (صور فقط)', video_id:'', pdf_url:'', active:true, desc:'من البريف للنتيجة — حملة أزياء كاملة باستخدام ChatGPT وMidjourney وLightroom AI.' },
+          { id:'l19', lesson_order:2, title:'مشروع MEEM و SAFI — فيديو + صور وفيديو', video_id:'', pdf_url:'', active:true, desc:'مشروعان عمليان — فيديو منتج قهوة وحملة إطلاق سيروم عناية بالبشرة.' }
+        ]}
+      ],
+      'beyond-lighting': [
+        { module:'البداية', module_order:1, lessons:[
+          { id:'bl1', lesson_order:1, title:'المقدمة', video_id:'cfafbf15-8553-4e4f-9902-8428dac0bf58', pdf_url:'', active:true, desc:'مقدمة الدورة وما ستتعلمه.' },
+          { id:'bl2', lesson_order:2, title:'الوقفات', video_id:'46ca58dc-d133-42d7-874d-dd07466c6c46', pdf_url:'', active:true, desc:'الوقفات الأساسية في الإضاءة.' }
+        ]},
+        { module:'أساسيات الإضاءة', module_order:2, lessons:[
+          { id:'bl3', lesson_order:1, title:'جودة الضوء', video_id:'544c8561-f036-4e97-b155-6788ecf4be35', pdf_url:'', active:true, desc:'فهم جودة الضوء وتأثيرها.' },
+          { id:'bl4', lesson_order:2, title:'كثافة الضوء', video_id:'86ec0239-d658-48cc-99c0-5df09b3cd7cb', pdf_url:'', active:true, desc:'التحكم في كثافة الضوء.' },
+          { id:'bl5', lesson_order:3, title:'تحسين الضوء', video_id:'981bc556-75d5-4d06-bad2-ba1fce232f7f', pdf_url:'', active:true, desc:'تقنيات تحسين الضوء.' },
+          { id:'bl6', lesson_order:4, title:'المسافة', video_id:'d479b82d-f49d-4ce7-8dd2-0e65824f3d7d', pdf_url:'', active:true, desc:'أثر المسافة على الإضاءة.' },
+          { id:'bl7', lesson_order:5, title:'الاتجاه', video_id:'734fb133-bb2e-4d77-9ea3-91901fb57d10', pdf_url:'', active:true, desc:'اتجاه الضوء وتأثيره.' },
+          { id:'bl8', lesson_order:6, title:'نقاط أساسية', video_id:'5ac37155-c91b-4184-bc6a-4ab0a048b468', pdf_url:'', active:true, desc:'ملخص النقاط الأساسية.' }
+        ]},
+        { module:'التطبيق', module_order:3, lessons:[
+          { id:'bl9',  lesson_order:1, title:'التجهيز', video_id:'55628e67-ce68-4bf9-b4d3-ce0e1d4cd02b', pdf_url:'', active:true, desc:'التجهيز للتصوير.' },
+          { id:'bl10', lesson_order:2, title:'توزيعات مشهور', video_id:'8e111df3-eaf1-4270-b23e-7e7be9668b60', pdf_url:'', active:true, desc:'التوزيعات المشهورة في الإضاءة.' },
+          { id:'bl11', lesson_order:3, title:'صورة ١ — إضاءة حادة', video_id:'f8e17399-9ec2-48eb-a019-87baf90dddf3', pdf_url:'', active:true, desc:'تطبيق الإضاءة الحادة.' },
+          { id:'bl12', lesson_order:4, title:'صورة ٢ — شورت لايت', video_id:'3740fdb0-4516-4114-9a4a-01c925120d5c', pdf_url:'', active:true, desc:'تطبيق الشورت لايت.' },
+          { id:'bl13', lesson_order:5, title:'صورة ٣ — برود لايت', video_id:'ce08b2ca-0735-4c93-bcdc-da8fed86adcf', pdf_url:'', active:true, desc:'تطبيق البرود لايت.' },
+          { id:'bl14', lesson_order:6, title:'صورة ٤ — توب لايت', video_id:'f7168341-c87f-4c7e-89e2-cd43d0548fc9', pdf_url:'', active:true, desc:'تطبيق التوب لايت.' },
+          { id:'bl15', lesson_order:7, title:'صورة ٥ — سبيل لايت', video_id:'931a06e2-ceb7-45f2-adf0-8952b5c7cfb0', pdf_url:'', active:true, desc:'تطبيق السبيل لايت.' },
+          { id:'bl16', lesson_order:8, title:'صورة ٦ — إضاءة وعاكس ١', video_id:'d6246d4b-5eba-4722-adaf-89513a010f11', pdf_url:'', active:true, desc:'إضاءة مع عاكس.' },
+          { id:'bl17', lesson_order:9, title:'صورة ٧ — إضاءة وعاكس ٢', video_id:'93779c4c-58dc-4fcc-86bf-3f09152961d1', pdf_url:'', active:true, desc:'إضاءة مع عاكس - الجزء الثاني.' },
+          { id:'bl18', lesson_order:10, title:'صورة ٨ — إضاءة وعازل', video_id:'5b2316e6-bdaf-4aa1-a59c-8980c5221518', pdf_url:'', active:true, desc:'إضاءة مع عازل.' },
+          { id:'bl19', lesson_order:11, title:'صورة ٩ — نقاط للضوء', video_id:'1bd21cf5-108a-4c59-9868-3743541bc469', pdf_url:'', active:true, desc:'نقاط تقنية للضوء.' },
+          { id:'bl20', lesson_order:12, title:'RED — أثر', video_id:'007a77e2-411b-410c-83b2-cc2f1c63fe3e', pdf_url:'', active:true, desc:'تأثير اللون الأحمر في الإضاءة.' },
+          { id:'bl21', lesson_order:13, title:'صورة ١١ — ويبسايت', video_id:'a6e2505a-7831-438d-89d1-d8446f0b3813', pdf_url:'', active:true, desc:'لقطة الويبسايت.' }
+        ]}
+      ]
+    };
+
+    // ════════════════════════════════════════════════
+    // STATE
+    // ════════════════════════════════════════════════
+    let courseId           = 'intro-to-creative-ai';
+    let token              = '';
+    let curriculum         = [];
     let allLessons         = [];
+    let currentIndex       = 0;
+    let watchedIds         = new Set();
+    let autoAdvance        = false;
+    let courseConfig       = {};
 
-    // ═══════════════════════════════════════════════════
-    // TOKEN VALIDATION
-    // ═══════════════════════════════════════════════════
-    async function validateToken(token, courseId) {
+    // ════════════════════════════════════════════════
+    // PROGRESS — localStorage
+    // ════════════════════════════════════════════════
+    function progressKey() { return `mal_progress_${courseId}`; }
+
+    function loadProgress() {
       try {
-        const res  = await fetch(`${APPS_SCRIPT_URL}?action=validate_token&token=${encodeURIComponent(token)}&course=${encodeURIComponent(courseId)}`);
-        const data = await res.json();
-        return data.valid === true;
-      } catch (e) {
-        console.warn('Token validation failed, allowing access:', e);
-        return true; // fail open — never block a paying student
+        const raw = localStorage.getItem(progressKey());
+        if (!raw) return;
+        const data = JSON.parse(raw);
+        watchedIds = new Set(data.watched || []);
+        autoAdvance = data.autoAdvance || false;
+      } catch(e) {}
+    }
+
+    function saveProgress(lastLessonId) {
+      try {
+        localStorage.setItem(progressKey(), JSON.stringify({
+          watched:     Array.from(watchedIds),
+          lastLesson:  lastLessonId,
+          autoAdvance: autoAdvance
+        }));
+      } catch(e) {}
+    }
+
+    function getLastLessonId() {
+      try {
+        const raw = localStorage.getItem(progressKey());
+        if (!raw) return null;
+        return JSON.parse(raw).lastLesson || null;
+      } catch(e) { return null; }
+    }
+
+    // ════════════════════════════════════════════════
+    // PROGRESS BAR + SIDEBAR COUNTER
+    // ════════════════════════════════════════════════
+    function updateProgressUI() {
+      const total = allLessons.filter(l => l.video_id).length;
+      const done  = allLessons.filter(l => l.video_id && watchedIds.has(l.id)).length;
+      const pct   = total > 0 ? Math.round((done / total) * 100) : 0;
+
+      document.getElementById('progress-fill').style.width     = pct + '%';
+      document.getElementById('nav-progress-text').textContent = `${done} / ${allLessons.length} درس`;
+      document.getElementById('sidebar-watched').textContent   = `${done} / ${total} ✓`;
+    }
+
+    // ════════════════════════════════════════════════
+    // VIDEO PLAYER
+    // ════════════════════════════════════════════════
+    function buildVideoUrl(videoId) {
+      if (!videoId) return null;
+      const cfg = courseConfig;
+      // Bunny: UUID format (contains hyphens, 36 chars)
+      const isBunny = cfg.playerType === 'bunny' && cfg.bunnyLibraryId;
+      if (isBunny) {
+        return `https://iframe.mediadelivery.net/embed/${cfg.bunnyLibraryId}/${videoId}?autoplay=true&loop=false&muted=false&preload=true&responsive=true`;
+      }
+      // YouTube fallback
+      return `https://www.youtube.com/embed/${videoId}?autoplay=1&rel=0&modestbranding=1`;
+    }
+
+    // ════════════════════════════════════════════════
+    // LOAD LESSON
+    // ════════════════════════════════════════════════
+    function loadLesson(index) {
+      if (index < 0 || index >= allLessons.length) return;
+
+      const lesson = allLessons[index];
+      currentIndex = index;
+
+      // Sidebar: update active state
+      document.querySelectorAll('.lesson-item').forEach(el => el.classList.remove('active'));
+      const item = document.getElementById(`li-${lesson.id}`);
+      if (item) {
+        item.classList.add('active');
+        item.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+      }
+
+      // Video
+      const placeholder = document.getElementById('video-placeholder');
+      const iframe      = document.getElementById('video-iframe');
+      const videoUrl    = buildVideoUrl(lesson.video_id);
+
+      if (videoUrl) {
+        placeholder.style.display  = 'none';
+        iframe.style.display       = 'block';
+        iframe.src                 = videoUrl;
+      } else {
+        iframe.style.display       = 'none';
+        iframe.src                 = '';
+        placeholder.style.display  = 'flex';
+        placeholder.innerHTML      = '<span class="video-placeholder-icon">🎬</span><span>الفيديو قادم قريباً</span>';
+      }
+
+      // Meta
+      document.getElementById('lesson-module-tag').textContent = lesson.moduleName || '';
+      document.getElementById('lesson-num-badge').textContent  = `درس ${index + 1} من ${allLessons.length}`;
+      document.getElementById('lesson-title').textContent      = lesson.title;
+      document.getElementById('lesson-desc').textContent       = lesson.desc || '';
+      document.getElementById('lesson-content').innerHTML      = '';
+
+      // Action bar
+      const actionBar = document.getElementById('action-bar');
+      actionBar.style.display = lesson.video_id ? 'flex' : 'none';
+
+      // Mark complete state
+      updateMarkBtn(lesson.id);
+
+      // PDF
+      const pdfBtn = document.getElementById('pdf-btn');
+      if (lesson.pdf_url) {
+        pdfBtn.href = lesson.pdf_url;
+        pdfBtn.style.display = 'inline-flex';
+      } else {
+        pdfBtn.style.display = 'none';
+      }
+
+      // Nav buttons
+      document.getElementById('lesson-nav').style.display = 'flex';
+      const prevLesson = allLessons.slice(0, index).reverse().find(l => l.video_id);
+      const nextLesson = allLessons.slice(index + 1).find(l => l.video_id);
+      const prevIdx    = prevLesson ? allLessons.indexOf(prevLesson) : -1;
+      const nextIdx    = nextLesson ? allLessons.indexOf(nextLesson) : -1;
+
+      const btnPrev = document.getElementById('btn-prev');
+      const btnNext = document.getElementById('btn-next');
+      btnPrev.disabled = prevIdx === -1;
+      btnNext.disabled = nextIdx === -1;
+      btnPrev._target  = prevIdx;
+      btnNext._target  = nextIdx;
+      btnNext.textContent = nextIdx === -1 ? 'آخر درس ✓' : 'التالي ←';
+
+      // Auto-advance toggle UI
+      const autoBtn = document.getElementById('auto-advance-btn');
+      autoBtn.classList.toggle('on', autoAdvance);
+
+      // Save position
+      saveProgress(lesson.id);
+
+      // Load rich content (non-blocking)
+      fetchLessonContent(lesson.id);
+
+      // Scroll main to top
+      document.getElementById('main-content').scrollTo({ top: 0, behavior: 'smooth' });
+
+      // Close mobile sidebar
+      if (window.innerWidth <= 768) closeSidebar();
+    }
+
+    function updateMarkBtn(lessonId) {
+      const btn   = document.getElementById('mark-complete-btn');
+      const icon  = document.getElementById('mark-icon');
+      const label = document.getElementById('mark-label');
+      const done  = watchedIds.has(lessonId);
+      btn.classList.toggle('done', done);
+      icon.textContent  = done ? '✓' : '○';
+      label.textContent = done ? 'تم الإنهاء' : 'تم الانتهاء من الدرس';
+    }
+
+    // ════════════════════════════════════════════════
+    // MARK COMPLETE
+    // ════════════════════════════════════════════════
+    function markComplete() {
+      const lesson = allLessons[currentIndex];
+      if (!lesson || !lesson.video_id) return;
+      if (watchedIds.has(lesson.id)) return; // already done
+
+      watchedIds.add(lesson.id);
+      saveProgress(lesson.id);
+      updateMarkBtn(lesson.id);
+      updateProgressUI();
+      updateModuleStates();
+
+      // Update sidebar dot
+      const item = document.getElementById(`li-${lesson.id}`);
+      if (item) item.classList.add('watched');
+
+      showToast('تم تسجيل إنهاء الدرس ✓');
+
+      // Auto-advance
+      if (autoAdvance) {
+        const nextIdx = document.getElementById('btn-next')._target;
+        if (nextIdx >= 0) {
+          setTimeout(() => loadLesson(nextIdx), 1400);
+        }
       }
     }
 
-    // ═══════════════════════════════════════════════════
-    // DYNAMIC COURSE LOADING
-    // Fetches from Apps Script; falls back to HARDCODED_CURRICULUM
-    // ═══════════════════════════════════════════════════
-    async function loadCurriculumFromApi(courseId) {
-      try {
-        const res  = await fetch(`${APPS_SCRIPT_URL}?action=get_course_lessons&course=${courseId}`);
-        const data = await res.json();
-        if (!data.lessons || data.lessons.length === 0) return null;
-
-        // Group flat lessons into module structure
-        const modules = {};
-        const order   = [];
-        data.lessons.forEach(l => {
-          const key = l.module_order + '::' + l.module;
-          if (!modules[key]) { modules[key] = { module: l.module, module_order: l.module_order, lessons: [] }; order.push(key); }
-          if (l.active !== false) modules[key].lessons.push(l);
-        });
-        // Remove empty modules
-        const result = order.map(k => modules[k]).filter(m => m.lessons.length > 0);
-        return result.length > 0 ? result : null;
-      } catch (e) {
-        return null;
-      }
-    }
-
-    // ═══════════════════════════════════════════════════
-    // PLAYER LOGIC
-    // ═══════════════════════════════════════════════════
-    function flattenCurriculum(curr) {
-      const flat = [];
-      curr.forEach(module => {
-        module.lessons.forEach(lesson => {
-          flat.push({ ...lesson, moduleName: module.module });
-        });
+    // ════════════════════════════════════════════════
+    // MODULE COMPLETION STATE
+    // ════════════════════════════════════════════════
+    function updateModuleStates() {
+      curriculum.forEach((mod, mi) => {
+        const activeLessons = mod.lessons.filter(l => l.video_id);
+        if (activeLessons.length === 0) return;
+        const allDone = activeLessons.every(l => watchedIds.has(l.id));
+        const check   = document.getElementById(`mod-check-${mi}`);
+        if (check) check.classList.toggle('done', allDone);
       });
-      return flat;
     }
 
+    // ════════════════════════════════════════════════
+    // LESSON NAVIGATION
+    // ════════════════════════════════════════════════
+    function navigateLesson(dir) {
+      const btn    = dir < 0 ? document.getElementById('btn-prev') : document.getElementById('btn-next');
+      const target = btn._target;
+      if (typeof target !== 'undefined' && target >= 0) loadLesson(target);
+    }
+
+    // ════════════════════════════════════════════════
+    // AUTO-ADVANCE TOGGLE
+    // ════════════════════════════════════════════════
+    function toggleAutoAdvance() {
+      autoAdvance = !autoAdvance;
+      document.getElementById('auto-advance-btn').classList.toggle('on', autoAdvance);
+      saveProgress(allLessons[currentIndex]?.id);
+      showToast(autoAdvance ? 'الانتقال التلقائي مفعّل' : 'الانتقال التلقائي متوقف');
+    }
+
+    // ════════════════════════════════════════════════
+    // RICH CONTENT FETCH
+    // ════════════════════════════════════════════════
+    async function fetchLessonContent(lessonId) {
+      try {
+        const res  = await fetch(`${APPS_SCRIPT_URL}?action=get_content&lesson_id=${encodeURIComponent(lessonId)}&token=${encodeURIComponent(token)}&course=${encodeURIComponent(courseId)}`);
+        const data = await res.json();
+        if (data.content) {
+          document.getElementById('lesson-content').innerHTML = data.content;
+        }
+      } catch(e) { /* silent — content is optional */ }
+    }
+
+    // ════════════════════════════════════════════════
+    // SIDEBAR BUILD
+    // ════════════════════════════════════════════════
     function buildSidebar() {
       const container = document.getElementById('curriculum-list');
       container.innerHTML = '';
 
-      curriculum.forEach((module, mi) => {
-        const group = document.createElement('div');
+      let globalN = 0;
+      curriculum.forEach((mod, mi) => {
+        globalN++; // module counter (visual only)
+        const group   = document.createElement('div');
         group.className = 'module-group';
 
-        const header = document.createElement('div');
-        header.className = 'module-title';
-        header.innerHTML = `<span>${module.module}</span><span>${module.lessons.length} دروس</span>`;
-        header.onclick   = () => list.classList.toggle('open');
+        const header  = document.createElement('div');
+        header.id       = `mod-header-${mi}`;
+        header.className = 'module-title' + (mi === 0 ? ' open' : '');
+        header.innerHTML = `
+          <div class="module-check" id="mod-check-${mi}"></div>
+          <span style="flex:1;">${mod.module}</span>
+          <div class="module-meta">
+            <span class="module-count">${mod.lessons.length}</span>
+            <span class="module-chevron">▾</span>
+          </div>`;
+        header.onclick = () => {
+          header.classList.toggle('open');
+          list.classList.toggle('open');
+        };
 
-        const list = document.createElement('div');
+        const list    = document.createElement('div');
         list.className = 'lesson-list' + (mi === 0 ? ' open' : '');
 
-        module.lessons.forEach(lesson => {
+        let lessonN = 0;
+        mod.lessons.forEach(lesson => {
+          lessonN++;
           const globalIndex = allLessons.findIndex(l => l.id === lesson.id);
           const hasVideo    = !!lesson.video_id;
-          const item        = document.createElement('div');
-          item.className    = 'lesson-item' + (hasVideo ? '' : ' coming-soon');
-          item.id           = `lesson-item-${lesson.id}`;
-          item.innerHTML    = `<span class="dot"></span>${lesson.title}${!hasVideo ? '<span style="font-size:0.65rem;color:var(--grey);margin-right:auto;padding-right:8px;">قريباً</span>' : ''}`;
+          const isWatched   = watchedIds.has(lesson.id);
+
+          const item = document.createElement('div');
+          item.className = [
+            'lesson-item',
+            hasVideo ? '' : 'coming-soon',
+            isWatched ? 'watched' : ''
+          ].filter(Boolean).join(' ');
+          item.id = `li-${lesson.id}`;
+
+          item.innerHTML = `
+            <span class="lesson-dot"></span>
+            <span class="lesson-title-text">${lesson.title}</span>
+            ${!hasVideo ? '<span class="lesson-soon-tag">قريباً</span>' : ''}`;
+
           if (hasVideo) item.onclick = () => loadLesson(globalIndex);
           list.appendChild(item);
         });
@@ -281,84 +865,91 @@
         group.appendChild(list);
         container.appendChild(group);
       });
+
+      updateModuleStates();
     }
 
-    function loadLesson(index) {
-      if (index < 0 || index >= allLessons.length) return;
+    // ════════════════════════════════════════════════
+    // MOBILE SIDEBAR
+    // ════════════════════════════════════════════════
+    function toggleSidebar() {
+      const sidebar  = document.getElementById('sidebar');
+      const overlay  = document.getElementById('sidebar-overlay');
+      const isOpen   = sidebar.classList.contains('mobile-open');
+      sidebar.classList.toggle('mobile-open', !isOpen);
+      overlay.classList.toggle('active', !isOpen);
+    }
+    function closeSidebar() {
+      document.getElementById('sidebar').classList.remove('mobile-open');
+      document.getElementById('sidebar-overlay').classList.remove('active');
+    }
 
-      document.querySelectorAll('.lesson-item').forEach(el => el.classList.remove('active'));
-      const lesson = allLessons[index];
-      const item   = document.getElementById(`lesson-item-${lesson.id}`);
-      if (item) { item.classList.add('active'); item.classList.add('watched'); }
+    // ════════════════════════════════════════════════
+    // KEYBOARD NAVIGATION
+    // ════════════════════════════════════════════════
+    document.addEventListener('keydown', e => {
+      if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+      if (e.key === 'ArrowLeft')  navigateLesson(1);
+      if (e.key === 'ArrowRight') navigateLesson(-1);
+      if (e.key === 'c' || e.key === 'C') markComplete();
+    });
 
-      currentLessonIndex = index;
+    // ════════════════════════════════════════════════
+    // TOAST
+    // ════════════════════════════════════════════════
+    let toastTimer;
+    function showToast(msg) {
+      const t = document.getElementById('toast');
+      t.textContent = msg;
+      t.classList.add('show');
+      clearTimeout(toastTimer);
+      toastTimer = setTimeout(() => t.classList.remove('show'), 2500);
+    }
 
-      // Video
-      const placeholder = document.getElementById('video-placeholder');
-      const container   = document.getElementById('video-container');
-      const iframe      = document.getElementById('video-iframe');
+    // ════════════════════════════════════════════════
+    // CURRICULUM UTILS
+    // ════════════════════════════════════════════════
+    function flattenCurriculum(curr) {
+      return curr.flatMap(mod => mod.lessons.map(l => ({ ...l, moduleName: mod.module })));
+    }
 
-      if (lesson.video_id) {
-        placeholder.style.display = 'none';
-        container.style.display   = 'block';
-        iframe.src = `https://www.youtube.com/embed/${lesson.video_id}?autoplay=1&rel=0`;
-      } else {
-        container.style.display   = 'none';
-        placeholder.style.display = 'flex';
-        placeholder.innerHTML     = '<span class="icon">🎬</span><span>الفيديو قادم قريباً</span>';
+    async function loadCurriculumFromApi() {
+      try {
+        const res  = await fetch(`${APPS_SCRIPT_URL}?action=get_course_lessons&course=${courseId}&token=${encodeURIComponent(token)}`);
+        const data = await res.json();
+        if (!data.lessons || data.lessons.length === 0) return null;
+
+        const modules = {}, order = [];
+        data.lessons.forEach(l => {
+          const key = l.module_order + '::' + l.module;
+          if (!modules[key]) { modules[key] = { module: l.module, module_order: l.module_order, lessons: [] }; order.push(key); }
+          if (l.active !== false) modules[key].lessons.push(l);
+        });
+        const result = order.map(k => modules[k]).filter(m => m.lessons.length > 0);
+        return result.length > 0 ? result : null;
+      } catch(e) { return null; }
+    }
+
+    // ════════════════════════════════════════════════
+    // TOKEN VALIDATION
+    // ════════════════════════════════════════════════
+    async function validateToken(tok, cid) {
+      try {
+        const res  = await fetch(`${APPS_SCRIPT_URL}?action=validate_token&token=${encodeURIComponent(tok)}&course=${encodeURIComponent(cid)}`);
+        const data = await res.json();
+        return data.valid === true;
+      } catch(e) {
+        return true; // fail-open — never block a paying student
       }
-
-      // Info
-      document.getElementById('lesson-module').textContent = lesson.moduleName;
-      document.getElementById('lesson-title').textContent  = lesson.title;
-      document.getElementById('lesson-desc').textContent   = lesson.desc || '';
-      document.getElementById('progress-text').textContent = `الدرس ${index + 1} من ${allLessons.length}`;
-
-      // PDF
-      const pdfArea = document.getElementById('pdf-area');
-      const pdfBtn  = document.getElementById('pdf-btn');
-      if (lesson.pdf_url) {
-        pdfArea.style.display = 'block';
-        pdfBtn.href           = lesson.pdf_url;
-      } else {
-        pdfArea.style.display = 'none';
-      }
-
-      // Nav
-      // Find next/prev that has video
-      const prevIdx = allLessons.slice(0, index).map((l, i) => ({ l, i })).filter(x => x.l.video_id).pop();
-      const nextIdx = allLessons.slice(index + 1).findIndex(l => l.video_id);
-
-      document.getElementById('btn-prev').disabled = !prevIdx;
-      document.getElementById('btn-next').disabled = nextIdx === -1;
-      document.getElementById('btn-next').textContent = nextIdx === -1 ? 'آخر درس ✓' : 'التالي ←';
-
-      // Store real adjacent indices
-      document.getElementById('btn-prev')._targetIndex = prevIdx ? prevIdx.i : -1;
-      document.getElementById('btn-next')._targetIndex = nextIdx !== -1 ? index + 1 + nextIdx : -1;
     }
 
-    function navigateLesson(direction) {
-      const btn   = direction < 0 ? document.getElementById('btn-prev') : document.getElementById('btn-next');
-      const target = btn._targetIndex;
-      if (target !== undefined && target >= 0) loadLesson(target);
-    }
-
-    // ═══════════════════════════════════════════════════
-    // COURSE NAMES
-    // ═══════════════════════════════════════════════════
-    const COURSE_NAMES = {
-      'intro-to-creative-ai': 'مدخل إلى الذكاء الاصطناعي الإبداعي',
-      'beyond-lighting':      'أبعد من إمكانيات الإضاءة'
-    };
-
-    // ═══════════════════════════════════════════════════
+    // ════════════════════════════════════════════════
     // INIT
-    // ═══════════════════════════════════════════════════
+    // ════════════════════════════════════════════════
     async function init() {
-      const params   = new URLSearchParams(window.location.search);
-      const token    = params.get('token');
-      const courseId = params.get('course') || 'intro-to-creative-ai';
+      const params = new URLSearchParams(window.location.search);
+      token    = params.get('token') || '';
+      courseId = params.get('course') || 'intro-to-creative-ai';
 
       if (!token) {
         document.getElementById('loading-overlay').classList.add('hidden');
@@ -367,53 +958,42 @@
       }
 
       const valid = await validateToken(token, courseId);
-      document.getElementById('loading-overlay').classList.add('hidden');
-
       if (!valid) {
+        document.getElementById('loading-overlay').classList.add('hidden');
         document.getElementById('access-denied').classList.remove('hidden');
         return;
       }
 
-      // Set course name in top nav
-      const courseName = COURSE_NAMES[courseId] || 'MA Learn';
-      const navName = document.querySelector('.course-name');
-      if (navName) navName.textContent = courseName;
+      // Config
+      courseConfig = COURSE_CONFIG[courseId] || COURSE_CONFIG['intro-to-creative-ai'];
+      document.getElementById('nav-course-name').textContent = courseConfig.name;
+      document.title = `${courseConfig.name} | MA Learn`;
 
-      // Try dynamic curriculum; fall back to hardcoded
-      const dynamic = await loadCurriculumFromApi(courseId);
-      if (dynamic) curriculum = dynamic;
+      // Load progress
+      loadProgress();
 
-      allLessons = flattenCurriculum(curriculum);
+      // Curriculum (API → fallback)
+      const dynamic = await loadCurriculumFromApi();
+      curriculum    = dynamic || FALLBACK_CURRICULUM[courseId] || FALLBACK_CURRICULUM['intro-to-creative-ai'];
+      allLessons    = flattenCurriculum(curriculum);
 
-      document.getElementById('course-layout').style.display = 'grid';
+      // Show UI
+      document.getElementById('loading-overlay').classList.add('hidden');
+      document.getElementById('top-nav').style.display    = 'flex';
+      document.getElementById('course-layout').style.display = 'flex';
+
       buildSidebar();
+      updateProgressUI();
 
-      // Auto-load first lesson that has a video
-      const firstWithVideo = allLessons.findIndex(l => l.video_id);
-      loadLesson(firstWithVideo >= 0 ? firstWithVideo : 0);
+      // Resume or start from first video lesson
+      const lastId  = getLastLessonId();
+      const resumeIndex = lastId ? allLessons.findIndex(l => l.id === lastId) : -1;
+      const startIndex  = resumeIndex >= 0 ? resumeIndex
+                        : allLessons.findIndex(l => l.video_id);
+      loadLesson(startIndex >= 0 ? startIndex : 0);
     }
 
     init();
   </script>
-
-<!-- Freelance Work Document Badge -->
-<div style="text-align:center;padding:20px 24px 28px;position:relative;z-index:1;">
-  <div style="display:inline-flex;align-items:center;gap:12px;flex-wrap:wrap;justify-content:center;">
-  <a href="https://malearnsa.com/brand_assets/Freelance-certificate-2026.pdf" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:12px;background:#ffffff;border-radius:10px;padding:10px 16px;direction:rtl;text-decoration:none;">
-    <img src="/brand_assets/Freelance.jpg" alt="وثيقة العمل الحر" style="height:44px;width:auto;display:block;">
-    <div style="border-right:1px solid #ddd;padding-right:12px;text-align:right;">
-      <p style="font-size:0.55rem;color:#888;margin:0 0 3px 0;font-family:Cairo,Arial,sans-serif;line-height:1;">رقم الوثيقة</p>
-      <p style="font-size:0.75rem;font-weight:700;color:#222;margin:0;font-family:Arial,sans-serif;letter-spacing:0.5px;line-height:1;">FL-163949047</p>
-    </div>
-  </a>
-  <a href="https://malearnsa.com/brand_assets/SCBC-Certificate-2026.pdf" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:12px;background:#ffffff;border-radius:10px;padding:10px 16px;direction:rtl;text-decoration:none;">
-    <img src="/brand_assets/SCBC.png" alt="SCBC" style="height:44px;width:auto;display:block;">
-    <div style="border-right:1px solid #ddd;padding-right:12px;text-align:right;">
-      <p style="font-size:0.55rem;color:#888;margin:0 0 3px 0;font-family:Cairo,Arial,sans-serif;line-height:1;">رقم الترخيص</p>
-      <p style="font-size:0.75rem;font-weight:700;color:#222;margin:0;font-family:Arial,sans-serif;letter-spacing:0.5px;line-height:1;">0000276647</p>
-    </div>
-  </a>
-</div>
-</div>
 </body>
 </html>

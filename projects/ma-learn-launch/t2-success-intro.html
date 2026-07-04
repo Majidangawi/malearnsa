@@ -1,6 +1,23 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
+  <!-- Meta Pixel Code -->
+  <script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '961157069802409');
+  fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=961157069802409&ev=PageView&noscript=1"
+  /></noscript>
+  <!-- End Meta Pixel Code -->
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>تم الدفع بنجاح | MA Learn</title>
@@ -105,7 +122,7 @@
   </div>
 
   <script>
-    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzXC4Ef5WxNX0aPov7Q1Kdn2DiXuODd74w3iOCtovrw86o9grwVREqNsRdhlyQkoBnQ/exec';
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbznjcsYu8gLDZqFJGededAQaATad_L8vlhRQV04pOqh57HB5nFVRy9zUHAcg6goyj8DKA/exec';
 
     const params = new URLSearchParams(window.location.search);
     const paymentId     = params.get('id');
@@ -132,6 +149,7 @@
         url.searchParams.set('coupon',     customer.coupon  || '');
         url.searchParams.set('payment_id', paymentId);
         fetch(url.toString()).catch(() => {});
+        if (window.fbq) fbq('track', 'Purchase', { value: parseFloat(customer.amount) || 0, currency: 'SAR', content_name: 'مدخل إلى الذكاء الاصطناعي الإبداعي' });
         localStorage.removeItem('ma_customer');
       } catch(e) {}
     }

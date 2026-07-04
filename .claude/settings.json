@@ -1,1 +1,24 @@
-{}
+{
+  "permissions": {
+    "allow": [
+      "Bash(clasp status:*)",
+      "Bash(clasp pull:*)",
+      "Bash(clasp push:*)",
+      "Bash(clasp open:*)",
+      "Bash(clasp logs:*)",
+      "Bash(clasp version:*)",
+      "Bash(clasp versions:*)",
+      "Bash(clasp list:*)",
+      "Bash(clasp clone:*)"
+    ],
+    "ask": [
+      "Bash(clasp deploy:*)",
+      "Bash(clasp undeploy:*)",
+      "Bash(clasp run:*)",
+      "Bash(clasp run-script:*)",
+      "Bash(clasp login:*)",
+      "Bash(clasp logout:*)",
+      "Bash(clasp delete:*)"
+    ]
+  }
+}
