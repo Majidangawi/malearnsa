@@ -26,10 +26,10 @@ Pre-approved copy + send instructions for announcing the Discussion tab to Beyon
 
 ```bash
 # Dry-run first (returns target emails without sending):
-curl -sSL "https://script.google.com/macros/s/AKfycbznjcsYu8gLDZqFJGededAQaATad_L8vlhRQV04pOqh57HB5nFVRy9zUHAcg6goyj8DKA/exec?action=admin_send_chat_launch_email&admin_token=MAL-ADMIN-2026&course=beyond-lighting&dry_run=true"
+curl -sSL "https://script.google.com/macros/s/AKfycbznjcsYu8gLDZqFJGededAQaATad_L8vlhRQV04pOqh57HB5nFVRy9zUHAcg6goyj8DKA/exec?action=admin_send_chat_launch_email&admin_token=<ADMIN_TOKEN - vault: TOKEN_VALIDATOR_ADMIN_TOKEN>&course=beyond-lighting&dry_run=true"
 
 # Confirm the target_count matches expected BL buyer count, then:
-curl -sSL "https://script.google.com/macros/s/AKfycbznjcsYu8gLDZqFJGededAQaATad_L8vlhRQV04pOqh57HB5nFVRy9zUHAcg6goyj8DKA/exec?action=admin_send_chat_launch_email&admin_token=MAL-ADMIN-2026&course=beyond-lighting"
+curl -sSL "https://script.google.com/macros/s/AKfycbznjcsYu8gLDZqFJGededAQaATad_L8vlhRQV04pOqh57HB5nFVRy9zUHAcg6goyj8DKA/exec?action=admin_send_chat_launch_email&admin_token=<ADMIN_TOKEN - vault: TOKEN_VALIDATOR_ADMIN_TOKEN>&course=beyond-lighting"
 ```
 
 As of 2026-04-24 the dry-run returned 2 targets (majed.engawi@gmail.com + salemphoto4@gmail.com). Small enough that a direct send is safe.

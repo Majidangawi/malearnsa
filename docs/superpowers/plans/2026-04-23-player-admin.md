@@ -488,7 +488,7 @@ Expected: `Deployed ... @10`.
 
 ```bash
 # Reorder a non-existent lesson — expect {"ok":false,"error":"lesson_not_found"}
-curl -sS "https://script.google.com/macros/s/AKfycbznjcsYu8gLDZqFJGededAQaATad_L8vlhRQV04pOqh57HB5nFVRy9zUHAcg6goyj8DKA/exec?action=admin_reorder_lessons&admin_token=MAL-ADMIN-2026&lessonId=nonexistent&moduleOrder=1&lessonOrder=1"
+curl -sS "https://script.google.com/macros/s/AKfycbznjcsYu8gLDZqFJGededAQaATad_L8vlhRQV04pOqh57HB5nFVRy9zUHAcg6goyj8DKA/exec?action=admin_reorder_lessons&admin_token=<ADMIN_TOKEN - vault: TOKEN_VALIDATOR_ADMIN_TOKEN>&lessonId=nonexistent&moduleOrder=1&lessonOrder=1"
 ```
 
 - [ ] **Step 6: Reference copy + commits**

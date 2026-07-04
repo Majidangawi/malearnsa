@@ -99,7 +99,7 @@ function doPost(e) {
     // 1b. Auto-add to newsletter Subscribers (via token-validator admin endpoint)
     try {
       const tvUrl = 'https://script.google.com/macros/s/AKfycbznjcsYu8gLDZqFJGededAQaATad_L8vlhRQV04pOqh57HB5nFVRy9zUHAcg6goyj8DKA/exec';
-      const adminToken = 'MAL-ADMIN-2026';
+      const adminToken = PropertiesService.getScriptProperties().getProperty('ADMIN_TOKEN');
       const subscribersSheetId = '17OXBVq8XBXDWUY7Zh88MTycqMYJA8zYRtGSk9WE08QI';
       if (email) {
         const qs = 'action=admin_upsert_subscriber'

@@ -1492,14 +1492,14 @@ Expected: "Deployed ... @9"
 
 ```bash
 # 1. admin_resend_access_link (use Majid's own email + a course he owns)
-curl -sS "https://script.google.com/macros/s/AKfycbznjcsYu8gLDZqFJGededAQaATad_L8vlhRQV04pOqh57HB5nFVRy9zUHAcg6goyj8DKA/exec?action=admin_resend_access_link&admin_token=MAL-ADMIN-2026&email=majed.engawi@gmail.com&product=creative-ai-workshop-t3"
+curl -sS "https://script.google.com/macros/s/AKfycbznjcsYu8gLDZqFJGededAQaATad_L8vlhRQV04pOqh57HB5nFVRy9zUHAcg6goyj8DKA/exec?action=admin_resend_access_link&admin_token=<ADMIN_TOKEN - vault: TOKEN_VALIDATOR_ADMIN_TOKEN>&email=majed.engawi@gmail.com&product=creative-ai-workshop-t3"
 
 # Expected: {"ok":true,"product":"creative-ai-workshop-t3","email":"majed.engawi@gmail.com"}
 # (Check Gmail inbox — the T3 confirmation email should arrive)
 
 # 2. admin_remove_subscriber (test with a dummy email we've added + remove)
-curl -sS "https://script.google.com/macros/s/AKfycbznjcsYu8gLDZqFJGededAQaATad_L8vlhRQV04pOqh57HB5nFVRy9zUHAcg6goyj8DKA/exec?action=admin_upsert_subscriber&admin_token=MAL-ADMIN-2026&email=contact-delete-test@example.com&source=website&language=EN&sheetId=17OXBVq8XBXDWUY7Zh88MTycqMYJA8zYRtGSk9WE08QI"
-curl -sS "https://script.google.com/macros/s/AKfycbznjcsYu8gLDZqFJGededAQaATad_L8vlhRQV04pOqh57HB5nFVRy9zUHAcg6goyj8DKA/exec?action=admin_remove_subscriber&admin_token=MAL-ADMIN-2026&email=contact-delete-test@example.com&sheetId=17OXBVq8XBXDWUY7Zh88MTycqMYJA8zYRtGSk9WE08QI"
+curl -sS "https://script.google.com/macros/s/AKfycbznjcsYu8gLDZqFJGededAQaATad_L8vlhRQV04pOqh57HB5nFVRy9zUHAcg6goyj8DKA/exec?action=admin_upsert_subscriber&admin_token=<ADMIN_TOKEN - vault: TOKEN_VALIDATOR_ADMIN_TOKEN>&email=contact-delete-test@example.com&source=website&language=EN&sheetId=17OXBVq8XBXDWUY7Zh88MTycqMYJA8zYRtGSk9WE08QI"
+curl -sS "https://script.google.com/macros/s/AKfycbznjcsYu8gLDZqFJGededAQaATad_L8vlhRQV04pOqh57HB5nFVRy9zUHAcg6goyj8DKA/exec?action=admin_remove_subscriber&admin_token=<ADMIN_TOKEN - vault: TOKEN_VALIDATOR_ADMIN_TOKEN>&email=contact-delete-test@example.com&sheetId=17OXBVq8XBXDWUY7Zh88MTycqMYJA8zYRtGSk9WE08QI"
 
 # Expected: {"ok":true,"removed":true,"email":"contact-delete-test@example.com"}
 
