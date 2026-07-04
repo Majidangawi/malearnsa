@@ -773,12 +773,12 @@
           "@type": "Course",
           "name": "Crafting Inspiration Workshop — ورشة صناعة الإلهام",
           "description": "Live 3-session cohort workshop — end-to-end creative AI production from client brief to delivery, with direct critique from Majid Angawi.",
-          "url": "https://malearnsa.com/ciw-waitlist/",
+          "url": "https://malearnsa.com/creative-ai-workshop/",
           "provider": { "@type": "Organization", "name": "MA Learn" },
           "inLanguage": "ar",
           "educationalLevel": "Intermediate to Advanced",
           "courseMode": "online",
-          "offers": { "@type": "Offer", "price": "1199", "priceCurrency": "SAR" }
+          "offers": { "@type": "Offer", "price": "1299", "priceCurrency": "SAR" }
         },
         {
           "@type": "Course",
@@ -895,18 +895,18 @@
 
   <div class="courses-grid">
 
-    <!-- ───── CIW C2 — live cohort with countdown ───── -->
+    <!-- ───── CIW C3 — live cohort with countdown ───── -->
     <a href="/creative-ai-workshop/" class="course-card reveal reveal-delay-1" id="card-ciw">
       <div class="course-img-wrap">
         <img src="/creative-ai-workshop/images/hero-desktop.jpg" alt="ورشة صناعة الإلهام" loading="lazy" decoding="async">
         <div class="course-badge" id="ciw-badge">مباشرة</div>
       </div>
       <div class="course-body">
-        <h3 class="course-title">ورشة صناعة الإلهام — الدفعة الثانية</h3>
+        <h3 class="course-title">ورشة صناعة الإلهام — الدفعة الثالثة</h3>
         <div class="course-meta-row">
           <span>
             <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-            ٣١ مايو — ٢ يونيو
+            ٥ — ٧ يوليو
           </span>
           <span id="ciw-seats">
             <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
@@ -1199,10 +1199,10 @@
     });
   })();
 
-  // ── CIW C2 — countdown + live seats ─────────────────────
-  // Cohort starts 2026-05-31 19:00 Asia/Riyadh = 16:00 UTC.
+  // ── CIW C3 — countdown + live seats ─────────────────────
+  // Cohort starts 2026-07-05 19:00 Asia/Riyadh = 16:00 UTC.
   (function initCiwCard() {
-    const startUtc   = Date.UTC(2026, 4, 31, 16, 0, 0); // month is 0-indexed
+    const startUtc   = Date.UTC(2026, 6, 5, 16, 0, 0); // month is 0-indexed (6 = July)
     const elDays     = document.getElementById('ciw-d');
     const elHrs      = document.getElementById('ciw-h');
     const elMin      = document.getElementById('ciw-m');
@@ -1252,8 +1252,11 @@
     // Live seats — same Apps Script endpoint the CIW landing page uses.
     (async () => {
       const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbznjcsYu8gLDZqFJGededAQaATad_L8vlhRQV04pOqh57HB5nFVRy9zUHAcg6goyj8DKA/exec';
+      // C3: live per-cohort counter ACTIVE (token-validator v44 — getSeatsLeft is
+      // cohort-aware AND doors-close aware: sold_out flips at seats==0 OR
+      // Sun Jul 5 18:30 KSA, whichever first). Badge auto-swaps to اكتملت الدفعة.
       try {
-        const res  = await fetch(APPS_SCRIPT_URL + '?action=get_seats_left&cohort=C2');
+        const res  = await fetch(APPS_SCRIPT_URL + '?action=get_seats_left&cohort=C3');
         const data = await res.json();
         if (!data || typeof data.seats_left !== 'number' || !elSeats) return;
         const left  = data.seats_left;

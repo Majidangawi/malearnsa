@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>إخراج Kling 3.0 — أخرِج الفيديو السينمائي كأنك مخرج</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  @font-face{font-family:'Gumela';src:url('../fonts/gumela-arabic-bold.otf') format('opentype');font-weight:700;font-display:swap}
+  @font-face{font-family:'Gumela';src:url('../fonts/gumela-arabic-regular.otf') format('opentype');font-weight:400;font-display:swap}
+  @font-face{font-family:'Gumela';src:url('../fonts/gumela-arabic-light.otf') format('opentype');font-weight:300;font-display:swap}
+  :root{
+    --bg:#080808; --bg2:#121212; --bg3:#1a1a1a;
+    --ink:#F5F0E8; --ink2:#cbc6bc; --ink3:#8a857c; --silver:#BBBBBB;
+    --gold:#C9A84C; --gold-lum:#E8D08A;
+    --gold-soft:rgba(201,168,76,.12);
+    --line:rgba(245,240,232,.09);
+    --line-gold:rgba(201,168,76,.24);
+    --font:'Gumela','Cairo',sans-serif;
+    --mono:'JetBrains Mono',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg); color:var(--ink); font-family:var(--font);
+    direction:rtl; font-size:17px; line-height:1.85; -webkit-font-smoothing:antialiased; overflow-x:hidden;
+  }
+  #progress{position:fixed;top:0;right:0;height:2px;width:0;background:linear-gradient(90deg,var(--gold-lum),var(--gold));z-index:100;transition:width .1s linear}
+  .wrap{max-width:860px;margin:0 auto;padding:0 28px}
+  /* latin token isolation */
+  .ltr{unicode-bidi:isolate;direction:ltr}
+  code,.mono{font-family:var(--mono)}
+
+  /* HERO */
+  header.hero{position:relative;padding:128px 0 88px;text-align:center;overflow:hidden}
+  header.hero::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 50% 0%,rgba(201,168,76,.17),transparent 70%);pointer-events:none}
+  .eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.18em;color:var(--gold);margin-bottom:30px;position:relative;direction:ltr}
+  header.hero h1{font-family:'Gumela','Cairo',sans-serif;font-weight:700;font-size:clamp(40px,8vw,74px);line-height:1.12;position:relative}
+  header.hero h1 .accent{color:var(--gold-lum);display:inline-block;direction:ltr;font-family:var(--mono);font-weight:500;font-size:.82em;letter-spacing:-.01em}
+  .hero-sub{margin:30px auto 0;max-width:640px;font-size:clamp(18px,2.4vw,21px);color:var(--ink2);line-height:1.7;position:relative}
+  .thesis{margin:46px auto 0;max-width:700px;padding:26px 32px;position:relative;border:1px solid var(--line-gold);border-radius:18px;background:var(--gold-soft);font-family:'Gumela','Cairo',sans-serif;font-size:20px;color:var(--ink);line-height:1.75}
+
+  /* TOC */
+  nav.toc{margin:70px auto 0;max-width:860px;padding:0 28px}
+  nav.toc .toc-label{font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--ink3);margin-bottom:18px;direction:ltr}
+  nav.toc ol{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:2px 36px}
+  nav.toc a{display:flex;gap:14px;align-items:baseline;text-decoration:none;color:var(--ink2);padding:10px 0;border-bottom:1px solid var(--line);transition:color .2s;font-size:16px}
+  nav.toc a:hover{color:var(--gold-lum)}
+  nav.toc a .n{font-family:var(--mono);font-size:12px;color:var(--gold);min-width:22px;direction:ltr}
+
+  /* SECTIONS */
+  section{padding:76px 0 8px}
+  .sec-head{display:flex;align-items:baseline;gap:18px;margin-bottom:30px}
+  .sec-num{font-family:var(--mono);font-weight:500;font-size:34px;color:var(--gold);line-height:1;opacity:.92;direction:ltr}
+  .sec-title{font-family:'Gumela','Cairo',sans-serif;font-weight:700;font-size:clamp(27px,4.4vw,37px);line-height:1.3}
+  h3{font-family:'Gumela','Cairo',sans-serif;font-weight:700;font-size:20px;margin:38px 0 12px;color:var(--ink)}
+  h3 .pin{color:var(--gold);font-family:var(--mono);font-size:14px;margin-left:8px;direction:ltr;display:inline-block}
+  p{margin:0 0 16px;color:var(--ink2)}
+  p strong,li strong{color:var(--ink);font-weight:700}
+  .g{color:var(--gold-lum);font-weight:600}
+
+  ul.clean{list-style:none;margin:0 0 18px}
+  ul.clean li{position:relative;padding-inline-start:24px;margin-bottom:11px;color:var(--ink2)}
+  ul.clean li::before{content:"";position:absolute;inset-inline-start:4px;top:13px;width:6px;height:6px;border-radius:50%;background:var(--gold)}
+
+  /* formula */
+  .formula{background:var(--bg2);border:1px solid var(--line-gold);border-radius:14px;padding:22px 24px;margin:22px 0}
+  .formula .lbl{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;color:var(--gold);margin-bottom:14px;direction:ltr}
+  .formula code{font-family:'Gumela','Cairo',sans-serif;font-size:16px;line-height:2.1;color:var(--ink);display:block;direction:rtl}
+  .formula code b{color:var(--gold-lum);font-weight:700}
+  .formula.ltr-block code{direction:rtl;text-align:right}
+  /* timed rows */
+  .trow{display:flex;gap:14px;align-items:baseline;padding:5px 0;line-height:1.7}
+  .trow .ts{font-family:var(--mono);font-size:13.5px;color:var(--gold);direction:ltr;min-width:74px;flex-shrink:0}
+  .trow .td{color:var(--ink)}
+  .cmap{font-family:'Gumela','Cairo',sans-serif;line-height:2;color:var(--ink)}
+  .cmap .tk{font-family:var(--mono);font-size:14px;color:var(--gold-lum);direction:ltr;unicode-bidi:isolate}
+
+  /* note */
+  .note{border-inline-start:3px solid var(--gold);background:linear-gradient(to left,var(--gold-soft),transparent);padding:17px 22px;border-radius:14px;margin:22px 0}
+  .note .nt{font-family:var(--mono);font-size:11px;letter-spacing:.1em;color:var(--gold);margin-bottom:6px;direction:ltr}
+  .note p{margin:0;color:var(--ink);font-size:16.5px}
+
+  /* tables */
+  .tbl{width:100%;border-collapse:collapse;margin:20px 0;font-size:15.5px}
+  .tbl th{text-align:start;font-family:'Gumela','Cairo',sans-serif;font-size:13px;letter-spacing:0;color:var(--gold);font-weight:700;padding:12px 14px;border-bottom:1px solid var(--line-gold);vertical-align:bottom}
+  .tbl td{padding:14px 14px;border-bottom:1px solid var(--line);color:var(--ink2);vertical-align:top}
+  .tbl td:first-child{color:var(--ink);font-weight:600}
+  .tbl tr:last-child td{border-bottom:none}
+  .tbl .en{font-family:var(--mono);font-size:12px;color:var(--ink3);direction:ltr;unicode-bidi:isolate}
+  .scroll-x{overflow-x:auto}
+
+  /* chips */
+  .bank{margin:16px 0 28px}
+  .bank .bank-h{font-family:'Gumela','Cairo',sans-serif;font-weight:700;color:var(--ink);font-size:16px;margin-bottom:11px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{font-family:var(--mono);font-size:12.5px;color:var(--ink);background:var(--bg3);border:1px solid var(--line);border-radius:999px;padding:6px 13px;transition:.2s;direction:ltr;unicode-bidi:isolate}
+  .chip:hover{border-color:var(--line-gold);color:var(--gold-lum)}
+
+  /* worked example */
+  .script{background:var(--bg2);border:1px solid var(--line);border-radius:16px;padding:26px 26px 22px;margin:22px 0}
+  .script .scr-h{font-family:var(--mono);font-size:11.5px;letter-spacing:.06em;color:var(--gold);margin-bottom:18px;display:flex;justify-content:space-between;gap:12px;direction:ltr}
+  .preamble{font-size:16px;color:var(--ink2);line-height:1.95;margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--line)}
+  .preamble b{color:var(--gold-lum);font-weight:700}
+  .beat{display:grid;grid-template-columns:78px 1fr;gap:16px;padding:12px 0;border-bottom:1px dashed var(--line)}
+  .beat:last-child{border-bottom:none}
+  .beat .ts{font-family:var(--mono);font-size:13px;color:var(--gold);padding-top:2px;direction:ltr}
+  .beat .bd{font-size:16px;color:var(--ink2);line-height:1.8}
+  .beat.climax .ts{color:var(--gold-lum)}
+  .beat.climax .bd{color:var(--ink)}
+  .trans{display:inline-block;font-family:var(--mono);font-size:11.5px;color:var(--gold);background:var(--gold-soft);border:1px solid var(--line-gold);border-radius:6px;padding:1px 9px;margin-inline-start:4px;direction:ltr;unicode-bidi:isolate}
+  .check-line{font-family:var(--mono);font-size:12.5px;color:var(--ink3);line-height:1.9;direction:rtl}
+
+  /* duo */
+  .duo{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:20px 0}
+  .duo .col{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:18px 20px}
+  .duo .col.good{border-color:var(--line-gold)}
+  .duo .col .ch{font-family:'Gumela','Cairo',sans-serif;font-size:13px;font-weight:700;margin-bottom:10px}
+  .duo .col.good .ch{color:var(--gold)}
+  .duo .col.bad .ch{color:#c07a7a}
+  .duo .col p{font-size:15px;margin:0;color:var(--ink2);line-height:1.9}
+  .duo .col p .en{font-family:var(--mono);font-size:13.5px;color:var(--ink);direction:ltr;unicode-bidi:isolate}
+
+  /* checklist */
+  ol.check{list-style:none;counter-reset:c;margin:18px 0}
+  ol.check li{counter-increment:c;position:relative;padding:12px 0 12px 0;padding-inline-start:48px;border-bottom:1px solid var(--line);color:var(--ink2);font-size:16px;line-height:1.8}
+  ol.check li::before{content:counter(c,decimal-leading-zero);position:absolute;inset-inline-start:0;top:13px;font-family:var(--mono);font-size:12px;color:var(--gold);border:1px solid var(--line-gold);border-radius:6px;width:30px;height:26px;display:flex;align-items:center;justify-content:center;direction:ltr}
+
+  /* footer */
+  footer{margin-top:88px;padding:60px 0 80px;border-top:1px solid var(--line);text-align:center;position:relative}
+  footer::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 50% 100% at 50% 100%,rgba(201,168,76,.10),transparent 70%);pointer-events:none}
+  .brandmark{font-family:var(--mono);font-size:23px;letter-spacing:.12em;color:var(--ink);position:relative;direction:ltr}
+  .brandmark b{color:var(--gold)}
+  .slogan{font-family:'Gumela','Cairo',sans-serif;font-weight:700;font-size:22px;color:var(--gold-lum);margin:16px 0 6px;position:relative}
+  .foot-meta{font-family:'Gumela','Cairo',sans-serif;font-size:13px;color:var(--ink3);margin-top:16px;position:relative;line-height:1.8}
+
+  @media(max-width:640px){
+    body{font-size:16px}
+    nav.toc ol{grid-template-columns:1fr}
+    .duo{grid-template-columns:1fr}
+    .beat{grid-template-columns:60px 1fr;gap:12px}
+    header.hero{padding:96px 0 64px}
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">MA Learn · صناعة سينمائية بالذكاء الاصطناعي</div>
+    <h1>الإخراج مع<br><span class="accent">Kling 3.0</span></h1>
+    <p class="hero-sub">كيف تاخذ صورة أو فكرة بسيطة وتطلّع منها فيديو سينمائي — تخرجه، لا توصفه. الدليل الكامل لـ Kling 3.0 و Omni: من اللقطة الوحدة إلى المشهد المتعدد اللقطات.</p>
+    <div class="thesis">Kling ما يفهم «وصف صورة» — يفهم <span class="ltr">النية السينمائية</span>. بطّل تفكّر مثل المصوّر الفوتوغرافي، وفكّر مثل مدير التصوير (<span class="ltr">DP</span>). أنت ما تكتب مشهد، أنت تحدّد لقطة.</div>
+  </div>
+</header>
+
+<nav class="toc">
+  <div class="toc-label">الدليل</div>
+  <ol>
+    <li><a href="#what"><span class="n">01</span><span>وش يقدر يسويه Kling 3.0</span></a></li>
+    <li><a href="#mindset"><span class="n">02</span><span>عقلية المخرج</span></a></li>
+    <li><a href="#formula"><span class="n">03</span><span>صيغة اللقطة الواحدة</span></a></li>
+    <li><a href="#explicit"><span class="n">04</span><span>من المبهم إلى المحدّد</span></a></li>
+    <li><a href="#vocab"><span class="n">05</span><span>قاموس المخرج</span></a></li>
+    <li><a href="#multishot"><span class="n">06</span><span>اللقطات المتعددة (حتى 6)</span></a></li>
+    <li><a href="#omni"><span class="n">07</span><span>عناصر Omni والثبات</span></a></li>
+    <li><a href="#i2v"><span class="n">08</span><span>صورة-إلى-فيديو: ثبّت ثم حرّك</span></a></li>
+    <li><a href="#audio"><span class="n">09</span><span>الصوت والحوار</span></a></li>
+    <li><a href="#example"><span class="n">10</span><span>برومبت كامل، مركّب من الصفر</span></a></li>
+    <li><a href="#checklist"><span class="n">11</span><span>قائمة الفحص قبل الإطلاق</span></a></li>
+  </ol>
+</nav>
+
+<main class="wrap">
+
+  <!-- 01 -->
+  <section id="what">
+    <div class="sec-head"><div class="sec-num">01</div><h2 class="sec-title">وش يقدر يسويه Kling 3.0 فعلاً</h2></div>
+    <p>قبل لا تكتب ولا كلمة، اعرف آلتك. <span class="ltr">Kling 3.0</span> موديل <span class="g">واحد متعدد الوسائط</span> — محرّك واحد، أربع طرق. ونسخة <span class="ltr">Omni</span> هي اللي تخليه يتذكّر الشخصيات والأماكن والمنتجات كأنه مخرج يتذكّر طاقمه بين اللقطات.</p>
+    <div class="scroll-x">
+    <table class="tbl">
+      <tr><th>الوضع</th><th>تعطيه</th><th>الأفضل لـ</th></tr>
+      <tr><td>نص-إلى-فيديو <span class="en">(T2V)</span></td><td>برومبت مكتوب بس</td><td>اختراع مشهد من الصفر، أو لقطات <span class="en">B-roll</span></td></tr>
+      <tr><td>صورة-إلى-فيديو <span class="en">(I2V)</span></td><td>صورة بداية (+ صورة نهاية اختيارية) + برومبت</td><td>تثبّت فريم بطل عاجبك، وبعدها تحرّكه</td></tr>
+      <tr><td>مرجع-إلى-فيديو <span class="en">(R2V / Omni)</span></td><td>حتى 7 صور / عناصر + برومبت</td><td>الثبات — نفس الوجه، اللبس، المنتج، المكان عبر اللقطات</td></tr>
+      <tr><td>تعديل فيديو</td><td>فيديو مرجع + برومبت</td><td>تغيّر أو تعيد تنسيق مقطع موجود</td></tr>
+    </table>
+    </div>
+
+    <h3><span class="pin">▸</span>حدودك التقنية — احفظها</h3>
+    <ul class="clean">
+      <li><strong>الطول:</strong> من 3 إلى 15 ثانية للمقطع الواحد — و<span class="g">15 ثانية هي السقف</span>. نافذة الـ 15 ثانية هي بيت القصيد: اسرد قصة كاملة، لا تكسّرها لقصاصات.</li>
+      <li><strong>اللقطات المتعددة:</strong> حتى <span class="g">6 قطعات كاميرا</span> في تسلسل واحد من 15 ثانية.</li>
+      <li><strong>الجودة:</strong> <span class="ltr">standard</span> = <span class="ltr">720p</span> · <span class="ltr">pro</span> = <span class="ltr">1080p</span>.</li>
+      <li><strong>نسبة الأبعاد:</strong> <span class="ltr">16:9</span> · <span class="ltr">9:16</span> · <span class="ltr">1:1</span>.</li>
+      <li><strong>المراجع:</strong> حتى <span class="g">7 صور</span> (تنزل لـ 4 إذا استخدمت فيديو مرجع كمان)؛ الفيديو المرجع 3–10 ثوانٍ.</li>
+      <li><strong>طول البرومبت:</strong> حتى 2,500 حرف. والأفضل 60–100 كلمة للقطة — الوضوح يغلب الطول.</li>
+      <li><strong>اللغة:</strong> <span class="ltr">Kling</span> يلتزم بدقّة أعلى لما يكون نص البرومبت <span class="g">بالإنجليزي</span>. اكتب توجيهك بالإنجليزي، وانطق عربيتك على المايك. هذي اللي نسوّيها أصلاً.</li>
+    </ul>
+    <div class="note"><div class="nt">القاعدة المؤسِّسة</div><p><span class="ltr">Kling</span> ثلاث قدرات يبدع فيها: <strong>اتباع تعليمات مركّبة</strong> (حركة + كاميرا + إضاءة مع بعض)، <strong>ثبات الهوية</strong> عبر اللقطات، و<strong>أداء عاطفي حقيقي</strong>. اتكئ عليها — هي اللي تفرّقك عن الهاوي.</p></div>
+  </section>
+
+  <!-- 02 -->
+  <section id="mindset">
+    <div class="sec-head"><div class="sec-num">02</div><h2 class="sec-title">عقلية المخرج</h2></div>
+    <p>أغلب الناس يكتبون البرومبت مثل سايح يوصف بطاقة بريدية: «لقطة سينمائية حلوة لرجّال، فيها أجواء وحركة وإحساس، <span class="ltr">4K</span>». و<span class="ltr">Kling</span> يرجّع لك بالضبط اللي طلبته — شيء عام بلا روح.</p>
+    <p>المخرج ما يوصف صورة. المخرج <span class="g">يحدّد لقطة</span>. الكلمات المبهمة — «سينمائي»، «ديناميكي»، «أجواء» — كلها ضوضاء. حوّل كل وحدة منها إلى لغة كاميرا وعدسة وضوء محدّدة.</p>
+    <div class="note"><div class="nt">القاعدة اللي تحت كل القواعد</div><p>المحدّد يغلب المبهم، في كل مرة. «<span class="ltr">dolly-in</span> بطيء، زاوية منخفضة، <span class="ltr">35mm</span>» بيغلب دايماً «حركة سينمائية». «سينمائي» لحاله كسل — سمِّ اللقطة، الضوء، العدسة، والحركة.</p></div>
+    <div class="formula"><div class="lbl">الصنعة كلها في سطر</div><code>الإخراج مع <span class="ltr">Kling</span> = <b>إخراج</b> + <b>تصوير سينمائي</b> + <b>توجيه أداء</b> + <b>سرد قصصي</b>، مدموجين في برومبت واحد.</code></div>
+  </section>
+
+  <!-- 03 -->
+  <section id="formula">
+    <div class="sec-head"><div class="sec-num">03</div><h2 class="sec-title">صيغة اللقطة الواحدة</h2></div>
+    <p>هذي الصيغة الرسمية لـ <span class="ltr">Kling</span>. التزم بترتيب الخانات — الموديل أكثر ما يكون حسّاس لِما يجي أول، فقدّم أهم شيء في البداية.</p>
+    <div class="formula"><div class="lbl">الصيغة</div><code><b>[الموضوع + وصفه]</b> ← <b>[حركة الموضوع]</b> ← <b>[المشهد + مكانه وزمانه]</b> ← <b>( [لغة الكاميرا] + [الإضاءة] + [الأجواء] )</b></code></div>
+    <div class="scroll-x">
+    <table class="tbl">
+      <tr><th>الخانة</th><th>السؤال اللي تجاوب عليه</th><th>مثال مقتطف</th></tr>
+      <tr><td>الموضوع</td><td>مين / وش يظهر</td><td>«صياد محنّك بمعطف مطر أصفر»</td></tr>
+      <tr><td>حركة الموضوع</td><td>وش يسوي (بفيزياء واضحة)</td><td>«يسحب شبكة مبلّلة فوق حافة القارب، كعبه مثبّت»</td></tr>
+      <tr><td>المشهد</td><td>وين + متى</td><td>«على رصيف تضربه العاصفة وقت الفجر»</td></tr>
+      <tr><td>لغة الكاميرا</td><td>كيف تتحرّك الكاميرا</td><td>«<span class="en">dolly-in</span> بطيء، زاوية منخفضة، <span class="en">35mm</span>»</td></tr>
+      <tr><td>الإضاءة + الأجواء</td><td>المزاج وطابع الضوء</td><td>«ضوء خلفي بارد، مطر كثيف، عمق ميدان ضحل»</td></tr>
+    </table>
+    </div>
+    <p>للقطات الحركة، فيه ترتيب يبدأ بالكاميرا (نفس الخانات، بس الكاميرا أول):</p>
+    <div class="formula"><div class="lbl">ترتيب مدير التصوير</div><code><b>[حركة الكاميرا]</b> ← <b>[الموضوع وفيزياء الحركة]</b> ← <b>[البيئة / الإضاءة]</b> ← <b>[الملمس والتفاصيل]</b> ← <b>[الصوت / العاطفة]</b></code></div>
+    <p>ليش تشتغل؟ لأن <span class="ltr">Kling</span> يحتاج تعليمات صريحة. «حركة سينمائية» ضوضاء؛ «<span class="ltr">dolly-in</span> بطيء، زاوية منخفضة» إشارة. تدخل مبهم، يطلع لك متذبذب.</p>
+  </section>
+
+  <!-- 04 -->
+  <section id="explicit">
+    <div class="sec-head"><div class="sec-num">04</div><h2 class="sec-title">من المبهم إلى المحدّد</h2></div>
+    <p>هذا التمرين اللي يحوّل برومبتك من هاوي لمخرج. كل ما تلقى نفسك تكتب صفة مبهمة، بدّلها بصنعة.</p>
+    <div class="scroll-x">
+    <table class="tbl">
+      <tr><th>مبهم ✕</th><th>محدّد ✓</th></tr>
+      <tr><td>«حركة سينمائية»</td><td><span class="en">slow dolly-in, shallow depth of field</span></td></tr>
+      <tr><td>«خلّها ديناميكية»</td><td><span class="en">fast whip-pan following the subject</span></td></tr>
+      <tr><td>«زاوية حلوة»</td><td><span class="en">low-angle tracking shot, 35mm</span></td></tr>
+      <tr><td>«لفّ حوله»</td><td><span class="en">orbit left, smooth 180° arc</span></td></tr>
+      <tr><td>«ضيف حركة»</td><td><span class="en">handheld push-in with subtle shake</span></td></tr>
+    </table>
+    </div>
+    <div class="note"><div class="nt">ملمس يقتل مظهر الـ AI</div><p>ضيف 2–3 إشارات ملمس في كل برومبت عشان تكسر «نعومة» الذكاء الاصطناعي البلاستيكية: <span class="ltr">skin pores</span>، <span class="ltr">fabric creases</span>، <span class="ltr">condensation</span>، <span class="ltr">film grain</span>، <span class="ltr">dust motes</span>، <span class="ltr">wet reflections</span>. هذي تفرّق بين «مولّد» و«مصوّر».</p></div>
+  </section>
+
+  <!-- 05 -->
+  <section id="vocab">
+    <div class="sec-head"><div class="sec-num">05</div><h2 class="sec-title">قاموس المخرج</h2></div>
+    <p>استخدم هذي بدل «سينمائي». الموديل يعرفها بدقّة. (نخليها بالإنجليزي — هي توكنات يقرأها <span class="ltr">Kling</span> حرفياً.)</p>
+    <div class="bank"><div class="bank-h">حركة الكاميرا</div><div class="chips">
+      <span class="chip">dolly in / out</span><span class="chip">tracking shot</span><span class="chip">following shot</span><span class="chip">whip-pan</span><span class="chip">tilt up / down</span><span class="chip">orbit / arc</span><span class="chip">crane up / down</span><span class="chip">push-in / pull-out</span><span class="chip">handheld</span><span class="chip">FPV drone</span><span class="chip">locked-off</span><span class="chip">POV</span>
+    </div></div>
+    <div class="bank"><div class="bank-h">نوع اللقطة</div><div class="chips">
+      <span class="chip">extreme wide / establishing</span><span class="chip">wide</span><span class="chip">full</span><span class="chip">medium</span><span class="chip">medium close-up</span><span class="chip">close-up</span><span class="chip">macro</span><span class="chip">profile</span><span class="chip">over-the-shoulder</span><span class="chip">shot-reverse-shot</span><span class="chip">two-shot</span>
+    </div></div>
+    <div class="bank"><div class="bank-h">العدسة والبصريات</div><div class="chips">
+      <span class="chip">24mm</span><span class="chip">35mm</span><span class="chip">50mm</span><span class="chip">85mm</span><span class="chip">shallow depth of field</span><span class="chip">deep focus</span><span class="chip">bokeh</span><span class="chip">anamorphic flare</span><span class="chip">film grain</span><span class="chip">halation</span>
+    </div></div>
+    <div class="bank"><div class="bank-h">الضوء</div><div class="chips">
+      <span class="chip">soft window light</span><span class="chip">hard key</span><span class="chip">rim / edge light</span><span class="chip">backlight</span><span class="chip">volumetric god rays</span><span class="chip">neon glow</span><span class="chip">golden hour</span><span class="chip">blue hour</span><span class="chip">cold LED</span><span class="chip">specular</span><span class="chip">high / low contrast</span>
+    </div></div>
+    <div class="bank"><div class="bank-h">الملمس (لكسر مظهر الـ AI)</div><div class="chips">
+      <span class="chip">skin pores</span><span class="chip">fabric creases</span><span class="chip">condensation</span><span class="chip">dust motes</span><span class="chip">film grain</span><span class="chip">wet reflections</span><span class="chip">flyaway hair</span>
+    </div></div>
+  </section>
+
+  <!-- 06 -->
+  <section id="multishot">
+    <div class="sec-head"><div class="sec-num">06</div><h2 class="sec-title">اللقطات المتعددة — حتى 6 قطعات</h2></div>
+    <p>هذي ميزة <span class="ltr">Omni</span> الأبرز. <span class="ltr">Kling</span> يولّد حتى <span class="g">6 قطعات كاميرا</span> في تسلسل واحد. تبنيها على طبقتين:</p>
+
+    <h3><span class="pin">▸</span>الطبقة الأولى — البرومبت الرئيسي (<span class="ltr">Master Prompt</span>)</h3>
+    <p>سطر واحد يحمل عمود التسلسل كله: مين الموضوع، قوسه العاطفي، نفس اللبس، نفس المزاج. <span class="g">ثبّت وصف الموضوع من البداية، وكرّره حرفياً</span> في كل لقطة — لا تبدّل المرادفات ولا تستخدم ضمائر فضفاضة. هذا أقوى دفاع ضد انحراف الهوية.</p>
+
+    <h3><span class="pin">▸</span>الطبقة الثانية — لقطات مرقّمة بمدّتها</h3>
+    <p>كتلة لكل قطعة، مرقّمة، ومعها <span class="g">المدّة في البداية</span>، وكل وحدة صيغة لقطة واحدة كاملة. الموديل يخطّط الانتقالات والتأطير بنفسه من هذي الكتل.</p>
+    <div class="formula"><div class="lbl">شكل اللقطات المتعددة</div>
+      <div class="trow"><span class="ts">Master</span><span class="td">عمود التسلسل — نفس الموضوع + اللبس + المزاج + القوس</span></div>
+      <div class="trow"><span class="ts">Shot 1 (5s)</span><span class="td">[كاميرا] + [الموضوع وحركته] + [المشهد] + [إضاءة/أجواء]</span></div>
+      <div class="trow"><span class="ts">Shot 2 (5s)</span><span class="td">[كاميرا] + [استمرار الحركة] + [تحوّل المشهد] + [إضاءة/أجواء]</span></div>
+      <div class="trow"><span class="ts">Shot 3 (5s)</span><span class="td" style="color:var(--gold-lum);font-weight:700">[كاميرا] + [بيت القصيد / لقطة الحسم]</span></div>
+    </div>
+    <ul class="clean">
+      <li><strong>ثبّت الموضوع بدري، وصِفه بنفس الكلمات</strong> في كل لقطة (الشخصية، اللبس، المنتج) — معرّف ثابت، لا ضمير يتبدّل.</li>
+      <li><strong>صيغة وحدة عبر كل اللقطات</strong> — نفس ترتيب الخانات كل مرة؛ غيّر المحتوى بس.</li>
+      <li><strong>اوصف التطوّر عبر الزمن</strong> — وش يتغيّر من لقطة للي بعدها. الـ 15 ثانية لبنية مشاهد، مو لقطة جامدة محفوظة طويل.</li>
+      <li><strong>المجموع ≤ 15 ثانية.</strong> لو التسلسل أكبر، اضغطه — قلّل اللقطات أو قصّر المشاهد.</li>
+      <li><strong>حدّد علاقة الكاميرا بالموضوع</strong> في كل لقطة (<span class="ltr">tracking</span>، <span class="ltr">following</span>، ثابتة) — اللقطات الطويلة تنحرف بدونها.</li>
+    </ul>
+  </section>
+
+  <!-- 07 -->
+  <section id="omni">
+    <div class="sec-head"><div class="sec-num">07</div><h2 class="sec-title">عناصر Omni والثبات</h2></div>
+    <p>قدرة <span class="ltr">Omni</span> الخارقة: تنقل الفيديو من «رمي نرد» إلى نظام مبني على المراجع. تبني <span class="g">عنصر (<span class="ltr">Element</span>)</span> مرّة، وتعيد استخدامه في كل لقطة.</p>
+
+    <h3><span class="pin">▸</span>ثلاثة أنواع عناصر</h3>
+    <ul class="clean">
+      <li><strong>شخصيات</strong> — الوجه، الجسم، اللبس، الصورة الظلية.</li>
+      <li><strong>أماكن</strong> — معامل، غرف، مواقع.</li>
+      <li><strong>منتجات / إكسسوار</strong> — أجهزة، عبوات، أكل — لازم تثبت بصرياً.</li>
+    </ul>
+
+    <h3><span class="pin">▸</span>بناء العنصر من أربع زوايا</h3>
+    <p>بدل صورة وحدة، ابنِ العنصر من أربع زوايا عشان تعطي الموديل <span class="g">هوية ثلاثية الأبعاد</span> لا صورة مسطّحة:</p>
+    <div class="formula"><div class="lbl">الزوايا الأربع</div>
+      <div class="trow"><span class="ts">1</span><span class="td">أمامية نظيفة (الوجه / الشعار)</span></div>
+      <div class="trow"><span class="ts">2</span><span class="td">ثلاثة أرباع يسار (العمق والكنتور)</span></div>
+      <div class="trow"><span class="ts">3</span><span class="td">ثلاثة أرباع يمين (التماثل والتفصيل المقابل)</span></div>
+      <div class="trow"><span class="ts">4</span><span class="td">خلفية / فوق الكتف (الشعر، ظهر اللبس، خلف العبوة)</span></div>
+    </div>
+    <p>الزوايا الناقصة تخلّي الموديل يتخيّل (يبدّل الجاكيت في نص الـ <span class="ltr">pan</span>). ابنِ الزوايا الأربع أول في موديل صور، وارفعها كعنصر واحد مسمّى.</p>
+
+    <h3><span class="pin">▸</span>كيف تستخدم العناصر</h3>
+    <ul class="clean">
+      <li>اكتب برومبتات <span class="g">مركّزة على الفعل</span>، لا على المظهر — العنصر يحمل الشكل أصلاً.</li>
+      <li>اربط أكثر من عنصر (شخصية + مكان + منتج) في لقطة وحدة.</li>
+      <li>تخطّى فريمات البداية/النهاية المخصّصة — <span class="ltr">Omni</span> يعيد بناء الحركة والكاميرا من العناصر + البرومبت.</li>
+      <li><strong>ربط الصوت:</strong> ألصق صوتاً مميزاً بعنصر الشخصية عشان «تسمع» نفسها عبر المشاهد، مو بس «تشبه» نفسها.</li>
+      <li>وسّم العناصر في البرومبت بـ <span class="ltr" style="font-family:var(--mono);color:var(--gold-lum)">&lt;&lt;&lt;image_1&gt;&gt;&gt;</span> عشان حركات اللقطة تربط بالعنصر الصح.</li>
+    </ul>
+    <div class="note"><div class="nt">الحد المهم</div><p>عنصر أو اثنين معرّفين بالكامل لكل لقطة. المشاهد المزدحمة بشخصيات متشابهة بلا عناصر فردية تخلط الهويات. ركّز على 1–2 عنصر واضح في اللقطة.</p></div>
+  </section>
+
+  <!-- 08 -->
+  <section id="i2v">
+    <div class="sec-head"><div class="sec-num">08</div><h2 class="sec-title">صورة-إلى-فيديو: ثبّت ثم حرّك</h2></div>
+    <p>لما يكون عندك صورة بداية، القاعدة الذهبية: <span class="g">اوصف الفعل والكاميرا، لا الصورة</span>. الموديل شايف الفريم أصلاً.</p>
+    <ul class="clean">
+      <li>قُل الحركة («تلتفت نحو النافذة، شعرها يطير») + الكاميرا («<span class="ltr">push-in</span> بطيء»).</li>
+      <li>اترك وصف الموضوع/المشهد اللي بان في الصورة — لا تكرّره.</li>
+      <li>الـ <span class="ltr">I2V</span> يحافظ على الهوية، التكوين، وحتى النص داخل الصورة — أقوى أداة للإعلانات والمحتوى التجاري والامتدادات الواقعية.</li>
+    </ul>
+    <div class="duo">
+      <div class="col good"><div class="ch">✓ صح (الفعل + الكاميرا)</div><p><span class="en">She turns toward the window, hair lifting. Slow push-in, shallow depth of field.</span></p></div>
+      <div class="col bad"><div class="ch">✕ غلط (تعيد وصف الصورة)</div><p>«امرأة بفستان أحمر، شعر طويل، تقف في غرفة بنافذة كبيرة، إضاءة دافئة…»</p></div>
+    </div>
+  </section>
+
+  <!-- 09 -->
+  <section id="audio">
+    <div class="sec-head"><div class="sec-num">09</div><h2 class="sec-title">الصوت والحوار</h2></div>
+    <p><span class="ltr">Kling</span> يولّد صوتاً أصلياً — حوار + تزامن شفاه + محيط. لكن في شغلنا، <span class="g">الصوت مطفأ افتراضياً</span> لأن ماجد يسجّل صوته بنفسه. شغّله بس لمشهد مستقل يحتاج حوار داخلي.</p>
+    <p>لو احتجته، صيغة الحوار:</p>
+    <div class="formula"><div class="lbl">توكن الحوار</div><code class="ltr" style="direction:ltr;text-align:left">[Character Name: short description, voice tone]: "dialogue line"</code></div>
+    <ul class="clean">
+      <li><strong>تسمية ثابتة</strong> — معرّف فريد لكل شخصية، لا «هو… وبعدها هو…».</li>
+      <li><strong>مرسى بصري</strong> — الفعل قبل الجملة: <span class="ltr" style="font-family:var(--mono);font-size:13px">*Agent slams the table.* [Agent, angrily]: "Where?"</span></li>
+      <li><strong>نبرة مميزة</strong> لكل شخصية: <span class="ltr" style="font-family:var(--mono);font-size:13px">[Agent, raspy, deep]</span>.</li>
+      <li><strong>تحكّم زمني</strong> — كلمات تسلسل بين المتحدّثين: <span class="ltr">Immediately</span>، <span class="ltr">Pause</span>، <span class="ltr">Then</span>.</li>
+    </ul>
+    <div class="note"><div class="nt">قاعدة ثابتة</div><p>لا تضع أبداً اسم مشهور حقيقي أو وجهه أو صوته في أي برومبت. موديلات أصلية مجهولة فقط. واحترم الاحتشام — قماش ساتر دايماً، والتأطير ما يكشف.</p></div>
+  </section>
+
+  <!-- 10 -->
+  <section id="example">
+    <div class="sec-head"><div class="sec-num">10</div><h2 class="sec-title">برومبت كامل، مركّب من الصفر</h2></div>
+    <p>هذا كل شيء يشتغل مع بعض — أول لقطة واحدة، وبعدها قطعة متعددة اللقطات مع برومبت رئيسي وثبات الموضوع.</p>
+
+    <h3>المثال أ — لقطة واحدة</h3>
+    <div class="script">
+      <div class="scr-h"><span>لقطة واحدة · 5 ثوانٍ</span><span>I2V / T2V</span></div>
+      <div class="preamble"><b>dolly-in بطيء، زاوية منخفضة، 35mm.</b> مدير إبداعي سعودي بجاكيت كتان بلون الرمل يخطو نحو نافذة واسعة، ينفض الغبار عن مطبوعة في يده، كعبه يتدحرج للأمام. <b>ضوء خلفي ذهبي</b>، عمق ميدان ضحل، <span class="ltr">film grain</span> ناعم، مسام بشرة ظاهرة. محيط: سطح استوديو وقت الـ <span class="ltr">golden hour</span>.<br><span style="color:var(--ink3)">Avoid: blurry, distorted face, warped hands, extra fingers, plastic skin, flicker, watermark.</span></div>
+      <div class="check-line">الموضوع ✓ الحركة ✓ المشهد ✓ الكاميرا ✓ الإضاءة ✓ الملمس ✓ النفي مدمج ✓</div>
+    </div>
+
+    <h3>المثال ب — متعدد اللقطات</h3>
+    <div class="script">
+      <div class="scr-h"><span>متعدد اللقطات · 15 ثانية</span><span>Omni · 3 لقطات</span></div>
+      <div class="preamble">
+        <b>Master Prompt:</b> مدير إبداعي سعودي بجاكيت كتان بلون الرمل يتحرّك في استوديو سطح وقت <span class="ltr">golden hour</span>، هادئ وواثق — مزاج واحد متّصل، ضوء تحريري دافئ، نفس الرجّال ونفس اللبس طول التسلسل.
+      </div>
+      <div class="beat"><div class="ts">Shot 1<br>(5s)</div><div class="bd">dolly-in بطيء، زاوية منخفضة، 35mm. يخطو نحو نافذة واسعة، ينفض الغبار عن مطبوعة، كعبه يتدحرج للأمام. ضوء خلفي ذهبي، عمق ميدان ضحل، film grain ناعم.</div></div>
+      <div class="beat"><div class="ts">Shot 2<br>(5s)</div><div class="bd">handheld فوق الكتف، يتبعه. يرفع المطبوعة نحو الضوء ويتأمّلها، القماش يتجعّد عند الكوع. rim light دافئ، تلاشٍ ناعم، ذرّات غبار تطير.</div></div>
+      <div class="beat climax"><div class="ts">Shot 3<br>(5s)</div><div class="bd">CLIMAX — ثابتة، لقطة قريبة متوسطة. ينظر خارج الكادر ويومئ مرّة، ابتسامة خفيفة. ضوء نافذة ناعم على خدّ، ظل بارد، بريق في العين.</div></div>
+      <div style="padding-top:14px;color:var(--ink3);font-family:var(--mono);font-size:12.5px;direction:ltr">Avoid: blurry, distorted face, warped hands, extra fingers, sliding feet, plastic skin, flicker, watermark.</div>
+    </div>
+    <div class="note"><div class="nt">اقرأه مرّة ثانية</div><p>كل لقطة تسمّي <strong>الكاميرا</strong>، <strong>الفعل بفيزيائه</strong>، <strong>الضوء</strong>، و<strong>الملمس</strong> — والموضوع موصوف بنفس الكلمات في الثلاث. النفي مدمج في آخر البرومبت، والمدّة في بداية كل لقطة. هذا مقطع مُخرَج، مو موصوف.</p></div>
+  </section>
+
+  <!-- 11 -->
+  <section id="checklist">
+    <div class="sec-head"><div class="sec-num">11</div><h2 class="sec-title">قائمة الفحص قبل الإطلاق</h2></div>
+    <p>شغّلها قبل لا تولّد. عشرين ثانية هنا توفّر عليك إعادة توليد بعدين.</p>
+    <ol class="check">
+      <li>أي وضع — <span class="ltr">T2V</span>، <span class="ltr">I2V</span>، أو <span class="ltr">R2V/Omni</span>؟ (<span class="ltr">Omni</span> إذا تبي ثبات الهوية.)</li>
+      <li>التزم بصيغة اللقطة: الموضوع ← حركته ← المشهد ← (الكاميرا + الإضاءة + الأجواء).</li>
+      <li>بدّل <strong>كل صفة مبهمة</strong> بصنعة — لا «سينمائي» لحاله أبداً.</li>
+      <li>سمِّ <strong>نوع اللقطة وحركة الكاميرا كل وحدة بروحها</strong> + العدسة + الضوء.</li>
+      <li>ضيف 2–3 إشارات ملمس (مسام، تجاعيد قماش، حُبيبات) لكسر مظهر الـ <span class="ltr">AI</span>.</li>
+      <li>متعدد اللقطات؟ <span class="ltr">Master Prompt</span> + لقطات مرقّمة بمدّتها، ≤ 6 لقطات، والمجموع <strong>≤ 15 ثانية</strong>.</li>
+      <li>ثبّت وصف الموضوع <strong>حرفياً</strong> في كل لقطة — لا مرادفات ولا ضمائر فضفاضة.</li>
+      <li>تستخدم عناصر <span class="ltr">Omni</span>؟ ابنِها من 4 زوايا، ووسّمها بـ <span class="ltr">&lt;&lt;&lt;image_n&gt;&gt;&gt;</span>.</li>
+      <li>صورة بداية؟ اوصف <strong>الفعل والكاميرا فقط</strong>، لا الصورة.</li>
+      <li>ادمج النفي في آخر البرومبت: <span class="ltr" style="font-family:var(--mono);font-size:13px">Avoid: blurry, warped hands, plastic skin…</span></li>
+      <li>اكتب نص البرومبت بالإنجليزي للالتزام الأعلى؛ وانطق عربيتك على المايك.</li>
+      <li>اقرأه مرّة ثانية كقائمة لقطات — هل مخرج شغّال بيفهمه؟</li>
+    </ol>
+    <div class="note"><div class="nt">الخلاصة</div><p>أنت أبداً ما تصف صورة. أنت تسلّم طاقم تصوير قائمة لقطات. اكتبها مثل ما يقولها المخرج — و<span class="ltr">Kling 3.0</span> بيصوّرها.</p></div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="brandmark">MA<b>·</b>LEARN</div>
+    <div class="slogan">صناعة الإلهام</div>
+    <div class="foot-meta">صناعة سينمائية بالذكاء الاصطناعي · إخراج Kling 3.0 · دليل من ماجد عنقاوي</div>
+  </div>
+</footer>
+
+<script>
+  const bar=document.getElementById('progress');
+  const onScroll=()=>{const h=document.documentElement;const max=h.scrollHeight-h.clientHeight;bar.style.width=(max>0?(h.scrollTop/max*100):0)+'%';};
+  document.addEventListener('scroll',onScroll,{passive:true});onScroll();
+</script>
+</body>
+</html>

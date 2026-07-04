@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Directing Seedance 2.0 — Writing Cinematic Prompts Like a Director</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0b0b0d; --bg2:#131316; --bg3:#1a1a1f;
+    --ink:#f2efe9; --ink2:#b9b5ac; --ink3:#7c786f;
+    --gold:#c9a84c; --gold-bright:#e0c574;
+    --gold-soft:rgba(201,168,76,.13);
+    --line:rgba(255,255,255,.08);
+    --line-gold:rgba(201,168,76,.22);
+    --serif:'Fraunces',Georgia,serif;
+    --sans:'Inter',system-ui,sans-serif;
+    --mono:'JetBrains Mono',ui-monospace,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg); color:var(--ink); font-family:var(--sans);
+    font-size:17px; line-height:1.7; -webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  /* reading progress */
+  #progress{position:fixed;top:0;left:0;height:2px;width:0;background:linear-gradient(90deg,var(--gold),var(--gold-bright));z-index:100;transition:width .1s linear}
+
+  .wrap{max-width:860px;margin:0 auto;padding:0 28px}
+
+  /* ---------- HERO ---------- */
+  header.hero{
+    position:relative;padding:130px 0 90px;text-align:center;overflow:hidden;
+  }
+  header.hero::before{
+    content:"";position:absolute;inset:0;
+    background:radial-gradient(ellipse 60% 50% at 50% 0%,rgba(201,168,76,.16),transparent 70%);
+    pointer-events:none;
+  }
+  .eyebrow{
+    font-family:var(--mono);font-size:12px;letter-spacing:.32em;text-transform:uppercase;
+    color:var(--gold);margin-bottom:30px;position:relative;
+  }
+  header.hero h1{
+    font-family:var(--serif);font-weight:500;font-size:clamp(42px,8vw,76px);
+    line-height:1.02;letter-spacing:-.01em;position:relative;
+  }
+  header.hero h1 em{font-style:italic;color:var(--gold-bright)}
+  .hero-sub{
+    margin:28px auto 0;max-width:620px;font-size:clamp(18px,2.4vw,21px);
+    color:var(--ink2);line-height:1.55;position:relative;
+  }
+  .thesis{
+    margin:46px auto 0;max-width:680px;padding:24px 30px;position:relative;
+    border:1px solid var(--line-gold);border-radius:16px;background:var(--gold-soft);
+    font-family:var(--serif);font-style:italic;font-size:19px;color:var(--ink);line-height:1.5;
+  }
+
+  /* ---------- TOC ---------- */
+  nav.toc{margin:72px auto 0;max-width:860px;padding:0 28px}
+  nav.toc .toc-label{font-family:var(--mono);font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--ink3);margin-bottom:18px}
+  nav.toc ol{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:2px 36px}
+  nav.toc a{
+    display:flex;gap:14px;align-items:baseline;text-decoration:none;color:var(--ink2);
+    padding:9px 0;border-bottom:1px solid var(--line);transition:color .2s;font-size:15.5px;
+  }
+  nav.toc a:hover{color:var(--gold-bright)}
+  nav.toc a .n{font-family:var(--mono);font-size:12px;color:var(--gold);min-width:22px}
+
+  /* ---------- SECTIONS ---------- */
+  section{padding:78px 0 8px}
+  .sec-head{display:flex;align-items:baseline;gap:18px;margin-bottom:30px}
+  .sec-num{font-family:var(--serif);font-size:42px;font-weight:500;color:var(--gold);line-height:1;opacity:.9}
+  .sec-title{font-family:var(--serif);font-weight:500;font-size:clamp(28px,4.4vw,38px);line-height:1.08;letter-spacing:-.01em}
+  h3{font-family:var(--sans);font-weight:600;font-size:20px;margin:38px 0 12px;color:var(--ink);letter-spacing:-.01em}
+  h3 .pin{color:var(--gold);font-family:var(--mono);font-size:14px;margin-right:8px}
+  p{margin:0 0 16px;color:var(--ink2)}
+  p strong,li strong{color:var(--ink);font-weight:600}
+  p .g,li .g{color:var(--gold-bright);font-weight:500}
+  a.inline{color:var(--gold-bright);text-decoration:none;border-bottom:1px solid var(--line-gold)}
+
+  ul.clean{list-style:none;margin:0 0 18px}
+  ul.clean li{position:relative;padding-left:24px;margin-bottom:10px;color:var(--ink2)}
+  ul.clean li::before{content:"";position:absolute;left:4px;top:11px;width:6px;height:6px;border-radius:50%;background:var(--gold)}
+
+  /* formula block */
+  .formula{
+    background:var(--bg2);border:1px solid var(--line-gold);border-radius:14px;
+    padding:22px 24px;margin:22px 0;position:relative;
+  }
+  .formula .lbl{font-family:var(--mono);font-size:10.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--gold);margin-bottom:14px}
+  .formula code{font-family:var(--mono);font-size:14.5px;line-height:1.9;color:var(--ink);display:block;white-space:pre-wrap;word-break:break-word}
+  .formula code b{color:var(--gold-bright);font-weight:500}
+
+  /* cards / callout */
+  .note{
+    border-left:3px solid var(--gold);background:linear-gradient(90deg,var(--gold-soft),transparent);
+    padding:16px 20px;border-radius:0 12px 12px 0;margin:22px 0;
+  }
+  .note .nt{font-family:var(--mono);font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:6px}
+  .note p{margin:0;color:var(--ink);font-size:16px}
+
+  /* tables */
+  .tbl{width:100%;border-collapse:collapse;margin:20px 0;font-size:15px}
+  .tbl th{text-align:left;font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);font-weight:500;padding:12px 14px;border-bottom:1px solid var(--line-gold);vertical-align:bottom}
+  .tbl td{padding:13px 14px;border-bottom:1px solid var(--line);color:var(--ink2);vertical-align:top}
+  .tbl td:first-child{color:var(--ink);font-weight:500;white-space:nowrap}
+  .tbl tr:last-child td{border-bottom:none}
+  .scroll-x{overflow-x:auto}
+
+  /* chips */
+  .bank{margin:14px 0 26px}
+  .bank .bank-h{font-weight:600;color:var(--ink);font-size:15px;margin-bottom:10px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px}
+  .chip{font-family:var(--mono);font-size:12.5px;color:var(--ink);background:var(--bg3);border:1px solid var(--line);border-radius:999px;padding:6px 13px;transition:.2s}
+  .chip:hover{border-color:var(--line-gold);color:var(--gold-bright)}
+
+  /* worked example (screenplay) */
+  .script{
+    background:var(--bg2);border:1px solid var(--line);border-radius:16px;padding:26px 26px 22px;margin:22px 0;
+  }
+  .script .scr-h{font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:18px;display:flex;justify-content:space-between}
+  .beat{display:grid;grid-template-columns:84px 1fr;gap:16px;padding:11px 0;border-bottom:1px dashed var(--line)}
+  .beat:last-child{border-bottom:none}
+  .beat .ts{font-family:var(--mono);font-size:13px;color:var(--gold);padding-top:1px}
+  .beat .bd{font-size:15.5px;color:var(--ink2);line-height:1.55}
+  .beat.climax .ts{color:var(--gold-bright)}
+  .beat.climax .bd{color:var(--ink)}
+  .script .preamble{font-size:15px;color:var(--ink2);line-height:1.6;margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--line)}
+  .script .preamble b{color:var(--gold-bright);font-weight:500}
+
+  /* two-col mini */
+  .duo{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:20px 0}
+  .duo .col{background:var(--bg2);border:1px solid var(--line);border-radius:12px;padding:18px 20px}
+  .duo .col.good{border-color:var(--line-gold)}
+  .duo .col .ch{font-family:var(--mono);font-size:11px;letter-spacing:.14em;text-transform:uppercase;margin-bottom:10px}
+  .duo .col.good .ch{color:var(--gold)}
+  .duo .col.bad .ch{color:#a85c5c}
+  .duo .col p{font-size:14.5px;margin:0;color:var(--ink2)}
+
+  /* checklist */
+  ol.check{list-style:none;counter-reset:c;margin:18px 0}
+  ol.check li{counter-increment:c;position:relative;padding:11px 0 11px 46px;border-bottom:1px solid var(--line);color:var(--ink2);font-size:15.5px}
+  ol.check li::before{content:counter(c,decimal-leading-zero);position:absolute;left:0;top:11px;font-family:var(--mono);font-size:12px;color:var(--gold);border:1px solid var(--line-gold);border-radius:6px;width:30px;height:26px;display:flex;align-items:center;justify-content:center}
+
+  hr.div{border:none;height:1px;background:var(--line);margin:60px 0 0}
+
+  /* footer */
+  footer{margin-top:90px;padding:60px 0 80px;border-top:1px solid var(--line);text-align:center;position:relative}
+  footer::before{content:"";position:absolute;inset:0;background:radial-gradient(ellipse 50% 100% at 50% 100%,rgba(201,168,76,.10),transparent 70%);pointer-events:none}
+  .brandmark{font-family:var(--serif);font-size:24px;letter-spacing:.04em;color:var(--ink);position:relative}
+  .brandmark b{color:var(--gold)}
+  .slogan{font-family:var(--serif);font-style:italic;font-size:20px;color:var(--gold-bright);margin:14px 0 6px;position:relative}
+  .foot-meta{font-family:var(--mono);font-size:11.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3);margin-top:18px;position:relative}
+
+  @media(max-width:640px){
+    body{font-size:16px}
+    nav.toc ol{grid-template-columns:1fr}
+    .duo{grid-template-columns:1fr}
+    .beat{grid-template-columns:64px 1fr;gap:12px}
+    .sec-num{font-size:32px}
+    header.hero{padding:96px 0 64px}
+  }
+</style>
+</head>
+<body>
+<div id="progress"></div>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="eyebrow">MA Learn · Cinematic AI</div>
+    <h1>Directing<br><em>Seedance 2.0</em></h1>
+    <p class="hero-sub">How to write a cinematic prompt like a director — not a describer. The complete craft guide to text, image, and reference-to-video generation.</p>
+    <div class="thesis">A prompt isn't a description of a picture. It's a shot list. When you write for Seedance 2.0 you wear four hats at once — director, cinematographer, editor, and storyteller.</div>
+  </div>
+</header>
+
+<nav class="toc">
+  <div class="toc-label">The Guide</div>
+  <ol>
+    <li><a href="#what"><span class="n">01</span><span>What Seedance 2.0 can do</span></a></li>
+    <li><a href="#mindset"><span class="n">02</span><span>The director's mindset</span></a></li>
+    <li><a href="#structure"><span class="n">03</span><span>The core cinematic structure</span></a></li>
+    <li><a href="#principles"><span class="n">04</span><span>Six rules that never change</span></a></li>
+    <li><a href="#blocks"><span class="n">05</span><span>The eight blocks, in depth</span></a></li>
+    <li><a href="#timing"><span class="n">06</span><span>Multi-shot & the timed storyboard</span></a></li>
+    <li><a href="#characters"><span class="n">07</span><span>Characters: mapping & naming</span></a></li>
+    <li><a href="#reference"><span class="n">08</span><span>Referencing methods & options</span></a></li>
+    <li><a href="#vocab"><span class="n">09</span><span>The director's vocabulary</span></a></li>
+    <li><a href="#example"><span class="n">10</span><span>A full prompt, assembled</span></a></li>
+    <li><a href="#checklist"><span class="n">11</span><span>The pre-flight checklist</span></a></li>
+  </ol>
+</nav>
+
+<main class="wrap">
+
+  <!-- 01 -->
+  <section id="what">
+    <div class="sec-head"><div class="sec-num">01</div><h2 class="sec-title">What Seedance 2.0 can actually do</h2></div>
+    <p>Before you write a single word, know your instrument. Seedance 2.0 generates video three ways — and it's the third one that separates amateurs from directors.</p>
+    <div class="scroll-x">
+    <table class="tbl">
+      <tr><th>Mode</th><th>You give it</th><th>Best for</th></tr>
+      <tr><td>Text-to-Video <span style="color:var(--ink3)">(T2V)</span></td><td>A written prompt only</td><td>Inventing a scene from scratch</td></tr>
+      <tr><td>Image-to-Video <span style="color:var(--ink3)">(I2V)</span></td><td>A still image + prompt</td><td>Animating an exact frame you already love</td></tr>
+      <tr><td>Reference-to-Video <span style="color:var(--ink3)">(R2V)</span></td><td>Up to 9 images and/or 3 videos + prompt</td><td>Consistency — same face, outfit, product, motion, or style across shots</td></tr>
+    </table>
+    </div>
+    <p>What it's genuinely strong at — lean into these, because the model rewards it:</p>
+    <ul class="clean">
+      <li><strong>Complex instruction following</strong> — action, expression, camera, and lighting honored together in one prompt.</li>
+      <li><strong>Material realism</strong> — natural reflections, grain, fabric, skin, and light. Cinematic CG texture.</li>
+      <li><strong>Professional shot language</strong> — close-ups, orbit shots, bullet time, stable multi-shot sequences.</li>
+      <li><strong>Subject consistency</strong> — identity holds across a clip, with fewer structural errors and visual jumps.</li>
+      <li><strong>Emotional nuance</strong> — real, readable facial expression and emotional flow, not mask-like.</li>
+      <li><strong>Autonomous dialogue & storytelling</strong> — give an outline, and it can arrange characters, lines, and beats.</li>
+      <li><strong>Voice, music & SFX</strong> — distinct character voices, fitting score, sound matched to action.</li>
+    </ul>
+    <div class="note"><div class="nt">Know your limits</div><p>Every clip is <strong>4–15 seconds</strong>. Keep a single prompt to <strong>3–5 shots</strong> — push past that and each shot loses detail. These two numbers shape every decision below.</p></div>
+  </section>
+
+  <!-- 02 -->
+  <section id="mindset">
+    <div class="sec-head"><div class="sec-num">02</div><h2 class="sec-title">The director's mindset</h2></div>
+    <p>Most people write prompts like a tourist describing a postcard: <em>"a beautiful cinematic shot of a woman, moody, atmospheric, 4K."</em> The model gives back exactly what that is — generic.</p>
+    <p>A director doesn't describe a picture. A director <span class="g">specifies a shot</span>. The single most valuable habit you can build:</p>
+    <div class="note"><div class="nt">The one rule under all the others</div><p>Specific beats vague, every time. <em>"Slow dolly-in from a waist shot to a close-up"</em> will always beat <em>"the camera moves closer."</em> The word "cinematic" on its own is lazy — name the shot, the light, the lens, the motion.</p></div>
+    <p>Hold this sentence in your head as you write:</p>
+    <div class="formula"><div class="lbl">The whole craft in one line</div><code>Cinematic prompting = <b>directing</b> + <b>editing</b> + <b>cinematography</b> + <b>storytelling</b>, combined.</code></div>
+    <p>Every block you're about to learn is one of those four hats. Miss a hat, and the shot feels flat.</p>
+  </section>
+
+  <!-- 03 -->
+  <section id="structure">
+    <div class="sec-head"><div class="sec-num">03</div><h2 class="sec-title">The core cinematic structure</h2></div>
+    <p>A strong prompt carries eight blocks, in this order. The model is most sensitive to what comes <strong>first</strong>, so front-load whatever matters most to your shot.</p>
+    <div class="formula"><div class="lbl">The structure</div><code><b>[Scene]</b> + <b>[Subject]</b> + <b>[Action]</b> + <b>[Shot Type]</b> + <b>[Lighting]</b> + <b>[Camera Movement]</b> + <b>[Style / Quality]</b> + <b>[Audio]</b></code></div>
+    <p>Notice the two blocks most people fuse — and shouldn't:</p>
+    <ul class="clean">
+      <li><strong>Shot Type</strong> is <span class="g">composition</span> — what's in the frame (wide, medium, close-up, over-the-shoulder).</li>
+      <li><strong>Camera Movement</strong> is <span class="g">motion</span> — how the camera behaves (dolly, tracking, handheld, orbit).</li>
+    </ul>
+    <p>A medium over-the-shoulder can be locked-off <em>or</em> a slow push-in. Decide both, separately. That's the difference between a snapshot and a shot.</p>
+    <div class="scroll-x">
+    <table class="tbl">
+      <tr><th>Block</th><th>Its job</th><th>Example fragment</th></tr>
+      <tr><td>Scene</td><td>Ground the world</td><td>"A dimly lit jazz bar in 1940s New York"</td></tr>
+      <tr><td>Subject</td><td>Fix the identity</td><td>"a young woman in a red dress, hair loose"</td></tr>
+      <tr><td>Action</td><td>Give it time</td><td>"slowly turns to camera with a knowing smile"</td></tr>
+      <tr><td>Shot Type</td><td>Frame it</td><td>"medium shot, slight low angle"</td></tr>
+      <tr><td>Lighting</td><td>Set the mood</td><td>"warm golden backlight, soft bokeh"</td></tr>
+      <tr><td>Camera Movement</td><td>Add life</td><td>"slow dolly-in to a close-up"</td></tr>
+      <tr><td>Style / Quality</td><td>The finish</td><td>"cinematic, film grain, shallow depth of field"</td></tr>
+      <tr><td>Audio</td><td>Seal immersion</td><td>She whispers: "I've been waiting for you."</td></tr>
+    </table>
+    </div>
+  </section>
+
+  <!-- 04 -->
+  <section id="principles">
+    <div class="sec-head"><div class="sec-num">04</div><h2 class="sec-title">Six rules that never change</h2></div>
+    <ul class="clean">
+      <li><strong>Build simple → complex.</strong> Start lean, add detail, watch what the model does, iterate.</li>
+      <li><strong>Keep the order.</strong> Scene → Subject → Action → Shot → Atmosphere. Structure helps the model parse intent.</li>
+      <li><strong>Front-load the keyword.</strong> The most important element goes at the start of the prompt.</li>
+      <li><strong>Specific over vague.</strong> Name the move, the lens, the light — never settle for "cinematic."</li>
+      <li><strong>No contradictions.</strong> Don't ask for "perfectly still" and "rapid motion" in the same breath.</li>
+      <li><strong>One language per prompt.</strong> Don't mix languages mid-prompt; it confuses the parse.</li>
+    </ul>
+  </section>
+
+  <!-- 05 -->
+  <section id="blocks">
+    <div class="sec-head"><div class="sec-num">05</div><h2 class="sec-title">The eight blocks, in depth</h2></div>
+    <p>Each block has a mental model and the dimensions worth naming. This is where flat prompts become directed ones.</p>
+
+    <h3><span class="pin">▸</span>Scene comes first</h3>
+    <p>It grounds everything that follows. Define <span class="g">location, scale, time of day, weather, and background elements</span>. "A street" is nothing. "A narrow rain-slick alley at blue hour, neon signs bleeding onto wet asphalt, steam rising from a grate" is a world.</p>
+
+    <h3><span class="pin">▸</span>Subject must be concrete</h3>
+    <p>This is your insurance against drift. Define <span class="g">physical traits, clothing, condition, and emotional state</span>. "Condition" is the one people forget — wet, dusty, exhausted, freshly-pressed. It tells the model the story already happening on the body.</p>
+
+    <h3><span class="pin">▸</span>Action creates time</h3>
+    <p>Movement is what gives a clip its duration. Define <span class="g">movement, sequence, interaction, and emotional behavior</span>. For a chain of actions, use chronological connectors — <span class="g">first… then… finally</span> — so the beats link cleanly instead of blurring.</p>
+
+    <h3><span class="pin">▸</span>Shot type controls composition</h3>
+    <p>Name the framing and the viewer's relationship to the subject: extreme wide, wide, medium, close-up, over-the-shoulder. An over-the-shoulder, for instance, instantly defines perspective and tension between two subjects.</p>
+
+    <h3><span class="pin">▸</span>Lighting defines emotion</h3>
+    <p>Light carries mood more than any adjective. Reach for cinematographer's terms — <span class="g">volumetric lighting, rim light, backlight, neon reflections, high contrast</span>. The same face reads tender in soft backlight and dangerous in hard side-light.</p>
+
+    <h3><span class="pin">▸</span>Camera movement creates the cinematic feel</h3>
+    <p>Always specify how the camera behaves: <span class="g">dolly, tracking, pan, tilt, handheld, aerial, POV, or slow motion</span>. A static frame reads like stock footage; a slow push-in reads like cinema.</p>
+
+    <h3><span class="pin">▸</span>Style & quality — the finish</h3>
+    <p>Define <span class="g">realism level, resolution, lens character, and texture</span>. Seedance is stable across a huge range — photorealistic film, Van Gogh impasto, claymation, 1990s VHS, ink wash. Name the register precisely and it will hold it.</p>
+
+    <h3><span class="pin">▸</span>Audio completes the scene</h3>
+    <p>Define <span class="g">ambient sound, sound effects, music, and dialogue</span>. Write dialogue <strong>directly in quotes</strong> — the model matches the voice to the character's described age, gender, and personality. Match SFX to on-screen action: eating earns chewing sounds, a clash earns metal.</p>
+
+    <h3><span class="pin">▸</span>Emotional expression — the soul</h3>
+    <p>Seedance reads emotion close to a real performer. Direct it: <span class="g">facial expression, emotional shifts, body language</span>. "Her composure cracks — the smile holds a second too long, then her eyes give her away" is a performance, not a face.</p>
+
+    <h3><span class="pin">▸</span>Physical realism — name the physics</h3>
+    <p>Stating how things obey physics raises realism more than any "8K" tag. Include <span class="g">gravity, motion, impact, environmental interaction</span> — "the bottle rolls, bounces, hits a step and shatters, balls scattering across the ground" gives the model rules to honor.</p>
+  </section>
+
+  <!-- 06 -->
+  <section id="timing">
+    <div class="sec-head"><div class="sec-num">06</div><h2 class="sec-title">Multi-shot &amp; the timed storyboard</h2></div>
+    <p>To direct more than one shot in a single clip, stop writing prose and start writing a storyboard. Mark each shot with a <span class="g">bracketed time range</span>. One bracket = one shot.</p>
+    <div class="formula"><div class="lbl">The timed-block method</div><code>[0–2s]   <b>[shot type]</b> — <b>[who]</b> — <b>[action]</b>
+[2–4s]   ...
+[4–6s]   ...
+[6–9s]   ...
+[9–12s]  ...
+[12–15s] <b>[climax]</b></code></div>
+    <ul class="clean">
+      <li><strong>Each block is one shot.</strong> Describe who is where, doing what, filmed how.</li>
+      <li><strong>Stay within 3–5 shots</strong> even with fine timestamps — group beats, don't fragment.</li>
+      <li><strong>Uneven intervals are intentional.</strong> Short blocks early (fast cuts), longer holds late, as tension resolves.</li>
+      <li><strong>Name your transitions:</strong> match cut, whip pan, slow-motion impact freeze, smash cut, cut to.</li>
+    </ul>
+    <h3>Why the climax sits at the end</h3>
+    <p>Short-form video is compressed storytelling: <span class="g">introduction → buildup → escalation → climax</span>. Put the payoff — the reveal, the transformation, the hero moment — in the <strong>final block</strong>. Front-load the climax and you kill the watch-through.</p>
+  </section>
+
+  <!-- 07 -->
+  <section id="characters">
+    <div class="sec-head"><div class="sec-num">07</div><h2 class="sec-title">Characters: mapping &amp; naming</h2></div>
+    <p>The moment a clip has more than one character, two techniques keep their identities from bleeding into each other.</p>
+
+    <h3>1 — Map each character to references</h3>
+    <p>Declare a mapping table <em>before</em> your timed blocks. Split each identity into a face and a body reference and bind them explicitly.</p>
+    <div class="formula"><div class="lbl">Character mapping</div><code>Character mapping:
+<b>Character A</b> (role) uses @Image1 (face) + @Image2 (body).
+<b>Character B</b> (role) uses @Image3 (face) + @Image4 (body).
+Never swap identities.</code></div>
+
+    <h3>2 — Name them, and reuse the names</h3>
+    <p>Use <span class="g">stable, numbered proper names</span> and repeat them in every single beat. Generic nouns let the model re-roll a face between shots — that's exactly how identities drift.</p>
+    <div class="duo">
+      <div class="col good"><div class="ch">✓ Correct</div><p>"Ken 1 attacks. Ken 2 blocks."<br>"Ken 1 and Ken 2 face each other. They draw swords."</p></div>
+      <div class="col bad"><div class="ch">✕ Incorrect</div><p>"The man attacks."<br>"Another character responds."</p></div>
+    </div>
+    <p>A named, numbered label referenced consistently anchors the subject across the whole clip. It's the cheapest, most powerful consistency tool you have.</p>
+  </section>
+
+  <!-- 08 -->
+  <section id="reference">
+    <div class="sec-head"><div class="sec-num">08</div><h2 class="sec-title">Referencing methods &amp; options</h2></div>
+    <p>Reference-to-Video is where Seedance becomes a precision tool. You can feed it stills, videos, or both, and tell it exactly what to take from each.</p>
+
+    <h3>What you can feed it</h3>
+    <div class="scroll-x">
+    <table class="tbl">
+      <tr><th>Input</th><th>Limit</th></tr>
+      <tr><td>Images</td><td>up to 9</td></tr>
+      <tr><td>Videos</td><td>up to 3 — each 2–15s, total ≤ 15s</td></tr>
+      <tr><td>Audio</td><td>described in the prompt (not uploaded)</td></tr>
+      <tr><td>Generated length</td><td>4–15s, your choice</td></tr>
+    </table>
+    </div>
+    <p>You must supply <strong>at least one</strong> reference of any kind. Two controls make references precise:</p>
+    <ul class="clean">
+      <li><strong>Tag your subjects</strong> with <span class="g">[@name]</span> — e.g. <code style="font-family:var(--mono);color:var(--gold-bright)">[@lady rabbit]</code> — so the prompt's actions bind to the right element.</li>
+      <li><strong>Assign each image a role</strong> in plain words: <em>"the first image is the character reference, the second is the scene reference."</em> This is the foundation of every multi-reference shot.</li>
+    </ul>
+
+    <h3>The five referencing capabilities</h3>
+    <div class="scroll-x">
+    <table class="tbl">
+      <tr><th>Capability</th><th>What it does</th><th>The core move</th></tr>
+      <tr><td>Image → Video</td><td>1–9 stills become a moving clip, keeping their look &amp; style</td><td>Describe the motion; <span style="color:var(--gold-bright)">[@tag]</span> subjects; assign each image's role</td></tr>
+      <tr><td>Video → Video</td><td>1–3 clips drive a new one, keeping subject / action / rhythm / composition</td><td>State which attributes to keep; add a still as an appearance anchor if needed</td></tr>
+      <tr><td>Video Editing</td><td>Change the picture or audio of an input clip by instruction</td><td>Say <em>what to change</em> and <em>to what</em> — swap subject, background, lighting, translate text, remove objects</td></tr>
+      <tr><td>Video Migration</td><td>Transfer a quality — motion, style, edit rhythm, camera work — onto new content</td><td>"the [camera work / style / editing] of the reference video" + your target</td></tr>
+      <tr><td>Video Extension</td><td>Extend a clip forward or backward (up to 30s total)</td><td>Describe the new direction, connected to the first/last frame, with key action beats</td></tr>
+    </table>
+    </div>
+
+    <h3>First &amp; last frames</h3>
+    <p>Hand Seedance an opening still and a closing still, and it interpolates the journey between them. The secret is in the prompt: <span class="g">describe the motion logic of the in-between</span>. "From the still standing pose in the first image, gather energy and transition into the airborne leap of the second" — the clearer that bridge, the smoother the result.</p>
+
+    <div class="note"><div class="nt">Director's note</div><p>A practical pattern for consistency: a single approved hero still as the <strong>appearance anchor</strong>, plus role-assigned images for face, wardrobe, and any product — each one named in the prompt for exactly what to lock from it. Motion you want from a reference clip belongs in your <em>words</em> (camera direction + per-beat timing), described rather than only shown.</p></div>
+  </section>
+
+  <!-- 09 -->
+  <section id="vocab">
+    <div class="sec-head"><div class="sec-num">09</div><h2 class="sec-title">The director's vocabulary</h2></div>
+    <p>Reach for these instead of "cinematic." The model knows them precisely.</p>
+    <div class="bank"><div class="bank-h">Camera movement</div><div class="chips">
+      <span class="chip">tracking shot</span><span class="chip">dolly in / out</span><span class="chip">pan</span><span class="chip">tilt</span><span class="chip">zoom</span><span class="chip">crane</span><span class="chip">aerial</span><span class="chip">handheld</span><span class="chip">bullet time</span><span class="chip">first-person POV</span><span class="chip">orbit</span><span class="chip">slow motion</span>
+    </div></div>
+    <div class="bank"><div class="bank-h">Shot type</div><div class="chips">
+      <span class="chip">extreme wide</span><span class="chip">wide / full shot</span><span class="chip">medium shot</span><span class="chip">close-up</span><span class="chip">extreme close-up</span><span class="chip">over-the-shoulder</span>
+    </div></div>
+    <div class="bank"><div class="bank-h">Light &amp; atmosphere</div><div class="chips">
+      <span class="chip">cinematic lighting</span><span class="chip">volumetric light</span><span class="chip">Tyndall effect</span><span class="chip">rim light</span><span class="chip">backlight</span><span class="chip">neon reflections</span><span class="chip">high contrast</span><span class="chip">golden hour</span><span class="chip">soft bokeh</span>
+    </div></div>
+    <div class="bank"><div class="bank-h">Image quality</div><div class="chips">
+      <span class="chip">4K</span><span class="chip">8K</span><span class="chip">photorealistic</span><span class="chip">shallow depth of field</span><span class="chip">film grain</span><span class="chip">depth of field</span>
+    </div></div>
+    <div class="bank"><div class="bank-h">Style registers</div><div class="chips">
+      <span class="chip">film noir</span><span class="chip">documentary</span><span class="chip">Wes Anderson symmetry</span><span class="chip">Japanese animation</span><span class="chip">claymation</span><span class="chip">oil-painting impasto</span><span class="chip">watercolor</span><span class="chip">ink wash</span><span class="chip">1980s synthwave</span><span class="chip">1990s VHS</span><span class="chip">Super 8</span><span class="chip">cyberpunk</span><span class="chip">miniature model</span>
+    </div></div>
+  </section>
+
+  <!-- 10 -->
+  <section id="example">
+    <div class="sec-head"><div class="sec-num">10</div><h2 class="sec-title">A full prompt, assembled</h2></div>
+    <p>Here's everything working together — a single continuous shot first, then a multi-shot piece with the timed storyboard and character mapping.</p>
+
+    <h3>Example A — one continuous shot</h3>
+    <div class="script">
+      <div class="scr-h"><span>Single shot · ~6s</span><span>I2V or T2V</span></div>
+      <div class="preamble">A woman in a flowing emerald silk dress stands at the edge of a rooftop terrace at <b>golden hour</b>, a soft city skyline behind her. She slowly turns toward camera, hair lifting in the warm wind, a quiet knowing smile forming. <b>Medium shot</b> easing into a <b>slow dolly-in to a close-up</b>. <b>Warm golden backlight</b>, soft bokeh, a gentle lens flare. Cinematic, fine film grain, shallow depth of field, 4K. Ambient: soft wind, a distant city hum.</div>
+      <div style="font-family:var(--mono);font-size:12.5px;color:var(--ink3);line-height:1.7">Scene ✓ Subject ✓ Action ✓ Shot type ✓ Camera ✓ Lighting ✓ Style ✓ Audio ✓</div>
+    </div>
+
+    <h3>Example B — multi-shot with characters</h3>
+    <div class="script">
+      <div class="scr-h"><span>Multi-shot · 15s</span><span>R2V · 4 image refs</span></div>
+      <div class="preamble">
+        <b>Character mapping:</b> Mara (the duelist) uses @Image1 (face) + @Image2 (body). Kai (the rival) uses @Image3 (face) + @Image4 (body). Never swap identities.<br>
+        <b>Style:</b> rain-soaked neon city, high contrast, cinematic VFX, 4K. <b>Lighting:</b> cold neon rim light, wet reflections.
+      </div>
+      <div class="beat"><div class="ts">[0–2s]</div><div class="bd">Wide establishing — Mara steps into frame on a rooftop, coat edge moving in the wind. Slow dolly-in.</div></div>
+      <div class="beat"><div class="ts">[2–5s]</div><div class="bd">Medium two-shot — Mara and Kai face each other across the wet rooftop; they draw their blades. → Whip pan</div></div>
+      <div class="beat"><div class="ts">[5–9s]</div><div class="bd">Over-the-shoulder on Mara — first clash, sparks scatter, blades recoil with real weight. Handheld shake.</div></div>
+      <div class="beat"><div class="ts">[9–12s]</div><div class="bd">Tracking — Kai counters, debris bursts; camera orbits the impact. → Slow-motion freeze</div></div>
+      <div class="beat climax"><div class="ts">[12–15s]</div><div class="bd">CLIMAX — extreme close-up of Mara's eyes, neon reflected in them; her composure settles into resolve. Slow push-in, cut to black.</div></div>
+    </div>
+    <div class="note"><div class="nt">Read it back</div><p>Every beat names <strong>who</strong> (by proper name), the <strong>shot type</strong>, the <strong>action</strong>, the <strong>camera</strong>, and a <strong>transition</strong> — and the payoff lands in the final block. That's a directed clip, not a described one.</p></div>
+  </section>
+
+  <!-- 11 -->
+  <section id="checklist">
+    <div class="sec-head"><div class="sec-num">11</div><h2 class="sec-title">The pre-flight checklist</h2></div>
+    <p>Run this before you generate. Twenty seconds here saves a re-roll later.</p>
+    <ol class="check">
+      <li>Which mode — T2V, I2V, or R2V? (R2V if you have references.)</li>
+      <li>Front-load the most important block; keep the Scene → Subject → Action → Shot → Light → Camera → Style → Audio order.</li>
+      <li>Name <strong>shot type and camera movement separately</strong> — never "cinematic" alone.</li>
+      <li>Scene carries scale + weather; Subject carries condition + emotional state.</li>
+      <li>Multiple actions? Use <em>first… then… finally</em>.</li>
+      <li>Multi-shot? Use bracketed timed blocks, ≤ 5 shots, climax in the final block.</li>
+      <li>More than one character? Map @face + @body and use numbered proper names every beat.</li>
+      <li>State the physics — gravity, impact, environmental interaction.</li>
+      <li>Using references? Assign each a role and [@tag] the subjects.</li>
+      <li>Audio: dialogue in quotes, SFX matched to the action.</li>
+      <li>No contradictions; one language throughout.</li>
+      <li>Read it back as a shot list — would a working director understand it?</li>
+    </ol>
+    <div class="note"><div class="nt">The takeaway</div><p>You're never describing a picture. You're handing a crew a shot list. Write it the way a director would speak it — and Seedance 2.0 will shoot it.</p></div>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="brandmark">MA<b>·</b>LEARN</div>
+    <div class="slogan">صناعة الإلهام</div>
+    <div class="foot-meta">Cinematic AI · Directing Seedance 2.0 · A Majid Angawi guide</div>
+  </div>
+</footer>
+
+<script>
+  // reading progress
+  const bar=document.getElementById('progress');
+  const onScroll=()=>{const h=document.documentElement;const max=h.scrollHeight-h.clientHeight;bar.style.width=(max>0?(h.scrollTop/max*100):0)+'%';};
+  document.addEventListener('scroll',onScroll,{passive:true});onScroll();
+</script>
+</body>
+</html>
