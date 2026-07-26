@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الذكاء الاصطناعي الإبداعي لمصممات الأزياء — MA Learn × Raffles</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  @font-face { font-family:'Gumela'; src:url('assets/brand/gumela-arabic-bold.otf') format('opentype'); font-weight:700; font-display:swap; }
+  @font-face { font-family:'Gumela'; src:url('assets/brand/gumela-arabic-regular.otf') format('opentype'); font-weight:400; font-display:swap; }
+  @font-face { font-family:'Gumela'; src:url('assets/brand/gumela-arabic-light.otf') format('opentype'); font-weight:300; font-display:swap; }
+
+  :root{
+    --bg:#080808; --card:#0E0E0E; --card2:#111; --border:#1C1C1C;
+    --gold:#C9A84C; --gold-lum:#E8D08A; --ivory:#F5F0E8; --silver:#B7B2A8; --grey:#6d6a63;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--bg); color:var(--ivory);
+    font-family:'Gumela','Cairo',sans-serif;
+    -webkit-font-smoothing:antialiased; line-height:1.85;
+    background-image:radial-gradient(ellipse 80% 50% at 50% -10%, rgba(201,168,76,0.07), transparent 70%);
+  }
+  /* language switching */
+  #en{display:none;}
+  body[data-lang="en"] #ar{display:none;}
+  body[data-lang="en"] #en{display:block;}
+  body[data-lang="en"]{direction:ltr;}
+  #en{ font-family:'Cairo',sans-serif; }
+
+  .wrap{max-width:840px;margin:0 auto;padding:0 26px;}
+  main{padding-bottom:40px;}
+
+  /* top bar */
+  .topbar{position:sticky;top:0;z-index:30;background:rgba(8,8,8,0.86);backdrop-filter:blur(10px);border-bottom:1px solid var(--border);}
+  .topbar-in{max-width:840px;margin:0 auto;padding:14px 26px;display:flex;align-items:center;justify-content:space-between;}
+  .brand{font-family:'Gumela','Cairo',sans-serif;font-weight:700;letter-spacing:.14em;font-size:.86rem;color:var(--gold);}
+  .langtoggle{display:flex;gap:2px;border:1px solid var(--border);border-radius:2px;overflow:hidden;}
+  .langtoggle button{background:transparent;border:none;color:var(--grey);font-family:'Cairo',sans-serif;font-weight:600;font-size:.72rem;letter-spacing:.06em;padding:7px 14px;cursor:pointer;transition:all .2s;}
+  .langtoggle button.active{background:var(--gold);color:#0a0a0a;}
+
+  /* hero */
+  .hero{padding:78px 0 54px;text-align:center;border-bottom:1px solid var(--border);}
+  .eyebrow{font-family:'Cairo',sans-serif;font-weight:600;font-size:.72rem;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);margin-bottom:26px;}
+  #ar .eyebrow{letter-spacing:.16em;}
+  h1{font-weight:700;line-height:1.25;font-size:clamp(1.8rem,5vw,3rem);color:var(--ivory);margin-bottom:20px;}
+  #en h1{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(2.1rem,5.4vw,3.4rem);letter-spacing:.01em;}
+  .hero .sub{color:var(--silver);font-size:1.02rem;max-width:600px;margin:0 auto 30px;}
+  .hero .prep{font-size:.82rem;color:var(--grey);letter-spacing:.02em;}
+  .hero .prep b{color:var(--gold-lum);font-weight:600;}
+
+  /* sections */
+  section{padding:52px 0;border-bottom:1px solid var(--border);}
+  .kicker{font-family:'Cairo',sans-serif;font-weight:600;font-size:.7rem;letter-spacing:.26em;text-transform:uppercase;color:var(--gold);margin-bottom:20px;display:flex;align-items:center;gap:12px;}
+  #ar .kicker{letter-spacing:.1em;}
+  .kicker::after{content:"";flex:1;height:1px;background:linear-gradient(to right,var(--border),transparent);}
+  body[data-lang="en"] .kicker::after{background:linear-gradient(to right,var(--border),transparent);}
+  h2{font-weight:700;font-size:clamp(1.35rem,3.4vw,1.9rem);color:var(--ivory);margin-bottom:22px;line-height:1.35;}
+  #en h2{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:clamp(1.6rem,3.8vw,2.2rem);}
+  p{color:var(--silver);font-size:1.02rem;margin-bottom:16px;}
+  p strong,li strong{color:var(--ivory);font-weight:600;}
+  em{color:var(--gold-lum);font-style:italic;}
+
+  /* differentiator / numbered cards */
+  .cards{display:grid;gap:16px;margin-top:26px;}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:4px;padding:24px 26px;position:relative;}
+  .card .n{font-family:'Cormorant Garamond',serif;font-size:1.5rem;color:var(--gold);font-weight:600;margin-bottom:6px;}
+  .card p{margin-bottom:0;font-size:.98rem;}
+
+  /* format meta */
+  .meta{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border);border-radius:4px;overflow:hidden;margin-top:8px;}
+  .meta div{background:var(--card);padding:20px 24px;}
+  .meta .lbl{font-family:'Cairo',sans-serif;font-size:.68rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin-bottom:6px;}
+  #ar .meta .lbl{letter-spacing:.06em;}
+  .meta .val{color:var(--ivory);font-size:.96rem;line-height:1.6;}
+
+  /* day journey */
+  .day{border-top:1px solid var(--border);padding:28px 0;display:grid;grid-template-columns:auto 1fr;gap:26px;align-items:start;}
+  .day:last-child{border-bottom:1px solid var(--border);}
+  .day .dnum{font-family:'Cormorant Garamond',serif;font-size:2.7rem;line-height:1;color:var(--gold);font-weight:500;opacity:.85;min-width:54px;}
+  .day .dtitle{font-weight:700;color:var(--ivory);font-size:1.12rem;margin-bottom:8px;}
+  #en .day .dtitle{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.3rem;}
+  .day p{margin-bottom:0;font-size:.97rem;}
+
+  /* lists */
+  ul.clean,ol.clean{list-style:none;margin-top:8px;}
+  ul.clean li,ol.clean li{position:relative;padding:11px 0;border-bottom:1px solid var(--border);color:var(--silver);font-size:1rem;padding-inline-start:26px;}
+  ul.clean li::before{content:"";position:absolute;inset-inline-start:0;top:20px;width:7px;height:7px;background:var(--gold);border-radius:50%;}
+  ol.clean{counter-reset:c;}
+  ol.clean li{counter-increment:c;}
+  ol.clean li::before{content:counter(c);position:absolute;inset-inline-start:0;top:11px;color:var(--gold);font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.05rem;}
+
+  /* instructor */
+  .instructor{background:var(--card);border:1px solid var(--border);border-inline-start:2px solid var(--gold);border-radius:4px;padding:28px 30px;}
+  .instructor-head{display:flex;gap:24px;align-items:flex-start;margin-bottom:6px;}
+  .instructor-photo{width:118px;height:148px;object-fit:cover;border-radius:3px;filter:grayscale(1);flex-shrink:0;border:1px solid var(--border);}
+  .instructor .name{color:var(--gold-lum);font-weight:700;font-size:1.1rem;margin-bottom:12px;}
+  #en .instructor .name{font-family:'Cormorant Garamond',serif;font-weight:600;font-size:1.35rem;}
+  .instructor p{margin-bottom:0;font-size:.98rem;}
+  .subhead{font-family:'Cairo',sans-serif;font-size:.66rem;letter-spacing:.2em;text-transform:uppercase;color:var(--gold);margin:24px 0 12px;}
+  #ar .subhead{letter-spacing:.06em;}
+  .work-gallery{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;}
+  .work-tile{aspect-ratio:3/4;background:var(--card2);border:1px solid var(--border);border-radius:3px;display:flex;align-items:center;justify-content:center;color:var(--grey);font-size:.6rem;text-align:center;overflow:hidden;}
+  .work-tile img{width:100%;height:100%;object-fit:cover;}
+  .clients{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;align-items:center;}
+  .clients .ph{color:var(--grey);font-size:.82rem;font-style:italic;}
+  .logo-chip{background:#F2ECE1;border-radius:4px;height:58px;display:flex;align-items:center;justify-content:center;padding:11px 15px;}
+  .logo-chip img{max-width:100%;max-height:100%;object-fit:contain;}
+  .mark{color:var(--gold);font-weight:700;}
+  .mark-note{font-size:.8rem;color:var(--grey);margin-top:10px;line-height:1.65;}
+  @media(max-width:560px){ .instructor-head{flex-direction:column;} .work-gallery{grid-template-columns:repeat(2,1fr);} .clients{grid-template-columns:repeat(3,1fr);} }
+
+  /* investment note */
+  .invest-note{color:var(--gold-lum);font-size:1.02rem;border-top:1px solid var(--border);padding-top:18px;margin-top:6px;}
+
+  /* cta */
+  .cta{text-align:center;padding:56px 0 20px;border-bottom:none;}
+  .cta .contact{margin-top:22px;font-size:.95rem;color:var(--silver);}
+  .cta .contact .ph{color:var(--grey);font-size:.85rem;}
+
+  footer{padding:34px 26px 46px;text-align:center;border-top:1px solid var(--border);}
+  footer .fbrand{font-family:'Gumela','Cairo',sans-serif;font-weight:700;letter-spacing:.14em;color:var(--gold);font-size:.82rem;margin-bottom:8px;}
+  footer .fnote{color:var(--grey);font-size:.72rem;letter-spacing:.04em;}
+
+  @media(max-width:560px){
+    .meta{grid-template-columns:1fr;}
+    .day{grid-template-columns:1fr;gap:8px;}
+    .day .dnum{font-size:2rem;}
+    .hero{padding:56px 0 44px;}
+  }
+</style>
+</head>
+<body data-lang="ar">
+
+<div class="topbar">
+  <div class="topbar-in">
+    <div class="brand">MA&nbsp;LEARN</div>
+    <div class="langtoggle">
+      <button id="btn-ar" class="active" onclick="setLang('ar')">العربية</button>
+      <button id="btn-en" onclick="setLang('en')">English</button>
+    </div>
+  </div>
+</div>
+
+<!-- ================= ARABIC ================= -->
+<main id="ar" dir="rtl">
+  <div class="hero">
+    <div class="wrap">
+      <div class="eyebrow">مقترح ورشة عملية</div>
+      <h1>الذكاء الاصطناعي الإبداعي لمصممات الأزياء</h1>
+      <p class="sub">مُعدّ لصالح Raffles Design Institute، بالتعاون مع جمعية الأزياء</p>
+      <p class="prep">مُقدَّم من <b>MA Learn</b> — ماجد عنقاوي، مؤسِّس ومستشار متخصص في الذكاء الاصطناعي الإبداعي</p>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <section>
+      <div class="kicker">الفرصة</div>
+      <p>الأزياء اليوم تُكسب أو تُخسر عند الصورة. المجموعة تعيش كصورة فوتوغرافية قبل أن تصبح قطعةً على الجسد بوقتٍ طويل — وأقوى دور الأزياء، محليًا وعالميًا، صارت تبني هذه الصور بالذكاء الاصطناعي. بالنسبة للمصمِّمة، لم تعد الفجوة في الموهبة، بل في المسافة بين الذوق الذي تملكه أصلًا والصور التي تقدر فعلًا على إنتاجها بنفسها.</p>
+      <p>هذه الورشة تُغلق تلك المسافة. في ثلاثة أيام مركّزة، تتعلّم مصمِّماتكم كيف يقُدن الذكاء الاصطناعي وكأنه استوديو خاص بهنّ — لإنتاج صور تحريرية ولوك بوك متكامل بمعيار احترافي، وبأسلوبهنّ الخاص المميّز، دون أي عمل تقني على الإطلاق.</p>
+    </section>
+
+    <section>
+      <div class="kicker">لمن هذه الورشة</div>
+      <p>قاعة تجمع بين طالبات تصميم الأزياء في Raffles والمصمِّمات الممارِسات من جمعية الأزياء. البرنامج يُقدَّم بمعيار احترافي، ومُصمَّم بتدرّج مدروس بحيث تواكب الطالبات الأحدث خبرةً، ويخرجن بالعمل النهائي نفسه الذي تخرج به البقية. لا يتطلّب أي خبرة سابقة في الذكاء الاصطناعي ولا أي خلفية تقنية.</p>
+    </section>
+
+    <section>
+      <div class="kicker">ما الذي يميّز هذه الورشة</div>
+      <p>معظم «ورش الذكاء الاصطناعي» تُعلّم البرمجيات وتنتج صورًا نمطية بلا روح. هذه الورشة تقلب المعادلة. فهي تُعلّم <strong>الإدارة الإبداعية أولًا</strong> — كيف تبني المصمِّمة العالم البصري لعلامتها — وتستخدم الذكاء الاصطناعي كأداة تُحقّق ذلك. والنتيجة صورٌ تحمل بصمة المصمِّمة وحدها، لا تشبه ذكاءً اصطناعيًا لأحدٍ غيرها.</p>
+      <p>ثلاثة خيارات مقصودة تُبقيها بلا أي تعقيد تقني:</p>
+      <div class="cards">
+        <div class="card"><div class="n">١</div><p><strong>مساعِد ذكاء اصطناعي إبداعي مُخصّص.</strong> كل مشارِكة تعمل من خلال مساعِد مبنيّ لهذا الغرض. تصف رؤيتها بالعربية أو الإنجليزية ببساطة، وهو يتكفّل بكل التعقيد خلف الكواليس. بلا أوامر برمجية، وبلا صياغة تقنية، إطلاقًا.</p></div>
+        <div class="card"><div class="n">٢</div><p><strong>جاهزة للتشغيل مباشرةً.</strong> نبني تدفّقات عمل تناسب معظم الاحتياجات ونُسلّمها كقوالب Weavy جاهزة. تشتغل عليها المشارِكة مباشرةً وتبدأ الإنتاج — دون أن تبدأ أبدًا من شاشة فارغة.</p></div>
+        <div class="card"><div class="n">٣</div><p><strong>كل ما تصنعه يبقى ملكها.</strong> كل مشارِكة تخرج وهي تملك الأدوات والإعدادات التي استخدمتها. وما تصنعه داخل القاعة، تقدر على إعادة إنتاجه بنفسها في اليوم التالي. هذا هو الفرق بين ورشة تُمتِع وورشة تُغيّر طريقة عملها.</p></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="kicker">الصيغة</div>
+      <div class="meta">
+        <div><div class="lbl">المدة</div><div class="val">٣ أيام، ٣ ساعات في اليوم، حضوريًا في Raffles</div></div>
+        <div><div class="lbl">التقديم</div><div class="val">بالعربية، مع ظهور بعض المصطلحات التقنية بالإنجليزية</div></div>
+        <div><div class="lbl">حجم المجموعة</div><div class="val">نوصي بألا تتجاوز كل دفعة ٢٠–٢٥ مشارِكة حفاظًا على جودة التطبيق</div></div>
+        <div><div class="lbl">الأسلوب</div><div class="val">التطبيق أولًا — معظم كل يوم للإنتاج الفعلي — عبر تنفيذ قائم على قوالب جاهزة يذلّل العقبات التقنية</div></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="kicker">رحلة الأيام الثلاثة</div>
+      <p>على مدى الأيام الثلاثة، تبني كل مشارِكة مشروعًا ختاميًا تراكميًا واحدًا: حملة أزياء مصغّرة متكاملة بأسلوبها الخاص.</p>
+      <div class="day"><div class="dnum">١</div><div><div class="dtitle">اكتشفي أسلوبكِ</div><p>عقلية المديرة الإبداعية؛ واكتشاف بصمتها البصرية الخاصة والتعبير عنها؛ ثم توليد أولى صورها للأزياء. تخرج بلوحة مفاهيم، وبيان لروح العلامة، وأولى إطاراتها الجمالية.</p></div></div>
+      <div class="day"><div class="dnum">٢</div><div><div class="dtitle">ابني مجموعتكِ</div><p>لغة الإدارة الفنية — القوام واللون والملمس والتنسيق والإضاءة — وحِرفة الاتساق الجوهرية: الحفاظ على أسلوب واحد عبر مجموعة كاملة. تخرج بمجموعة متناسقة من الإطلالات المميّزة.</p></div></div>
+      <div class="day"><div class="dnum">٣</div><div><div class="dtitle">اللوك بوك والصورة التحريرية والعرض الختامي</div><p>تحويل الإطلالات إلى لوك بوك مصقول وصورة تحريرية رئيسية، مع نصوص حملة عربية مطابقة — صورٌ جاهزة للنشر في اليوم نفسه. تُختتم الورشة بعرضٍ جماعي لأعمال الجميع، وتسليم الشهادات وحقيبة الأدوات التي تأخذها كل مشارِكة معها.</p></div></div>
+    </section>
+
+    <section>
+      <div class="kicker">ماذا تخرج به كل مشارِكة</div>
+      <ul class="clean">
+        <li><strong>حملة مصغّرة متكاملة</strong> بأسلوبها الخاص: لوحة مود بورد، وإطلالات مميّزة، ولوك بوك، وصورة تحريرية رئيسية، ونصوص حملة عربية.</li>
+        <li><strong>حقيبة أدوات الإدارة الإبداعية بالذكاء الاصطناعي</strong> — المساعِد المُخصّص وقوالب Weavy الجاهزة، ملكها تحتفظ بها وتعيد استخدامها.</li>
+        <li><strong>شهادة حضور مشتركة العلامة</strong> بين Raffles و MA Learn.</li>
+      </ul>
+    </section>
+
+    <section>
+      <div class="kicker">مخرجات التعلّم</div>
+      <p>بنهاية البرنامج، ستكون كل مشارِكة قادرة على:</p>
+      <ol class="clean">
+        <li>التعبير عن الهوية البصرية لعلامة ما وترجمتها إلى موجز إبداعي واضح.</li>
+        <li>توليد مجموعة متناسقة من صور الأزياء بمستوى تحريري، تحمل بصمتها وحدها.</li>
+        <li>بناء لوك بوك يقدّم المجموعة للمشترين والعملاء.</li>
+        <li>إنتاج صور تحريرية وحملات ترفع من طريقة تلقّي العلامة، مع نصوص عربية مطابقة.</li>
+        <li>إعادة إنتاج العملية كاملةً باستقلالية باستخدام حقيبة الأدوات التي تحتفظ بها.</li>
+      </ol>
+      <p style="margin-top:18px;">التقييم قائم على أعمال المشارِكة — فالحملة النهائية هي الدليل على الكفاءة. لا توجد اختبارات.</p>
+    </section>
+
+    <section>
+      <div class="kicker">المُدرِّب</div>
+      <div class="instructor">
+        <div class="instructor-head">
+          <img class="instructor-photo" src="assets/brand/profile.jpg" alt="ماجد عنقاوي">
+          <div>
+            <div class="name">ماجد عنقاوي — مؤسِّس ومستشار متخصص في الذكاء الاصطناعي الإبداعي · مؤسِّس MA Learn و MA Studio</div>
+            <p>ستة عشر عامًا في المجال الإبداعي مصوِّرًا للأزياء ومديرًا إبداعيًا قبل أن ينتقل إلى الذكاء الاصطناعي، حيث يبني ويقدّم الاستشارات اليوم. من خلال MA Learn يساعد المبدعين والأعمال الإبداعية على الازدهار بالذكاء الاصطناعي، وهو مؤسِّس لثلاث شركات وموضع ثقة شركات محليًا وعالميًا.</p>
+          </div>
+        </div>
+        <div class="subhead">أعمال مختارة</div>
+        <div class="work-gallery">
+          <div class="work-tile"><img src="assets/work/c1.jpg" alt=""></div>
+          <div class="work-tile"><img src="assets/work/c3.jpg" alt=""></div>
+          <div class="work-tile"><img src="assets/work/c5.jpg" alt=""></div>
+          <div class="work-tile"><img src="assets/work/mint.jpg" alt=""></div>
+        </div>
+        <div class="subhead">موضع ثقة</div>
+        <div class="clients">
+          <div class="logo-chip"><img src="assets/clients/dior.png" alt="Dior"></div>
+          <div class="logo-chip"><img src="assets/clients/gucci.png" alt="Gucci"></div>
+          <div class="logo-chip"><img src="assets/clients/prada.svg" alt="Prada"></div>
+          <div class="logo-chip"><img src="assets/clients/chopard.png" alt="Chopard"></div>
+          <div class="logo-chip"><img src="assets/clients/vogue-arabia.png" alt="Vogue Arabia"></div>
+          <div class="logo-chip"><img src="assets/clients/coach.png" alt="Coach"></div>
+          <div class="logo-chip"><img src="assets/clients/hm.png" alt="H&amp;M"></div>
+          <div class="logo-chip"><img src="assets/clients/femi9.png" alt="Femi9"></div>
+          <div class="logo-chip"><img src="assets/clients/farsi.webp" alt="Farsi"></div>
+          <div class="logo-chip"><img src="assets/clients/qilada.png" alt="Qilada"></div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="kicker">ما الذي نحتاجه من Raffles</div>
+      <p>لضمان جودة التطبيق العملي، نطلب من Raffles تأكيد التالي:</p>
+      <ol class="clean">
+        <li>قاعة دراسية للدفعة، مزوّدة بجهاز عرض أو شاشة كبيرة وإنترنت موثوق.</li>
+        <li>أن تكون كل مشارِكة على جهاز الحاسوب المحمول الخاص بها للعمل الإبداعي.</li>
+        <li>الوصول إلى حزمة أدوات بسيطة خلال فترة الورشة — Claude و Figma Weave و Gemini. توفّر MA Learn لكل مشارِكة شهرًا مجانيًا من Figma Weave، و Gemini مجاني، و Claude اشتراك شهري بسيط (نحو ٢٠ دولارًا). وتتكفّل MA Learn بالإعداد بالكامل فلا تتحمّل المشارِكة أي إعداد.</li>
+        <li>ثلاثة أيام ضمن الفترة المقترحة <strong>٣٠ أغسطس – ٣ سبتمبر ٢٠٢٦</strong> (تُحدَّد التواريخ النهائية بما يناسب Raffles).</li>
+        <li>قائمة نهائية بالمشارِكات، مع توزيع تقريبي بين الطالبات والمصمِّمات الممارِسات، حتى نُعايِر القاعة.</li>
+      </ol>
+    </section>
+
+    <section>
+      <div class="kicker">الشهادة</div>
+      <p>شهادة حضور مشتركة العلامة بين <strong>Raffles و MA Learn</strong>، تُوثّق إتمام المشارِكة للورشة.<span class="mark">*</span></p>
+      <p class="mark-note">*لا تُعدّ MA Learn جهة اعتماد رسمية، لذا فهي شهادة حضور لا شهادة معتمدة رسميًا. وأي اعتماد رسمي يصدر من Raffles. وتفاصيل الشهادة قابلة للنقاش.</p>
+    </section>
+
+    <section>
+      <div class="kicker">الاستثمار</div>
+      <p>رسوم برنامج موحّدة واحدة تغطّي الالتزام كاملًا: تصميم المنهج، والتقديم الحضوري، وحقيبة أدوات الإدارة الإبداعية بالذكاء الاصطناعي التي تأخذها كل مشارِكة معها، والشهادة المشتركة العلامة.</p>
+      <p class="invest-note">تُحدَّد رسوم البرنامج وتُناقَش مباشرةً مع Raffles، وتُصمَّم بما يتناسب مع حجم الدفعة النهائي ونطاق البرنامج.</p>
+    </section>
+
+    <div class="cta">
+      <div class="kicker" style="justify-content:center;">الخطوات التالية</div>
+      <p style="max-width:620px;margin:0 auto;">يسعدنا ترتيب مكالمة قصيرة لتأكيد التواريخ وحجم الدفعة وأي تعديلات تودّ Raffles إدخالها على محاور البرنامج. وعند التأكيد، نُجهّز حقيبة أدوات الذكاء الاصطناعي والمواد المُصمَّمة لدفعتكم، ونثبّت الجدول الزمني.</p>
+      <div class="contact"><strong style="color:var(--gold-lum);">للتواصل:</strong> ماجد عنقاوي · MA Learn<br><span dir="ltr">majid@malearnsa.com · +966 56 044 0113</span></div>
+    </div>
+  </div>
+</main>
+
+<!-- ================= ENGLISH ================= -->
+<main id="en" dir="ltr">
+  <div class="hero">
+    <div class="wrap">
+      <div class="eyebrow">A Practical Workshop Proposal</div>
+      <h1>Creative AI for Fashion Designers</h1>
+      <p class="sub">Prepared for Raffles Design Institute, in collaboration with the Fashion Association</p>
+      <p class="prep">Prepared by <b>MA Learn</b> — Majid Angawi, Creative AI Founder &amp; Advisor</p>
+    </div>
+  </div>
+
+  <div class="wrap">
+    <section>
+      <div class="kicker">The Opportunity</div>
+      <p>Fashion today is won or lost on the image. A collection lives as a photograph long before it becomes a garment on a body — and the strongest houses, locally and globally, now build those images with AI. For a designer, the gap is no longer talent. It is the distance between the taste she already has and the visuals she can actually produce on her own.</p>
+      <p>This workshop closes that distance. In three focused days, your designers learn to direct AI as though it were a personal studio — producing editorial imagery and complete lookbooks at a professional standard, in their own signature aesthetic, without a single line of technical work.</p>
+    </section>
+
+    <section>
+      <div class="kicker">Who It Is For</div>
+      <p>A mixed room of Raffles fashion-design students and practicing designers from the Fashion Association. The program is taught to a professional standard and carefully scaffolded so that newer students keep pace and leave with the same finished work as everyone else. No prior AI experience and no technical background are required.</p>
+    </section>
+
+    <section>
+      <div class="kicker">What Makes This Different</div>
+      <p>Most "AI workshops" teach software and produce generic, soulless images. This one inverts that. It teaches <strong>creative direction first</strong> — how a designer builds a brand's visual world — and treats AI as the instrument that brings it to life. The result is imagery that is unmistakably the designer's own, not anyone else's AI.</p>
+      <p>Three deliberate choices keep it entirely non-technical:</p>
+      <div class="cards">
+        <div class="card"><div class="n">1</div><p><strong>A custom AI creative assistant.</strong> Each participant works through a purpose-built assistant. She describes her vision in plain Arabic or English, and it handles all the complexity behind the scenes. No prompts, no syntax, ever.</p></div>
+        <div class="card"><div class="n">2</div><p><strong>Ready-made, plug-and-play.</strong> We build workflows that fit most needs and deliver them as ready-made Weavy templates. Participants plug in and create — they never begin from a blank screen.</p></div>
+        <div class="card"><div class="n">3</div><p><strong>She keeps everything.</strong> Every participant leaves owning the tools and presets she used. What she creates in the room, she can reproduce on her own the next day. That is the difference between a workshop that entertains and one that changes how she works.</p></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="kicker">Format</div>
+      <div class="meta">
+        <div><div class="lbl">Duration</div><div class="val">3 days, 3 hours per day, in person at Raffles</div></div>
+        <div><div class="lbl">Delivery</div><div class="val">Delivered in Arabic, with some technical terms in English</div></div>
+        <div><div class="lbl">Class Size</div><div class="val">We recommend capping each cohort at 20–25 participants to protect hands-on quality</div></div>
+        <div><div class="lbl">Approach</div><div class="val">Practice-first — most of each day is spent creating — with templated execution that removes technical obstacles</div></div>
+      </div>
+    </section>
+
+    <section>
+      <div class="kicker">The Three-Day Journey</div>
+      <p>Across the three days, each participant builds one cumulative capstone: a complete mini fashion campaign in her own aesthetic.</p>
+      <div class="day"><div class="dnum">1</div><div><div class="dtitle">Find Your Look</div><p>The mindset of a creative director; discovering and articulating her own visual signature; then generating her first fashion images. She leaves with a concept board, a brand-soul statement, and her first aesthetic frames.</p></div></div>
+      <div class="day"><div class="dnum">2</div><div><div class="dtitle">Build Your Collection</div><p>The language of art direction — silhouette, colour, texture, styling, and light — and the core craft of consistency: holding a single aesthetic across an entire set. She leaves with a cohesive set of signature looks.</p></div></div>
+      <div class="day"><div class="dnum">3</div><div><div class="dtitle">Lookbook, Editorial &amp; The Show</div><p>Turning looks into a polished lookbook and a hero editorial image, with matching Arabic campaign copy — imagery ready to publish that same day. The workshop closes with a group showcase of everyone's work, and the handover of certificates and the take-home toolkit.</p></div></div>
+    </section>
+
+    <section>
+      <div class="kicker">What Each Participant Walks Away With</div>
+      <ul class="clean">
+        <li><strong>A complete mini campaign</strong> in her own aesthetic: a moodboard, signature looks, a lookbook, a hero editorial image, and Arabic campaign copy.</li>
+        <li><strong>The AI Creative Direction Toolkit</strong> — the custom AI assistant and the ready-made Weavy templates, hers to keep and reuse.</li>
+        <li><strong>A co-branded Raffles × MA Learn certificate of attendance.</strong></li>
+      </ul>
+    </section>
+
+    <section>
+      <div class="kicker">Learning Outcomes</div>
+      <p>By the end of the program, each participant will be able to:</p>
+      <ol class="clean">
+        <li>Articulate a brand's visual identity and translate it into a clear creative brief.</li>
+        <li>Generate a cohesive, editorial-grade set of fashion images that is unmistakably her own.</li>
+        <li>Build a lookbook that presents a collection to buyers and customers.</li>
+        <li>Create editorial and campaign imagery that elevates how a brand is perceived, with matching Arabic copy.</li>
+        <li>Reproduce the full process independently using the toolkit she keeps.</li>
+      </ol>
+      <p style="margin-top:18px;">Assessment is portfolio-based — the finished campaign is the evidence of competence. There are no exams.</p>
+    </section>
+
+    <section>
+      <div class="kicker">The Instructor</div>
+      <div class="instructor">
+        <div class="instructor-head">
+          <img class="instructor-photo" src="assets/brand/profile.jpg" alt="Majid Angawi">
+          <div>
+            <div class="name">Majid Angawi — Creative AI Founder &amp; Advisor · Founder of MA Learn &amp; MA Studio</div>
+            <p>Sixteen years in the creative industry as a fashion photographer and creative director before crossing into AI, where he now builds and advises. Through MA Learn he helps creatives and creative businesses thrive with AI, and he is a three-time founder trusted by companies locally and globally.</p>
+          </div>
+        </div>
+        <div class="subhead">Selected Work</div>
+        <div class="work-gallery">
+          <div class="work-tile"><img src="assets/work/c1.jpg" alt=""></div>
+          <div class="work-tile"><img src="assets/work/c3.jpg" alt=""></div>
+          <div class="work-tile"><img src="assets/work/c5.jpg" alt=""></div>
+          <div class="work-tile"><img src="assets/work/mint.jpg" alt=""></div>
+        </div>
+        <div class="subhead">Trusted By</div>
+        <div class="clients">
+          <div class="logo-chip"><img src="assets/clients/dior.png" alt="Dior"></div>
+          <div class="logo-chip"><img src="assets/clients/gucci.png" alt="Gucci"></div>
+          <div class="logo-chip"><img src="assets/clients/prada.svg" alt="Prada"></div>
+          <div class="logo-chip"><img src="assets/clients/chopard.png" alt="Chopard"></div>
+          <div class="logo-chip"><img src="assets/clients/vogue-arabia.png" alt="Vogue Arabia"></div>
+          <div class="logo-chip"><img src="assets/clients/coach.png" alt="Coach"></div>
+          <div class="logo-chip"><img src="assets/clients/hm.png" alt="H&amp;M"></div>
+          <div class="logo-chip"><img src="assets/clients/femi9.png" alt="Femi9"></div>
+          <div class="logo-chip"><img src="assets/clients/farsi.webp" alt="Farsi"></div>
+          <div class="logo-chip"><img src="assets/clients/qilada.png" alt="Qilada"></div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="kicker">What We Need From Raffles</div>
+      <p>To guarantee the hands-on quality, we ask Raffles to confirm:</p>
+      <ol class="clean">
+        <li>A classroom for the cohort, with a projector or large screen and reliable Wi-Fi.</li>
+        <li>Each participant on her own laptop for the creative work.</li>
+        <li>Access to a lightweight tool stack for the workshop window — Claude, Figma Weave, and Gemini. MA Learn provides each participant a free month of Figma Weave; Gemini is free; Claude is a low monthly subscription (about $20). MA Learn sets everything up, so participants handle zero setup.</li>
+        <li>Three days within our proposed window of <strong>30 August – 3 September 2026</strong> (final dates at Raffles' convenience).</li>
+        <li>A final participant list, with a rough split of students and practicing designers, so we can calibrate the room.</li>
+      </ol>
+    </section>
+
+    <section>
+      <div class="kicker">Certification</div>
+      <p>A co-branded <strong>Raffles × MA Learn</strong> certificate of attendance, marking each participant's completion of the workshop.<span class="mark">*</span></p>
+      <p class="mark-note">*MA Learn is not an accredited certifying body, so this is a certificate of attendance rather than a formally accredited qualification. Any accredited certification would be issued by Raffles. The exact certificate is open to discussion.</p>
+    </section>
+
+    <section>
+      <div class="kicker">Investment</div>
+      <p>A single flat program fee covers the full engagement: curriculum design, in-person delivery, the take-home AI Creative Direction Toolkit for every participant, and co-branded certification.</p>
+      <p class="invest-note">The program fee is shared and discussed directly with Raffles, and tailored to the final cohort size and scope.</p>
+    </section>
+
+    <div class="cta">
+      <div class="kicker" style="justify-content:center;">Next Steps</div>
+      <p style="max-width:620px;margin:0 auto;">We would welcome a short call to confirm dates, cohort size, and any adjustments Raffles would like to the emphasis of the program. On confirmation, we prepare the AI toolkit and materials tailored to your cohort and lock the schedule.</p>
+      <div class="contact"><strong style="color:var(--gold-lum);">Contact:</strong> Majid Angawi · MA Learn<br><span>majid@malearnsa.com · +966 56 044 0113</span></div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="fbrand">MA&nbsp;LEARN</div>
+  <div class="fnote">صناعة الإلهام · Making Inspiration</div>
+</footer>
+
+<script>
+  function setLang(l){
+    document.body.setAttribute('data-lang', l);
+    document.documentElement.setAttribute('lang', l);
+    document.documentElement.setAttribute('dir', l==='ar' ? 'rtl' : 'ltr');
+    document.getElementById('btn-ar').classList.toggle('active', l==='ar');
+    document.getElementById('btn-en').classList.toggle('active', l==='en');
+    window.scrollTo(0,0);
+  }
+</script>
+</body>
+</html>
