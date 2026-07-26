@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-  <meta charset="UTF-8">
   <!-- Meta Pixel Code -->
   <script>
   !function(f,b,e,v,n,t,s)
@@ -27,1189 +26,1392 @@
     gtag('js', new Date());
     gtag('config', 'G-TZ9839RVDJ');
   </script>
-  <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+  <meta charset="UTF-8">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ورشة صناعة الإلهام — قريباً | MA Learn</title>
-  <!-- SEO -->
-  <meta name="description" content="من مصور إلى مخرج إبداعي. ورشة مباشرة أونلاين · ٣ جلسات · قريباً. سجّل في قائمة الانتظار. مع ماجد عنقاوي.">
-  <meta name="keywords" content="ورشة صناعة الإلهام, ورشة ذكاء اصطناعي, ميدجورني, Higgsfield, مخرج إبداعي, ذكاء اصطناعي إبداعي, ماجد عنقاوي">
-  <meta name="author" content="ماجد عنقاوي — MA Learn">
-  <link rel="canonical" href="https://malearnsa.com/creative-ai-workshop/">
-  <!-- Open Graph -->
-  <meta property="og:type" content="website">
-  <meta property="og:title" content="ورشة صناعة الإلهام — قريباً | MA Learn">
-  <meta property="og:description" content="من مصور إلى مخرج إبداعي. ٣ أيام، ذكاء اصطناعي، بريف عميل حقيقي. مباشرة مع ماجد عنقاوي · قريباً.">
-  <meta property="og:url" content="https://malearnsa.com/creative-ai-workshop/">
-  <meta property="og:image" content="https://malearnsa.com/images/og-ciw.jpg">
-  <meta property="og:locale" content="ar_SA">
-  <meta property="og:site_name" content="MA Learn">
-  <!-- Twitter Card -->
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="ورشة صناعة الإلهام — قريباً | MA Learn">
-  <meta name="twitter:description" content="من مصور إلى مخرج إبداعي. ٣ أيام مع ماجد عنقاوي · قريباً.">
-  <meta name="twitter:image" content="https://malearnsa.com/images/og-ciw.jpg">
+  <title>معادلة صناعة الإلهام 2.0 · MA Learn</title>
+  <meta name="description" content="النظام الإبداعي المدعوم بالـ AI اللي يحوّل رؤيتك إلى نتايج قوية كل مرة. ٣ جلسات مباشرة رئيسية. معادلة سهلة التطبيق خطوة بخطوة تضمن لك أعمال مميزة بالـ AI كل مرة">
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://malearnsa.com/footer-module/v1/footer.css">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
   <style>
-    @font-face { font-family:'Gumela'; src:url('../brand_assets/gumela-arabic-bold.otf') format('opentype'); font-weight:700; }
-    @font-face { font-family:'Gumela'; src:url('../brand_assets/gumela-arabic-regular.otf') format('opentype'); font-weight:400; }
-    @font-face { font-family:'Gumela'; src:url('../brand_assets/gumela-arabic-light.otf') format('opentype'); font-weight:300; }
+    @font-face { font-family:'Gumela'; src:url('../brand_assets/gumela-arabic-bold.otf') format('opentype'); font-weight:700; font-display:swap; }
+    @font-face { font-family:'Gumela'; src:url('../brand_assets/gumela-arabic-regular.otf') format('opentype'); font-weight:400; font-display:swap; }
 
-    :root {
-      --bg:        #080808;
-      --card-bg:   #0E0E0E;
-      --card-bg2:  #111111;
-      --card-border:#1A1A1A;
-      --gold:      #C9A84C;
-      --gold-lum:  #E8D08A;
-      --ivory:     #F5F0E8;
-      --silver:    #BBBBBB;
-      --grey:      #666666;
-      --green:     #4CAF82;
+    /* ---------- Design system: poster-dark × chunky rounded · V4 (all centered, airy) ---------- */
+    :root{
+      --bg:#151009; --bg-2:#1d1610; --card:#231a12; --card-2:#2a2016;
+      --ink:#f8f0e6; --muted:#cbbba9; --faint:#96897a;
+      --accent:#ff6a3c; --accent-hot:#ff8a5c; --accent-deep:#c8390f;
+      --on-accent:#2a1105;
+      --lav:#cfc2f5; --lav-soft:#e4dcfb; --lav-deep:#4f4380; --on-lav:#221a3d;
+      --line:rgba(248,240,230,.11); --line-strong:rgba(248,240,230,.2);
+      --r-xl:34px; --r-lg:28px; --r-md:22px; --r-pill:999px;
+      --disp:'Gumela','Cairo',sans-serif; --body:'Cairo',sans-serif;
+      --ease:cubic-bezier(.22,1,.36,1);
     }
+    *{ margin:0; padding:0; box-sizing:border-box; }
+    html{ scroll-behavior:smooth; }
+    body{
+      font-family:var(--body); background:var(--bg); color:var(--ink);
+      line-height:1.75; overflow-x:hidden; -webkit-font-smoothing:antialiased;
+    }
+    ::selection{ background:var(--accent); color:var(--on-accent); }
+    img{ display:block; max-width:100%; }
+    a{ color:inherit; }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body {
-      font-family: 'Gumela', 'Cairo', sans-serif;
-      background: var(--bg);
-      color: var(--ivory);
-      min-height: 100vh;
-      direction: rtl;
-      overflow-x: hidden;
-    }
-
-    /* ── GRAIN ── */
-    body::after {
-      content: '';
-      position: fixed; inset: 0;
-      pointer-events: none; z-index: 9999; opacity: 0.035;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
-      background-size: 200px 200px;
-    }
-
-    /* ── NAV ── */
-    nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 200;
-      padding: 14px 32px;
-      background: rgba(8,8,8,0.96);
-      border-bottom: 1px solid rgba(201,168,76,0.08);
-      backdrop-filter: blur(12px);
-      transition: border-color 0.3s;
-    }
-    nav.scrolled { border-bottom-color: rgba(201,168,76,0.15); }
-    .nav-inner {
-      max-width: 1060px; margin: 0 auto;
-      display: flex; align-items: center; justify-content: space-between; gap: 16px;
-    }
-    .nav-logo img { height: 28px; width: auto; display: block; }
-    .nav-links {
-      display: flex; align-items: center; gap: 20px; flex-wrap: wrap;
-    }
-    .nav-links a {
-      font-size: 0.78rem; color: var(--grey); text-decoration: none;
-      font-family: 'Cairo', sans-serif; transition: color 0.2s;
-    }
-    .nav-links a:hover { color: var(--gold); }
-    .nav-cta {
-      background: var(--gold); color: #000;
-      font-family: 'Gumela', 'Cairo', sans-serif; font-weight: 700; font-size: 0.82rem;
-      padding: 9px 22px; border: none; cursor: pointer; text-decoration: none;
-      transition: background 0.2s; white-space: nowrap; flex-shrink: 0;
-    }
-    .nav-cta:hover { background: var(--gold-lum); }
-    @media (max-width: 640px) {
-      .nav-links { display: none; }
-      nav { padding: 14px 20px; }
-    }
-
-    /* ── HERO ── */
-    .hero {
-      min-height: 100vh;
-      display: flex; align-items: center; justify-content: center;
-      text-align: center;
-      padding: 130px 24px 90px;
-      position: relative; overflow: hidden;
-    }
-    .hero-bg {
-      position: absolute; inset: 0;
-      background: radial-gradient(ellipse 70% 55% at 50% 38%, rgba(201,168,76,0.09) 0%, transparent 68%);
-    }
-    .hero-content { position: relative; z-index: 1; max-width: 780px; }
-    .hero-label {
-      display: inline-block;
-      border: 1px solid rgba(201,168,76,0.35);
-      color: var(--gold); font-size: 0.72rem;
-      letter-spacing: 0.1em; padding: 5px 16px;
-      margin-bottom: 28px; text-transform: uppercase;
-    }
-    .hero-title {
-      font-weight: 700;
-      font-size: clamp(2rem, 5.5vw, 3.5rem);
-      line-height: 1.25; color: var(--ivory);
-      margin-bottom: 20px;
-    }
-    .hero-subtitle {
-      font-size: clamp(0.95rem, 2vw, 1.15rem);
-      color: var(--silver); line-height: 1.85;
-      margin-bottom: 36px;
-      max-width: 580px; margin-left: auto; margin-right: auto;
-    }
-    .hero-dates {
-      display: flex; align-items: center; justify-content: center;
-      gap: 28px; margin-bottom: 40px; flex-wrap: wrap;
-    }
-    .hero-date-item {
-      display: flex; align-items: center; gap: 8px;
-      color: var(--silver); font-size: 0.9rem;
-    }
-    .hero-date-item svg { color: var(--gold); flex-shrink: 0; }
-    .hero-price-block { margin-bottom: 36px; }
-    .price-original {
-      font-size: 0.88rem; color: var(--grey);
-      text-decoration: line-through; margin-bottom: 4px;
-    }
-    .price-early {
-      font-size: 2.6rem; font-weight: 700; color: var(--gold); line-height: 1;
-    }
-    .price-early span { font-size: 1rem; color: var(--silver); font-weight: 400; }
-    .price-deadline { font-size: 0.78rem; color: var(--grey); margin-top: 6px; }
-    .btn-primary {
-      display: inline-block;
-      background: var(--gold); color: #000;
-      font-family: 'Gumela', 'Cairo', sans-serif; font-weight: 700;
-      font-size: 1.05rem; padding: 17px 52px;
-      text-decoration: none; border: none; cursor: pointer;
-      transition: background 0.2s, transform 0.1s;
-    }
-    .btn-primary:hover { background: var(--gold-lum); transform: translateY(-1px); }
-    .hero-seats { margin-top: 18px; font-size: 0.82rem; color: var(--grey); }
-
-    /* ── SECTION BASE ── */
-    section { padding: 96px 24px; }
-    .container { max-width: 900px; margin: 0 auto; }
-    .section-label {
-      font-size: 0.68rem; letter-spacing: 0.15em;
-      color: var(--gold); text-transform: uppercase; margin-bottom: 14px;
-    }
-    .section-title {
-      font-weight: 700;
-      font-size: clamp(1.55rem, 3.8vw, 2.3rem);
-      color: var(--ivory); line-height: 1.35; margin-bottom: 18px;
-    }
-    .section-body {
-      font-size: 1rem; color: var(--silver); line-height: 1.9;
-    }
-    .divider { border: none; border-top: 1px solid #1a1a1a; margin: 0; }
-
-    /* ── PROBLEM ── */
-    .problem-quote {
-      border-right: 3px solid var(--gold);
-      padding: 24px 28px; margin: 36px 0;
-      background: var(--card-bg);
-    }
-    .problem-quote p {
-      font-size: 1.05rem; color: var(--ivory); line-height: 1.85;
-    }
-
-    /* ── DAYS ── */
-    .days { background: #0A0A0A; }
-    .days-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 2px; margin-top: 56px;
-    }
-    .day-card {
-      background: var(--card-bg); padding: 38px 30px;
-      position: relative; overflow: hidden;
-    }
-    .day-card::before {
-      content: ''; position: absolute; top: 0; right: 0;
-      width: 3px; height: 100%; background: var(--gold);
-      opacity: 0; transition: opacity 0.3s;
-    }
-    .day-card:hover::before { opacity: 1; }
-    .day-number {
-      font-size: 0.68rem; letter-spacing: 0.14em;
-      color: var(--gold); text-transform: uppercase; margin-bottom: 14px;
-    }
-    .day-title {
-      font-size: 1.15rem; font-weight: 700;
-      color: var(--ivory); margin-bottom: 12px; line-height: 1.4;
-    }
-    .day-desc { font-size: 0.88rem; color: var(--silver); line-height: 1.75; }
-
-    /* ── GIFT ── */
-    .gift { background: var(--bg); }
-    .gift-card {
-      background: linear-gradient(135deg, rgba(201,168,76,0.08), rgba(201,168,76,0.02));
-      border: 1px solid rgba(201,168,76,0.22);
-      padding: 44px 40px;
-      display: flex; align-items: flex-start; gap: 28px;
-      margin-top: 44px;
-    }
-    .gift-icon { font-size: 2.2rem; flex-shrink: 0; }
-    .gift-title { font-size: 1.25rem; font-weight: 700; color: var(--ivory); margin-bottom: 10px; }
-    .gift-desc { font-size: 0.92rem; color: var(--silver); line-height: 1.8; }
-    .gift-value {
-      display: inline-block;
-      background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.28);
-      color: var(--gold); font-size: 0.78rem; padding: 4px 12px; margin-top: 14px;
-    }
-    @media (max-width: 640px) { .gift-card { flex-direction: column; padding: 30px 22px; } }
-
-    /* Bonus section */
-    .bonus-section { margin-top: 80px; }
-    .bonus-section .section-label { margin-bottom: 10px; }
-    .bonus-card {
-      background: var(--card-bg2);
-      border: 1px solid var(--card-border);
-      border-top: 2px solid rgba(201,168,76,0.35);
-      padding: 36px 40px; margin-top: 32px;
-    }
-    .bonus-card-title { font-size: 1.15rem; font-weight: 700; color: var(--ivory); margin-bottom: 8px; }
-    .bonus-card-date { font-size: 0.78rem; color: var(--gold); margin-bottom: 20px; letter-spacing: 0.05em; }
-    .bonus-includes { list-style: none; }
-    .bonus-includes li {
-      display: flex; align-items: flex-start; gap: 12px;
-      font-size: 0.9rem; color: var(--silver); line-height: 1.6;
-      padding: 10px 0; border-bottom: 1px solid #141414;
-    }
-    .bonus-includes li:last-child { border-bottom: none; }
-    .bonus-includes li::before { content: '✓'; color: var(--green); font-weight: 700; flex-shrink: 0; }
-
-    /* ── FOR WHO ── */
-    .for-who { background: #0A0A0A; }
-    .who-grid {
-      display: grid; grid-template-columns: 1fr 1fr;
-      gap: 2px; margin-top: 44px;
-    }
-    @media (max-width: 640px) { .who-grid { grid-template-columns: 1fr; } }
-    @media (max-width: 760px) {
-      .testimonial-grid { grid-template-columns: repeat(2, 1fr) !important; }
-      .student-gallery { grid-template-columns: repeat(2, 1fr) !important; }
-    }
-    .student-thumb:hover img,
-    .testimonial-thumb:hover img { transform: scale(1.04); }
-    .student-thumb:focus-visible,
-    .testimonial-thumb:focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
-    .testimonial-thumb .play-overlay {
-      position: absolute; top: 50%; left: 50%;
-      transform: translate(-50%, -50%);
-      width: 56px; height: 56px;
-      background: rgba(0,0,0,0.6); border: 1.5px solid rgba(255,255,255,0.9);
-      border-radius: 50%;
-      display: flex; align-items: center; justify-content: center;
-      pointer-events: none; backdrop-filter: blur(6px);
-      transition: transform 0.3s ease, background 0.3s ease;
-    }
-    .testimonial-thumb:hover .play-overlay {
-      transform: translate(-50%, -50%) scale(1.08);
-      background: rgba(0,0,0,0.78);
-    }
-    .testimonial-thumb .play-overlay svg { width: 22px; height: 22px; fill: #fff; margin-inline-start: 3px; }
-    /* 10th item sits centered in its own row (3-col grid leaves an orphan otherwise) */
-    .student-gallery > .student-thumb:nth-child(10) { grid-column: 2 / 3; }
-    @media (max-width: 760px) {
-      /* On 2-col mobile, 10 images fit cleanly in 5 rows — clear the desktop centering */
-      .student-gallery > .student-thumb:nth-child(10) { grid-column: auto; }
-    }
-    .who-card { background: var(--card-bg); padding: 34px 30px; }
-    .who-card-title {
-      font-size: 0.72rem; letter-spacing: 0.12em;
-      color: var(--gold); text-transform: uppercase; margin-bottom: 22px;
-    }
-    .who-list { list-style: none; }
-    .who-list li {
-      display: flex; align-items: flex-start; gap: 12px;
-      font-size: 0.92rem; color: var(--silver); line-height: 1.6;
-      padding: 10px 0; border-bottom: 1px solid #141414;
-    }
-    .who-list li:last-child { border-bottom: none; }
-    .icon-yes { color: var(--gold); font-size: 0.78rem; margin-top: 3px; flex-shrink: 0; }
-    .icon-no  { color: var(--grey); font-size: 0.78rem; margin-top: 3px; flex-shrink: 0; }
-
-    /* ── INSTRUCTOR ── */
-    .instructor { background: var(--bg); }
-    .instructor-inner {
-      display: grid; grid-template-columns: 190px 1fr;
-      gap: 56px; align-items: start; margin-top: 44px;
-    }
-    @media (max-width: 640px) {
-      .instructor-inner { grid-template-columns: 1fr; gap: 28px; }
-      .instructor-photo { width: 130px; }
-    }
-    .instructor-photo {
-      width: 100%; aspect-ratio: 3/4; object-fit: cover;
-      object-position: top; filter: grayscale(15%);
-    }
-    .instructor-name { font-size: 1.55rem; font-weight: 700; color: var(--ivory); margin-bottom: 5px; }
-    .instructor-role { font-size: 0.82rem; color: var(--gold); letter-spacing: 0.07em; margin-bottom: 22px; }
-    .instructor-bio { font-size: 0.92rem; color: var(--silver); line-height: 1.9; }
-    .instructor-tags { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 22px; }
-    .instructor-tag {
-      border: 1px solid #2a2a2a; color: var(--silver);
-      font-size: 0.72rem; padding: 5px 13px;
-    }
-
-    /* ── FAQ ── */
-    .faq { background: #0A0A0A; }
-    .faq-list { margin-top: 44px; }
-    .faq-item { border-bottom: 1px solid #141414; padding: 28px 0; }
-    .faq-item:first-child { border-top: 1px solid #141414; }
-    .faq-q { font-size: 1rem; font-weight: 700; color: var(--ivory); margin-bottom: 10px; }
-    .faq-a { font-size: 0.92rem; color: var(--silver); line-height: 1.8; }
-
-    /* ── PRICING ── */
-    .pricing { background: var(--bg); }
-    .pricing-card {
-      max-width: 560px; margin: 48px auto 0;
-      background: var(--card-bg);
-      border: 1px solid #1a1a1a;
-      padding: 48px 40px;
-      text-align: center; position: relative; overflow: hidden;
-    }
-    .pricing-card::before {
-      content: ''; position: absolute; top: 0; left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, var(--gold), transparent);
-    }
-    .pricing-badge {
-      display: inline-block;
-      background: rgba(201,168,76,0.1); border: 1px solid rgba(201,168,76,0.3);
-      color: var(--gold); font-size: 0.75rem; letter-spacing: 0.08em;
-      padding: 5px 16px; text-transform: uppercase; margin-bottom: 28px;
-    }
-    .pricing-name { font-size: 1.05rem; color: var(--silver); margin-bottom: 28px; }
-
-    /* Value stack */
-    .value-stack { margin-bottom: 28px; text-align: right; }
-    .value-stack-item {
-      display: flex; justify-content: space-between; align-items: center;
-      padding: 11px 0; border-bottom: 1px solid #141414;
-      font-size: 0.88rem; color: var(--silver); line-height: 1.5;
-    }
-    .value-stack-item:last-child { border-bottom: none; }
-    .value-stack-item .item-val { color: var(--grey); font-size: 0.82rem; white-space: nowrap; padding-right: 16px; flex-shrink: 0; }
-    .value-stack-item::before { content: '✓'; color: var(--gold); font-weight: 700; margin-left: 10px; flex-shrink: 0; }
-
-    /* Price table */
-    .price-table {
-      width: 100%; border-collapse: collapse;
-      margin: 28px 0; font-size: 0.85rem; text-align: right;
-    }
-    .price-table td { padding: 10px 0; border-bottom: 1px solid #141414; color: var(--silver); }
-    .price-table td:last-child { text-align: left; color: var(--grey); white-space: nowrap; }
-    .price-table tr:last-child td { border-bottom: none; }
-    .price-table .total-row td { padding-top: 16px; font-size: 0.9rem; }
-    .price-table .total-row td:first-child { color: var(--ivory); font-weight: 600; }
-    .price-table .total-row td:last-child { color: var(--grey); text-decoration: line-through; }
-    .price-table .you-pay-row td:first-child { color: var(--gold); font-weight: 700; font-size: 1rem; }
-    .price-table .you-pay-row td:last-child {
-      color: var(--gold); font-weight: 700; font-size: 1.4rem;
-      text-decoration: none;
-    }
-
-    .pricing-deadline-note {
-      font-size: 0.8rem; color: #e07b3a;
-      margin-bottom: 24px; font-weight: 600;
-    }
-
-    /* Footer styles owned by shared module v1 — see malearnsa.com/footer-module/v1/footer.css */
-
-    /* ── STICKY BAR ── */
-    .sticky-bar {
-      position: fixed; bottom: 0; left: 0; right: 0; z-index: 100;
-      background: rgba(8,8,8,0.97);
-      border-top: 1px solid #1e1e1e;
-      padding: 14px 24px;
-      display: flex; align-items: center; justify-content: space-between; gap: 14px;
-      transform: translateY(100%); transition: transform 0.4s ease;
-    }
-    .sticky-bar.visible { transform: translateY(0); }
-    .sticky-bar-text { font-size: 0.88rem; color: var(--silver); display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-    .sticky-price-was { color: var(--grey); text-decoration: line-through; font-size: 0.82rem; }
-    .sticky-price-now { color: var(--gold); font-weight: 700; }
-    .sticky-bar-btn {
-      background: var(--gold); color: #000;
-      font-family: 'Gumela', 'Cairo', sans-serif; font-weight: 700;
-      font-size: 0.88rem; padding: 11px 28px;
-      border: none; cursor: pointer; text-decoration: none;
-      white-space: nowrap; flex-shrink: 0;
-    }
-    .sticky-bar-btn:hover { background: var(--gold-lum); }
-    @media (max-width: 480px) {
-      .sticky-bar { flex-direction: column; text-align: center; }
-      .sticky-bar-btn { width: 100%; text-align: center; display: block; }
-    }
-
-    /* ── UTILS ── */
-    @media (max-width: 640px) {
-      section { padding: 68px 20px; }
-      .pricing-card { padding: 34px 22px; }
-      .bonus-card { padding: 28px 22px; }
-      .instructor-inner { gap: 24px; }
-    }
-
-    /* ── HERO PHOTO ── */
-    .hero-photo {
-      position: absolute; inset: 0; z-index: 0;
-      display: block; width: 100%; height: 100%;
-    }
-    .hero-photo img {
-      width: 100%; height: 100%;
-      object-fit: cover;
-      object-position: center;
-      display: block;
-    }
-    .hero-overlay {
-      position: absolute; inset: 0; z-index: 0;
+    /* warm poster glow field */
+    .glow-wrap{ position:relative; }
+    .glow-wrap::before{
+      content:""; position:absolute; inset:0; pointer-events:none; z-index:0;
       background:
-        radial-gradient(ellipse 60% 50% at 50% 45%, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.75) 60%, rgba(8,8,8,0.92) 100%),
-        linear-gradient(180deg, rgba(8,8,8,0.55) 0%, rgba(8,8,8,0.25) 40%, rgba(8,8,8,0.92) 100%);
-    }
-    .hero-content { position: relative; z-index: 2; }
-
-    /* ── DAY CARD IMAGE ── */
-    .day-card { padding: 0; }
-    .day-card-image {
-      width: 100%; aspect-ratio: 4/3;
-      overflow: hidden; background: #0a0a0a;
-    }
-    .day-card-image img {
-      width: 100%; height: 100%;
-      object-fit: cover; object-position: center;
-      display: block;
-      filter: grayscale(5%) brightness(0.95);
-      transition: transform 0.5s ease, filter 0.3s ease;
-    }
-    .day-card:hover .day-card-image img {
-      transform: scale(1.04);
-      filter: grayscale(0%) brightness(1);
-    }
-    .day-card-body { padding: 32px 30px 36px; }
-
-    /* ── GIFT CARD WITH IMAGE ── */
-    .gift-card {
-      display: grid;
-      grid-template-columns: 280px 1fr;
-      gap: 36px; align-items: center;
-      padding: 36px;
-    }
-    .gift-card-image {
-      width: 100%; aspect-ratio: 4/5;
-      overflow: hidden;
-      border: 1px solid rgba(201,168,76,0.25);
-    }
-    .gift-card-image img {
-      width: 100%; height: 100%;
-      object-fit: cover; display: block;
-    }
-    @media (max-width: 720px) {
-      .gift-card { grid-template-columns: 1fr; gap: 24px; padding: 26px 22px; text-align: center; }
-      .gift-card-image { max-width: 240px; margin: 0 auto; }
-      .gift-value { margin-left: auto; margin-right: auto; }
+        radial-gradient(58% 44% at 50% -4%, rgba(255,96,44,.30), transparent 68%),
+        radial-gradient(34% 26% at 88% 22%, rgba(255,132,72,.10), transparent 70%);
     }
 
-    /* ── INSTRUCTOR WORK SAMPLES ── */
-    .instructor-work {
-      margin-top: 48px;
+    .wrap{ width:min(1120px, 92%); margin-inline:auto; position:relative; z-index:1; }
+    /* V4: sections breathe — generous vertical rhythm */
+    .sec{ padding-block: clamp(88px, 14vw, 176px); position:relative; text-align:center; }
+    .sec-tight{ padding-block: clamp(56px, 9vw, 108px) !important; }
+
+    /* type */
+    .disp{ font-family:var(--disp); font-weight:700; line-height:1.4; letter-spacing:-0.01em; }
+    h1.disp{ font-size:clamp(1.62rem, 5.2vw, 3.05rem); }
+    h2.disp{ font-size:clamp(1.42rem, 3.8vw, 2.4rem); }
+    h3.disp{ font-size:clamp(1.15rem, 2.6vw, 1.6rem); }
+    .hl{ color:var(--accent-hot); }
+    .lead{ color:var(--muted); font-size:clamp(.98rem, 1.8vw, 1.14rem); }
+    .sec-h2{ max-width:820px; margin-inline:auto; }
+    .sec-lead{ max-width:680px; margin:22px auto 0; }
+
+    /* eyebrow pill */
+    .eyebrow{
+      display:inline-flex; align-items:center; gap:10px; padding:8px 18px 8px 20px;
+      border:1.5px solid var(--line-strong); border-radius:var(--r-pill);
+      font-size:.8rem; font-weight:800; color:var(--muted); margin-bottom:28px;
+      background:rgba(248,240,230,.04);
     }
-    .instructor-work-label {
-      font-size: 0.68rem; letter-spacing: 0.15em;
-      color: var(--gold); text-transform: uppercase;
-      margin-bottom: 20px; text-align: center;
+    .eyebrow .num{
+      background:var(--accent); color:var(--on-accent); font-weight:900;
+      border-radius:var(--r-pill); padding:2px 12px; font-size:.78rem;
     }
-    .work-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 14px;
+    .eyebrow.lav-e .num{ background:var(--lav); color:var(--on-lav); }
+
+    /* pill chips */
+    .chips{ display:flex; flex-wrap:wrap; gap:10px; justify-content:center; }
+    .chip{
+      border:1.5px solid var(--line-strong); border-radius:var(--r-pill);
+      padding:9px 20px; font-size:.86rem; font-weight:700; color:var(--muted);
+      background:rgba(248,240,230,.04);
     }
-    .work-grid picture {
-      display: block; width: 100%;
-      aspect-ratio: 4/5;
-      overflow: hidden;
-      background: #0a0a0a;
+    .chip b, .chip .hl{ color:var(--accent-hot); font-weight:900; }
+    .chip-solid{ background:var(--accent); border-color:var(--accent); color:var(--on-accent); }
+    .chip-solid b{ color:var(--on-accent); }
+
+    /* quiet meta line (V4 hero de-congestion: text, not boxes) */
+    .meta-line{ color:var(--faint); font-weight:700; font-size:.9rem; display:flex; flex-wrap:wrap; gap:8px 0; justify-content:center; align-items:center; }
+    .meta-line .sep{ margin-inline:14px; color:var(--accent); }
+
+    /* buttons */
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center; gap:10px;
+      font-family:var(--body); font-weight:800; font-size:1.02rem; cursor:pointer;
+      border:none; border-radius:var(--r-pill); padding:16px 38px; text-decoration:none;
+      transition:transform .25s var(--ease), box-shadow .25s var(--ease), background .25s;
     }
-    .work-grid img {
-      width: 100%; height: 100%;
-      object-fit: cover; display: block;
-      filter: grayscale(8%);
-      transition: filter 0.3s ease, transform 0.5s ease;
+    .btn-primary{
+      background:linear-gradient(180deg, var(--accent-hot), var(--accent) 55%, #f0501f);
+      color:var(--on-accent); box-shadow:0 10px 34px -10px rgba(255,106,60,.55), inset 0 1px 0 rgba(255,255,255,.28);
     }
-    .work-grid picture:hover img {
-      filter: grayscale(0%);
-      transform: scale(1.03);
+    .btn-primary:hover{ transform:translateY(-2px); box-shadow:0 16px 44px -12px rgba(255,106,60,.7), inset 0 1px 0 rgba(255,255,255,.28); }
+    .btn-ghost{
+      background:rgba(248,240,230,.05); color:var(--ink); border:1.5px solid var(--line-strong);
     }
-    @media (max-width: 640px) {
-      .work-grid { gap: 8px; }
+    .btn-ghost:hover{ transform:translateY(-2px); background:rgba(248,240,230,.09); }
+    .btn[aria-disabled="true"]{ cursor:not-allowed; }
+    .btn-big{ padding:19px 46px; font-size:1.12rem; }
+
+    /* cards */
+    .card{
+      background:var(--card); border:1.5px solid var(--line); border-radius:var(--r-lg);
+      padding:clamp(24px, 3.6vw, 38px);
+    }
+    .card-accent{ background:linear-gradient(160deg, #ff7a48, var(--accent) 45%, #e6501f); color:var(--on-accent); border:none; }
+    .card-accent .c-muted{ color:#6b3115; }
+    .card-lav{ background:linear-gradient(160deg, var(--lav-soft), var(--lav) 60%, #b8a7ee); color:var(--on-lav); border:none; }
+    .card-lav .c-muted{ color:#4a4070; }
+
+    /* image slots */
+    .img-slot{ border-radius:var(--r-lg); overflow:hidden; border:1.5px solid var(--line); position:relative; }
+    .img-slot img{ width:100%; height:100%; object-fit:cover; }
+    .img-cap{
+      position:absolute; bottom:12px; inset-inline-start:12px; z-index:2;
+      background:rgba(21,16,9,.72); backdrop-filter:blur(6px); color:var(--muted);
+      border-radius:var(--r-pill); padding:5px 16px; font-size:.72rem; font-weight:700;
     }
 
+    /* placeholder media slot (graceful empty states) */
+    .ph-slot{
+      border:2px dashed var(--line-strong); border-radius:var(--r-md);
+      display:flex; align-items:center; justify-content:center; text-align:center;
+      color:var(--faint); font-size:.8rem; font-weight:700; padding:18px; min-height:150px;
+      background:rgba(248,240,230,.025);
+    }
+
+    /* header */
+    .top{
+      position:sticky; top:0; z-index:60; backdrop-filter:blur(14px);
+      background:rgba(21,16,9,.78); border-bottom:1px solid var(--line);
+    }
+    .top-in{ display:flex; align-items:center; justify-content:space-between; gap:16px; padding-block:14px; text-align:start; }
+    .logo{ height:30px; width:auto; }
+    .nav-links{ display:flex; gap:26px; }
+    .nav-links a{ font-size:.85rem; font-weight:700; color:var(--muted); text-decoration:none; transition:color .2s; }
+    .nav-links a:hover{ color:var(--ink); }
+    .top .btn{ padding:10px 24px; font-size:.88rem; }
+    @media (max-width:760px){ .nav-links{ display:none; } }
+
+
+    /* sticky bar */
+    .sticky{
+      position:fixed; bottom:14px; inset-inline:14px; z-index:80;
+      display:flex; align-items:center; justify-content:space-between; gap:12px;
+      background:rgba(29,22,16,.92); backdrop-filter:blur(16px);
+      border:1.5px solid var(--line-strong); border-radius:var(--r-lg);
+      padding:12px 12px 12px 20px; max-width:660px; margin-inline:auto;
+      transform:translateY(140%); transition:transform .5s var(--ease); text-align:start;
+    }
+    .sticky.on{ transform:translateY(0); }
+    .sticky .s-name{ font-weight:800; font-size:.86rem; line-height:1.3; }
+    .sticky .btn{ padding:11px 24px; font-size:.9rem; white-space:nowrap; }
+    @media (max-width:560px){ .sticky .s-name{ font-size:.76rem; } .sticky{ padding-inline-start:14px; } }
+
+    /* reveal on scroll */
+    .rv{ opacity:0; transform:translateY(26px); transition:opacity .8s var(--ease), transform .8s var(--ease); }
+    .rv.in{ opacity:1; transform:none; }
+    @media (prefers-reduced-motion: reduce){
+      html{ scroll-behavior:auto; }
+      .rv{ opacity:1; transform:none; transition:none; }
+      *,*::before,*::after{ animation-duration:0s !important; animation-iteration-count:1 !important; transition-duration:0s !important; }
+    }
+
+    /* ---------- section-specific ---------- */
+    /* hero — V4: single centered column, de-congested, generous gaps */
+    .hero{ padding-top:clamp(96px, 10vw, 128px); padding-bottom:clamp(72px, 11vw, 150px); }
+    .hero-col{ max-width:780px; margin-inline:auto; display:flex; flex-direction:column; align-items:center; }
+    .hero-name{ display:flex; align-items:center; gap:12px; flex-wrap:wrap; justify-content:center; }
+    .hero-name .n{ font-family:var(--disp); font-weight:700; font-size:1.05rem; color:var(--muted); }
+    .hero-name .v{ background:var(--accent); color:var(--on-accent); font-weight:900; font-size:.8rem; border-radius:10px; padding:3px 12px; }
+    .hero-col h1{ margin-top:30px; }
+    .hero-sub{ margin-top:34px; color:var(--muted); font-size:clamp(.94rem,1.7vw,1.05rem); max-width:640px; line-height:2.05; }
+    .hero-sub .en{ font-weight:800; color:var(--ink); }
+    .why-chip{
+      margin-top:44px; display:inline-flex; flex-direction:column; align-items:center; gap:4px;
+      background:rgba(248,240,230,.06); border:1.5px solid var(--line-strong);
+      border-radius:24px; padding:15px 34px 12px; font-weight:800; font-size:1rem; color:var(--ink);
+      cursor:pointer; text-decoration:none; transition:background .3s, transform .3s var(--ease);
+    }
+    .why-chip:hover{ background:rgba(255,106,60,.14); transform:translateY(-2px); }
+    .why-chip .arr{ font-size:1.2rem; color:var(--accent-hot); animation:bob 1.6s var(--ease) infinite; line-height:1; }
+    @keyframes bob{ 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(7px); } }
+    .hero-dates{ margin-top:56px; }
+    .hero-dates-label{ font-size:.78rem; font-weight:700; color:var(--faint); margin-bottom:16px; }
+    .date-chips{ display:flex; flex-wrap:wrap; gap:14px; justify-content:center; }
+    .date-chip{
+      border:1.5px solid var(--line-strong); background:rgba(248,240,230,.04);
+      border-radius:20px; padding:12px 26px; text-align:center;
+    }
+    .date-chip .d{ font-weight:900; font-size:.92rem; }
+    .date-chip .c{ font-size:.68rem; color:var(--faint); font-weight:700; margin-top:2px; }
+    /* sold-out state — toggle-ready: add class "soldout" to any .date-chip */
+    .date-chip.soldout{ opacity:.55; }
+    .date-chip.soldout .c::after{
+      content:"اكتملت"; display:inline-block; margin-inline-start:8px;
+      background:rgba(255,106,60,.16); color:var(--accent-hot);
+      border-radius:var(--r-pill); padding:1px 10px; font-weight:900;
+    }
+    .hero-ctas{ margin-top:52px; display:flex; flex-wrap:wrap; gap:16px; align-items:center; justify-content:center; }
+    .hero-meta{ margin-top:34px; }
+    .hero-img{ aspect-ratio:16/9; margin-top:clamp(56px, 8vw, 96px); width:100%; }
+    @media (max-width:640px){ .hero-img{ aspect-ratio:4/5; } }
+
+    /* clarification + statement (hero cluster) */
+    .story-txt{ max-width:720px; margin-inline:auto; }
+    .story-txt .dots{ display:flex; flex-direction:column; gap:10px; align-items:center; margin-block:30px; }
+    .story-txt .dots span{ width:9px; height:9px; border-radius:50%; background:var(--accent); opacity:.85; }
+    .story-txt .dots span:nth-child(2){ opacity:.55; } .story-txt .dots span:nth-child(3){ opacity:.3; }
+    .kitchen{ font-size:clamp(1.1rem, 2.6vw, 1.48rem); font-weight:800; line-height:2; }
+    .statement-card{ margin-top:clamp(48px, 7vw, 76px); display:grid; gap:14px; }
+    .statement-card .st-line{ font-size:clamp(1.05rem,2.2vw,1.35rem); font-weight:800; line-height:1.9; }
+
+    /* package title + router */
+    .pkg-title{ font-size:clamp(1.6rem,4.4vw,2.7rem); }
+    .router-card{ text-align:center; padding:clamp(34px,5.5vw,58px); max-width:860px; margin:clamp(44px,6vw,64px) auto 0; }
+    .router-btns{ display:grid; grid-template-columns:1fr 1fr; gap:18px; margin-top:32px; }
+    @media (max-width:700px){ .router-btns{ grid-template-columns:1fr; } }
+    .router-btn{
+      border:none; cursor:pointer; border-radius:26px; padding:28px 22px; text-align:center;
+      font-family:var(--body); font-weight:800; font-size:1.06rem; line-height:1.5;
+      transition:transform .3s var(--ease), box-shadow .3s var(--ease); text-decoration:none; display:block;
+    }
+    .router-btn small{ display:block; font-weight:700; font-size:.78rem; margin-top:6px; opacity:.8; }
+    .router-btn.rb-acc{ background:linear-gradient(160deg,#ff7a48,var(--accent) 55%,#e6501f); color:var(--on-accent); }
+    .router-btn.rb-lav{ background:linear-gradient(160deg,var(--lav-soft),var(--lav) 60%,#b8a7ee); color:var(--on-lav); }
+    .router-btn:hover{ transform:translateY(-4px); box-shadow:0 18px 44px -14px rgba(0,0,0,.55); }
+
+    /* banner cards (ITCAI + community) — V6.1: image = floating rounded inset tile */
+    .banner-grid{ display:grid; grid-template-columns:1fr .85fr; gap:0; align-items:center; text-align:center; }
+    .banner-tag{
+      display:inline-block; border-radius:var(--r-pill); padding:6px 18px;
+      font-size:.76rem; font-weight:900; margin-bottom:18px;
+    }
+    .banner-grid .img-slot{
+      border:1px solid rgba(255,255,255,.5); border-radius:26px;
+      margin:clamp(28px,4.5vw,52px);
+      aspect-ratio:4/5; max-height:440px; min-height:0;
+      box-shadow:0 22px 48px -20px rgba(0,0,0,.4);
+    }
+    @media (max-width:860px){
+      .banner-grid{ grid-template-columns:1fr; }
+      .banner-grid .img-slot{ order:-1; margin-bottom:0; }
+    }
+
+    /* video embed (Bunny iframe) */
+    .video-embed{
+      position:relative; max-width:860px; margin:clamp(48px,7vw,72px) auto 0;
+      border-radius:var(--r-lg); overflow:hidden; border:1.5px solid var(--line-strong);
+      aspect-ratio:16/9; background:#0d0a06;
+      box-shadow:0 24px 70px -30px rgba(255,106,60,.35);
+    }
+    .video-embed iframe{ position:absolute; inset:0; width:100%; height:100%; border:0; }
+
+    /* V6: all ITCAI content lives inside the lavender card as one cohesive unit */
+    .itcai-inner{ padding-inline:clamp(22px,4.5vw,52px); margin-top:clamp(44px,6.5vw,72px); }
+    .itcai-last{ padding-bottom:clamp(36px,5.5vw,60px); }
+    .card-lav .video-embed{ margin-top:clamp(24px,4vw,36px); border-color:rgba(34,26,61,.3); box-shadow:0 24px 70px -30px rgba(34,26,61,.45); }
+    .card-lav .curr-list{ margin-top:clamp(28px,4.5vw,44px); }
+    .card-lav details.chap{ color:var(--ink); }
+    .card-lav details.chap[open]{ border-color:rgba(34,26,61,.4); }
+
+    /* curriculum accordion */
+    .curr-list{ max-width:820px; margin:clamp(44px,6vw,64px) auto 0; display:grid; gap:12px; text-align:start; }
+    details.chap{
+      background:var(--card); border:1.5px solid var(--line); border-radius:22px;
+      overflow:hidden; transition:border-color .3s;
+    }
+    details.chap[open]{ border-color:rgba(207,194,245,.45); }
+    details.chap summary{
+      list-style:none; cursor:pointer; display:flex; align-items:center; gap:14px;
+      padding:20px 24px; font-weight:800; font-size:.98rem;
+    }
+    details.chap summary::-webkit-details-marker{ display:none; }
+    .chap-num{
+      flex:none; width:38px; height:38px; border-radius:14px; background:rgba(207,194,245,.14);
+      color:var(--lav); display:flex; align-items:center; justify-content:center; font-weight:900; font-size:.85rem;
+    }
+    .chap-t{ flex:1; line-height:1.5; }
+    .chap-count{ flex:none; color:var(--faint); font-size:.72rem; font-weight:800; white-space:nowrap; }
+    details.chap summary .fx{
+      flex:none; width:32px; height:32px; border-radius:12px; background:rgba(248,240,230,.07);
+      display:flex; align-items:center; justify-content:center; color:var(--lav);
+      font-weight:900; transition:transform .3s var(--ease); font-size:1.1rem;
+    }
+    details.chap[open] summary .fx{ transform:rotate(45deg); }
+    .lessons{ list-style:none; padding:0 24px 20px; display:grid; gap:6px; }
+    .lessons li{
+      display:flex; align-items:center; gap:12px; background:rgba(248,240,230,.03);
+      border:1px solid var(--line); border-radius:14px; padding:11px 16px;
+      color:var(--muted); font-size:.88rem; font-weight:600; text-align:start;
+    }
+    .lessons li .pl{ flex:none; color:var(--accent-hot); font-size:.7rem; }
+
+    /* CIW day stack — V4: stacked wide cards, image + verbatim curriculum list */
+    .ciw-lede{ aspect-ratio:21/9; max-width:980px; margin:clamp(44px,6vw,64px) auto 0; }
+    .day-stack{ display:grid; gap:clamp(28px,4.5vw,44px); margin-top:clamp(48px,7vw,72px); }
+    .day-card{ overflow:hidden; padding:0; text-align:center; }
+    .day-card .img-slot{ border:none; border-radius:0; aspect-ratio:21/8; }
+    @media (max-width:640px){ .day-card .img-slot{ aspect-ratio:16/9; } }
+    .day-body{ padding:clamp(26px,4.5vw,44px); }
+    .day-tag{ display:inline-block; background:rgba(255,106,60,.14); color:var(--accent-hot); font-size:.74rem; font-weight:900; border-radius:var(--r-pill); padding:5px 16px; margin-bottom:14px; }
+    .day-card h3{ font-size:clamp(1.05rem,2.2vw,1.3rem); font-weight:800; line-height:1.7; }
+    .day-items{ list-style:none; margin-top:22px; display:flex; flex-wrap:wrap; gap:10px; justify-content:center; }
+    .day-items li{
+      background:rgba(248,240,230,.04); border:1.5px solid var(--line);
+      border-radius:var(--r-pill); padding:9px 20px; font-size:.88rem; font-weight:700; color:var(--muted);
+    }
+    .day-items li .en{ color:var(--ink); font-weight:800; }
+    .day-items.solo li{ border-color:rgba(255,106,60,.4); background:rgba(255,106,60,.08); color:var(--ink); font-size:.95rem; padding:12px 26px; }
+
+    /* interactive chip row (CIW name block) */
+    .live-chip{ background:rgba(255,106,60,.1); border-color:rgba(255,106,60,.35); color:var(--ink); }
+
+    /* testimonials — V7: real media. 4-video grid (2×2 desktop / stacked mobile) */
+    .testi-videos{
+      display:grid; grid-template-columns:repeat(2,1fr); gap:18px;
+      max-width:860px; margin:clamp(44px,6vw,64px) auto 0;
+    }
+    @media (max-width:560px){ .testi-videos{ grid-template-columns:1fr; } }
+    .vid-tile{
+      position:relative; border-radius:var(--r-md); overflow:hidden;
+      border:1.5px solid var(--line); background:#0d0a06; aspect-ratio:3/4;
+    }
+    .vid-tile video{ width:100%; height:100%; object-fit:cover; display:block; }
+    .vid-tile.fit-contain video{ object-fit:contain; }
+    .vid-cap{
+      position:absolute; top:12px; inset-inline-start:12px; z-index:2;
+      background:rgba(21,16,9,.72); backdrop-filter:blur(6px); color:var(--ink);
+      border-radius:var(--r-pill); padding:5px 16px; font-size:.72rem; font-weight:700;
+      pointer-events:none;
+    }
+    /* V7: screenshot masonry (CSS columns) — 16 tiles, varied natural heights */
+    .shot-masonry{ columns:4 170px; column-gap:14px; margin-top:clamp(40px,6vw,56px); }
+    .shot-masonry .shot{
+      break-inside:avoid; margin-bottom:14px; border-radius:var(--r-md);
+      overflow:hidden; border:1.5px solid var(--line); background:var(--card);
+    }
+    .shot-masonry img{ width:100%; height:auto; display:block; }
+    .empty-note{ margin-top:22px; color:var(--faint); font-size:.8rem; font-weight:700; }
+
+    /* student work masonry — V7: real files, natural heights */
+    .masonry{ columns:3 170px; column-gap:14px; margin-top:clamp(44px,6vw,64px); }
+    .masonry .m-item{
+      break-inside:avoid; margin-bottom:14px; border-radius:var(--r-md);
+      overflow:hidden; border:1.5px solid var(--line); background:var(--card);
+    }
+    .masonry img{ width:100%; height:auto; display:block; }
+
+    /* about */
+    .about-grid{ display:grid; grid-template-columns:.85fr 1.15fr; gap:clamp(32px,5vw,72px); align-items:start; text-align:center; }
+    /* guard: grid items default to min-width:auto — the marquee track's max-content
+       width (~3.9k px) would blow the column + document width out. */
+    .about-grid > *{ min-width:0; }
+    @media (max-width:900px){ .about-grid{ grid-template-columns:1fr; } }
+    .about-img{ aspect-ratio:4/5; position:sticky; top:90px; }
+    @media (max-width:900px){ .about-img{ position:static; max-width:440px; margin-inline:auto; } }
+    .about-name{ font-size:clamp(1.6rem,3.4vw,2.3rem); }
+    .about-role{ color:var(--accent-hot); font-weight:800; font-size:.92rem; margin-top:10px; }
+    .about-bio{ margin-top:26px; color:var(--muted); display:grid; gap:18px; font-size:.97rem; max-width:640px; margin-inline:auto; }
+    .about-stats{ display:flex; gap:12px; margin-top:32px; flex-wrap:wrap; justify-content:center; }
+    .stat-pill{ border:1.5px solid var(--line-strong); border-radius:22px; padding:16px 28px; background:rgba(248,240,230,.04); }
+    .stat-pill .n{ font-family:var(--disp); font-weight:700; font-size:1.7rem; color:var(--accent-hot); line-height:1.2; }
+    .stat-pill .l{ color:var(--muted); font-size:.78rem; font-weight:700; }
+    /* client wordmarks — styled type, real logo files can replace later */
+    .logo-row-label{ margin-top:clamp(40px,6vw,56px); color:var(--faint); font-size:.76rem; font-weight:800; letter-spacing:.04em; }
+    /* V5: seamless marquee (canonical pattern — LTR on wrapper AND track, JS-measured offset) */
+    .wm-marquee{
+      margin-top:22px; overflow:hidden; direction:ltr; position:relative; max-width:100%;
+      -webkit-mask-image:linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+      mask-image:linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+    }
+    .wm-track{ display:flex; align-items:center; width:max-content; direction:ltr; padding-block:8px; }
+    .wm-track .wordmark{ flex:none; margin-right:46px; }
+    .wordmark.wm-ph{
+      font-family:'Cairo',sans-serif; font-weight:800; letter-spacing:.06em;
+      font-size:.82rem; color:var(--faint); opacity:.75;
+      border:1.5px dashed var(--line-strong); border-radius:var(--r-pill); padding:5px 18px;
+    }
+    @media (prefers-reduced-motion: reduce){
+      .wm-marquee{ -webkit-mask-image:none; mask-image:none; }
+      .wm-track{ width:auto; flex-wrap:wrap; justify-content:center; gap:14px 36px; }
+      .wm-track .wordmark{ margin-right:0; }
+      .wm-track .wm-dup{ display:none; }
+    }
+    .wordmark{
+      font-family:Didot,'Bodoni MT','Times New Roman',serif; color:var(--faint);
+      font-size:1.02rem; letter-spacing:.24em; text-transform:uppercase; white-space:nowrap;
+      opacity:.9; transition:color .3s;
+    }
+    .wordmark:hover{ color:var(--muted); }
+    .wordmark.wm-sans{ font-family:'Cairo',Futura,'Century Gothic',sans-serif; font-weight:700; letter-spacing:.18em; font-size:.9rem; }
+    /* V7: real client logo files — normalized to light monochrome marks.
+       Base = grayscale→invert (dark/colored marks become light). .wm-keep = already-light marks (skip invert). */
+    .wm-track img.wordmark{
+      height:26px; width:auto; opacity:.78;
+      filter:grayscale(1) invert(1) brightness(1.55);
+    }
+    .wm-track img.wm-h18{ height:18px; }
+    .wm-track img.wm-e{ height:38px; }
+    .wm-track img.wm-sq{ height:44px; }
+    .wm-track img.wm-p{ height:48px; }
+    .wm-track img.wm-keep{ filter:grayscale(1) brightness(1.15); }
+
+    /* suitability quiz */
+    .quiz-launch{ margin-top:clamp(40px,6vw,56px); }
+    .quiz-card{ max-width:820px; margin:clamp(48px,7vw,72px) auto 0; text-align:center; padding:clamp(30px,5vw,54px); }
+    .quiz-card[hidden]{ display:none; }
+    .quiz-progress{ display:flex; gap:8px; justify-content:center; margin-bottom:30px; }
+    .quiz-progress span{ width:34px; height:7px; border-radius:var(--r-pill); background:rgba(248,240,230,.1); transition:background .35s; }
+    .quiz-progress span.done{ background:var(--accent); }
+    .quiz-q{ font-size:clamp(1.08rem,2.4vw,1.42rem); font-weight:800; line-height:1.8; min-height:3.6em; display:flex; align-items:center; justify-content:center; }
+    .quiz-btns{ display:flex; gap:16px; justify-content:center; margin-top:34px; flex-wrap:wrap; }
+    .quiz-btn{
+      border:none; cursor:pointer; font-family:var(--body); font-weight:900; font-size:1.05rem;
+      border-radius:var(--r-pill); padding:15px 58px; transition:transform .25s var(--ease), box-shadow .25s var(--ease);
+    }
+    .quiz-btn:hover{ transform:translateY(-2px); }
+    .quiz-yes{ background:linear-gradient(180deg, var(--accent-hot), var(--accent) 55%, #f0501f); color:var(--on-accent); box-shadow:0 10px 30px -10px rgba(255,106,60,.5); }
+    .quiz-no{ background:rgba(248,240,230,.06); color:var(--ink); border:1.5px solid var(--line-strong); }
+    .quiz-count{ margin-top:26px; color:var(--faint); font-size:.78rem; font-weight:700; }
+    .quiz-result{ display:none; }
+    .quiz-result.show{ display:block; }
+    .qr-eyebrow{ color:var(--faint); font-weight:800; font-size:.85rem; }
+    .qr-pct{ font-family:var(--disp); font-weight:700; font-size:clamp(2.2rem,7vw,3.6rem); color:var(--accent-hot); line-height:1.3; margin-top:10px; }
+    /* V6: composed result — band message + reducer notes */
+    .qr-msg{
+      margin:26px auto 0; max-width:600px; border:1.5px solid var(--line-strong);
+      border-radius:var(--r-md); padding:22px 26px; color:var(--muted); font-size:.9rem; font-weight:600;
+      background:rgba(248,240,230,.03); text-align:start;
+    }
+    .qr-msg .qr-band{ font-weight:800; color:var(--ink); line-height:1.9; }
+    .qr-msg .qr-div{ height:1px; background:var(--line-strong); margin-block:16px; }
+    .qr-notes{ list-style:none; display:grid; gap:10px; }
+    .qr-notes li{ position:relative; padding-inline-start:18px; line-height:1.85; }
+    .qr-notes li::before{
+      content:""; position:absolute; inset-inline-start:0; top:.72em;
+      width:7px; height:7px; border-radius:50%; background:var(--accent);
+    }
+    .qr-msg .qr-end{ margin-top:16px; font-weight:700; color:var(--ink); }
+    .qr-cta{ margin-top:30px; }
+    .quiz-restart{
+      margin-top:18px; background:none; border:none; color:var(--faint); font-family:var(--body);
+      font-weight:700; font-size:.8rem; cursor:pointer; text-decoration:underline; text-underline-offset:4px;
+    }
+    .quiz-restart:hover{ color:var(--muted); }
+
+    /* offer */
+    .offer-box{ max-width:760px; margin-inline:auto; overflow:hidden; padding:0; text-align:start; }
+    .offer-head{ background:linear-gradient(160deg,#ff7a48,var(--accent) 55%,#e6501f); color:var(--on-accent); padding:24px 28px; font-weight:900; font-size:1.08rem; text-align:center; }
+    .offer-rows{ padding:10px 26px; }
+    .offer-row{ display:flex; align-items:baseline; justify-content:space-between; gap:16px; padding:16px 0; border-bottom:1px dashed var(--line-strong); }
+    .offer-row:last-child{ border-bottom:none; }
+    .offer-row .o-t{ font-weight:800; font-size:.95rem; }
+    .offer-row .o-d{ color:var(--faint); font-size:.78rem; font-weight:600; }
+    .offer-row .o-v{ color:var(--muted); font-weight:800; white-space:nowrap; font-size:.9rem; }
+    .offer-total{ display:flex; align-items:center; justify-content:space-between; background:var(--bg-2); padding:18px 26px; font-weight:900; }
+    .offer-total .o-v{ color:var(--accent-hot); font-size:1.15rem; }
+    /* V6: value-stack strike on the total — crossed value, the real price stands below */
+    .offer-total s.o-v{
+      color:var(--muted); text-decoration:line-through;
+      text-decoration-thickness:2.5px; text-decoration-color:var(--accent-hot);
+    }
+    .offer-img{ max-width:760px; margin:clamp(40px,6vw,56px) auto 0; aspect-ratio:21/9; }
+    .price-block{ text-align:center; margin-top:clamp(52px,7vw,76px); position:relative; }
+    /* V5: brighter radial glow behind the price */
+    .price-block::before{
+      content:""; position:absolute; left:50%; top:24%; transform:translate(-50%,-50%);
+      width:min(680px, 96vw); height:min(380px, 60vw); pointer-events:none; z-index:0;
+      background:radial-gradient(closest-side, rgba(255,138,92,.40), rgba(255,106,60,.18) 48%, transparent 74%);
+      filter:blur(4px);
+    }
+    .price-block > *{ position:relative; z-index:1; }
+    .price-eyebrow{ color:var(--faint); font-weight:800; font-size:.85rem; }
+    .price-amount{ font-family:var(--disp); font-weight:700; font-size:clamp(3.1rem,9vw,4.8rem); color:var(--ink); line-height:1.15; }
+    .price-amount .cur{ font-size:.32em; color:var(--accent-hot); font-weight:900; vertical-align:middle; }
+    .price-flat{ color:var(--muted); font-weight:700; }
+    .price-tamara{
+      margin-top:16px; display:inline-block; background:rgba(207,194,245,.12); color:var(--lav);
+      border:1.5px solid rgba(207,194,245,.3); border-radius:var(--r-pill); padding:8px 22px;
+      font-size:.88rem; font-weight:800;
+    }
+    .price-cta-row{ margin-top:28px; }
+    .price-note{ margin-top:20px; color:var(--faint); font-size:.8rem; }
+    .price-secure{ margin-top:8px; color:var(--faint); font-size:.76rem; font-weight:700; }
+
+    /* FAQ */
+    .faq-list{ max-width:820px; margin:clamp(44px,6vw,64px) auto 0; display:grid; gap:12px; text-align:start; }
+    details.faq{
+      background:var(--card); border:1.5px solid var(--line); border-radius:22px;
+      overflow:hidden; transition:border-color .3s;
+    }
+    details.faq[open]{ border-color:rgba(255,106,60,.4); }
+    details.faq summary{
+      list-style:none; cursor:pointer; display:flex; align-items:center; justify-content:space-between;
+      gap:16px; padding:20px 24px; font-weight:800; font-size:.98rem;
+    }
+    details.faq summary::-webkit-details-marker{ display:none; }
+    details.faq summary .fx{
+      flex:none; width:32px; height:32px; border-radius:12px; background:rgba(248,240,230,.07);
+      display:flex; align-items:center; justify-content:center; color:var(--accent-hot);
+      font-weight:900; transition:transform .3s var(--ease); font-size:1.1rem;
+    }
+    details.faq[open] summary .fx{ transform:rotate(45deg); }
+    details.faq .fa{ padding:0 24px 22px; color:var(--muted); font-size:.92rem; }
+    details.faq.faq-hot{ background:linear-gradient(160deg, rgba(255,122,72,.16), rgba(255,106,60,.06)); border-color:rgba(255,106,60,.45); }
+    details.faq.faq-hot summary .fx{ background:var(--accent); color:var(--on-accent); }
+    .faq-hot-tag{ flex:none; background:var(--accent); color:var(--on-accent); font-size:.62rem; font-weight:900; border-radius:var(--r-pill); padding:3px 10px; }
+    summary .s-q{ flex:1; }
+
+    /* final close */
+    .final-sec .facts{ justify-content:center; margin-top:32px; }
+    .final-sec .btn{ margin-top:38px; }
+    .final-log{ max-width:640px; margin:20px auto 0; }
+
+    /* footer */
+    footer{ border-top:1px solid var(--line); padding-block:34px; }
+    .foot-in{ display:flex; align-items:center; justify-content:space-between; gap:18px; flex-wrap:wrap; }
+    .foot-links{ display:flex; gap:22px; }
+    .foot-links a{ color:var(--faint); font-size:.8rem; font-weight:700; text-decoration:none; }
+    .foot-links a:hover{ color:var(--muted); }
+    .foot-copy{ color:var(--faint); font-size:.74rem; }
+    /* ── lightbox — click any image → fullscreen ───────────────── */
+    .lb-overlay{
+      position:fixed; inset:0; z-index:200; display:none;
+      align-items:center; justify-content:center;
+      background:rgba(10,8,6,.94); backdrop-filter:blur(8px);
+      cursor:zoom-out; padding:4vh 4vw;
+    }
+    .lb-overlay.open{ display:flex; }
+    .lb-overlay img{
+      max-width:94vw; max-height:90vh; width:auto; height:auto;
+      object-fit:contain; border-radius:14px; cursor:default;
+      box-shadow:0 30px 90px rgba(0,0,0,.6);
+    }
+    .lb-x{
+      position:absolute; top:18px; inset-inline-end:18px;
+      width:44px; height:44px; border-radius:50%; border:1px solid rgba(255,255,255,.25);
+      background:rgba(255,255,255,.08); color:#fff; font-size:20px; line-height:1;
+      cursor:pointer; display:flex; align-items:center; justify-content:center;
+    }
+    .lb-nav{
+      position:absolute; top:50%; transform:translateY(-50%);
+      width:46px; height:46px; border-radius:50%; border:1px solid rgba(255,255,255,.25);
+      background:rgba(255,255,255,.08); color:#fff; font-size:22px;
+      cursor:pointer; display:flex; align-items:center; justify-content:center;
+    }
+    .lb-prev{ inset-inline-start:14px; }
+    .lb-next{ inset-inline-end:14px; }
+    .lb-nav[hidden]{ display:none; }
+    @media (hover:hover){ .lb-x:hover,.lb-nav:hover{ background:rgba(255,255,255,.18); } }
+    @media (prefers-reduced-motion:no-preference){
+      .lb-overlay.open img{ animation:lbIn .18s ease; }
+      @keyframes lbIn{ from{ opacity:0; transform:scale(.97);} to{ opacity:1; transform:scale(1);} }
+    }
+    body.lb-lock{ overflow:hidden; }
+    .shot img, .m-item img, .img-slot img{ cursor:zoom-in; }
   </style>
 </head>
 <body>
 
-  <!-- ══ NAV ══════════════════════════════════════════ -->
-  <nav id="nav">
-    <div class="nav-inner">
-      <div class="nav-logo">
-        <img src="../brand_assets/logo-malearn-white.png" alt="MA Learn"
-             onerror="this.style.display='none'">
+
+  <header class="top">
+    <div class="wrap top-in">
+      <img class="logo" src="../brand_assets/logo-malearn-white.png" alt="MA Learn">
+      <nav class="nav-links">
+        <a href="#package">المحتوى</a>
+        <a href="#ciw">المعادلة</a>
+        <a href="#quiz">هل تناسبك؟</a>
+        <a href="#about">من ماجد</a>
+      </nav>
+      <a class="btn btn-primary" href="https://checkout.malearnsa.com/creative-ai-workshop/checkout.html">احجز مقعدك</a>
+    </div>
+  </header>
+
+  <main>
+    <!-- 1. HERO — de-congested, single centered column -->
+    <section class="sec hero glow-wrap" id="hero">
+      <div class="wrap">
+        <div class="hero-col">
+          <div class="hero-name">
+            <span class="n">معادلة صناعة الإلهام</span>
+            <span class="v">2.0</span>
+          </div>
+          <h1 class="disp">تعلم الذكاء الإصطناعي لإنتاج الصور و الفديوهات <span class="hl">بنظام عمل يضمن لك نتائج قوية كل مرة</span> مهما اتغيرت الأدوات</h1>
+          <div class="hero-sub">
+            دامك هنا أنا عارف انك جربت أدوات كثير و يمكن حضرت دورات من قبل عن الـ <span class="en">AI</span><br>
+            بس إذا للآن تتساءل إيش أفضل <span class="en">Midjourney</span> ولا <span class="en">Higgsfield</span><br>
+            أو إذا للآن بتعمل صورك بكتابة البرومبت<br>
+            أو إذا للآن بتبدأ أعمالك في الذكاء الإصطناعي من هذي الأدوات<br>
+            فأحب أقلك إنه أسلوب شغلك كله على وشك يتغير تماماً للأفضل بمجرد ما تضغط على زر (احجز مقعدك)
+          </div>
+          <a class="why-chip" href="#story">
+            <span>خليني أقلك ليش</span>
+            <span class="arr">↓</span>
+          </a>
+          <div class="hero-dates">
+            <div class="hero-dates-label">٣ تواريخ تختار تاريخك عند الحجز:</div>
+            <div class="date-chips">
+              <div class="date-chip"><div class="d">٢٥–٢٧ أغسطس</div><div class="c">الدفعة الرابعة</div></div>
+              <div class="date-chip"><div class="d">٨–١٠ سبتمبر</div><div class="c">الدفعة الخامسة</div></div>
+              <div class="date-chip"><div class="d">١٥–١٧ سبتمبر</div><div class="c">الدفعة السادسة</div></div>
+            </div>
+          </div>
+          <div class="hero-ctas">
+            <a class="btn btn-primary btn-big" href="https://checkout.malearnsa.com/creative-ai-workshop/checkout.html">احجز مقعدك</a>
+            <a class="btn btn-ghost" href="#quiz">هل تناسبك الورشة؟</a>
+          </div>
+          <div class="meta-line">
+            <span>٣ أيام بث مباشر</span><span class="sep">·</span>
+            <span>٧–١٠ مساءً بتوقيت جدة</span>
+          </div>
+          <div class="img-slot hero-img">
+            <picture>
+              <source media="(max-width:900px)" srcset="media/_web/sections/hero-mobile.jpg">
+              <img src="media/_web/sections/hero-desktop.jpg" alt="معادلة صناعة الإلهام 2.0" loading="eager">
+            </picture>
+          </div>
+        </div>
       </div>
-      <div class="nav-links">
-        <a href="https://malearnsa.com">الرئيسية</a>
-        <a href="https://malearnsa.com/#courses">الدورات</a>
+    </section>
+
+    <!-- 1b. Clarification + statement -->
+    <section class="sec sec-tight" id="story">
+      <div class="wrap">
+        <div class="story-txt rv">
+          <h2 class="disp">الفكرة بإختصار</h2>
+          <div class="dots" aria-hidden="true"><span></span><span></span><span></span></div>
+          <p class="kitchen">أتخيل تدخل المطبخ وتجهز المقادير و السكاكين، بس ماعندك وصفة...<br><span class="hl">كيف بتطلع الطبخة؟</span></p>
+        </div>
+        <div class="card statement-card rv">
+          <p class="st-line">في معادلة صناعة الإلهام راح تتعلم <span class="hl">كيف تصنع وصفتك الخاصة</span>، لأي مشروع إبداعي بالـ AI</p>
+          <p class="st-line">عن طريق <span class="hl">٧ خطوات مبسطة</span> تضمن لك نتائج قوية دائماً</p>
+          <p class="st-line">وكمااان... تبرز أسلوبك المميز بدون تكرار</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. PACKAGE TITLE + EXPERIENCE ROUTER -->
+    <section class="sec glow-wrap" id="package">
+      <div class="wrap">
+        <div class="eyebrow rv"><span class="num">٠١</span><span>المحتوى</span></div>
+        <h2 class="disp pkg-title rv">محتوى باقة معادلة صناعة الإلهام 2.0</h2>
+        <div class="card router-card rv">
+          <h3 class="disp">هل سبق استخدمت أدوات الذكاء الاصطناعي التوليدي؟</h3>
+          <div class="router-btns">
+            <a class="router-btn rb-acc" href="#ciw">إيه جرّبتها وعندي خلفية<small>ودّيني على المعادلة مباشرة</small></a>
+            <a class="router-btn rb-lav" href="#itcai">لا، أنا مبتدئ<small>ورّيني من وين أبدأ</small></a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 3. ITCAI -->
+    <section class="sec" id="itcai">
+      <div class="wrap">
+        <div class="card card-lav rv" style="padding:0; overflow:hidden;">
+          <div class="banner-grid">
+            <div style="padding:clamp(28px,4.5vw,52px);">
+              <span class="banner-tag" style="background:var(--lav-deep); color:var(--lav-soft);">للمبتدئين · مشمولة في العرض</span>
+              <h2 class="disp">دورة «مدخل إلى الذكاء الاصطناعي الإبداعي»</h2>
+              <p style="margin-top:16px; font-weight:600;" class="c-muted">لو انت مبتدئ، ما في مشكلة أبداً. مع حجزك تنفتح لك الدورة كاملة: تبني فيها أساسك من الصفر قبل الورشة، وترجع لها وقت ما تبي.</p>
+              <div class="chips" style="margin-top:24px;">
+                <span class="chip" style="border-color:rgba(34,26,61,.3); color:var(--on-lav); background:rgba(255,255,255,.32);">١٧ درساً</span>
+                <span class="chip" style="border-color:rgba(34,26,61,.3); color:var(--on-lav); background:rgba(255,255,255,.32);">+٣ ساعات</span>
+                <span class="chip" style="border-color:rgba(34,26,61,.3); color:var(--on-lav); background:rgba(255,255,255,.32);">من الصفر</span>
+                <span class="chip" style="border-color:rgba(34,26,61,.3); color:var(--on-lav); background:rgba(255,255,255,.32);">وصول مدى الحياة</span>
+              </div>
+            </div>
+            <div class="img-slot">
+              <img src="media/_web/sections/itcai.jpg" alt="دورة مدخل إلى الذكاء الاصطناعي الإبداعي" loading="lazy">
+            </div>
+          </div>
+
+          <!-- lesson video as explainer — Bunny library 637491 (ITCAI) — inside the lavender card -->
+          <div class="rv itcai-inner">
+            <h3 class="disp">هذا الفيديو من داخل الدورة يجاوب على مخاوفك من الـ AI</h3>
+            <div class="video-embed">
+              <iframe
+                src="https://iframe.mediadelivery.net/embed/637491/0c1db750-14fc-4681-82aa-ffe80444ccf4?autoplay=false&preload=false"
+                loading="lazy"
+                allow="accelerometer; gyroscope; encrypted-media; picture-in-picture"
+                allowfullscreen
+                title="درس من دورة مدخل إلى الذكاء الاصطناعي الإبداعي"></iframe>
+            </div>
+          </div>
+
+          <!-- curriculum — real chapters/lessons pulled from the live course — inside the lavender card -->
+          <div class="rv itcai-inner itcai-last">
+            <h3 class="disp">فصول ودروس الدورة</h3>
+            <p class="sec-lead c-muted" style="font-size:clamp(.98rem,1.8vw,1.14rem); font-weight:600;">٦ فصول · ١٧ درساً، من كسر الخوف إلى مشروع كامل.</p>
+            <div class="curr-list">
+            <details class="chap" open>
+              <summary><span class="chap-num">١</span><span class="chap-t">المقدمة</span><span class="chap-count">درس واحد</span><span class="fx">+</span></summary>
+              <ul class="lessons">
+                <li><span class="pl">▶</span>ليش خايف من الذكاء الإصطناعي؟</li>
+              </ul>
+            </details>
+            <details class="chap">
+              <summary><span class="chap-num">٢</span><span class="chap-t">منظومة الذكاء الاصطناعي للمبدعين</span><span class="chap-count">٦ دروس</span><span class="fx">+</span></summary>
+              <ul class="lessons">
+                <li><span class="pl">▶</span>العقلية والتوقعات</li>
+                <li><span class="pl">▶</span>الفئة الأولى: شريك التفكير LLM</li>
+                <li><span class="pl">▶</span>الفئة الثانية: الاستوديو (Video / Photo / Edit)</li>
+                <li><span class="pl">▶</span>الفئة الثالثة: أنظمة تصميم سير العمل</li>
+                <li><span class="pl">▶</span>بناء منظومتك الخاصة</li>
+                <li><span class="pl">▶</span>البرومبت</li>
+              </ul>
+            </details>
+            <details class="chap">
+              <summary><span class="chap-num">٣</span><span class="chap-t">الفئة الأولى: شريك التفكير</span><span class="chap-count">٣ دروس</span><span class="fx">+</span></summary>
+              <ul class="lessons">
+                <li><span class="pl">▶</span>Claude</li>
+                <li><span class="pl">▶</span>Gemini</li>
+                <li><span class="pl">▶</span>Firefly Boards</li>
+              </ul>
+            </details>
+            <details class="chap">
+              <summary><span class="chap-num">٤</span><span class="chap-t">الفئة الثانية: الإستديو، توليد الصور والفيديوهات</span><span class="chap-count">٥ دروس</span><span class="fx">+</span></summary>
+              <ul class="lessons">
+                <li><span class="pl">▶</span>Midjourney</li>
+                <li><span class="pl">▶</span>Higgsfield</li>
+                <li><span class="pl">▶</span>Upscalers — مكبرات الصور</li>
+                <li><span class="pl">▶</span>Image Retouching — معالجة الصور</li>
+                <li><span class="pl">▶</span>التكاليف المالية لبرامج الذكاء الإصطناعي</li>
+              </ul>
+            </details>
+            <details class="chap">
+              <summary><span class="chap-num">٥</span><span class="chap-t">الفئة الثالثة: بناء أنظمة سير العمل</span><span class="chap-count">درس واحد</span><span class="fx">+</span></summary>
+              <ul class="lessons">
+                <li><span class="pl">▶</span>Figmaweave (Weavy AI)</li>
+              </ul>
+            </details>
+            <details class="chap">
+              <summary><span class="chap-num">٦</span><span class="chap-t">التطبيق العملي</span><span class="chap-count">درس واحد</span><span class="fx">+</span></summary>
+              <ul class="lessons">
+                <li><span class="pl">▶</span>مشروع تصوير أزياء متكامل</li>
+              </ul>
+            </details>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. CIW — the flagship workshop -->
+    <section class="sec glow-wrap" id="ciw">
+      <div class="wrap">
+        <div class="eyebrow rv"><span class="num">٠٢</span><span>الورشة المباشرة</span></div>
+        <h2 class="disp rv" style="font-size:clamp(1.9rem,5.4vw,3.2rem);">معادلة صناعة الإلهام <span style="background:var(--accent); color:var(--on-accent); font-weight:900; font-size:.5em; border-radius:12px; padding:4px 14px; font-family:var(--body); vertical-align:middle;">2.0</span></h2>
+        <p class="lead sec-lead rv">سير عمل إبداعي من ٧ مراحل يحوّل رؤيتك إلى نتيجة قوية، كل مرة.</p>
+        <!-- V5: banner image directly under the lead line, above the chips -->
+        <div class="img-slot ciw-lede rv">
+          <img src="media/_web/sections/ciw-section.jpg" alt="معادلة صناعة الإلهام 2.0" loading="lazy">
+        </div>
+        <div class="chips rv" style="margin-top:clamp(34px,5vw,44px);">
+          <span class="chip live-chip">ورشة <b>تفاعلية</b> · بث مباشر وتطبيق بيدك</span>
+          <span class="chip">تطبيق على <b>بريف حقيقي</b></span>
+          <span class="chip">طريقتك <b>مدى الحياة</b></span>
+        </div>
+
+        <div class="day-stack">
+          <div class="card day-card rv">
+            <div class="img-slot"><img src="media/_web/sections/day-1.jpg" alt="اليوم الأول" loading="lazy"></div>
+            <div class="day-body">
+              <span class="day-tag">اليوم الأول</span>
+              <h3>من البريف إلى الرؤية: تبني توجّهك قبل أي أداة.</h3>
+              <ul class="day-items">
+                <li>العملية الإبداعية</li>
+                <li>البريف</li>
+                <li>التفكير الإبداعي</li>
+                <li><span class="en">Insight</span></li>
+                <li>الإخراج الإبداعي <span class="en">Creative Direction</span></li>
+                <li>الإخراج الفني <span class="en">Art Direction</span></li>
+                <li>معادلة صناعة الإلهام</li>
+              </ul>
+            </div>
+          </div>
+          <div class="card day-card rv">
+            <div class="img-slot"><img src="media/_web/sections/day-2.jpg" alt="اليوم الثاني" loading="lazy"></div>
+            <div class="day-body">
+              <span class="day-tag">اليوم الثاني</span>
+              <h3>تفصيل حقيبة الأدوات الذكية وكيفية إستخدامها</h3>
+              <ul class="day-items">
+                <li>تعريف بحزمة أدوات الذكاء الاصطناعي</li>
+                <li>كيف أطلع بأعمال إبداعية بإستخدام <span class="en">Midjourney</span></li>
+                <li>شرح تفاصيل منصة <span class="en">Weavy</span></li>
+              </ul>
+            </div>
+          </div>
+          <div class="card day-card rv">
+            <div class="img-slot"><img src="media/_web/sections/day-3.jpg" alt="اليوم الثالث" loading="lazy"></div>
+            <div class="day-body">
+              <span class="day-tag">اليوم الثالث</span>
+              <h3>من البريف إلى التسليم: مشروع متكامل يوصل للعميل.</h3>
+              <ul class="day-items solo">
+                <li>إنتاج مشروع متكامل من البريف إلى النتيجة النهائية بشكل مباشر</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. COMMUNITY -->
+    <section class="sec" id="community">
+      <div class="wrap">
+        <div class="card card-accent rv" style="padding:0; overflow:hidden;">
+          <div class="banner-grid">
+            <div style="padding:clamp(28px,4.5vw,52px);">
+              <span class="banner-tag" style="background:rgba(42,17,5,.3); color:#ffe9dd;">مشمول في العرض · على Skool</span>
+              <h2 class="disp">مجتمع صُنّاع الإلهام</h2>
+              <p style="margin-top:16px; font-weight:600;" class="c-muted">الورشة تنتهي في ٣ أيام، بس رحلتك لا. في المجتمع تكمل التطبيق مع ماجد ومع طلاب الدفعات: تعرض شغلك، تاخذ فيدباك، وتتابع كل جديد في الذكاء الاصطناعي الإبداعي.</p>
+              <div class="chips" style="margin-top:24px;">
+                <span class="chip" style="border-color:rgba(42,17,5,.35); color:var(--on-accent); background:rgba(255,255,255,.28);">دعم مع ماجد والطلاب</span>
+                <span class="chip" style="border-color:rgba(42,17,5,.35); color:var(--on-accent); background:rgba(255,255,255,.28);">وصول كامل لمدة سنة</span>
+              </div>
+              <p style="margin-top:24px; font-weight:800; font-size:.85rem;" class="c-muted">إيش داخل المجتمع؟</p>
+              <div class="chips" style="margin-top:12px;">
+                <span class="chip" style="border-color:rgba(42,17,5,.35); color:var(--on-accent); background:rgba(255,255,255,.28);">تسجيلات البث المباشر</span>
+                <span class="chip" style="border-color:rgba(42,17,5,.35); color:var(--on-accent); background:rgba(255,255,255,.28);">الموارد و الملفات و مصادر الإلهام</span>
+                <span class="chip" style="border-color:rgba(42,17,5,.35); color:var(--on-accent); background:rgba(255,255,255,.28);">مشاريع للممارسة</span>
+                <span class="chip" style="border-color:rgba(42,17,5,.35); color:var(--on-accent); background:rgba(255,255,255,.28);">وكلاء الذكاء الاصطناعي</span>
+                <span class="chip" style="border-color:rgba(42,17,5,.35); color:var(--on-accent); background:rgba(255,255,255,.28);">ماستركلاس Figma Weave</span>
+                <span class="chip" style="border-color:rgba(42,17,5,.35); color:var(--on-accent); background:rgba(255,255,255,.28);">محتوى متجدد بدون رسوم إضافية</span>
+              </div>
+            </div>
+            <div class="img-slot">
+              <img src="media/_web/sections/community.jpg" alt="مجتمع صُنّاع الإلهام" loading="lazy">
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 6. TESTIMONIALS + PREVIOUS WORK -->
+    <section class="sec" id="testimonials">
+      <div class="wrap">
+        <div class="eyebrow rv"><span class="num">٠٣</span><span>شهادات</span></div>
+        <h2 class="disp sec-h2 rv">إيش قالوا المبدعين اللي حضروا الدفعات السابقة</h2>
+        <p class="rv" style="margin-top:22px; font-weight:800;">أكثر من <span class="hl">٧٠ مبدع</span> طبّقوا المعادلة في الدفعات السابقة</p>
+
+        <!-- videos — 4 real testimonial videos, student names from Majid's renamed files (posters regenerated 07-26) -->
+        <div class="testi-videos">
+          <div class="vid-tile rv">
+            <video src="media/_web/videos/haneen-turkistani.mp4" poster="media/_web/posters/haneen-turkistani.jpg" preload="none" controls playsinline></video>
+            <span class="vid-cap">حنين تركستاني</span>
+          </div>
+          <div class="vid-tile fit-contain rv">
+            <video src="media/_web/videos/mariam-mahmoud.mp4" poster="media/_web/posters/mariam-mahmoud.jpg" preload="none" controls playsinline></video>
+            <span class="vid-cap">مريم محمود</span>
+          </div>
+          <div class="vid-tile rv">
+            <video src="media/_web/videos/ahmad-kamal.mp4" poster="media/_web/posters/ahmad-kamal.jpg" preload="none" controls playsinline></video>
+            <span class="vid-cap">أحمد كمال</span>
+          </div>
+          <div class="vid-tile rv">
+            <video src="media/_web/videos/raad-jamil.mp4" poster="media/_web/posters/raad-jamil.jpg" preload="none" controls playsinline></video>
+            <span class="vid-cap">رعد جميل</span>
+          </div>
+        </div>
+
+        <!-- screenshot masonry — 16 real screenshots from media/_web/screenshots/ -->
+        <div class="shot-masonry">
+          <div class="shot rv"><img src="media/_web/screenshots/img-2834.jpg" alt="شهادة مشترك" loading="lazy"></div>
+          <div class="shot rv"><img src="media/_web/screenshots/img-2839.jpg" alt="شهادة مشترك" loading="lazy"></div>
+          <div class="shot rv"><img src="media/_web/screenshots/img-2863.jpg" alt="شهادة مشترك" loading="lazy"></div>
+          <div class="shot rv"><img src="media/_web/screenshots/img-2865.jpg" alt="شهادة مشترك" loading="lazy"></div>
+          <div class="shot rv"><img src="media/_web/screenshots/img-2871.jpg" alt="شهادة مشترك" loading="lazy"></div>
+          <div class="shot rv"><img src="media/_web/screenshots/img-2882.jpg" alt="شهادة مشترك" loading="lazy"></div>
+          <div class="shot rv"><img src="media/_web/screenshots/img-2998.jpg" alt="شهادة مشترك" loading="lazy"></div>
+          <div class="shot rv"><img src="media/_web/screenshots/img-2999.jpg" alt="شهادة مشترك" loading="lazy"></div>
+          <div class="shot rv"><img src="media/_web/screenshots/img-3001.jpg" alt="شهادة مشترك" loading="lazy"></div>
+          <div class="shot rv"><img src="media/_web/screenshots/img-3430.jpg" alt="شهادة مشترك" loading="lazy"></div>
+          <div class="shot rv"><img src="media/_web/screenshots/img-3471.jpg" alt="شهادة مشترك" loading="lazy"></div>
+          <div class="shot rv"><img src="media/_web/screenshots/img-3473.jpg" alt="شهادة مشترك" loading="lazy"></div>
+          <div class="shot rv"><img src="media/_web/screenshots/img-3546.jpg" alt="شهادة مشترك" loading="lazy"></div>
+          <div class="shot rv"><img src="media/_web/screenshots/img-3635.jpg" alt="شهادة مشترك" loading="lazy"></div>
+          <div class="shot rv"><img src="media/_web/screenshots/img-3645.jpg" alt="شهادة مشترك" loading="lazy"></div>
+          <div class="shot rv"><img src="media/_web/screenshots/img-3780.jpg" alt="شهادة مشترك" loading="lazy"></div>
+        </div>
+
+        <!-- previous students' work — 31 real pieces from media/_web/student-work/ (hero picks from media/student-work/priority/ lead) -->
+        <div style="margin-top:clamp(72px,10vw,120px);">
+          <h2 class="disp sec-h2 rv">أعمال المشتركين السابقين</h2>
+          <div class="masonry">
+            <div class="m-item rv"><img src="media/_web/student-work/black-caramel-hero-01.jpg" alt="عمل مشترك" loading="lazy"></div>
+            <div class="m-item rv"><img src="media/_web/student-work/haya.jpg" alt="عمل مشترك" loading="lazy"></div>
+            <div class="m-item rv"><img src="media/_web/student-work/moncler-magnific-precision-upscale-v2-2026-06-13-01-34-28.jpg" alt="عمل مشترك" loading="lazy"></div>
+            <div class="m-item rv"><img src="media/_web/student-work/blue-monk-main.jpg" alt="عمل مشترك" loading="lazy"></div>
+            <div class="m-item rv"><img src="media/_web/student-work/ghassan2.jpg" alt="عمل مشترك" loading="lazy"></div>
+            <div class="m-item rv"><img src="media/_web/student-work/screenshot-2026-07-26-at-9-05-42.jpg" alt="عمل مشترك" loading="lazy"></div>
+            <div class="m-item rv"><img src="media/_web/student-work/19-art-magnific-precision-upscale-v2-2026-07-18-16-18-11.jpg" alt="عمل مشترك" loading="lazy"></div>
+            <div class="m-item rv"><img src="media/_web/student-work/tea-collection-hero-04.jpg" alt="عمل مشترك" loading="lazy"></div>
+            <div class="m-item rv"><img src="media/_web/student-work/ghassan6.jpg" alt="عمل مشترك" loading="lazy"></div>
+            <div class="m-item rv"><img src="media/_web/student-work/screenshot-2026-06-14-at-7-06-17.jpg" alt="عمل مشترك" loading="lazy"></div>
+            <div class="m-item rv"><img src="media/_web/student-work/magnific-upload-reference-83826.jpg" alt="عمل مشترك" loading="lazy"></div>
+            <div class="m-item rv"><img src="media/_web/student-work/screenshot-2026-06-14-at-7-06-29.jpg" alt="عمل مشترك" loading="lazy"></div>
+            <div class="m-item rv"><img src="media/_web/student-work/screenshot-2026-07-26-at-9-07-35.jpg" alt="عمل مشترك" loading="lazy"></div>
+            <div class="m-item rv"><img src="media/_web/student-work/keemoon-main-5.jpg" alt="عمل مشترك" loading="lazy"></div>
+            <div class="m-item rv"><img src="media/_web/student-work/underwater-circus-8.jpg" alt="عمل مشترك" loading="lazy"></div>
+            <div class="m-item rv"><img src="media/_web/student-work/moncler-magnific-precision-upscale-v2-2026-06-13-01-36-42.jpg" alt="عمل مشترك" loading="lazy"></div>
+            <div class="m-item rv"><img src="media/_web/student-work/img-2873.jpg" alt="عمل مشترك" loading="lazy"></div>
+            <div class="m-item rv"><img src="media/_web/student-work/silver1-e.jpg" alt="عمل مشترك" loading="lazy"></div>
+            <div class="m-item rv"><img src="media/_web/student-work/blue-monk-3.jpg" alt="عمل مشترك" loading="lazy"></div>
+            <div class="m-item rv"><img src="media/_web/student-work/melissa-5.jpg" alt="عمل مشترك" loading="lazy"></div>
+            <div class="m-item rv"><img src="media/_web/student-work/screenshot-2026-07-26-at-9-06-01.jpg" alt="عمل مشترك" loading="lazy"></div>
+            <div class="m-item rv"><img src="media/_web/student-work/ghassan4.jpg" alt="عمل مشترك" loading="lazy"></div>
+            <div class="m-item rv"><img src="media/_web/student-work/viscose-lurex-knit-4.jpg" alt="عمل مشترك" loading="lazy"></div>
+            <div class="m-item rv"><img src="media/_web/student-work/img-2875.jpg" alt="عمل مشترك" loading="lazy"></div>
+            <div class="m-item rv"><img src="media/_web/student-work/19-art-magnific-precision-upscale-v2-2026-07-18-16-18-57.jpg" alt="عمل مشترك" loading="lazy"></div>
+            <div class="m-item rv"><img src="media/_web/student-work/screenshot-2026-06-14-at-7-06-39.jpg" alt="عمل مشترك" loading="lazy"></div>
+            <div class="m-item rv"><img src="media/_web/student-work/magnific-upload-reference-83817.jpg" alt="عمل مشترك" loading="lazy"></div>
+            <div class="m-item rv"><img src="media/_web/student-work/moncler-magnific-precision-upscale-v2-2026-06-13-01-34-20.jpg" alt="عمل مشترك" loading="lazy"></div>
+            <div class="m-item rv"><img src="media/_web/student-work/screenshot-2026-07-26-at-9-07-19.jpg" alt="عمل مشترك" loading="lazy"></div>
+            <div class="m-item rv"><img src="media/_web/student-work/img-3472.jpg" alt="عمل مشترك" loading="lazy"></div>
+            <div class="m-item rv"><img src="media/_web/student-work/magnific-upload-reference-83824.jpg" alt="عمل مشترك" loading="lazy"></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 7. ABOUT -->
+    <section class="sec" id="about">
+      <div class="wrap">
+        <div class="eyebrow rv"><span class="num">٠٤</span><span>عن المدرب</span></div>
+        <div class="about-grid">
+          <div class="img-slot about-img rv">
+            <img src="media/_web/sections/profile.jpg" alt="ماجد عنقاوي" loading="lazy">
+          </div>
+          <div>
+            <h2 class="disp about-name rv">ماجد عنقاوي</h2>
+            <div class="about-role rv">مؤسِّس ومستشار متخصص في الذكاء الاصطناعي الإبداعي · مؤسِّس MA Learn</div>
+            <div class="about-bio rv">
+              <p>ماجد عنقاوي مصوّر ومدير إبداعي ومعلّم ورائد أعمال سعودي من جدة. بدأ رحلته بالتصوير كحرفة وكوسيلة سرد وتعبير ثقافي، واشتغل على مدى ١٦ سنة في الأزياء والإعلانات والاستشارات الإبداعية، وتعاون مع برندات عالمية مثل Dior و Gucci و Graff و Chaumet.</p>
+              <p>وعلى مدى السنوات، درّب ووجّه مصوّرين ومبدعين صاعدين في السعودية والخليج من خلال ورش وبرامج تعليمية تجمع بين إتقان الحرفة والنمو الفني والمهني، وتعاون مع Art Jameel و SUNONO في إصدار كتب ومطبوعات فوتوغرافية.</p>
+              <p>أسّس MA Studio و MA Learn، وفيهما يجمع بين عينه الإبداعية وخبرته كصاحب أعمال: يساعد المبدعين يبنون من موهبتهم قيمة حقيقية وشغل مستدام. وهو سفير Fujifilm في السعودية.</p>
+              <p>واليوم تركيزه كله على الذكاء الاصطناعي الإبداعي. نفس المعادلة اللي بتتعلمها في الورشة هي اللي يستخدمها ماجد فعلياً في مشاريعه وشغل عملائه.</p>
+            </div>
+            <div class="about-stats">
+              <div class="stat-pill rv"><div class="n">١٦</div><div class="l">سنة في المجال الإبداعي</div></div>
+              <div class="stat-pill rv"><div class="n">٧٠+</div><div class="l">مبدع طبّقوا المعادلة</div></div>
+            </div>
+            <!-- V7: 22 real client logos from media/_web/logos/ (trimmed, transparent, CSS-normalized to light marks).
+                 Canonical seamless pattern: LTR wrapper+track, duplicated set, JS-measured pixel offset.
+                 width/height attrs = intrinsic px so layout is stable before images load (seam measurement stays exact). -->
+            <div class="logo-row-label rv">عمل مع</div>
+            <div class="wm-marquee rv" id="wm-marquee">
+              <div class="wm-track" id="wm-track">
+                <img class="wordmark" src="media/_web/logos/dior.png" alt="Dior" width="800" height="254" loading="lazy">
+                <img class="wordmark wm-sq" src="media/_web/logos/gucci.png" alt="Gucci" width="346" height="362" loading="lazy">
+                <img class="wordmark wm-h18" src="media/_web/logos/prada.png" alt="Prada" width="730" height="114" loading="lazy">
+                <img class="wordmark wm-h18" src="media/_web/logos/bulgari.png" alt="Bulgari" width="786" height="82" loading="lazy">
+                <img class="wordmark wm-e" src="media/_web/logos/chaumet.png" alt="Chaumet" width="594" height="342" loading="lazy">
+                <img class="wordmark wm-h18" src="media/_web/logos/graff.png" alt="Graff" width="800" height="114" loading="lazy">
+                <img class="wordmark" src="media/_web/logos/chopard.png" alt="Chopard" width="773" height="319" loading="lazy">
+                <img class="wordmark wm-h18" src="media/_web/logos/boucheron.png" alt="Boucheron" width="800" height="150" loading="lazy">
+                <img class="wordmark wm-e" src="media/_web/logos/hublot.png" alt="Hublot" width="798" height="428" loading="lazy">
+                <img class="wordmark wm-e" src="media/_web/logos/rolex.png" alt="Rolex" width="616" height="358" loading="lazy">
+                <img class="wordmark" src="media/_web/logos/coach.png" alt="Coach" width="779" height="296" loading="lazy">
+                <img class="wordmark wm-e" src="media/_web/logos/hm.png" alt="H&amp;M" width="738" height="488" loading="lazy">
+                <img class="wordmark wm-h18" src="media/_web/logos/vogue-arabia.png" alt="Vogue Arabia" width="800" height="206" loading="lazy">
+                <img class="wordmark wm-h18" src="media/_web/logos/esquire.png" alt="Esquire" width="786" height="199" loading="lazy">
+                <img class="wordmark wm-h18" src="media/_web/logos/femi9.png" alt="Femi9" width="566" height="122" loading="lazy">
+                <img class="wordmark wm-e" src="media/_web/logos/adnan-akbar.png" alt="Adnan Akbar" width="523" height="227" loading="lazy">
+                <img class="wordmark wm-h18" src="media/_web/logos/dar-al-hanouf.png" alt="Dar Al Hanouf" width="570" height="125" loading="lazy">
+                <img class="wordmark" src="media/_web/logos/farsi.png" alt="Farsi Jewelry" width="584" height="177" loading="lazy">
+                <img class="wordmark wm-sq" src="media/_web/logos/attar-united.png" alt="Attar United" width="462" height="496" loading="lazy">
+                <img class="wordmark wm-sq" src="media/_web/logos/huda-bamarouf.png" alt="Huda Bamarouf" width="299" height="340" loading="lazy">
+                <img class="wordmark wm-p" src="media/_web/logos/qilada.png" alt="Qilada" width="796" height="1046" loading="lazy">
+                <img class="wordmark wm-h18 wm-keep" src="media/_web/logos/hba.png" alt="Harper's Bazaar Arabia" width="762" height="192" loading="lazy">
+                <img class="wordmark wm-dup" aria-hidden="true" src="media/_web/logos/dior.png" alt="" width="800" height="254" loading="lazy">
+                <img class="wordmark wm-sq wm-dup" aria-hidden="true" src="media/_web/logos/gucci.png" alt="" width="346" height="362" loading="lazy">
+                <img class="wordmark wm-h18 wm-dup" aria-hidden="true" src="media/_web/logos/prada.png" alt="" width="730" height="114" loading="lazy">
+                <img class="wordmark wm-h18 wm-dup" aria-hidden="true" src="media/_web/logos/bulgari.png" alt="" width="786" height="82" loading="lazy">
+                <img class="wordmark wm-e wm-dup" aria-hidden="true" src="media/_web/logos/chaumet.png" alt="" width="594" height="342" loading="lazy">
+                <img class="wordmark wm-h18 wm-dup" aria-hidden="true" src="media/_web/logos/graff.png" alt="" width="800" height="114" loading="lazy">
+                <img class="wordmark wm-dup" aria-hidden="true" src="media/_web/logos/chopard.png" alt="" width="773" height="319" loading="lazy">
+                <img class="wordmark wm-h18 wm-dup" aria-hidden="true" src="media/_web/logos/boucheron.png" alt="" width="800" height="150" loading="lazy">
+                <img class="wordmark wm-e wm-dup" aria-hidden="true" src="media/_web/logos/hublot.png" alt="" width="798" height="428" loading="lazy">
+                <img class="wordmark wm-e wm-dup" aria-hidden="true" src="media/_web/logos/rolex.png" alt="" width="616" height="358" loading="lazy">
+                <img class="wordmark wm-dup" aria-hidden="true" src="media/_web/logos/coach.png" alt="" width="779" height="296" loading="lazy">
+                <img class="wordmark wm-e wm-dup" aria-hidden="true" src="media/_web/logos/hm.png" alt="" width="738" height="488" loading="lazy">
+                <img class="wordmark wm-h18 wm-dup" aria-hidden="true" src="media/_web/logos/vogue-arabia.png" alt="" width="800" height="206" loading="lazy">
+                <img class="wordmark wm-h18 wm-dup" aria-hidden="true" src="media/_web/logos/esquire.png" alt="" width="786" height="199" loading="lazy">
+                <img class="wordmark wm-h18 wm-dup" aria-hidden="true" src="media/_web/logos/femi9.png" alt="" width="566" height="122" loading="lazy">
+                <img class="wordmark wm-e wm-dup" aria-hidden="true" src="media/_web/logos/adnan-akbar.png" alt="" width="523" height="227" loading="lazy">
+                <img class="wordmark wm-h18 wm-dup" aria-hidden="true" src="media/_web/logos/dar-al-hanouf.png" alt="" width="570" height="125" loading="lazy">
+                <img class="wordmark wm-dup" aria-hidden="true" src="media/_web/logos/farsi.png" alt="" width="584" height="177" loading="lazy">
+                <img class="wordmark wm-sq wm-dup" aria-hidden="true" src="media/_web/logos/attar-united.png" alt="" width="462" height="496" loading="lazy">
+                <img class="wordmark wm-sq wm-dup" aria-hidden="true" src="media/_web/logos/huda-bamarouf.png" alt="" width="299" height="340" loading="lazy">
+                <img class="wordmark wm-p wm-dup" aria-hidden="true" src="media/_web/logos/qilada.png" alt="" width="796" height="1046" loading="lazy">
+                <img class="wordmark wm-h18 wm-keep wm-dup" aria-hidden="true" src="media/_web/logos/hba.png" alt="" width="762" height="192" loading="lazy">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 8. SUITABILITY QUIZ -->
+    <section class="sec" id="quiz">
+      <div class="wrap">
+        <div class="eyebrow rv"><span class="num">٠٥</span><span>اختبار سريع</span></div>
+        <h2 class="disp sec-h2 rv">هل الورشة تناسبك؟</h2>
+        <p class="lead sec-lead rv">هذه الورشة مو لكل أحد، وهذا هدفنا.<br>جاوب على ٧ أسئلة سريعة وشوف النتيجة.</p>
+        <!-- V5: collapsed to a single button — quiz reveals on click -->
+        <div class="quiz-launch rv" id="quiz-launch">
+          <button class="btn btn-primary btn-big" id="quiz-start" type="button">ابدأ الاختبار</button>
+        </div>
+        <div class="card quiz-card rv" id="quiz-card" hidden>
+          <div class="quiz-progress" id="quiz-progress" aria-hidden="true">
+            <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+          </div>
+          <div id="quiz-body">
+            <div class="quiz-q" id="quiz-q"></div>
+            <div class="quiz-btns">
+              <button class="quiz-btn quiz-yes" id="quiz-yes" type="button">نعم</button>
+              <button class="quiz-btn quiz-no" id="quiz-no" type="button">لا</button>
+            </div>
+            <div class="quiz-count" id="quiz-step"></div>
+          </div>
+          <div class="quiz-result" id="quiz-result" aria-live="polite">
+            <div class="qr-eyebrow">نتيجتك</div>
+            <div class="qr-pct" id="qr-pct"></div>
+            <div class="qr-msg" id="qr-msg"></div>
+            <div class="qr-cta">
+              <a class="btn btn-primary" href="https://checkout.malearnsa.com/creative-ai-workshop/checkout.html">احجز مقعدك</a>
+            </div>
+            <button class="quiz-restart" id="quiz-restart" type="button">أعد الاختبار</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 9. OFFER -->
+    <section class="sec glow-wrap" id="offer">
+      <div class="wrap">
+        <div class="eyebrow rv"><span class="num">٠٦</span><span>إحجز مقعدك الآن</span></div>
+        <h2 class="disp rv">العرض.</h2>
+        <div class="img-slot offer-img rv">
+          <img src="media/_web/sections/offer-section.jpg" alt="" loading="lazy">
+        </div>
+        <div class="card offer-box rv" style="margin-top:clamp(40px,6vw,56px);">
+          <div class="offer-head">عرض معادلة صناعة الإلهام 2.0</div>
+          <div class="offer-rows">
+            <div class="offer-row">
+              <div><div class="o-t">الورشة المباشرة</div><div class="o-d">٣ جلسات مباشرة رئيسية</div></div>
+              <div class="o-v">١,٣٩٩ ر.س</div>
+            </div>
+            <div class="offer-row">
+              <div><div class="o-t">دورة مدخل إلى الذكاء الاصطناعي الإبداعي</div><div class="o-d">١٧ درساً، وصول مدى الحياة</div></div>
+              <div class="o-v">٤٩٩ ر.س</div>
+            </div>
+            <div class="offer-row">
+              <div><div class="o-t">جلسة نقد جماعية</div><div class="o-d">بعد أسبوع من الورشة</div></div>
+              <div class="o-v">٤٠٠ ر.س</div>
+            </div>
+            <div class="offer-row">
+              <div><div class="o-t">وصول مجتمع Skool لمدة سنة</div><div class="o-d">مع ماجد والطلاب</div></div>
+              <div class="o-v">٣,٣٠٠ ر.س</div>
+            </div>
+            <div class="offer-row">
+              <div><div class="o-t">روابط + PDFs + workflows جاهزة للاستخدام</div></div>
+              <div class="o-v">٣٤٩ ر.س</div>
+            </div>
+          </div>
+          <div class="offer-total"><span>المجموع</span><s class="o-v">٥,٩٤٧ ر.س</s></div>
+        </div>
+        <div class="price-block rv">
+          <div class="price-eyebrow">سعر الورشة</div>
+          <div class="price-amount">١,٣٩٩ <span class="cur">ر.س</span></div>
+          <div class="price-flat">سعر ثابت، يشمل كل اللي فوق.</div>
+          <div><span class="price-tamara">أو قسّطها على ٤ دفعات عبر Tamara.</span></div>
+          <div class="price-cta-row">
+            <a class="btn btn-primary btn-big" href="https://checkout.malearnsa.com/creative-ai-workshop/checkout.html">احجز مقعدك</a>
+          </div>
+          <div class="price-note">تختار تاريخ دفعتك (٢٥–٢٧ أغسطس / ٨–١٠ سبتمبر / ١٥–١٧ سبتمبر) أثناء الحجز.</div>
+          <div class="price-secure">دفع آمن: مدى، Visa، Mastercard، Apple Pay، Tamara</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 10. FAQ -->
+    <section class="sec" id="faq">
+      <div class="wrap">
+        <div class="eyebrow rv"><span class="num">٠٧</span><span>أسئلة شائعة</span></div>
+        <h2 class="disp rv">أسئلة ممكن تخطر على بالك.</h2>
+        <div class="faq-list">
+          <details class="faq faq-hot rv">
+            <summary><span class="faq-hot-tag">لأصحاب المجال</span><span class="s-q">كيف تفيدني الورشة كمصور؟</span><span class="fx">+</span></summary>
+            <div class="fa">إنت كمصور بتواجه تحديات كثير منها، ضيق الوقت، صعوبة نقل المعدات من لوكيشن للثاني، المشروع ياخذ وقت لين يتم إنجازه. بإستخدام الذكاء الإصطناعي الإبداعي انت حرفيا تتجاوز هذي التحديات كلها</div>
+          </details>
+          <details class="faq faq-hot rv">
+            <summary><span class="faq-hot-tag">لأصحاب المجال</span><span class="s-q">كيف تفيدني كمصمم؟</span><span class="fx">+</span></summary>
+            <div class="fa">النظام يتناسب مع كل المسارات الإبداعية لأنه يعتبر الخطوة اللي قبل الإنتاج، فهذا راح يرفع من جودة مخرجاتك، بالإضافة إنت كمصمم غالباً تصاميمك بيكون فيها صور، بعد الورشة بيكون عندك الإمكانية لإنتاج هذي الصور بنفسك فبالتالي تقدر تبيعها كخدمة إضافية</div>
+          </details>
+          <details class="faq faq-hot rv">
+            <summary><span class="faq-hot-tag">لأصحاب المجال</span><span class="s-q">هل الورشة تناسبني كمصممة أزياء؟</span><span class="fx">+</span></summary>
+            <div class="fa">مناسبة في حالة واحدة فقط، إذا كنتي حابة تمسكي الإخراج الإبداعي لبراندك، وقتها راح تفيدك كثير. أما إذا هدفك طريقة سريعة بالـ AI لإنتاج الصور لقطعك فللأسف ماراح تناسبك.</div>
+          </details>
+          <details class="faq faq-hot rv">
+            <summary><span class="faq-hot-tag">لأصحاب المجال</span><span class="s-q">هل الورشة تناسب مصورين الأطعمة أو المنتجات؟ ولا فقط أزياء؟</span><span class="fx">+</span></summary>
+            <div class="fa">الورشة تناسب الجميع لأن الأساس هو أسلوب العمل و المعادلة، سواء طبقتها على إنتاج صور أزياء أو إنتاج صور أطعمة.</div>
+          </details>
+          <details class="faq rv">
+            <summary><span class="s-q">ما عندي خبرة بالـ AI. تناسبني؟</span><span class="fx">+</span></summary>
+            <div class="fa">إي. تبدأ من الصفر بكورس «مدخل إلى الذكاء الاصطناعي الإبداعي» المشمول، وتترقّى للمعادلة خطوة خطوة. ما يفوتك شي.</div>
+          </details>
+          <details class="faq rv">
+            <summary><span class="s-q">وقتي ضيق. كيف ألحق؟</span><span class="fx">+</span></summary>
+            <div class="fa">تستثمر ٣ أيام مرة وحدة، مقابل مئات الساعات اللي تروح في كل مشروع وانت بدون سير عمل واضح. والجلسات مسجّلة ترجع لها وقت ما تبي.</div>
+          </details>
+          <details class="faq rv">
+            <summary><span class="s-q">كيف أختار تاريخ دفعتي؟</span><span class="fx">+</span></summary>
+            <div class="fa">أثناء الحجز تختار الدفعة اللي تناسبك: ٢٥–٢٧ أغسطس، أو ٨–١٠ سبتمبر، أو ١٥–١٧ سبتمبر.</div>
+          </details>
+          <details class="faq rv">
+            <summary><span class="s-q">وين تنعقد الورشة؟</span><span class="fx">+</span></summary>
+            <div class="fa">أونلاين عبر Google Meet، تحضرها من أي مكان. كل اللي تحتاجه جهاز وإنترنت.</div>
+          </details>
+          <details class="faq rv">
+            <summary><span class="s-q">ماذا لو فاتتني جلسة؟</span><span class="fx">+</span></summary>
+            <div class="fa">تسجيلات كل الجلسات توصلك، تشوفها في وقتك وتطبّق على راحتك.</div>
+          </details>
+        </div>
+      </div>
+    </section>
+
+    <!-- 11. FINAL CLOSE -->
+    <section class="sec final-sec glow-wrap" id="final">
+      <div class="wrap">
+        <h2 class="disp rv" style="font-size:clamp(1.7rem,4.6vw,2.9rem);">رؤيتك هي اللي تميزك<br><span class="hl">باقي تعرضها للناس زي ماتشوفها في خيالك</span></h2>
+        <p class="lead final-log rv">الذكاء الإصطناعي اليوم صار أساس مو خيار ثانوي، استثمر اليوم في بناء اسلوب عمل فعال يرفع من قيمتك قدام عملاءك</p>
+        <div class="chips facts rv">
+          <span class="chip">٣ أيام مباشرة</span>
+          <span class="chip">٢٥–٢٧ أغسطس / ٨–١٠ سبتمبر / ١٥–١٧ سبتمبر</span>
+          <span class="chip chip-solid"><b>١,٣٩٩ ريال</b></span>
+        </div>
+        <a class="btn btn-primary btn-big rv" href="https://checkout.malearnsa.com/creative-ai-workshop/checkout.html">استثمر الان</a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="wrap foot-in">
+      <div class="foot-links">
+        <a href="#hero">الرئيسية</a>
         <a href="https://malearnsa.com/refund-policy.html">سياسة الاسترجاع</a>
         <a href="https://malearnsa.com/privacy-policy.html">الخصوصية</a>
       </div>
-      <a href="#waitlist" class="nav-cta" id="nav-cta">سجّل في قائمة الانتظار</a>
+      <div class="foot-copy">معادلة صناعة الإلهام 2.0 · MA Learn · جميع الحقوق محفوظة</div>
     </div>
-  </nav>
+  </footer>
 
-  <!-- ══ HERO ═════════════════════════════════════════ -->
-  <section class="hero">
-    <picture class="hero-photo">
-      <source media="(min-width: 768px)" srcset="images/hero-desktop.jpg">
-      <img src="images/hero-mobile.jpg" alt="" fetchpriority="high" decoding="async">
-    </picture>
-    <div class="hero-overlay"></div>
-    <div class="hero-content">
-      <div style="font-family:'Gumela','Cairo',sans-serif;font-weight:700;font-size:clamp(1.1rem,2.5vw,1.5rem);color:var(--gold);letter-spacing:0.02em;margin-bottom:14px;">ورشة صناعة الإلهام</div>
-      <div class="hero-label">ورشة مباشرة أونلاين - ٣ جلسات - قريباً</div>
-
-      <h1 class="hero-title">
-        حوّل نفسك من مصور…<br>
-        <span style="color:var(--gold);">إلى مخرج إبداعي.</span>
-      </h1>
-
-      <p class="hero-subtitle">
-        ٣ أيام. ذكاء اصطناعي. بريف عميل حقيقي.<br>
-        تخرج بتحول في طريقة تفكيرك وشغلك — مو بس أدوات جديدة تتفرج عليها.
-      </p>
-
-      <div class="hero-dates">
-        <div class="hero-date-item">
-          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-          قريباً
-        </div>
-        <div class="hero-date-item">
-          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-          ٧–١٠ مساءً (توقيت جدة)
-        </div>
-        <div class="hero-date-item">
-          <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-          <span id="hero-seats-text">المقاعد محدودة</span> — أونلاين
-        </div>
-      </div>
-
-      <div class="hero-price-block">
-        <div class="price-early" style="font-size:1.6rem;">الدفعة القادمة — قريباً</div>
-        <div class="price-deadline">سجّل في قائمة الانتظار وكن أول من يعرف بالموعد والتفاصيل</div>
-      </div>
-
-      <a href="#waitlist" class="btn-primary" id="hero-cta">سجّل في قائمة الانتظار</a>
-
-      <div class="hero-seats">الدفعة الثالثة اكتملت · الدفعة القادمة قريباً</div>
-    </div>
-  </section>
-
-  <hr class="divider">
-
-  <!-- ══ PROBLEM ══════════════════════════════════════ -->
-  <section class="problem">
-    <div class="container">
-      <div class="section-label">المشكلة</div>
-      <h2 class="section-title">تفتح إنستقرام وتشوف أداة جديدة كل يوم.</h2>
-      <p class="section-body">
-        ترند جديد. "ثورة" جديدة. وبعد ساعة من التصفح تحس إنك متأخر، مشوش، وما عملت شيء.
-      </p>
-
-      <div class="problem-quote">
-        <p>
-          هذا مو ذنبك. هذي طبيعة المحتوى اللي يُصنع يخليك محتاج… ما يعطيك حلول.<br><br>
-          المشكلة الحقيقية مو إنك ما تعرف الأدوات.<br>
-          المشكلة إنك ما عندك <strong>إطار تفكير</strong> قبل ما تفتح أي واحدة منها.
-          وبدون هذا الإطار، كل أداة جديدة تشوفها تزيدك ضياع، مو قوة.
-        </p>
-      </div>
-
-      <p class="section-body">
-        الورشة ما تعلمك أدوات.<br>
-        تبني معك الطريقة اللي تفكر فيها — على بريف حقيقي، في ٣ أيام بمخرج احترافي تخرج فيه.
-      </p>
-    </div>
-  </section>
-
-  <hr class="divider">
-
-  <!-- ══ DAYS ═════════════════════════════════════════ -->
-  <section class="days">
-    <div class="container">
-      <div class="section-label">برنامج الورشة</div>
-      <h2 class="section-title">٣ جلسات. تحول حقيقي في طريقة شغلك.</h2>
-      <p class="section-body">
-        ما تخرج بأدوات بس. تخرج بعقلية مختلفة — عقلية المخرج اللي يقرر، مو المنفذ اللي ينتظر.
-      </p>
-
-      <div class="days-grid">
-        <div class="day-card">
-          <div class="day-card-image"><img src="images/day-1.jpg" alt="اليوم الأول — عقلية المدير الإبداعي" loading="lazy" decoding="async"></div>
-          <div class="day-card-body">
-            <div class="day-number">اليوم الأول</div>
-            <div class="day-title">عقلية المدير الإبداعي — ليش أنت، مو الأداة</div>
-            <p class="day-desc">الفرق بين المصور والمخرج. كيف تستقبل البريف، تحلله، وتبني توجه بصري قبل ما تفتح أي أداة.</p>
-          </div>
-        </div>
-        <div class="day-card">
-          <div class="day-card-image"><img src="images/day-2.jpg" alt="اليوم الثاني — المنظومة الكاملة" loading="lazy" decoding="async"></div>
-          <div class="day-card-body">
-            <div class="day-number">اليوم الثاني</div>
-            <div class="day-title">المنظومة الكاملة — Midjourney و Higgsfield و Weavy</div>
-            <p class="day-desc">كل أداة في مكانها الصح. تطبيق مباشر على بريف عميل حقيقي — مو تجريب عشوائي.</p>
-          </div>
-        </div>
-        <div class="day-card">
-          <div class="day-card-image"><img src="images/day-3.jpg" alt="اليوم الثالث — من الفكرة للتسليم" loading="lazy" decoding="async"></div>
-          <div class="day-card-body">
-            <div class="day-number">اليوم الثالث</div>
-            <div class="day-title">من الفكرة للتسليم — شغل يوصل للعميل</div>
-            <p class="day-desc">تسلّم مشروع كامل بنفس مستوى شغل العملاء. تخرج وعندك ما يضاف لمحفظتك — مو بس ملاحظات.</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <hr class="divider">
-
-  <!-- ══ GIFT ══════════════════════════════════════════ -->
-  <section class="gift">
-    <div class="container">
-
-      <!-- Bundle explanation -->
-      <div class="section-label">وش راح تستلم</div>
-      <h2 class="section-title">دورة المدخل + الورشة المباشرة — في باقة واحدة.</h2>
-
-      <div class="gift-card">
-        <div class="gift-card-image"><img src="images/gift.jpg" alt="الباقة الكاملة — دورة المدخل + ورشة صناعة الإلهام" loading="lazy" decoding="async"></div>
-        <div>
-          <div class="gift-title">كل شي محتاجه — مشمول في السعر</div>
-          <p class="gift-desc">
-            الورشة المباشرة + دورة المدخل + جلسة نقد جماعية + وصول مجتمع Skool حتى مايو ٢٠٢٧ + روابط ومراجع جاهزة.<br><br>
-            المدخل يبني الأساس — الإطار الذهني والأدوات. الورشة تنقلك لمستوى المدير الإبداعي.
-            وبعد الورشة، جلسة النقد الجماعية + المجتمع يخلونك ما تطلع لحالك.<br><br>
-            <strong>تدخل الورشة جاهز.</strong> تستفيد من كل دقيقة — لأن الأساس مبني قبل ما يبدأ اليوم الأول.
-          </p>
-          <div class="gift-value">١,٢٩٩ ر.س — كل شي مشمول</div>
-        </div>
-      </div>
-
-      <!-- Bonus -->
-      <div class="bonus-section">
-        <div class="section-label">بعد الورشة</div>
-        <h2 class="section-title">ما ينتهي التعلم بانتهاء اليوم الثالث.</h2>
-        <p class="section-body">
-          بعد أسبوع من الورشة — جلسة نقد جماعية مع ماجد.<br>
-          تجي بالمشروع اللي بنيته. تعرضه على المجموعة. وتاخذ توجيهات مباشرة من ماجد،
-          وتشوف شغل بقية الطلاب — مكان وحد، لحظة وحدة.
-        </p>
-
-        <div class="bonus-card">
-          <div class="bonus-card-title">جلسة النقد الجماعية</div>
-          <div class="bonus-card-date">بعد أسبوع من انتهاء الورشة</div>
-          <ul class="bonus-includes">
-            <li>تعرض مشروعك على المجموعة</li>
-            <li>توجيهات مباشرة من ماجد على شغلك</li>
-            <li>تشوف شغل المبدعين الآخرين — مرجع وإلهام</li>
-          </ul>
-        </div>
-      </div>
-
-    </div>
-  </section>
-
-  <hr class="divider">
-
-  <!-- ══ FOR WHO ════════════════════════════════════════ -->
-  <section class="for-who">
-    <div class="container">
-      <div class="section-label">لمين هذي الورشة؟</div>
-      <h2 class="section-title">مو لكل أحد… وهذا قصد.</h2>
-
-      <div class="who-grid">
-        <div class="who-card">
-          <div class="who-card-title">الورشة لك لو</div>
-          <ul class="who-list">
-            <li><span class="icon-yes">✓</span> أنت مصور، مصمم، أو مبدع بصري وحاسس إن الذكاء الاصطناعي فات عليك</li>
-            <li><span class="icon-yes">✓</span> تبي تشتغل بسرعة وتنافس بدون ما تضيع سنة تجرب أدوات</li>
-            <li><span class="icon-yes">✓</span> ما عندك وقت للضوضاء — تبي الطريق الصح من أول مرة</li>
-            <li><span class="icon-yes">✓</span> عندك مشروع إبداعي وتبغاه يوصل لمستوى ثاني</li>
-          </ul>
-        </div>
-        <div class="who-card">
-          <div class="who-card-title">الورشة مو لك لو</div>
-          <ul class="who-list">
-            <li><span class="icon-no">✗</span> تدور تتعلم أكواد أو برمجة</li>
-            <li><span class="icon-no">✗</span> تبي موسوعة في كل أداة ذكاء اصطناعي موجودة</li>
-            <li><span class="icon-no">✗</span> تبي نتائج بدون ما تشتغل خلال الجلسات</li>
-            <li><span class="icon-no">✗</span> هدفك تجمع أدوات مو تبني أسلوب شغل</li>
-          </ul>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <hr class="divider">
-
-  <!-- ══ TESTIMONIALS ═══════════════════════════════════ -->
-  <section class="testimonials" style="background:#0A0A0A;">
-    <div class="container">
-      <div class="section-label">من الدفعات السابقة</div>
-      <h2 class="section-title">تجربة المبدعين مع الورشة</h2>
-      <p class="section-body">شهرين من التواصل و التعلم حتى الآن، أكثر من ٦٠ طالب.</p>
-
-      <div class="testimonial-grid" style="display:grid;grid-template-columns:repeat(4, 1fr);gap:14px;margin-top:48px;">
-        <button type="button" class="testimonial-thumb" data-type="video" data-src="testimonials/testimonial-vid-1.mp4" data-poster="testimonials/testimonial-vid-1-poster.jpg" aria-label="فيديو شهادة طالب" style="display:block;aspect-ratio:4/5;overflow:hidden;background:#0a0a0a;border:0;padding:0;cursor:pointer;position:relative;">
-          <img src="testimonials/testimonial-vid-1-poster-thumb.jpg" alt="فيديو شهادة من الدفعة الأولى" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s ease;">
-          <span class="play-overlay" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
-        </button>
-        <button type="button" class="testimonial-thumb" data-type="image" data-src="images/testimonial-1-full.jpg" aria-label="عرض بحجم كامل" style="display:block;aspect-ratio:4/5;overflow:hidden;background:#0a0a0a;border:0;padding:0;cursor:pointer;">
-          <img src="images/testimonial-1-thumb.jpg" alt="شهادة طالب من الدفعة الأولى" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s ease;">
-        </button>
-        <button type="button" class="testimonial-thumb" data-type="image" data-src="images/testimonial-2-full.jpg" aria-label="عرض بحجم كامل" style="display:block;aspect-ratio:4/5;overflow:hidden;background:#0a0a0a;border:0;padding:0;cursor:pointer;">
-          <img src="images/testimonial-2-thumb.jpg" alt="شهادة طالب من الدفعة الأولى" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s ease;">
-        </button>
-        <button type="button" class="testimonial-thumb" data-type="image" data-src="images/testimonial-3-full.jpg" aria-label="عرض بحجم كامل" style="display:block;aspect-ratio:4/5;overflow:hidden;background:#0a0a0a;border:0;padding:0;cursor:pointer;">
-          <img src="images/testimonial-3-thumb.jpg" alt="شهادة طالب من الدفعة الأولى" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s ease;">
-        </button>
-        <button type="button" class="testimonial-thumb" data-type="image" data-src="images/testimonial-4-full.jpg" aria-label="عرض بحجم كامل" style="display:block;aspect-ratio:4/5;overflow:hidden;background:#0a0a0a;border:0;padding:0;cursor:pointer;">
-          <img src="images/testimonial-4-thumb.jpg" alt="شهادة طالب من الدفعة الأولى" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s ease;">
-        </button>
-        <button type="button" class="testimonial-thumb" data-type="video" data-src="testimonials/testimonial-vid-2.mp4" data-poster="testimonials/testimonial-vid-2-poster.jpg" aria-label="فيديو شهادة طالب" style="display:block;aspect-ratio:4/5;overflow:hidden;background:#0a0a0a;border:0;padding:0;cursor:pointer;position:relative;">
-          <img src="testimonials/testimonial-vid-2-poster-thumb.jpg" alt="فيديو شهادة من الدفعة الأولى" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s ease;">
-          <span class="play-overlay" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
-        </button>
-        <button type="button" class="testimonial-thumb" data-type="image" data-src="images/testimonial-5-full.jpg" aria-label="عرض بحجم كامل" style="display:block;aspect-ratio:4/5;overflow:hidden;background:#0a0a0a;border:0;padding:0;cursor:pointer;">
-          <img src="images/testimonial-5-thumb.jpg" alt="شهادة طالب من الدفعة الأولى" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s ease;">
-        </button>
-        <button type="button" class="testimonial-thumb" data-type="image" data-src="images/testimonial-6-full.jpg" aria-label="عرض بحجم كامل" style="display:block;aspect-ratio:4/5;overflow:hidden;background:#0a0a0a;border:0;padding:0;cursor:pointer;">
-          <img src="images/testimonial-6-thumb.jpg" alt="شهادة طالب من الدفعة الأولى" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s ease;">
-        </button>
-        <button type="button" class="testimonial-thumb" data-type="image" data-src="images/testimonial-7-full.jpg" aria-label="عرض بحجم كامل" style="display:block;aspect-ratio:4/5;overflow:hidden;background:#0a0a0a;border:0;padding:0;cursor:pointer;">
-          <img src="images/testimonial-7-thumb.jpg" alt="شهادة طالب من الدفعة الأولى" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s ease;">
-        </button>
-        <button type="button" class="testimonial-thumb" data-type="image" data-src="images/testimonial-8-full.jpg" aria-label="عرض بحجم كامل" style="display:block;aspect-ratio:4/5;overflow:hidden;background:#0a0a0a;border:0;padding:0;cursor:pointer;">
-          <img src="images/testimonial-8-thumb.jpg" alt="شهادة طالب من الدفعة الأولى" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s ease;">
-        </button>
-        <button type="button" class="testimonial-thumb" data-type="image" data-src="images/testimonial-9-full.jpg" aria-label="عرض بحجم كامل" style="display:block;aspect-ratio:4/5;overflow:hidden;background:#0a0a0a;border:0;padding:0;cursor:pointer;">
-          <img src="images/testimonial-9-thumb.jpg" alt="شهادة طالب من الدفعة الأولى" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s ease;">
-        </button>
-        <button type="button" class="testimonial-thumb" data-type="video" data-src="testimonials/testimonial-vid-3.mp4" data-poster="testimonials/testimonial-vid-3-poster.jpg" aria-label="فيديو شهادة طالب" style="display:block;aspect-ratio:4/5;overflow:hidden;background:#0a0a0a;border:0;padding:0;cursor:pointer;position:relative;">
-          <img src="testimonials/testimonial-vid-3-poster-thumb.jpg" alt="فيديو شهادة من الدفعة الأولى" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s ease;">
-          <span class="play-overlay" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
-        </button>
-      </div>
-    </div>
-  </section>
-
-  <hr class="divider">
-
-  <!-- ══ STUDENT WORK GALLERY ═══════════════════════════ -->
-  <section class="student-work">
-    <div class="container">
-      <div class="section-label">أعمال الدفعة السابقة</div>
-      <h2 class="section-title">من بريف عميل، إلى مخرج كامل.</h2>
-      <p class="section-body">كل صورة هنا طلعت من بين يدين ملهم — كجزء من تطبيقات الورشة.</p>
-
-      <div class="student-gallery" style="display:grid;grid-template-columns:repeat(3, 1fr);gap:14px;margin-top:48px;">
-        <button type="button" class="student-thumb" data-src="images/student-1-full.jpg" aria-label="عرض بحجم كامل" style="display:block;aspect-ratio:4/5;overflow:hidden;background:#0a0a0a;border:0;padding:0;cursor:pointer;">
-          <img src="images/student-1-thumb.jpg" alt="عمل طالب من الدفعة الأولى" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s ease;">
-        </button>
-        <button type="button" class="student-thumb" data-src="images/student-2-full.jpg" aria-label="عرض بحجم كامل" style="display:block;aspect-ratio:4/5;overflow:hidden;background:#0a0a0a;border:0;padding:0;cursor:pointer;">
-          <img src="images/student-2-thumb.jpg" alt="عمل طالب من الدفعة الأولى" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s ease;">
-        </button>
-        <button type="button" class="student-thumb" data-src="images/student-3-full.jpg" aria-label="عرض بحجم كامل" style="display:block;aspect-ratio:4/5;overflow:hidden;background:#0a0a0a;border:0;padding:0;cursor:pointer;">
-          <img src="images/student-3-thumb.jpg" alt="عمل طالب من الدفعة الأولى" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s ease;">
-        </button>
-        <button type="button" class="student-thumb" data-src="images/student-4-full.jpg" aria-label="عرض بحجم كامل" style="display:block;aspect-ratio:4/5;overflow:hidden;background:#0a0a0a;border:0;padding:0;cursor:pointer;">
-          <img src="images/student-4-thumb.jpg" alt="عمل طالب من الدفعة الأولى" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s ease;">
-        </button>
-        <button type="button" class="student-thumb" data-src="images/student-5-full.jpg" aria-label="عرض بحجم كامل" style="display:block;aspect-ratio:4/5;overflow:hidden;background:#0a0a0a;border:0;padding:0;cursor:pointer;">
-          <img src="images/student-5-thumb.jpg" alt="عمل طالب من الدفعة الأولى" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s ease;">
-        </button>
-        <button type="button" class="student-thumb" data-src="images/student-6-full.jpg" aria-label="عرض بحجم كامل" style="display:block;aspect-ratio:4/5;overflow:hidden;background:#0a0a0a;border:0;padding:0;cursor:pointer;">
-          <img src="images/student-6-thumb.jpg" alt="عمل طالب من الدفعة الأولى" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s ease;">
-        </button>
-        <button type="button" class="student-thumb" data-src="images/student-7-full.jpg" aria-label="عرض بحجم كامل" style="display:block;aspect-ratio:4/5;overflow:hidden;background:#0a0a0a;border:0;padding:0;cursor:pointer;">
-          <img src="images/student-7-thumb.jpg" alt="عمل طالب من الدفعة الأولى" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s ease;">
-        </button>
-        <button type="button" class="student-thumb" data-src="images/student-8-full.jpg" aria-label="عرض بحجم كامل" style="display:block;aspect-ratio:4/5;overflow:hidden;background:#0a0a0a;border:0;padding:0;cursor:pointer;">
-          <img src="images/student-8-thumb.jpg" alt="عمل طالب من الدفعة الأولى" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s ease;">
-        </button>
-        <button type="button" class="student-thumb" data-src="images/student-9-full.jpg" aria-label="عرض بحجم كامل" style="display:block;aspect-ratio:4/5;overflow:hidden;background:#0a0a0a;border:0;padding:0;cursor:pointer;">
-          <img src="images/student-9-thumb.jpg" alt="عمل طالب من الدفعة الأولى" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s ease;">
-        </button>
-        <button type="button" class="student-thumb" data-src="images/student-10-full.jpg" aria-label="عرض بحجم كامل" style="display:block;aspect-ratio:4/5;overflow:hidden;background:#0a0a0a;border:0;padding:0;cursor:pointer;">
-          <img src="images/student-10-thumb.jpg" alt="عمل طالب من الدفعة الأولى" loading="lazy" decoding="async" style="width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.5s ease;">
-        </button>
-      </div>
-
-      <!-- Lightbox modal for student artwork + testimonial media -->
-      <div id="art-lightbox" role="dialog" aria-modal="true" aria-label="عرض بحجم كامل" style="display:none;position:fixed;inset:0;z-index:9999;background:rgba(0,0,0,0.92);align-items:center;justify-content:center;padding:24px;">
-        <button type="button" id="art-lightbox-close" aria-label="إغلاق" style="position:absolute;top:18px;right:18px;width:44px;height:44px;border:1px solid rgba(255,255,255,0.3);background:rgba(0,0,0,0.4);color:#fff;font-size:1.6rem;line-height:1;border-radius:50%;cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:2;">×</button>
-        <img id="art-lightbox-img" src="" alt="" style="max-width:100%;max-height:90vh;object-fit:contain;display:none;">
-        <video id="art-lightbox-video" controls playsinline preload="none" style="max-width:100%;max-height:90vh;display:none;background:#000;"></video>
-      </div>
-    </div>
-  </section>
-
-  <hr class="divider">
-
-  <!-- ══ INSTRUCTOR ═════════════════════════════════════ -->
-  <section class="instructor">
-    <div class="container">
-      <div class="section-label">المدرب</div>
-      <div class="instructor-inner">
-        <img src="../brand_assets/profile.jpg" alt="ماجد عنقاوي" class="instructor-photo"
-             onerror="this.style.display='none'">
-        <div>
-          <div class="instructor-name">ماجد عنقاوي</div>
-          <div class="instructor-role">مصور أزياء · مدير إبداعي · مؤسس MA Learn</div>
-          <p class="instructor-bio">
-            اللي تتعلمه في هذي الورشة مو من يوتيوب. هو من شغل حقيقي، مع عملاء حقيقيين.<br><br>
-            ١٦ سنة في الإنتاج البصري. مصور أزياء ومدير إبداعي شغل مع برندات في السعودية وخارجها.
-            سفير Fujifilm في السعودية. مؤسس MA Learn — منصة التعليم الإبداعي العربي.<br><br>
-            كل أداة وكل سير عمل تشوفه في الورشة — ماجد يستخدمه فعلياً في مشاريع العملاء.
-            مو تنظير، شغل عملي.
-          </p>
-          <div class="instructor-tags">
-            <span class="instructor-tag">تصوير أزياء</span>
-            <span class="instructor-tag">إدارة إبداعية</span>
-            <span class="instructor-tag">ذكاء اصطناعي إبداعي</span>
-            <span class="instructor-tag">سفير Fujifilm KSA</span>
-          </div>
-        </div>
-      </div>
-
-      <div class="instructor-work">
-        <div class="instructor-work-label">أعمال مختارة</div>
-        <div class="work-grid">
-          <picture><img src="images/work-1.jpg" alt="عمل إبداعي — ماجد عنقاوي" loading="lazy" decoding="async"></picture>
-          <picture><img src="images/work-2.jpg" alt="عمل إبداعي — ماجد عنقاوي" loading="lazy" decoding="async"></picture>
-          <picture><img src="images/work-3.jpg" alt="عمل إبداعي — ماجد عنقاوي" loading="lazy" decoding="async"></picture>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <hr class="divider">
-
-  <!-- ══ FAQ ═══════════════════════════════════════════ -->
-  <section class="faq">
-    <div class="container">
-      <div class="section-label">أسئلة شائعة</div>
-      <h2 class="section-title">أسئلة ممكن تخطر على بالك.</h2>
-
-      <div class="faq-list">
-        <div class="faq-item">
-          <div class="faq-q">ما عندي خبرة بالذكاء الاصطناعي، هل الورشة مناسبة؟</div>
-          <p class="faq-a">هذا بالضبط المكان الصح اللي تبدأ منه. الورشة مبنية من الصفر — الإطار الذهني قبل الأدوات.</p>
-        </div>
-        <div class="faq-item">
-          <div class="faq-q">مشغول وما عندي وقت، كيف أكمل الورشة؟</div>
-          <p class="faq-a">الورشة ٣ أيام فقط. ٧–١٠ مساءً، في الويكند. مصممة تناسب الجدول الحقيقي لأغلب الناس. ومسجلة تقدر ترجع لها لاحقاً.</p>
-        </div>
-        <div class="faq-item">
-          <div class="faq-q">الذكاء الاصطناعي يسرق الشغل الإبداعي؟</div>
-          <p class="faq-a">الأداة تنفذ. أنت اللي تفكر. اللي راح يخسر مو اللي يستخدم الذكاء الاصطناعي — اللي راح يخسر هو اللي ما يتعلم كيف يوجهه. الورشة تعلمك تكون أنت المخرج.</p>
-        </div>
-        <div class="faq-item">
-          <div class="faq-q">وين تنعقد الورشة؟</div>
-          <p class="faq-a">أونلاين عبر Google Meet. تحضرها من أي مكان في العالم — كل اللي تحتاجه جهاز وإنترنت.</p>
-        </div>
-        <div class="faq-item">
-          <div class="faq-q">ماذا لو فاتني جلسة؟</div>
-          <p class="faq-a">التسجيل يوصلك بعد نهاية أيام الورشة. تقدر تشوفه في وقتك.</p>
-        </div>
-        <div class="faq-item">
-          <div class="faq-q">هل أقدر أدفع بـ Tamara؟</div>
-          <p class="faq-a">نعم. تقدر تقسّم على ٣ أو ٤ دفعات بدون فوائد عبر Tamara — متاحة عند الدفع.</p>
-        </div>
-        <div class="faq-item">
-          <div class="faq-q">وش الفرق بين دورة المدخل والورشة المباشرة؟</div>
-          <p class="faq-a">دورة "مدخل إلى الذكاء الإصطناعي الإبداعي" مسجلة، ١٧ درس، تبني الأساس — الإطار الذهني والأدوات. تشوفها في وقتك. ورشة "صناعة الإلهام" ٣ أيام مع ماجد على بريف عميل حقيقي — تطبيق وتحوّل في طريقة شغلك. الاثنين معاً في الباقة، تستفيد من المسار الكامل.</p>
-        </div>
-        <div class="faq-item">
-          <div class="faq-q">هل يوجد شهادة بعد الورشة؟</div>
-          <p class="faq-a">نعم. تستلم شهادة إتمام رقمية باسمك من MA Learn بعد إكمال الورشة وتسليم مشروعك في جلسة النقد.</p>
-        </div>
-        <div class="faq-item">
-          <div class="faq-q">متى تفتح الدفعة القادمة؟</div>
-          <p class="faq-a">قريباً. المقاعد محدودة — سجّل في قائمة الانتظار وبنعلمك أول ما يفتح التسجيل، قبل الجميع. السعر قابل للتغيير.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <hr class="divider">
-
-  <!-- ══ PRICING — single bundle at 1,299 SAR ═══════════════════ -->
-  <section class="pricing" id="pricing">
-    <div class="container">
-      <div class="section-label" style="text-align:center;">الدفعة القادمة — قريباً</div>
-      <h2 class="section-title" style="text-align:center;">كل اللي تحتاجه — في باقة واحدة.</h2>
-
-      <!-- Single pricing card -->
-      <div class="pricing-card" style="max-width:620px;border:1px solid rgba(201,168,76,0.55);position:relative;">
-        <div class="pricing-name" style="margin-top:0;">الباقة الكاملة</div>
-        <div style="font-size:0.88rem;color:var(--silver);margin-bottom:24px;">٥ مكونات في باقة وحدة — كل شي تحتاجه قبل، أثناء، وبعد الورشة</div>
-
-        <!-- Itemized value stack with prices (right-aligned label, left-aligned price) -->
-        <div style="margin-bottom:24px;text-align:right;">
-          <div style="display:flex;justify-content:space-between;align-items:baseline;padding:12px 0;border-bottom:1px solid #1a1a1a;">
-            <span style="color:var(--ivory);font-size:0.95rem;line-height:1.5;"><strong>الورشة المباشرة</strong> — ٣ أيام مع ماجد</span>
-            <span style="color:var(--silver);font-size:0.88rem;white-space:nowrap;padding-right:16px;">١,٢٩٩ ر.س</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;align-items:baseline;padding:12px 0;border-bottom:1px solid #1a1a1a;">
-            <span style="color:var(--ivory);font-size:0.95rem;line-height:1.5;"><strong>دورة مدخل إلى الذكاء الإصطناعي الإبداعي</strong> — ١٧ درساً، وصول مدى الحياة</span>
-            <span style="color:var(--silver);font-size:0.88rem;white-space:nowrap;padding-right:16px;">٤٩٩ ر.س</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;align-items:baseline;padding:12px 0;border-bottom:1px solid #1a1a1a;">
-            <span style="color:var(--ivory);font-size:0.95rem;line-height:1.5;"><strong>جلسة نقد جماعية</strong> — بعد أسبوع من الورشة</span>
-            <span style="color:var(--silver);font-size:0.88rem;white-space:nowrap;padding-right:16px;">٤٠٠ ر.س</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;align-items:baseline;padding:12px 0;border-bottom:1px solid #1a1a1a;">
-            <span style="color:var(--ivory);font-size:0.95rem;line-height:1.5;"><strong>وصول مجتمع Skool حتى مايو ٢٠٢٧</strong> — مع ماجد والطلاب</span>
-            <span style="color:var(--silver);font-size:0.88rem;white-space:nowrap;padding-right:16px;">٣,٣٠٠ ر.س</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;align-items:baseline;padding:12px 0;">
-            <span style="color:var(--ivory);font-size:0.95rem;line-height:1.5;"><strong>روابط + PDFs + workflows</strong> — جاهزة للاستخدام</span>
-            <span style="color:var(--silver);font-size:0.88rem;white-space:nowrap;padding-right:16px;">٣٤٩ ر.س</span>
-          </div>
-        </div>
-
-        <!-- Total value vs you-pay -->
-        <div style="border-top:1px solid rgba(201,168,76,0.25);padding-top:18px;margin-bottom:20px;">
-          <div style="display:flex;justify-content:space-between;align-items:baseline;margin-bottom:14px;">
-            <span style="color:var(--silver);font-size:0.95rem;">القيمة الكاملة</span>
-            <span style="color:var(--grey);font-size:1.1rem;text-decoration:line-through;">٥,٨٤٧ ر.س</span>
-          </div>
-          <div style="display:flex;justify-content:space-between;align-items:baseline;">
-            <span style="color:var(--gold);font-size:1.1rem;font-weight:700;">سعر الدفعة الثالثة</span>
-            <span style="color:var(--gold);font-size:2.4rem;font-weight:700;line-height:1;">١,٢٩٩ <span style="font-size:0.95rem;color:var(--silver);font-weight:400;">ر.س</span></span>
-          </div>
-        </div>
-
-        <a href="#waitlist" class="btn-primary" id="bundle-cta"
-           style="width:100%;display:block;text-align:center;cursor:pointer;">
-          سجّل في قائمة الانتظار
-        </a>
-
-        <div style="margin-top:16px;font-size:0.75rem;color:var(--grey);">السعر قابل للتغيير في الدفعات القادمة</div>
-      </div>
-
-      <!-- ══ WAITLIST GATE (was "stay in touch" capture) ══════════════════
-           The page is in WAITLIST MODE — checkout is closed, every CTA on the
-           page anchors here. Reuses the EXISTING CIW waitlist Apps Script
-           (same endpoint + payload shape as malearnsa.com/waitlist/), so the
-           existing buyer-suppression / leak-clean steps (phone+email vs LIVE
-           Customers sheet) apply unchanged. NO new backend was built.
-           TO REOPEN THE CART: restore checkout CTAs + dates from git history
-           (waitlist-gate commit). -->
-      <div id="waitlist" style="max-width:620px;margin:40px auto 0;text-align:center;padding:32px 24px;border:1px solid rgba(201,168,76,0.30);border-radius:12px;background:rgba(201,168,76,0.04);">
-        <div id="staytouch-form-wrap">
-          <div style="font-family:'Gumela','Cairo',sans-serif;font-weight:700;font-size:1.15rem;color:var(--ivory);margin-bottom:8px;">سجّل في قائمة الانتظار</div>
-          <p style="font-size:0.9rem;color:var(--silver);line-height:1.8;margin-bottom:20px;">
-            الدفعة القادمة قريباً — سجّل وكن أول من يعرف بالموعد، التفاصيل، والعروض.
-          </p>
-          <form id="staytouchForm" novalidate style="display:flex;flex-direction:column;gap:10px;max-width:420px;margin:0 auto;">
-            <input type="text" id="st-name" name="name" placeholder="الاسم" autocomplete="name"
-              style="padding:13px 16px;border:1px solid rgba(201,168,76,0.30);border-radius:8px;background:#0d0d0d;color:var(--ivory);font-family:inherit;font-size:0.95rem;">
-            <input type="email" id="st-email" name="email" placeholder="البريد الإلكتروني" required autocomplete="email" inputmode="email"
-              style="padding:13px 16px;border:1px solid rgba(201,168,76,0.30);border-radius:8px;background:#0d0d0d;color:var(--ivory);font-family:inherit;font-size:0.95rem;">
-            <input type="tel" id="st-phone" name="phone" placeholder="رقم الجوال (اختياري — للواتساب)" autocomplete="tel" inputmode="tel"
-              style="padding:13px 16px;border:1px solid rgba(201,168,76,0.30);border-radius:8px;background:#0d0d0d;color:var(--ivory);font-family:inherit;font-size:0.95rem;">
-            <button type="submit" id="st-btn"
-              style="margin-top:4px;padding:14px 20px;border:none;border-radius:8px;background:var(--gold);color:#0a0a0a;font-family:'Gumela','Cairo',sans-serif;font-weight:700;font-size:0.95rem;cursor:pointer;">
-              سجّلني في قائمة الانتظار
-            </button>
-          </form>
-        </div>
-        <div id="staytouch-success" style="display:none;padding:18px 0;">
-          <div style="font-family:'Gumela','Cairo',sans-serif;font-weight:700;font-size:1.1rem;color:var(--gold);margin-bottom:8px;">تم! صرت في قائمة الانتظار ✦</div>
-          <p style="font-size:0.9rem;color:var(--silver);line-height:1.7;">بنعلمك أول ما يفتح التسجيل. تابع <strong style="color:var(--ivory);">@majidangawi</strong> على إنستقرام.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- ══ FOOTER (shared module v1 — see malearnsa.com/footer-module/v1/) ══ -->
-  <div id="ma-footer"></div>
-  <script src="https://malearnsa.com/footer-module/v1/footer.js"></script>
-
-  <!-- ══ STICKY BAR ═════════════════════════════════════ -->
-  <div class="sticky-bar" id="stickyBar">
-    <div class="sticky-bar-text">
-      الدفعة القادمة —
-      <span class="sticky-price-now">قريباً</span>
-    </div>
-    <a href="#waitlist" class="sticky-bar-btn" id="sticky-cta">سجّل في قائمة الانتظار</a>
+  <!-- sticky bar — V5: name + CTA only (price removed) -->
+  <div class="sticky" id="sticky">
+    <div class="s-name">معادلة صناعة الإلهام 2.0</div>
+    <a class="btn btn-primary" href="https://checkout.malearnsa.com/creative-ai-workshop/checkout.html">احجز مقعدك</a>
   </div>
 
   <script>
-    const nav = document.getElementById('nav');
-    const stickyBar = document.getElementById('stickyBar');
-    const heroH = document.querySelector('.hero').offsetHeight;
+    // Sticky bar after hero
+    var hero = document.getElementById('hero');
+    var sticky = document.getElementById('sticky');
+    if('IntersectionObserver' in window && hero && sticky){
+      new IntersectionObserver(function(en){
+        sticky.classList.toggle('on', !en[0].isIntersecting && en[0].boundingClientRect.top < 0);
+      }, {threshold:0}).observe(hero);
+    }
 
-    window.addEventListener('scroll', () => {
-      nav.classList.toggle('scrolled', window.scrollY > 60);
-      stickyBar.classList.toggle('visible', window.scrollY > heroH * 0.7);
-    });
+    // Reveal on scroll
+    var rMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(!rMotion && 'IntersectionObserver' in window){
+      var ro = new IntersectionObserver(function(es){
+        es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); ro.unobserve(e.target); } });
+      }, {threshold:.12});
+      document.querySelectorAll('.rv').forEach(function(el){ ro.observe(el); });
+    } else {
+      document.querySelectorAll('.rv').forEach(function(el){ el.classList.add('in'); });
+    }
 
-    // Scroll reveal
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach(el => {
-        if (el.isIntersecting) {
-          el.target.style.opacity = '1';
-          el.target.style.transform = 'translateY(0)';
-        }
+    // ---- Suitability quiz (no libraries) ----
+    // V5: Majid's final 7 questions (verbatim). Q5 + Q6 reverse-scored (لا = +1).
+    var QUIZ = [
+      { q:'هل شغلك الأساسي إبداعي، مصوّر أو مصمم أو صانع محتوى؟', reverse:false },
+      { q:'هل تحس إنك واثق من ذائقتك؟', reverse:false },
+      { q:'هل تفضل أسلوب العمل المنظم؟', reverse:false },
+      { q:'هل تبي طريقة عمل ثابتة تعتمد عليها، مو أداة جديدة تتعلمها كل أسبوع؟', reverse:false },
+      { q:'هل تبحث عن تعلم البرمجيات و الأكواد؟', reverse:true },
+      { q:'هل هدفك تتعلم الإبداع بدون ممارسة؟', reverse:true },
+      { q:'هل مستعد تحضر الجلسات المباشرة، وتخصص وقت في يومك للتطبيق؟', reverse:false }
+    ];
+    // score/7 → percentage (index = score 0..7)
+    var PCT = ['٠','١٤','٢٩','٤٣','٥٧','٧١','٨٦','١٠٠'];
+
+    // V6: COMPOSED result = band message + a note per answer that reduced the score.
+    // Bands by score: >=5 HIGH · 3-4 MID · <=2 LOW. Edit any string freely (Majid).
+    var BAND_HIGH = 'النتيجة واضحة: الورشة لك. عندك الأساس اللي تنبني عليه المعادلة، وباقي بس النظام اللي يحوّل ذوقك لنتايج ثابتة.';
+    var BAND_MID  = 'الورشة ممكن تفيدك، بس فيه نقاط مهم تكون واضح فيها قبل ما تقرر:';
+    var BAND_LOW  = 'بصراحة، الورشة غالباً مو أنسب خطوة لك الحين، والسبب:';
+    var BAND_LOW_END = 'وهذا مو تقليل، هذا احترام لوقتك وفلوسك. ولو تغيّر وضعك، الباب مفتوح لك دايماً.';
+    // REDUCERS[i] shows when question i+1 reduced the score
+    // (Q1-Q4 + Q7 reduce on «لا» · Q5-Q6 reduce on «نعم»)
+    var REDUCERS = [
+      'الورشة مبنية للممارسين اللي يشتغلون بإيدهم على الصور والفيديو. لو الإبداع مو شغلك الأساسي، ممكن تكون البداية الأنسب لك دورة مدخل إلى الذكاء الاصطناعي الإبداعي.',
+      'إذا حاسس إن ذوقك لسا يتشكّل، الورشة بتسرّع هالرحلة، لأن أول مراحل المعادلة تدريب العين قبل الأدوات.',
+      'النظام هو قلب الورشة. لو ما تميل للخطوات المنظمة، اعرف إن هذا بالضبط اللي بتتعلمه، وأغلب المبدعين يكتشفون إنه أسهل مما توقعوا.',
+      'الورشة تركّز على طريقة واحدة عميقة بدل ملاحقة أداة جديدة كل أسبوع، فلو هذا مو اللي تدور عليه، خذها بالحسبان.',
+      'الورشة ما فيها برمجة ولا أكواد إطلاقاً، تركيزها على الإبداع وسير العمل. لو هدفك تقني بحت، فيه مسارات ثانية أنسب لك.',
+      'الورشة تطبيقية بالكامل، بتشتغل بيدك على بريف حقيقي. النتايج تجي من الممارسة، وهذا وعدنا الصريح لك.',
+      'الجلسات مباشرة والتطبيق جزء أساسي منها. لو وقتك ما يسمح هالفترة، الأفضل تنتظر دفعة تقدر تحضرها كاملة.'
+    ];
+    var qi = 0, qScore = 0, qMiss = [];
+    var qQ = document.getElementById('quiz-q');
+    var qStep = document.getElementById('quiz-step');
+    var qProg = document.getElementById('quiz-progress');
+    var qBody = document.getElementById('quiz-body');
+    var qRes = document.getElementById('quiz-result');
+    var qCard = document.getElementById('quiz-card');
+    var qLaunch = document.getElementById('quiz-launch');
+    var AR_NUMS = ['١','٢','٣','٤','٥','٦','٧'];
+
+    function quizRender(){
+      if(!qQ) return;
+      qQ.textContent = QUIZ[qi].q;
+      qStep.textContent = 'سؤال ' + AR_NUMS[qi] + ' من ٧';
+      var dots = qProg.querySelectorAll('span');
+      dots.forEach(function(d, i){ d.classList.toggle('done', i < qi); });
+    }
+    function quizAnswer(yes){
+      var hit = QUIZ[qi].reverse ? !yes : yes;
+      if(hit){ qScore++; } else { qMiss.push(qi); }
+      qi++;
+      if(qi < QUIZ.length){ quizRender(); }
+      else {
+        qBody.style.display = 'none';
+        qRes.classList.add('show');
+        document.getElementById('qr-pct').textContent = 'الورشة تناسبك بنسبة ' + PCT[qScore] + '٪';
+        document.getElementById('qr-msg').innerHTML = quizComposeResult();
+        qProg.querySelectorAll('span').forEach(function(d){ d.classList.add('done'); });
+      }
+    }
+    // V6: band message + reducer notes for the answers that reduced the score
+    function quizComposeResult(){
+      var band = qScore >= 5 ? BAND_HIGH : (qScore >= 3 ? BAND_MID : BAND_LOW);
+      var html = '<p class="qr-band">' + band + '</p>';
+      if(qMiss.length){
+        html += '<div class="qr-div" aria-hidden="true"></div><ul class="qr-notes">';
+        qMiss.forEach(function(i){ html += '<li>' + REDUCERS[i] + '</li>'; });
+        html += '</ul>';
+      }
+      if(qScore <= 2){ html += '<p class="qr-end">' + BAND_LOW_END + '</p>'; }
+      return html;
+    }
+    function quizRestart(){
+      qi = 0; qScore = 0; qMiss = [];
+      qBody.style.display = '';
+      qRes.classList.remove('show');
+      quizRender();
+    }
+    if(qQ){
+      document.getElementById('quiz-start').addEventListener('click', function(){
+        qLaunch.style.display = 'none';
+        qCard.hidden = false;
+        qCard.classList.add('in');
+        quizRender();
       });
-    }, { threshold: 0.08 });
+      document.getElementById('quiz-yes').addEventListener('click', function(){ quizAnswer(true); });
+      document.getElementById('quiz-no').addEventListener('click', function(){ quizAnswer(false); });
+      document.getElementById('quiz-restart').addEventListener('click', quizRestart);
+    }
 
-    document.querySelectorAll('.day-card, .who-card, .faq-item, .gift-card, .bonus-card').forEach(el => {
-      el.style.opacity = '0';
-      el.style.transform = 'translateY(20px)';
-      el.style.transition = 'opacity 0.55s ease, transform 0.55s ease';
-      observer.observe(el);
-    });
-
-    // ═══════════════════════════════════════════════════════════════════
-    // WAITLIST MODE — C3 delivered, next cohort unannounced. Checkout CTAs,
-    // countdown, and live seat counter removed; every CTA anchors to the
-    // #waitlist form. To reopen the cart, restore from git history
-    // (commit before the waitlist-gate change).
-    // ═══════════════════════════════════════════════════════════════════
-  </script>
-
-  <script>
-    // ── NON-BUYER "STAY IN TOUCH" capture handler.
-    // Reuses the existing CIW waitlist Apps Script (same endpoint + payload as
-    // malearnsa.com/waitlist/), no new backend. Source-tagged so this interim
-    // capture is segmentable and stays inside the existing suppression flow.
-    (function () {
-      const STAYTOUCH_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby2tDtm76JhBU-cwT6wnFVTp5ysYxsf73ZKGxoY-ZadbswSXRK_CkjpgkDbds4cJCO0/exec';
-      const form = document.getElementById('staytouchForm');
-      if (!form) return;
-      const btn = document.getElementById('st-btn');
-
-      form.addEventListener('submit', async function (e) {
-        e.preventDefault();
-        const name  = document.getElementById('st-name').value.trim();
-        const email = document.getElementById('st-email').value.trim();
-        const phone = document.getElementById('st-phone').value.trim();
-
-        if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-          const el = document.getElementById('st-email');
-          el.style.borderColor = 'rgba(220,80,60,0.7)';
-          setTimeout(() => el.style.borderColor = '', 2000);
-          return;
-        }
-
-        btn.disabled = true;
-        btn.textContent = 'جاري التسجيل...';
-
-        const payload = {
-          name: name || '',
-          email,
-          phone: phone || '',
-          country: '',
-          // Source tag — keeps landing-page signups segmentable from the
-          // /waitlist/ page while sharing the same sheet + suppression flow.
-          workshop: 'CIW Landing — Waitlist Gate',
-          whatsapp_optin: !!phone
-        };
-
-        try {
-          await fetch(STAYTOUCH_SCRIPT_URL, {
-            method: 'POST',
-            mode: 'no-cors',
-            headers: { 'Content-Type': 'text/plain' },
-            body: JSON.stringify(payload)
-          });
-        } catch (_) { /* no-cors: treat any result as success */ }
-
-        // ★ LEAD MAGNET HOOK: when a freebie is chosen, deliver it here in one
-        //   line — e.g. window.location.href = '<download-or-thankyou-url>';
-        document.getElementById('staytouch-form-wrap').style.display = 'none';
-        document.getElementById('staytouch-success').style.display = 'block';
-      });
+    // ---- Client wordmarks marquee (canonical seamless pattern) ----
+    // Traps guarded: JS-measured pixel offset (not -50%), rect-left difference
+    // measurement, LTR on wrapper AND track (RTL page), starts on rAF (not
+    // window.load), re-measures on font load + debounced resize, reduced-motion
+    // = static wrapped row (duplicates hidden in CSS, animation never starts).
+    (function(){
+      var mq = document.getElementById('wm-marquee');
+      var track = document.getElementById('wm-track');
+      if(!mq || !track) return;
+      if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      var anim = null;
+      function start(){
+        var cards = track.querySelectorAll('.wordmark');
+        var half = cards.length / 2;
+        var setWidth = cards[half].getBoundingClientRect().left - cards[0].getBoundingClientRect().left;
+        if(!setWidth) return;
+        if(anim) anim.cancel();
+        anim = track.animate(
+          [{ transform:'translate3d(0,0,0)' }, { transform:'translate3d(-' + setWidth + 'px,0,0)' }],
+          { duration:45000, iterations:Infinity, easing:'linear' }
+        );
+      }
+      requestAnimationFrame(start);
+      if(document.fonts && document.fonts.ready){ document.fonts.ready.then(start); }
+      // V7: logos are <img> now — width/height attrs keep layout stable pre-load,
+      // but re-measure once everything is in as a belt-and-braces seam guard.
+      window.addEventListener('load', start);
+      var rz; window.addEventListener('resize', function(){ clearTimeout(rz); rz = setTimeout(start, 200); });
+      mq.addEventListener('mouseenter', function(){ if(anim) anim.pause(); });
+      mq.addEventListener('mouseleave', function(){ if(anim) anim.play(); });
     })();
   </script>
-
-  <script>
-    // Lightbox — clicking any .student-thumb or .testimonial-thumb opens full-screen modal.
-    // Photos render via <img>; videos render via <video controls autoplay>.
-    (function () {
-      const lightbox = document.getElementById('art-lightbox');
-      const img      = document.getElementById('art-lightbox-img');
-      const video    = document.getElementById('art-lightbox-video');
-      const closeBtn = document.getElementById('art-lightbox-close');
-      if (!lightbox || !img || !closeBtn) return;
-
-      function open(src, alt, type, poster) {
-        if (type === 'video' && video) {
-          img.style.display = 'none';
-          if (poster) video.poster = poster;
-          video.src = src;
-          video.style.display = 'block';
-          video.load();
-          video.play().catch(function () { /* autoplay blocked — user can press play */ });
-        } else {
-          if (video) {
-            video.pause();
-            video.removeAttribute('src');
-            video.load();
-            video.style.display = 'none';
-          }
-          img.src = src;
-          img.alt = alt || '';
-          img.style.display = 'block';
-        }
-        lightbox.style.display = 'flex';
-        document.body.style.overflow = 'hidden';
-      }
-      function close() {
-        lightbox.style.display = 'none';
-        img.src = '';
-        if (video) {
-          video.pause();
-          video.removeAttribute('src');
-          video.load();
-        }
-        document.body.style.overflow = '';
-      }
-
-      document.querySelectorAll('.student-thumb, .testimonial-thumb').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-          const type   = btn.getAttribute('data-type') || 'image';
-          const src    = btn.getAttribute('data-src');
-          const poster = btn.getAttribute('data-poster');
-          const altImg = btn.querySelector('img');
-          open(src, altImg ? altImg.alt : '', type, poster);
-        });
+<div class="lb-overlay" id="lb" role="dialog" aria-label="عرض الصورة">
+  <button class="lb-x" aria-label="إغلاق">✕</button>
+  <button class="lb-nav lb-prev" aria-label="السابق">‹</button>
+  <img alt="">
+  <button class="lb-nav lb-next" aria-label="التالي">›</button>
+</div>
+<script>
+(function(){
+  var lb=document.getElementById('lb'), lbImg=lb.querySelector('img'),
+      btnX=lb.querySelector('.lb-x'), btnP=lb.querySelector('.lb-prev'), btnN=lb.querySelector('.lb-next'),
+      group=[], idx=0;
+  // any content image opens the lightbox — marquee logos, header logo, video posters excluded
+  var SEL='.shot img, .m-item img, .img-slot img';
+  function collectGroup(img){
+    // gallery images navigate within their own gallery; single images open alone
+    var galRoot=img.closest('.shot-masonry, .masonry');
+    return galRoot ? Array.prototype.slice.call(galRoot.querySelectorAll('img')) : [img];
+  }
+  function show(i){
+    idx=(i+group.length)%group.length;
+    lbImg.src=group[idx].currentSrc||group[idx].src;
+    lbImg.alt=group[idx].alt||'';
+    var multi=group.length>1;
+    btnP.hidden=!multi; btnN.hidden=!multi;
+  }
+  function openLb(img){
+    group=collectGroup(img);
+    lb.classList.add('open'); document.body.classList.add('lb-lock');
+    show(group.indexOf(img));
+  }
+  function closeLb(){
+    lb.classList.remove('open'); document.body.classList.remove('lb-lock');
+    lbImg.src='';
+  }
+  document.addEventListener('click',function(e){
+    var img=e.target.closest(SEL);
+    if(img){ e.preventDefault(); openLb(img); }
+  });
+  lb.addEventListener('click',function(e){ if(e.target===lb) closeLb(); });
+  btnX.addEventListener('click',closeLb);
+  btnN.addEventListener('click',function(){ show(idx+1); });
+  btnP.addEventListener('click',function(){ show(idx-1); });
+  document.addEventListener('keydown',function(e){
+    if(!lb.classList.contains('open')) return;
+    if(e.key==='Escape') closeLb();
+    else if(e.key==='ArrowLeft') show(idx+1);   /* RTL: left = forward */
+    else if(e.key==='ArrowRight') show(idx-1);
+  });
+  var tx=null;
+  lb.addEventListener('touchstart',function(e){ tx=e.touches[0].clientX; },{passive:true});
+  lb.addEventListener('touchend',function(e){
+    if(tx===null) return;
+    var dx=e.changedTouches[0].clientX-tx; tx=null;
+    if(Math.abs(dx)>50){ dx<0 ? show(idx-1) : show(idx+1); } /* RTL swipe */
+  },{passive:true});
+})();
+</script>
+<script>
+(function(){
+  // Referral ref: capture from URL (30-day last-touch) + forward onto any checkout link.
+  // Inert while the page is in waitlist mode (no checkout links yet).
+  try{
+    var u=new URLSearchParams(location.search), r=u.get('ref');
+    if(r){ localStorage.setItem('ma_ref', JSON.stringify({v:r,exp:Date.now()+30*864e5})); }
+    var st=JSON.parse(localStorage.getItem('ma_ref')||'null');
+    var ref=(st&&st.exp>Date.now())?st.v:null;
+    if(ref){
+      document.querySelectorAll('a[href*="checkout"]').forEach(function(a){
+        try{ var url=new URL(a.href, location.href);
+          if(!url.searchParams.get('ref')){ url.searchParams.set('ref',ref); a.href=url.toString(); }
+        }catch(e){}
       });
-
-      closeBtn.addEventListener('click', close);
-      lightbox.addEventListener('click', function (e) {
-        if (e.target === lightbox) close();
-      });
-      document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape' && lightbox.style.display === 'flex') close();
-      });
-    })();
-  </script>
+    }
+  }catch(e){}
+})();
+</script>
 </body>
 </html>
