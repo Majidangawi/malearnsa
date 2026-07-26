@@ -50,6 +50,7 @@
   let appliedCoupon = null;
   let baseAmountHalalas = 0; // SAR * 100, computed from cfg.basePrice
   let storageKey = '';       // ${productId}_purchase
+  let selectedCohortDate = ''; // date-select checkout (معادلة 2.0). '' for all other products.
 
   // ────────────────────────────────────────────────────────
   // INIT
@@ -61,6 +62,7 @@
     if (!cfg.successUrl)    throw new Error('MaCheckout.init: successUrl required');
     baseAmountHalalas = Math.round(cfg.basePrice * 100);
     storageKey = cfg.productId + '_purchase';
+    selectedCohortDate = cfg.cohortDate || '';
 
     renderPaymentMethods_();
     wireCouponInput_();
@@ -371,6 +373,9 @@
           product:    cfg.productId,
           amount:     '0',
           coupon:     coupon,
+          cohort:      cfg.cohort || '',
+          cohort_date: selectedCohortDate,
+          ref:         cfg.ref || '',
           payment_id: freeId
         });
         await fetch(`${cfg.appsScriptUrl}?${params.toString()}`);
@@ -416,7 +421,7 @@
       // we can recover server-side via the Moyasar API. Always include
       // name so the webhook / rescue path can enroll without a Waitlist
       // lookup. Added 2026-05-26 after Alaa + deekoart silent-fail incidents.
-      metadata:             { name: buyerName, email: buyerEmail, phone: buyerPhone, coupon: coupon, product: cfg.productId },
+      metadata:             { name: buyerName, email: buyerEmail, phone: buyerPhone, coupon: coupon, product: cfg.productId, cohort: cfg.cohort || '', cohort_date: selectedCohortDate, ref: cfg.ref || '' },
       supported_networks:   ['mada', 'visa', 'mastercard'],
       methods:              ['creditcard', 'applepay'],
       apple_pay: {
@@ -467,6 +472,9 @@
           product:    cfg.productId,
           amount:     (finalAmount / 100).toFixed(2),
           coupon:     coupon,
+          cohort:      cfg.cohort || '',
+          cohort_date: selectedCohortDate,
+          ref:         cfg.ref || '',
           payment_id: payment.id
         });
         return fetch(cfg.appsScriptUrl + '?' + params.toString())
@@ -733,6 +741,7 @@
     editContact: editContact,
     proceedWithBankTransfer: proceedWithBankTransfer,
     proceedWithTamara: proceedWithTamara,
+    setCohortDate: function (d) { selectedCohortDate = String(d || ''); },
     confirmTamaraCountry: confirmTamaraCountry,
     // Internal — exposed for debugging
     _state: () => ({ cfg, appliedCoupon, baseAmountHalalas, storageKey })
