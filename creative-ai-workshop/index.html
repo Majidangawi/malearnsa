@@ -1413,5 +1413,23 @@
   }catch(e){}
 })();
 </script>
+<script>
+/* Ambassador ref forwarder: capture ?ref (30-day last-touch) + carry it onto every checkout CTA. */
+(function(){
+  try{
+    var u=new URLSearchParams(location.search), r=u.get('ref');
+    if(r){ localStorage.setItem('ma_ref', JSON.stringify({v:r,exp:Date.now()+30*864e5})); }
+    var st=JSON.parse(localStorage.getItem('ma_ref')||'null');
+    var ref=(st&&st.exp>Date.now())?st.v:null;
+    if(ref){
+      document.querySelectorAll('a[href*="checkout.malearnsa.com"]').forEach(function(a){
+        try{ var url=new URL(a.href, location.href);
+          if(!url.searchParams.get('ref')){ url.searchParams.set('ref',ref); a.href=url.toString(); }
+        }catch(e){}
+      });
+    }
+  }catch(e){}
+})();
+</script>
 </body>
 </html>
