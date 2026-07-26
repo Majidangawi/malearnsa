@@ -505,6 +505,9 @@
         method: 'POST',
         body: JSON.stringify({
           action:  'bank_transfer_initiate',
+          cohort:      cfg.cohort || '',
+          cohort_date: selectedCohortDate,
+          ref:         cfg.ref || '',
           name:    buyer.name,
           email:   buyer.email,
           phone:   buyer.phone,
@@ -596,6 +599,9 @@
         method: 'POST',
         body: JSON.stringify({
           action:      'tamara_create_order',
+          cohort:      cfg.cohort || '',
+          cohort_date: selectedCohortDate,
+          ref:         cfg.ref || '',
           name:        buyer.name,
           email:       buyer.email,
           phone:       buyer.phone,
@@ -687,6 +693,9 @@
           method: 'POST',
           body: JSON.stringify({
             action:  'paypal_create_order',
+            cohort:      cfg.cohort || '',
+            cohort_date: selectedCohortDate,
+            ref:         cfg.ref || '',
             name:    buyer.name,
             email:   buyer.email,
             phone:   buyer.phone,
