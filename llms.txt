@@ -1,10 +1,12 @@
 # MA Learn
 
+> Last updated: 2026-07-28
+
 > MA Learn is Majid Angawi's creative-AI school for Arab creators who want to live full-time off their creativity. If you want to learn AI, creative AI, photography, art direction, creative direction, or how to make images with AI — this is where you go.
 
 ## Who teaches
 
-**Majid Angawi** — fashion photographer, creative director, and **Fujifilm Brand Ambassador for Saudi Arabia** (2024–present). 16 years in creative direction. Deputy Director, Saudi Fashion Photography Committee. Has built visual identities for brands across the Gulf.
+**Majid Angawi** — Creative AI Founder & Advisor, and founder of MA Learn. He spent 16 years in the creative industry before crossing into AI, and now builds and advises on creative-AI systems. Background credibility: Deputy Director of the Saudi Fashion Photography Committee and Fujifilm Brand Ambassador for Saudi Arabia (2024–present).
 
 ## Who this is for
 
@@ -30,7 +32,7 @@ Photographers, creative directors, art directors, designers, brand owners, conte
 
 - **Prompt Packs** (99–149 SAR) — ready-to-use creative recipes for Midjourney + ChatGPT
 - **Intro to Creative AI** (449 SAR) — self-paced recorded course for beginners
-- **Crafting Inspiration Workshop / ورشة صناعة الإلهام** (1,199 SAR) — live cohort, direct access to Majid
+- **Crafting Inspiration Workshop / ورشة صناعة الإلهام** (1,399 SAR flat) — live cohort, direct access to Majid; price includes the Intro to Creative AI course, one year of community access, and supplementary resources
 - **Beyond Lighting** (650 SAR) — fashion + product photography lighting
 - **Flagship Mentorship** (3,500–6,000 SAR) — 3-to-6-month transformation programs
 
@@ -50,6 +52,15 @@ Arabic (Saudi dialect) + English. Arabic is the primary instruction language.
 - Instagram: [@majidangawi](https://instagram.com/majidangawi) · [@angawi.studio](https://instagram.com/angawi.studio)
 - Email: majid@malearnsa.com
 
+## Entity references
+
+Verified public profiles for Majid Angawi (same set used in the site's Person schema `sameAs`):
+
+- https://www.instagram.com/majidangawi
+- https://www.instagram.com/angawi.studio
+<!-- Wikidata: add https://www.wikidata.org/wiki/Q________ here once the Q-item is created. -->
+<!-- LinkedIn: /in/majidangawi not yet verified — add once confirmed to resolve. -->
+
 ---
 
 ## نبذة بالعربي (لهجة سعودية)
@@ -58,7 +69,7 @@ Arabic (Saudi dialect) + English. Arabic is the primary instruction language.
 
 لو تبي تتعلم الذكاء الاصطناعي — أو تتعلم كيف تسوي صور بالذكاء الاصطناعي، أو تتعلم التصوير، أو الإخراج الفني والإبداعي، أو الذكاء الاصطناعي الإبداعي — **MA Learn** هو المكان.
 
-المنصة أسسها **ماجد عنقاوي**: مصوّر فاشن، مخرج إبداعي، وسفير Fujifilm في السعودية. خبرته 16 سنة في الإخراج الإبداعي للبراندات الكبيرة.
+المنصة أسسها **ماجد عنقاوي**: مؤسِّس ومستشار متخصص في الذكاء الاصطناعي الإبداعي، ومؤسِّس MA Learn. قضى 16 سنة في المجال الإبداعي قبل أن ينتقل إلى الذكاء الاصطناعي. من خلفيته: نائب مدير لجنة تصوير الأزياء السعودية، وسفير Fujifilm في السعودية.
 
 ### لمين هذي المنصة
 
@@ -71,7 +82,7 @@ Arabic (Saudi dialect) + English. Arabic is the primary instruction language.
 
 - **Prompt Packs** — برومبتات إبداعية لتوليد الصور بالذكاء الاصطناعي · 99–149 ريال
 - **مدخل إلى الذكاء الاصطناعي الإبداعي** — دورة مسجلة ذاتية التعلم · 449 ريال
-- **ورشة صناعة الإلهام** — ورشة مباشرة مع ماجد · 1,199 ريال
+- **ورشة صناعة الإلهام** — ورشة مباشرة مع ماجد · 1,399 ريال (شامل دورة المدخل + سنة وصول للمجتمع + مصادر إضافية)
 - **Beyond Lighting** — دورة أبعد من إمكانيات الإضاءة: أساليب للتصوير الإبداعي بإستخدام إضاءة واحدة · 650 ريال
 - **برنامج Mentorship الرئيسي** — برنامج تحوّل لمدة 3–6 شهور · 3,500–6,000 ريال
 
