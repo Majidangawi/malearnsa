@@ -1,0 +1,791 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <!-- Meta Pixel Code -->
+  <script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '961157069802409');
+  fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=961157069802409&ev=PageView&noscript=1"
+  /></noscript>
+  <!-- End Meta Pixel Code -->
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TZ9839RVDJ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TZ9839RVDJ');
+  </script>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ماستركلاس بناء أنظمة توليد الصور والفيديوهات · MA Learn</title>
+  <meta name="description" content="بث مباشر مجاني لمدة ٩٠ دقيقة تتعرّف خلاله على أداة Figma Weave، وتشوف كيف يتبنى نظام عمل متكامل من الصفر يؤتمت إنتاج الصور والفيديوهات. الثلاثاء ١١ أو الأربعاء ١٢ أغسطس، ٨:٣٠ مساءً بتوقيت جدة.">
+  <link rel="canonical" href="https://malearnsa.com/masterclass/">
+
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://malearnsa.com/masterclass/">
+  <meta property="og:title" content="ماستركلاس بناء أنظمة توليد الصور والفيديوهات">
+  <meta property="og:description" content="بث مباشر مجاني ٩٠ دقيقة · Figma Weave · الثلاثاء ١١ أو الأربعاء ١٢ أغسطس، ٨:٣٠ مساءً بتوقيت جدة.">
+  <meta property="og:image" content="https://malearnsa.com/creative-ai-workshop/media/_web/sections/hero-desktop.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://malearnsa.com/footer-module/v1/footer.css">
+  <style>
+    @font-face { font-family:'Gumela'; src:url('../brand_assets/gumela-arabic-bold.otf') format('opentype'); font-weight:700; font-display:swap; }
+    @font-face { font-family:'Gumela'; src:url('../brand_assets/gumela-arabic-regular.otf') format('opentype'); font-weight:400; font-display:swap; }
+
+    /* ---------- معادلة 2.0 design system (poster-dark × chunky rounded) ---------- */
+    :root{
+      --bg:#151009; --bg-2:#1d1610; --card:#231a12; --card-2:#2a2016;
+      --ink:#f8f0e6; --muted:#cbbba9; --faint:#96897a;
+      --accent:#ff6a3c; --accent-hot:#ff8a5c; --accent-deep:#c8390f;
+      --on-accent:#2a1105;
+      --line:rgba(248,240,230,.11); --line-strong:rgba(248,240,230,.2);
+      --r-xl:34px; --r-lg:28px; --r-md:22px; --r-pill:999px;
+      --disp:'Gumela','Cairo',sans-serif; --body:'Cairo',sans-serif;
+      --ease:cubic-bezier(.22,1,.36,1);
+    }
+    *{ margin:0; padding:0; box-sizing:border-box; }
+    html{ scroll-behavior:smooth; }
+    body{
+      font-family:var(--body); background:var(--bg); color:var(--ink);
+      line-height:1.75; overflow-x:hidden; -webkit-font-smoothing:antialiased;
+    }
+    ::selection{ background:var(--accent); color:var(--on-accent); }
+    img{ display:block; max-width:100%; }
+    a{ color:inherit; }
+
+    .glow-wrap{ position:relative; }
+    .glow-wrap::before{
+      content:""; position:absolute; inset:0; pointer-events:none; z-index:0;
+      background:
+        radial-gradient(58% 44% at 50% -4%, rgba(255,96,44,.30), transparent 68%),
+        radial-gradient(34% 26% at 88% 22%, rgba(255,132,72,.10), transparent 70%);
+    }
+
+    .wrap{ width:min(1120px, 92%); margin-inline:auto; position:relative; z-index:1; }
+    .sec{ padding-block: clamp(64px, 10vw, 128px); position:relative; text-align:center; }
+    .sec-tight{ padding-block: clamp(44px, 7vw, 84px) !important; }
+
+    .disp{ font-family:var(--disp); font-weight:700; line-height:1.45; letter-spacing:-0.01em; }
+    h1.disp{ font-size:clamp(1.5rem, 5vw, 2.85rem); }
+    h2.disp{ font-size:clamp(1.32rem, 3.6vw, 2.15rem); }
+    .hl{ color:var(--accent-hot); }
+    .lead{ color:var(--muted); font-size:clamp(.98rem, 1.8vw, 1.12rem); }
+
+    /* nav */
+    .nav{
+      position:sticky; top:0; z-index:60; background:rgba(21,16,9,.82);
+      backdrop-filter:blur(14px); border-bottom:1px solid transparent; transition:border-color .3s var(--ease);
+    }
+    .nav.scrolled{ border-bottom-color:var(--line); }
+    .nav-in{ display:flex; align-items:center; justify-content:space-between; padding:14px 0; gap:16px; }
+    .nav-logo img{ height:26px; width:auto; }
+
+    /* eyebrow pill */
+    .eyebrow{
+      display:inline-flex; align-items:center; gap:10px; padding:8px 18px;
+      border:1.5px solid var(--line-strong); border-radius:var(--r-pill);
+      font-size:.8rem; font-weight:800; color:var(--muted); margin-bottom:26px;
+      background:rgba(248,240,230,.04);
+    }
+    .eyebrow .dot{
+      width:8px; height:8px; border-radius:50%; background:var(--accent);
+      box-shadow:0 0 0 0 rgba(255,106,60,.7); animation:pulse 2.2s infinite;
+    }
+    @keyframes pulse{
+      0%{ box-shadow:0 0 0 0 rgba(255,106,60,.65); }
+      70%{ box-shadow:0 0 0 9px rgba(255,106,60,0); }
+      100%{ box-shadow:0 0 0 0 rgba(255,106,60,0); }
+    }
+    @media (prefers-reduced-motion:reduce){ .eyebrow .dot{ animation:none; } }
+
+    /* buttons */
+    .btn{
+      display:inline-flex; align-items:center; justify-content:center; gap:10px;
+      font-family:var(--body); font-weight:800; font-size:1.02rem; cursor:pointer;
+      border:none; border-radius:var(--r-pill); padding:16px 38px; text-decoration:none;
+      transition:transform .25s var(--ease), box-shadow .25s var(--ease), opacity .2s;
+    }
+    .btn-primary{ background:var(--accent); color:var(--on-accent); box-shadow:0 10px 30px rgba(255,106,60,.26); }
+    .btn-primary:hover{ transform:translateY(-2px); box-shadow:0 16px 40px rgba(255,106,60,.34); }
+    .btn-big{ padding:19px 48px; font-size:1.08rem; }
+    .btn-sm{ padding:11px 24px; font-size:.9rem; }
+    .btn:disabled{ opacity:.45; cursor:not-allowed; transform:none; box-shadow:none; }
+
+    /* hero */
+    .hero{ padding-top:clamp(56px, 8vw, 96px); padding-bottom:clamp(48px, 8vw, 96px); }
+    .hero-col{ max-width:820px; margin-inline:auto; display:flex; flex-direction:column; align-items:center; }
+    .hero-sub{ margin-top:28px; color:var(--muted); font-size:clamp(.95rem,1.7vw,1.06rem); max-width:680px; line-height:2.1; }
+    .hero-sub .en{ font-weight:800; color:var(--ink); }
+    .hero-ctas{ margin-top:40px; display:flex; flex-wrap:wrap; gap:14px; justify-content:center; }
+    .meta-line{
+      margin-top:28px; color:var(--faint); font-weight:700; font-size:.88rem;
+      display:flex; flex-wrap:wrap; gap:6px 0; justify-content:center; align-items:center;
+    }
+    .meta-line .sep{ margin-inline:12px; color:var(--accent); }
+
+    /* value bullets */
+    .grid-3{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:44px; text-align:right; }
+    @media (max-width:860px){ .grid-3{ grid-template-columns:1fr; } }
+    .vcard{
+      background:var(--card); border:1.5px solid var(--line); border-radius:var(--r-lg);
+      padding:26px 24px;
+    }
+    .vcard .n{
+      display:inline-flex; align-items:center; justify-content:center;
+      width:34px; height:34px; border-radius:50%; background:var(--accent);
+      color:var(--on-accent); font-weight:900; font-size:.92rem; margin-bottom:14px;
+    }
+    .vcard h3{ font-family:var(--disp); font-weight:700; font-size:1.06rem; margin-bottom:8px; line-height:1.6; }
+    .vcard p{ color:var(--muted); font-size:.93rem; line-height:1.9; }
+
+    /* not-recorded warning strip */
+    .warnbar{
+      margin-top:36px; background:#f0e6d2; color:#1a1207; border-radius:var(--r-lg);
+      padding:22px 26px; text-align:right; max-width:720px; margin-inline:auto;
+    }
+    .warnbar b{ display:block; font-family:var(--disp); font-size:1.06rem; margin-bottom:6px; }
+    .warnbar p{ color:#5a4a2e; font-size:.93rem; line-height:1.9; }
+
+    /* ---------- form ---------- */
+    .form-card{
+      background:var(--card); border:1.5px solid var(--line); border-radius:var(--r-xl);
+      padding:clamp(24px, 4vw, 42px); max-width:620px; margin-inline:auto; text-align:right;
+    }
+    .form-card h2{ text-align:center; margin-bottom:10px; }
+    .form-card .form-lead{ text-align:center; color:var(--muted); font-size:.95rem; margin-bottom:30px; }
+
+    .field{ margin-bottom:18px; }
+    .field label{
+      display:block; font-size:.86rem; font-weight:800; color:var(--muted);
+      margin-bottom:8px;
+    }
+    .field label .req{ color:var(--accent); }
+    .field input, .field select{
+      width:100%; font-family:var(--body); font-size:1rem; font-weight:600;
+      background:var(--bg-2); color:var(--ink);
+      border:1.5px solid var(--line); border-radius:16px;
+      padding:15px 17px; transition:border-color .2s, background .2s;
+      -webkit-appearance:none; appearance:none;
+    }
+    .field input::placeholder{ color:var(--faint); font-weight:500; }
+    .field input:focus, .field select:focus{
+      outline:none; border-color:var(--accent-hot); background:var(--card-2);
+    }
+    .field select{
+      background-image:url("data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23cbbba9' stroke-width='2.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+      background-repeat:no-repeat; background-position:left 16px center; background-size:17px;
+      padding-left:44px;
+    }
+    .field select option{ background:#1d1610; color:#f8f0e6; }
+    .field.invalid input, .field.invalid select{ border-color:#e0564f; }
+
+    /* date picker — same UX as the 2.0 checkout cohort picker */
+    .date-group{
+      margin:26px 0 22px; padding-top:24px;
+      border-top:1px solid rgba(248,240,230,.08);
+    }
+    .date-group > label{
+      display:block; font-size:.86rem; font-weight:800; color:var(--muted); margin-bottom:12px;
+    }
+    .date-options{ display:flex; flex-direction:column; gap:12px; }
+    .date-card{
+      display:flex; align-items:center; gap:12px;
+      padding:17px 18px; border:1.5px solid var(--line); border-radius:18px;
+      cursor:pointer; transition:border-color .2s, background .2s;
+      font-size:1rem; font-weight:700; background:var(--bg-2);
+    }
+    .date-card:has(input:checked){ border-color:var(--accent-hot); background:var(--card-2); }
+    .date-card input{ accent-color:var(--accent-hot); width:20px; height:20px; flex:none; cursor:pointer; }
+    .date-card .dc-txt{ display:flex; flex-direction:column; gap:3px; }
+    .date-card small{ color:var(--faint); font-weight:600; font-size:.82rem; }
+    .date-group.invalid .date-card{ border-color:#e0564f; }
+
+    .form-msg{
+      display:none; color:#e0564f; font-size:.86rem; font-weight:700;
+      margin-top:10px; text-align:center;
+    }
+    .form-msg.show{ display:block; }
+
+    .submit-row{ margin-top:26px; text-align:center; }
+    .submit-row .btn{ width:100%; }
+    .privacy-note{
+      margin-top:16px; color:var(--faint); font-size:.79rem; line-height:1.8; text-align:center;
+    }
+    .privacy-note a{ color:var(--muted); text-decoration:underline; }
+
+    /* success state */
+    .success{ display:none; text-align:center; }
+    .success.show{ display:block; }
+    .success .tick{
+      width:66px; height:66px; border-radius:50%; background:var(--accent);
+      display:flex; align-items:center; justify-content:center; margin:0 auto 22px;
+      font-size:2rem; color:var(--on-accent); font-weight:900;
+    }
+    .success h2{ margin-bottom:12px; }
+    .success .s-date{
+      display:inline-block; margin:18px 0 6px; padding:14px 26px;
+      background:var(--bg-2); border:1.5px solid var(--accent-hot); border-radius:var(--r-pill);
+      font-weight:800; font-size:1.02rem;
+    }
+    .success p{ color:var(--muted); font-size:.96rem; line-height:1.95; }
+    .success .s-warn{
+      margin-top:24px; background:#f0e6d2; color:#1a1207; border-radius:var(--r-md);
+      padding:18px 22px; text-align:right;
+    }
+    .success .s-warn b{ display:block; margin-bottom:5px; font-family:var(--disp); }
+    .success .s-warn p{ color:#5a4a2e; font-size:.9rem; }
+    .success .s-cal{ margin-top:22px; }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <header class="nav" id="nav">
+    <div class="wrap nav-in">
+      <a class="nav-logo" href="https://malearnsa.com" aria-label="MA Learn">
+        <img src="https://malearnsa.com/MA%20Learn%20white-08.png" alt="MA Learn">
+      </a>
+      <a class="btn btn-primary btn-sm" href="#register">احجز مقعدك مجانًا</a>
+    </div>
+  </header>
+
+  <!-- HERO -->
+  <section class="sec hero glow-wrap">
+    <div class="wrap">
+      <div class="hero-col">
+        <div class="eyebrow"><span class="dot"></span> بث مباشر مجاني</div>
+
+        <h1 class="disp">تعلّم كيف تبني أنظمة تؤتمت توليد الصور والفيديوهات باستخدام <span class="hl">Figma Weave</span></h1>
+
+        <p class="hero-sub">
+          بث مباشر مجاني لمدة ٩٠ دقيقة تتعرّف خلاله على أداة <span class="en">Figma Weave</span>، وتشوف كيف يتبنى نظام عمل متكامل من الصفر يؤتمت إنتاج الصور والفيديوهات. غير مسجّل — اختر التاريخ المناسب لك: الثلاثاء ١١ أو الأربعاء ١٢ أغسطس، ٨:٣٠ مساءً بتوقيت جدة.
+        </p>
+
+        <div class="hero-ctas">
+          <a class="btn btn-primary btn-big" href="#register">احجز مقعدك مجانًا</a>
+        </div>
+
+        <div class="meta-line">
+          <span>٩٠ دقيقة</span><span class="sep">·</span>
+          <span>مباشر</span><span class="sep">·</span>
+          <span>مجاني</span><span class="sep">·</span>
+          <span>٨:٣٠ مساءً بتوقيت جدة</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT YOU GET -->
+  <section class="sec sec-tight">
+    <div class="wrap">
+      <h2 class="disp">وش بيصير في الـ ٩٠ دقيقة؟</h2>
+
+      <div class="grid-3">
+        <div class="vcard">
+          <span class="n">١</span>
+          <h3>تتعرّف على Figma Weave</h3>
+          <p>نمشي على الأداة من جوّه — وش تسوي، وكيف تختلف عن طريقة شغلك الحالية في توليد الصور والفيديوهات.</p>
+        </div>
+        <div class="vcard">
+          <span class="n">٢</span>
+          <h3>تشوف النظام يتبنى من الصفر</h3>
+          <p>مو شرح نظري. نبني قدامك نظام عمل متكامل خطوة بخطوة، من أول نقطة لين يشتغل.</p>
+        </div>
+        <div class="vcard">
+          <span class="n">٣</span>
+          <h3>تفهم الأتمتة عملياً</h3>
+          <p>كيف يصير إنتاج الصور والفيديوهات مؤتمت، بدل ما تعيد نفس الشغل يدوي كل مرة.</p>
+        </div>
+      </div>
+
+      <div class="warnbar">
+        <b>الجلسة مباشرة وما تنعاد</b>
+        <p>ما فيه تسجيل، وما فيه إعادة، وما فيه ملفات تنرسل بعدها. اللي يحضر معنا مباشرة هو اللي يستفيد — فاحجز التاريخ اللي تقدر تلتزم فيه.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- REGISTRATION -->
+  <section class="sec glow-wrap" id="register">
+    <div class="wrap">
+      <div class="form-card">
+
+        <div id="formWrapper">
+          <h2 class="disp">احجز مقعدك مجانًا</h2>
+          <p class="form-lead">سجّل بياناتك واختر التاريخ المناسب لك.</p>
+
+          <form id="mcForm" novalidate>
+
+            <div class="field" id="f-name-w">
+              <label for="f-name">الاسم <span class="req">*</span></label>
+              <input type="text" id="f-name" name="name" autocomplete="name" placeholder="اسمك الكامل" required>
+            </div>
+
+            <div class="field" id="f-phone-w">
+              <label for="f-phone">رقم الجوال <span class="req">*</span></label>
+              <input type="tel" id="f-phone" name="phone" autocomplete="tel" inputmode="tel" placeholder="05xxxxxxxx" required>
+            </div>
+
+            <div class="field" id="f-email-w">
+              <label for="f-email">الإيميل <span class="req">*</span></label>
+              <input type="email" id="f-email" name="email" autocomplete="email" inputmode="email" placeholder="name@example.com" required>
+            </div>
+
+            <div class="field" id="f-industry-w">
+              <label for="f-industry">التخصص / المجال <span class="req">*</span></label>
+              <select id="f-industry" name="industry" required>
+                <option value="" disabled selected>اختر تخصصك</option>
+                <option value="مصوّر">مصوّر</option>
+                <option value="مصمم جرافيك">مصمم جرافيك</option>
+                <option value="صانع محتوى">صانع محتوى</option>
+                <option value="مخرج / مونتير">مخرج / مونتير</option>
+                <option value="آرت ديركتور">آرت ديركتور</option>
+                <option value="إعلان وتسويق">إعلان وتسويق</option>
+                <option value="صاحب عمل إبداعي">صاحب عمل إبداعي</option>
+                <option value="طالب / مبتدئ">طالب / مبتدئ</option>
+                <option value="أخرى">أخرى</option>
+              </select>
+            </div>
+
+            <div class="field" id="f-country-w">
+              <label for="f-country">الدولة <span class="req">*</span></label>
+              <select id="f-country" name="country" required>
+              <option value="" disabled>الدولة</option>
+              <!-- Pinned: Saudi Arabia first -->
+              <option value="المملكة العربية السعودية" selected>المملكة العربية السعودية</option>
+              <option value="" disabled>──────────</option>
+              <!-- All countries — Arabic, alphabetized -->
+              <option value="أذربيجان">أذربيجان</option>
+              <option value="أرمينيا">أرمينيا</option>
+              <option value="أروبا">أروبا</option>
+              <option value="أستراليا">أستراليا</option>
+              <option value="أفغانستان">أفغانستان</option>
+              <option value="ألبانيا">ألبانيا</option>
+              <option value="ألمانيا">ألمانيا</option>
+              <option value="أنتيغوا وباربودا">أنتيغوا وباربودا</option>
+              <option value="أندورا">أندورا</option>
+              <option value="أنغولا">أنغولا</option>
+              <option value="أوروغواي">أوروغواي</option>
+              <option value="أوزبكستان">أوزبكستان</option>
+              <option value="أوغندا">أوغندا</option>
+              <option value="أوكرانيا">أوكرانيا</option>
+              <option value="إثيوبيا">إثيوبيا</option>
+              <option value="إريتريا">إريتريا</option>
+              <option value="إسبانيا">إسبانيا</option>
+              <option value="إستونيا">إستونيا</option>
+              <option value="إسواتيني">إسواتيني</option>
+              <option value="إكوادور">إكوادور</option>
+              <option value="الأرجنتين">الأرجنتين</option>
+              <option value="الأردن">الأردن</option>
+              <option value="الإمارات العربية المتحدة">الإمارات العربية المتحدة</option>
+              <option value="البحرين">البحرين</option>
+              <option value="البرازيل">البرازيل</option>
+              <option value="البرتغال">البرتغال</option>
+              <option value="البوسنة والهرسك">البوسنة والهرسك</option>
+              <option value="الجبل الأسود">الجبل الأسود</option>
+              <option value="الجزائر">الجزائر</option>
+              <option value="الدنمارك">الدنمارك</option>
+              <option value="الرأس الأخضر">الرأس الأخضر</option>
+              <option value="السلفادور">السلفادور</option>
+              <option value="السنغال">السنغال</option>
+              <option value="السودان">السودان</option>
+              <option value="السويد">السويد</option>
+              <option value="الصومال">الصومال</option>
+              <option value="الصين">الصين</option>
+              <option value="العراق">العراق</option>
+              <option value="الفاتيكان">الفاتيكان</option>
+              <option value="الفلبين">الفلبين</option>
+              <option value="الكاميرون">الكاميرون</option>
+              <option value="الكونغو">الكونغو</option>
+              <option value="الكويت">الكويت</option>
+              <option value="المالديف">المالديف</option>
+              <option value="المغرب">المغرب</option>
+              <option value="المكسيك">المكسيك</option>
+              <option value="المملكة المتحدة">المملكة المتحدة</option>
+              <option value="النرويج">النرويج</option>
+              <option value="النمسا">النمسا</option>
+              <option value="النيجر">النيجر</option>
+              <option value="الهند">الهند</option>
+              <option value="الولايات المتحدة">الولايات المتحدة</option>
+              <option value="اليابان">اليابان</option>
+              <option value="اليمن">اليمن</option>
+              <option value="اليونان">اليونان</option>
+              <option value="إندونيسيا">إندونيسيا</option>
+              <option value="إيران">إيران</option>
+              <option value="إيرلندا">إيرلندا</option>
+              <option value="إيسلندا">إيسلندا</option>
+              <option value="إيطاليا">إيطاليا</option>
+              <option value="بابوا غينيا الجديدة">بابوا غينيا الجديدة</option>
+              <option value="باراغواي">باراغواي</option>
+              <option value="باكستان">باكستان</option>
+              <option value="بالاو">بالاو</option>
+              <option value="بربادوس">بربادوس</option>
+              <option value="بروناي">بروناي</option>
+              <option value="بلجيكا">بلجيكا</option>
+              <option value="بلغاريا">بلغاريا</option>
+              <option value="بليز">بليز</option>
+              <option value="بنغلاديش">بنغلاديش</option>
+              <option value="بنما">بنما</option>
+              <option value="بنين">بنين</option>
+              <option value="بوتان">بوتان</option>
+              <option value="بوتسوانا">بوتسوانا</option>
+              <option value="بوركينا فاسو">بوركينا فاسو</option>
+              <option value="بوروندي">بوروندي</option>
+              <option value="بولندا">بولندا</option>
+              <option value="بوليفيا">بوليفيا</option>
+              <option value="بيرو">بيرو</option>
+              <option value="بيلاروسيا">بيلاروسيا</option>
+              <option value="تايلاند">تايلاند</option>
+              <option value="تايوان">تايوان</option>
+              <option value="تركمانستان">تركمانستان</option>
+              <option value="تركيا">تركيا</option>
+              <option value="ترينيداد وتوباغو">ترينيداد وتوباغو</option>
+              <option value="تشاد">تشاد</option>
+              <option value="تشيلي">تشيلي</option>
+              <option value="توغو">توغو</option>
+              <option value="توفالو">توفالو</option>
+              <option value="تونس">تونس</option>
+              <option value="تونغا">تونغا</option>
+              <option value="تيمور الشرقية">تيمور الشرقية</option>
+              <option value="جامايكا">جامايكا</option>
+              <option value="جزر البهاما">جزر البهاما</option>
+              <option value="جزر القمر">جزر القمر</option>
+              <option value="جزر سليمان">جزر سليمان</option>
+              <option value="جزر مارشال">جزر مارشال</option>
+              <option value="جمهورية أفريقيا الوسطى">جمهورية أفريقيا الوسطى</option>
+              <option value="جمهورية التشيك">جمهورية التشيك</option>
+              <option value="جمهورية الدومينيكان">جمهورية الدومينيكان</option>
+              <option value="جنوب أفريقيا">جنوب أفريقيا</option>
+              <option value="جنوب السودان">جنوب السودان</option>
+              <option value="جورجيا">جورجيا</option>
+              <option value="جيبوتي">جيبوتي</option>
+              <option value="دومينيكا">دومينيكا</option>
+              <option value="روسيا">روسيا</option>
+              <option value="رواندا">رواندا</option>
+              <option value="رومانيا">رومانيا</option>
+              <option value="زامبيا">زامبيا</option>
+              <option value="زيمبابوي">زيمبابوي</option>
+              <option value="ساحل العاج">ساحل العاج</option>
+              <option value="ساموا">ساموا</option>
+              <option value="سان مارينو">سان مارينو</option>
+              <option value="سانت كيتس ونيفيس">سانت كيتس ونيفيس</option>
+              <option value="سانت لوسيا">سانت لوسيا</option>
+              <option value="سانت فنسنت والغرينادين">سانت فنسنت والغرينادين</option>
+              <option value="ساو تومي وبرينسيبي">ساو تومي وبرينسيبي</option>
+              <option value="سريلانكا">سريلانكا</option>
+              <option value="سلوفاكيا">سلوفاكيا</option>
+              <option value="سلوفينيا">سلوفينيا</option>
+              <option value="سنغافورة">سنغافورة</option>
+              <option value="سوريا">سوريا</option>
+              <option value="سورينام">سورينام</option>
+              <option value="سويسرا">سويسرا</option>
+              <option value="سيراليون">سيراليون</option>
+              <option value="سيشل">سيشل</option>
+              <option value="صربيا">صربيا</option>
+              <option value="طاجيكستان">طاجيكستان</option>
+              <option value="عمان">عمان</option>
+              <option value="غامبيا">غامبيا</option>
+              <option value="غانا">غانا</option>
+              <option value="غرينادا">غرينادا</option>
+              <option value="غواتيمالا">غواتيمالا</option>
+              <option value="غيانا">غيانا</option>
+              <option value="غينيا">غينيا</option>
+              <option value="غينيا الاستوائية">غينيا الاستوائية</option>
+              <option value="غينيا بيساو">غينيا بيساو</option>
+              <option value="فانواتو">فانواتو</option>
+              <option value="فرنسا">فرنسا</option>
+              <option value="فلسطين">فلسطين</option>
+              <option value="فنزويلا">فنزويلا</option>
+              <option value="فنلندا">فنلندا</option>
+              <option value="فيتنام">فيتنام</option>
+              <option value="فيجي">فيجي</option>
+              <option value="قبرص">قبرص</option>
+              <option value="قطر">قطر</option>
+              <option value="قيرغيزستان">قيرغيزستان</option>
+              <option value="كازاخستان">كازاخستان</option>
+              <option value="كرواتيا">كرواتيا</option>
+              <option value="كمبوديا">كمبوديا</option>
+              <option value="كندا">كندا</option>
+              <option value="كوبا">كوبا</option>
+              <option value="كوريا الجنوبية">كوريا الجنوبية</option>
+              <option value="كوريا الشمالية">كوريا الشمالية</option>
+              <option value="كوستاريكا">كوستاريكا</option>
+              <option value="كولومبيا">كولومبيا</option>
+              <option value="كيريباتي">كيريباتي</option>
+              <option value="كينيا">كينيا</option>
+              <option value="لاتفيا">لاتفيا</option>
+              <option value="لاوس">لاوس</option>
+              <option value="لبنان">لبنان</option>
+              <option value="لكسمبورغ">لكسمبورغ</option>
+              <option value="ليبيا">ليبيا</option>
+              <option value="ليبيريا">ليبيريا</option>
+              <option value="ليتوانيا">ليتوانيا</option>
+              <option value="ليختنشتاين">ليختنشتاين</option>
+              <option value="ليسوتو">ليسوتو</option>
+              <option value="مالطا">مالطا</option>
+              <option value="مالي">مالي</option>
+              <option value="ماليزيا">ماليزيا</option>
+              <option value="مدغشقر">مدغشقر</option>
+              <option value="مصر">مصر</option>
+              <option value="مقدونيا الشمالية">مقدونيا الشمالية</option>
+              <option value="ملاوي">ملاوي</option>
+              <option value="منغوليا">منغوليا</option>
+              <option value="موريتانيا">موريتانيا</option>
+              <option value="موريشيوس">موريشيوس</option>
+              <option value="موزمبيق">موزمبيق</option>
+              <option value="مولدوفا">مولدوفا</option>
+              <option value="موناكو">موناكو</option>
+              <option value="ميانمار">ميانمار</option>
+              <option value="ميكرونيزيا">ميكرونيزيا</option>
+              <option value="ناميبيا">ناميبيا</option>
+              <option value="ناورو">ناورو</option>
+              <option value="نيبال">نيبال</option>
+              <option value="نيجيريا">نيجيريا</option>
+              <option value="نيكاراغوا">نيكاراغوا</option>
+              <option value="نيوزيلندا">نيوزيلندا</option>
+              <option value="هايتي">هايتي</option>
+              <option value="هندوراس">هندوراس</option>
+              <option value="هنغاريا">هنغاريا</option>
+              <option value="هولندا">هولندا</option>
+              <option value="هونغ كونغ">هونغ كونغ</option>
+              </select>
+            </div>
+
+            <div class="date-group" id="dateGroup">
+              <label>التاريخ <span class="req">*</span></label>
+              <div class="date-options">
+                <label class="date-card">
+                  <input type="radio" name="session" value="11-Aug">
+                  <span class="dc-txt">
+                    <span>الثلاثاء ١١ أغسطس</span>
+                    <small>٨:٣٠ مساءً بتوقيت جدة · ٩٠ دقيقة</small>
+                  </span>
+                </label>
+                <label class="date-card">
+                  <input type="radio" name="session" value="12-Aug">
+                  <span class="dc-txt">
+                    <span>الأربعاء ١٢ أغسطس</span>
+                    <small>٨:٣٠ مساءً بتوقيت جدة · ٩٠ دقيقة</small>
+                  </span>
+                </label>
+              </div>
+            </div>
+
+            <div class="submit-row">
+              <button type="submit" class="btn btn-primary btn-big" id="submitBtn" disabled>احجز مقعدك مجانًا</button>
+              <p class="form-msg" id="formMsg"></p>
+              <p class="privacy-note">
+                بتسجيلك توافق على استلام رسائل متعلقة بالماستركلاس من MA Learn.
+                <a href="https://malearnsa.com/privacy-policy.html">سياسة الخصوصية</a>
+              </p>
+            </div>
+
+          </form>
+        </div>
+
+        <!-- SUCCESS -->
+        <div class="success" id="successState">
+          <div class="tick">✓</div>
+          <h2 class="disp">تم تسجيلك</h2>
+          <p>وصلك إيميل تأكيد فيه كل التفاصيل.</p>
+          <div class="s-date" id="successDate"></div>
+          <p>٨:٣٠ مساءً بتوقيت جدة · ٩٠ دقيقة</p>
+          <div class="s-cal">
+            <a class="btn btn-primary" id="calBtn" href="#" target="_blank" rel="noopener">أضف الموعد لتقويمك</a>
+          </div>
+          <div class="s-warn">
+            <b>الجلسة مباشرة وما تنعاد</b>
+            <p>ما فيه تسجيل ولا إعادة ولا ملفات بعدها. رابط الدخول يوصلك على إيميلك قبل الموعد.</p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <div id="ma-footer"></div>
+  <script src="https://malearnsa.com/footer-module/v1/footer.js"></script>
+
+  <script>
+    (function () {
+      'use strict';
+
+      var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbznjcsYu8gLDZqFJGededAQaATad_L8vlhRQV04pOqh57HB5nFVRy9zUHAcg6goyj8DKA/exec';
+
+      var SESSION_META = {
+        '11-Aug': {
+          label: 'الثلاثاء ١١ أغسطس',
+          gcal:  '20260811T173000Z/20260811T190000Z'
+        },
+        '12-Aug': {
+          label: 'الأربعاء ١٢ أغسطس',
+          gcal:  '20260812T173000Z/20260812T190000Z'
+        }
+      };
+
+      // nav shadow
+      var nav = document.getElementById('nav');
+      window.addEventListener('scroll', function () {
+        nav.classList.toggle('scrolled', window.scrollY > 40);
+      }, { passive: true });
+
+      // ── attribution: ?ref= (30-day last touch, same key as checkout) + UTMs
+      var qs = new URLSearchParams(location.search);
+      var ref = '';
+      try {
+        var r = qs.get('ref');
+        if (r) localStorage.setItem('ma_ref', JSON.stringify({ v: r, exp: Date.now() + 30 * 864e5 }));
+        var st = JSON.parse(localStorage.getItem('ma_ref') || 'null');
+        if (st && st.exp > Date.now()) ref = st.v;
+      } catch (e) {}
+
+      var form      = document.getElementById('mcForm');
+      var submitBtn = document.getElementById('submitBtn');
+      var formMsg   = document.getElementById('formMsg');
+      var dateGroup = document.getElementById('dateGroup');
+
+      // ── submit stays gated until a date is chosen (2.0 checkout pattern)
+      document.querySelectorAll('input[name="session"]').forEach(function (radio) {
+        radio.addEventListener('change', function () {
+          submitBtn.disabled = false;
+          dateGroup.classList.remove('invalid');
+          formMsg.classList.remove('show');
+        });
+      });
+
+      function markInvalid(wrapperId) {
+        var el = document.getElementById(wrapperId);
+        if (!el) return;
+        el.classList.add('invalid');
+        setTimeout(function () { el.classList.remove('invalid'); }, 2600);
+      }
+
+      function fail(text) {
+        formMsg.textContent = text;
+        formMsg.classList.add('show');
+      }
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        formMsg.classList.remove('show');
+
+        var name     = document.getElementById('f-name').value.trim();
+        var phone    = document.getElementById('f-phone').value.trim();
+        var email    = document.getElementById('f-email').value.trim();
+        var industry = document.getElementById('f-industry').value;
+        var country  = document.getElementById('f-country').value;
+        var sessionEl= document.querySelector('input[name="session"]:checked');
+
+        var bad = false;
+        if (!name)                                 { markInvalid('f-name-w');     bad = true; }
+        if (!phone)                                { markInvalid('f-phone-w');    bad = true; }
+        if (!email || email.indexOf('@') === -1)   { markInvalid('f-email-w');    bad = true; }
+        if (!industry)                             { markInvalid('f-industry-w'); bad = true; }
+        if (!country)                              { markInvalid('f-country-w');  bad = true; }
+        if (!sessionEl) {
+          dateGroup.classList.add('invalid');
+          dateGroup.scrollIntoView({ behavior: 'smooth', block: 'center' });
+          fail('اختر التاريخ المناسب لك قبل المتابعة.');
+          return;
+        }
+        if (bad) { fail('عبّي كل الحقول المطلوبة.'); return; }
+
+        var session = sessionEl.value;
+
+        submitBtn.disabled = true;
+        submitBtn.textContent = 'جاري التسجيل...';
+
+        fetch(SCRIPT_URL + '?action=masterclass_register', {
+          method: 'POST',
+          body: JSON.stringify({
+            action:       'masterclass_register',
+            name:         name,
+            phone:        phone,
+            email:        email,
+            industry:     industry,
+            country:      country,
+            session:      session,
+            source:       'masterclass-page',
+            ref:          ref,
+            utm_source:   qs.get('utm_source')   || '',
+            utm_medium:   qs.get('utm_medium')   || '',
+            utm_campaign: qs.get('utm_campaign') || '',
+            page_url:     location.href
+          })
+        })
+        .then(function (res) { return res.json(); })
+        .then(function (data) {
+          if (!data || !data.success) {
+            throw new Error((data && data.error) || 'unknown');
+          }
+          showSuccess(session);
+        })
+        .catch(function () {
+          submitBtn.disabled = false;
+          submitBtn.textContent = 'احجز مقعدك مجانًا';
+          fail('صار خطأ في التسجيل. جرّب مرة ثانية أو راسلنا على support@malearnsa.com');
+        });
+      });
+
+      function showSuccess(session) {
+        var meta = SESSION_META[session] || SESSION_META['11-Aug'];
+
+        // ── conversion events (ads optimization depends on these)
+        try {
+          if (window.fbq) {
+            fbq('track', 'Lead', {
+              content_name:     'Masterclass Figma Weave',
+              content_category: 'masterclass-aug',
+              session_date:     session,
+              currency:         'SAR',
+              value:            0
+            });
+            fbq('trackCustom', 'MasterclassRegistration', { session_date: session });
+          }
+        } catch (e) {}
+        try {
+          if (window.gtag) {
+            gtag('event', 'generate_lead', {
+              event_category: 'masterclass',
+              event_label:    session,
+              value:          0
+            });
+          }
+        } catch (e) {}
+
+        document.getElementById('successDate').textContent = meta.label;
+        document.getElementById('calBtn').href =
+          'https://calendar.google.com/calendar/render?action=TEMPLATE'
+          + '&text='  + encodeURIComponent('ماستركلاس بناء أنظمة توليد الصور والفيديوهات')
+          + '&dates=' + meta.gcal
+          + '&details=' + encodeURIComponent('بث مباشر مجاني لمدة ٩٠ دقيقة. رابط الدخول يوصلك على إيميلك قبل الموعد.')
+          + '&ctz=Asia%2FRiyadh';
+
+        document.getElementById('formWrapper').style.display = 'none';
+        document.getElementById('successState').classList.add('show');
+        document.getElementById('register').scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    })();
+  </script>
+
+</body>
+</html>
