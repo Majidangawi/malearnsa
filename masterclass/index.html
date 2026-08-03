@@ -206,6 +206,13 @@
     .session-note b{ display:block; color:var(--ink); font-size:1rem; font-weight:800; }
     .session-note small{ display:block; margin-top:4px; color:var(--faint); font-weight:600; font-size:.82rem; }
 
+    /* A bare "·" between an Arabic word and an Arabic-Indic number is a NEUTRAL
+       character: in an RTL run the bidi algorithm parks it on the far side of the
+       digits, so "جدة · ٩٠ دقيقة" renders as "٩٠·" and reads as ٩٠٠ — nine hundred
+       minutes. Isolating each segment pins the separator where it was written. */
+    .bidi-sep > span{ unicode-bidi:isolate; }
+    .bidi-sep .sep{ margin-inline:7px; color:var(--accent); }
+
     .form-msg{
       display:none; color:#e0564f; font-size:.86rem; font-weight:700;
       margin-top:10px; text-align:center;
@@ -559,7 +566,7 @@
 
             <div class="session-note">
               <b>الأربعاء ١٢ أغسطس</b>
-              <small>٨:٣٠ مساءً بتوقيت جدة · ٩٠ دقيقة</small>
+              <small class="bidi-sep"><span>٨:٣٠ مساءً بتوقيت جدة</span><span class="sep">·</span><span>٩٠ دقيقة</span></small>
             </div>
 
             <div class="submit-row">
@@ -580,7 +587,7 @@
           <h2 class="disp">تم تسجيلك</h2>
           <p>وصلك إيميل تأكيد فيه كل التفاصيل.</p>
           <div class="s-date" id="successDate"></div>
-          <p>٨:٣٠ مساءً بتوقيت جدة · ٩٠ دقيقة</p>
+          <p class="bidi-sep"><span>٨:٣٠ مساءً بتوقيت جدة</span><span class="sep">·</span><span>٩٠ دقيقة</span></p>
           <div class="s-cal">
             <a class="btn btn-primary" id="calBtn" href="#" target="_blank" rel="noopener">أضف الموعد لتقويمك</a>
           </div>
