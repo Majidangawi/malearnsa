@@ -31,14 +31,14 @@
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ماستركلاس بناء أنظمة توليد الصور والفيديوهات · MA Learn</title>
-  <meta name="description" content="بث مباشر مجاني لمدة ٩٠ دقيقة تتعرّف خلاله على أداة Figma Weave، وتشوف كيف يتبنى نظام عمل متكامل من الصفر يؤتمت إنتاج الصور والفيديوهات. الثلاثاء ١١ أو الأربعاء ١٢ أغسطس، ٨:٣٠ مساءً بتوقيت جدة.">
+  <meta name="description" content="بث مباشر مجاني لمدة ٩٠ دقيقة تتعرّف خلاله على أداة Figma Weave، وتشوف كيف يتبنى نظام عمل متكامل من الصفر يؤتمت إنتاج الصور والفيديوهات. الأربعاء ١٢ أغسطس، ٨:٣٠ مساءً بتوقيت جدة.">
   <link rel="canonical" href="https://malearnsa.com/masterclass/">
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://malearnsa.com/masterclass/">
   <meta property="og:title" content="ماستركلاس بناء أنظمة توليد الصور والفيديوهات">
-  <meta property="og:description" content="بث مباشر مجاني ٩٠ دقيقة · Figma Weave · الثلاثاء ١١ أو الأربعاء ١٢ أغسطس، ٨:٣٠ مساءً بتوقيت جدة.">
+  <meta property="og:description" content="بث مباشر مجاني ٩٠ دقيقة · Figma Weave · الأربعاء ١٢ أغسطس، ٨:٣٠ مساءً بتوقيت جدة.">
   <meta property="og:image" content="https://malearnsa.com/creative-ai-workshop/media/_web/sections/hero-desktop.jpg">
   <meta name="twitter:card" content="summary_large_image">
 
@@ -197,26 +197,14 @@
     .field select option{ background:#1d1610; color:#f8f0e6; }
     .field.invalid input, .field.invalid select{ border-color:#e0564f; }
 
-    /* date picker — same UX as the 2.0 checkout cohort picker */
-    .date-group{
-      margin:26px 0 22px; padding-top:24px;
-      border-top:1px solid rgba(248,240,230,.08);
+    /* single-session banner — replaces the old two-date picker (2026-08-03) */
+    .session-note{
+      margin:26px 0 22px; padding:17px 18px;
+      border:1.5px solid var(--line); border-radius:18px; background:var(--bg-2);
+      text-align:center;
     }
-    .date-group > label{
-      display:block; font-size:.86rem; font-weight:800; color:var(--muted); margin-bottom:12px;
-    }
-    .date-options{ display:flex; flex-direction:column; gap:12px; }
-    .date-card{
-      display:flex; align-items:center; gap:12px;
-      padding:17px 18px; border:1.5px solid var(--line); border-radius:18px;
-      cursor:pointer; transition:border-color .2s, background .2s;
-      font-size:1rem; font-weight:700; background:var(--bg-2);
-    }
-    .date-card:has(input:checked){ border-color:var(--accent-hot); background:var(--card-2); }
-    .date-card input{ accent-color:var(--accent-hot); width:20px; height:20px; flex:none; cursor:pointer; }
-    .date-card .dc-txt{ display:flex; flex-direction:column; gap:3px; }
-    .date-card small{ color:var(--faint); font-weight:600; font-size:.82rem; }
-    .date-group.invalid .date-card{ border-color:#e0564f; }
+    .session-note b{ display:block; color:var(--ink); font-size:1rem; font-weight:800; }
+    .session-note small{ display:block; margin-top:4px; color:var(--faint); font-weight:600; font-size:.82rem; }
 
     .form-msg{
       display:none; color:#e0564f; font-size:.86rem; font-weight:700;
@@ -276,7 +264,7 @@
         <h1 class="disp">تعلّم كيف تبني أنظمة تؤتمت توليد الصور والفيديوهات باستخدام <span class="hl">Figma Weave</span></h1>
 
         <p class="hero-sub">
-          بث مباشر مجاني لمدة ٩٠ دقيقة تتعرّف خلاله على أداة <span class="en">Figma Weave</span>، وتشوف كيف يتبنى نظام عمل متكامل من الصفر يؤتمت إنتاج الصور والفيديوهات. غير مسجّل — اختر التاريخ المناسب لك: الثلاثاء ١١ أو الأربعاء ١٢ أغسطس، ٨:٣٠ مساءً بتوقيت جدة.
+          بث مباشر مجاني لمدة ٩٠ دقيقة تتعرّف خلاله على أداة <span class="en">Figma Weave</span>، وتشوف كيف يتبنى نظام عمل متكامل من الصفر يؤتمت إنتاج الصور والفيديوهات. غير مسجّل — الأربعاء ١٢ أغسطس، ٨:٣٠ مساءً بتوقيت جدة.
         </p>
 
         <div class="hero-ctas">
@@ -330,7 +318,7 @@
 
         <div id="formWrapper">
           <h2 class="disp">احجز مقعدك مجانًا</h2>
-          <p class="form-lead">سجّل بياناتك واختر التاريخ المناسب لك.</p>
+          <p class="form-lead">سجّل بياناتك ونثبّت لك مقعدك.</p>
 
           <form id="mcForm" novalidate>
 
@@ -569,28 +557,13 @@
               </select>
             </div>
 
-            <div class="date-group" id="dateGroup">
-              <label>التاريخ <span class="req">*</span></label>
-              <div class="date-options">
-                <label class="date-card">
-                  <input type="radio" name="session" value="11-Aug">
-                  <span class="dc-txt">
-                    <span>الثلاثاء ١١ أغسطس</span>
-                    <small>٨:٣٠ مساءً بتوقيت جدة · ٩٠ دقيقة</small>
-                  </span>
-                </label>
-                <label class="date-card">
-                  <input type="radio" name="session" value="12-Aug">
-                  <span class="dc-txt">
-                    <span>الأربعاء ١٢ أغسطس</span>
-                    <small>٨:٣٠ مساءً بتوقيت جدة · ٩٠ دقيقة</small>
-                  </span>
-                </label>
-              </div>
+            <div class="session-note">
+              <b>الأربعاء ١٢ أغسطس</b>
+              <small>٨:٣٠ مساءً بتوقيت جدة · ٩٠ دقيقة</small>
             </div>
 
             <div class="submit-row">
-              <button type="submit" class="btn btn-primary btn-big" id="submitBtn" disabled>احجز مقعدك مجانًا</button>
+              <button type="submit" class="btn btn-primary btn-big" id="submitBtn">احجز مقعدك مجانًا</button>
               <p class="form-msg" id="formMsg"></p>
               <p class="privacy-note">
                 بتسجيلك توافق على استلام رسائل متعلقة بالماستركلاس من MA Learn.
@@ -631,15 +604,14 @@
 
       var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbznjcsYu8gLDZqFJGededAQaATad_L8vlhRQV04pOqh57HB5nFVRy9zUHAcg6goyj8DKA/exec';
 
+      // ── ONE session only (Majid, 2026-08-03 — the 11 Aug date was cancelled
+      //    before announcement). The key is still posted to the backend so the
+      //    sheet's Session Date column stays populated; the backend also pins
+      //    it server-side and ignores whatever the form sends.
+      var SESSION_KEY  = '12-Aug';
       var SESSION_META = {
-        '11-Aug': {
-          label: 'الثلاثاء ١١ أغسطس',
-          gcal:  '20260811T173000Z/20260811T190000Z'
-        },
-        '12-Aug': {
-          label: 'الأربعاء ١٢ أغسطس',
-          gcal:  '20260812T173000Z/20260812T190000Z'
-        }
+        label: 'الأربعاء ١٢ أغسطس',
+        gcal:  '20260812T173000Z/20260812T190000Z'
       };
 
       // nav shadow
@@ -661,16 +633,6 @@
       var form      = document.getElementById('mcForm');
       var submitBtn = document.getElementById('submitBtn');
       var formMsg   = document.getElementById('formMsg');
-      var dateGroup = document.getElementById('dateGroup');
-
-      // ── submit stays gated until a date is chosen (2.0 checkout pattern)
-      document.querySelectorAll('input[name="session"]').forEach(function (radio) {
-        radio.addEventListener('change', function () {
-          submitBtn.disabled = false;
-          dateGroup.classList.remove('invalid');
-          formMsg.classList.remove('show');
-        });
-      });
 
       function markInvalid(wrapperId) {
         var el = document.getElementById(wrapperId);
@@ -693,7 +655,6 @@
         var email    = document.getElementById('f-email').value.trim();
         var industry = document.getElementById('f-industry').value;
         var country  = document.getElementById('f-country').value;
-        var sessionEl= document.querySelector('input[name="session"]:checked');
 
         var bad = false;
         if (!name)                                 { markInvalid('f-name-w');     bad = true; }
@@ -701,15 +662,7 @@
         if (!email || email.indexOf('@') === -1)   { markInvalid('f-email-w');    bad = true; }
         if (!industry)                             { markInvalid('f-industry-w'); bad = true; }
         if (!country)                              { markInvalid('f-country-w');  bad = true; }
-        if (!sessionEl) {
-          dateGroup.classList.add('invalid');
-          dateGroup.scrollIntoView({ behavior: 'smooth', block: 'center' });
-          fail('اختر التاريخ المناسب لك قبل المتابعة.');
-          return;
-        }
         if (bad) { fail('عبّي كل الحقول المطلوبة.'); return; }
-
-        var session = sessionEl.value;
 
         submitBtn.disabled = true;
         submitBtn.textContent = 'جاري التسجيل...';
@@ -723,7 +676,7 @@
             email:        email,
             industry:     industry,
             country:      country,
-            session:      session,
+            session:      SESSION_KEY,
             source:       'masterclass-page',
             ref:          ref,
             utm_source:   qs.get('utm_source')   || '',
@@ -737,7 +690,7 @@
           if (!data || !data.success) {
             throw new Error((data && data.error) || 'unknown');
           }
-          showSuccess(session);
+          showSuccess();
         })
         .catch(function () {
           submitBtn.disabled = false;
@@ -746,8 +699,9 @@
         });
       });
 
-      function showSuccess(session) {
-        var meta = SESSION_META[session] || SESSION_META['11-Aug'];
+      function showSuccess() {
+        var meta    = SESSION_META;
+        var session = SESSION_KEY;
 
         // ── conversion events (ads optimization depends on these)
         try {
