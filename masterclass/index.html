@@ -26,19 +26,47 @@
     gtag('js', new Date());
     gtag('config', 'G-TZ9839RVDJ');
   </script>
+  <!--
+  ══════════════════════════════════════════════════════════════════
+   TIME BLOCK — every place the session time appears on this page
+  ══════════════════════════════════════════════════════════════════
+   Session: Wed 12 Aug 2026, 19:30 Asia/Riyadh, 90 min (ends 21:00).
+   KSA is UTC+3 all year (no DST) -> 16:30Z / 18:00Z.
+
+   DRIVEN BY JS (bottom of file, search "TIME CONSTANTS"):
+     MC_TIME_AR -> success-screen time line + calendar-link details
+     MC_GCAL    -> calendar link range
+
+   STATIC copy strings — these CANNOT be JS-driven, because meta/OG must be
+   in the served HTML for crawlers and link unfurls. All six are
+   byte-identical, so one command flips them:
+       sed -i '' 's/OLD_TIME/NEW_TIME/g' index.html
+     1. <meta name="description">        4. meta-line chip under hero CTA
+     2. <meta property="og:description"> 5. session banner above submit
+     3. hero subheadline                 6. success-screen time line
+
+   The BACKEND has its own single source: MC_DATE + MC_TIME in
+   ~/code/.clasp-token-validator/Masterclass.js. Change BOTH sides together.
+
+   PLATFORM RULE (Majid, 2026-08-03): never name the streaming platform
+   anywhere on this page — no product name, no logo, no wording implying one.
+   HTML comments are served to the browser, so the rule applies here too.
+   The attendance link arrives before the session; until then this page
+   describes a calendar event and nothing more.
+  -->
   <meta charset="UTF-8">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ماستركلاس بناء أنظمة توليد الصور والفيديوهات · MA Learn</title>
-  <meta name="description" content="بث مباشر مجاني لمدة ٩٠ دقيقة تتعرّف خلاله على أداة Figma Weave، وتشوف كيف يتبنى نظام عمل متكامل من الصفر يؤتمت إنتاج الصور والفيديوهات. الأربعاء ١٢ أغسطس، ٨:٣٠ مساءً بتوقيت جدة.">
+  <meta name="description" content="بث مباشر مجاني لمدة ٩٠ دقيقة تتعرّف خلاله على أداة Figma Weave، وتشوف كيف يتبنى نظام عمل متكامل من الصفر يؤتمت إنتاج الصور والفيديوهات. الأربعاء ١٢ أغسطس، ٧:٣٠ مساءً بتوقيت جدة.">
   <link rel="canonical" href="https://malearnsa.com/masterclass/">
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://malearnsa.com/masterclass/">
   <meta property="og:title" content="ماستركلاس بناء أنظمة توليد الصور والفيديوهات">
-  <meta property="og:description" content="بث مباشر مجاني ٩٠ دقيقة · Figma Weave · الأربعاء ١٢ أغسطس، ٨:٣٠ مساءً بتوقيت جدة.">
+  <meta property="og:description" content="بث مباشر مجاني ٩٠ دقيقة · Figma Weave · الأربعاء ١٢ أغسطس، ٧:٣٠ مساءً بتوقيت جدة.">
   <meta property="og:image" content="https://malearnsa.com/creative-ai-workshop/media/_web/sections/hero-desktop.jpg">
   <meta name="twitter:card" content="summary_large_image">
 
@@ -271,7 +299,7 @@
         <h1 class="disp">تعلّم كيف تبني أنظمة تؤتمت توليد الصور والفيديوهات باستخدام <span class="hl">Figma Weave</span></h1>
 
         <p class="hero-sub">
-          بث مباشر مجاني لمدة ٩٠ دقيقة تتعرّف خلاله على أداة <span class="en">Figma Weave</span>، وتشوف كيف يتبنى نظام عمل متكامل من الصفر يؤتمت إنتاج الصور والفيديوهات. غير مسجّل — الأربعاء ١٢ أغسطس، ٨:٣٠ مساءً بتوقيت جدة.
+          بث مباشر مجاني لمدة ٩٠ دقيقة تتعرّف خلاله على أداة <span class="en">Figma Weave</span>، وتشوف كيف يتبنى نظام عمل متكامل من الصفر يؤتمت إنتاج الصور والفيديوهات. غير مسجّل — الأربعاء ١٢ أغسطس، ٧:٣٠ مساءً بتوقيت جدة.
         </p>
 
         <div class="hero-ctas">
@@ -282,7 +310,7 @@
           <span>٩٠ دقيقة</span><span class="sep">·</span>
           <span>مباشر</span><span class="sep">·</span>
           <span>مجاني</span><span class="sep">·</span>
-          <span>٨:٣٠ مساءً بتوقيت جدة</span>
+          <span>٧:٣٠ مساءً بتوقيت جدة</span>
         </div>
       </div>
     </div>
@@ -566,7 +594,7 @@
 
             <div class="session-note">
               <b>الأربعاء ١٢ أغسطس</b>
-              <small class="bidi-sep"><span>٨:٣٠ مساءً بتوقيت جدة</span><span class="sep">·</span><span>٩٠ دقيقة</span></small>
+              <small class="bidi-sep"><span>٧:٣٠ مساءً بتوقيت جدة</span><span class="sep">·</span><span>٩٠ دقيقة</span></small>
             </div>
 
             <div class="submit-row">
@@ -587,13 +615,13 @@
           <h2 class="disp">تم تسجيلك</h2>
           <p>وصلك إيميل تأكيد فيه كل التفاصيل.</p>
           <div class="s-date" id="successDate"></div>
-          <p class="bidi-sep"><span>٨:٣٠ مساءً بتوقيت جدة</span><span class="sep">·</span><span>٩٠ دقيقة</span></p>
+          <p class="bidi-sep"><span>٧:٣٠ مساءً بتوقيت جدة</span><span class="sep">·</span><span>٩٠ دقيقة</span></p>
           <div class="s-cal">
             <a class="btn btn-primary" id="calBtn" href="#" target="_blank" rel="noopener">أضف الموعد لتقويمك</a>
           </div>
           <div class="s-warn">
             <b>الجلسة مباشرة وما تنعاد</b>
-            <p>ما فيه تسجيل ولا إعادة ولا ملفات بعدها. رابط الدخول يوصلك على إيميلك قبل الموعد.</p>
+            <p>ما فيه تسجيل ولا إعادة ولا ملفات بعدها. رابط الحضور يوصلك على إيميلك قبل الجلسة.</p>
           </div>
         </div>
 
@@ -611,14 +639,26 @@
 
       var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbznjcsYu8gLDZqFJGededAQaATad_L8vlhRQV04pOqh57HB5nFVRy9zUHAcg6goyj8DKA/exec';
 
-      // ── ONE session only (Majid, 2026-08-03 — the 11 Aug date was cancelled
-      //    before announcement). The key is still posted to the backend so the
-      //    sheet's Session Date column stays populated; the backend also pins
-      //    it server-side and ignores whatever the form sends.
-      var SESSION_KEY  = '12-Aug';
+      // ══ TIME CONSTANTS ══════════════════════════════════════════
+      // ONE session (Majid, 2026-08-03 — the 11 Aug date was cancelled before
+      // announcement). The key is still posted to the backend so the sheet's
+      // Session Date column stays populated; the backend pins it server-side
+      // and ignores whatever the form sends.
+      //
+      // Wed 12 Aug 2026, 19:30 KSA, 90 min. KSA = UTC+3, no DST -> 16:30Z/18:00Z.
+      // These two drive the success screen and the calendar link. The six STATIC
+      // copy strings are listed in the TIME BLOCK comment at the top of this file
+      // and must be flipped alongside — meta/OG cannot be JS-driven.
+      var SESSION_KEY = '12-Aug';
+      var MC_TIME_AR  = '٧:٣٠ مساءً بتوقيت جدة';
+      var MC_GCAL     = '20260812T163000Z/20260812T180000Z';
+      // Platform is never named (Majid) — link arrives before the session.
+      var MC_DETAILS  = 'بث مباشر مجاني لمدة ٩٠ دقيقة. رابط الحضور يوصلك قبل الجلسة.';
+
       var SESSION_META = {
         label: 'الأربعاء ١٢ أغسطس',
-        gcal:  '20260812T173000Z/20260812T190000Z'
+        time:  MC_TIME_AR,
+        gcal:  MC_GCAL
       };
 
       // nav shadow
@@ -738,7 +778,7 @@
           'https://calendar.google.com/calendar/render?action=TEMPLATE'
           + '&text='  + encodeURIComponent('ماستركلاس بناء أنظمة توليد الصور والفيديوهات')
           + '&dates=' + meta.gcal
-          + '&details=' + encodeURIComponent('بث مباشر مجاني لمدة ٩٠ دقيقة. رابط الدخول يوصلك على إيميلك قبل الموعد.')
+          + '&details=' + encodeURIComponent(MC_DETAILS)
           + '&ctz=Asia%2FRiyadh';
 
         document.getElementById('formWrapper').style.display = 'none';
