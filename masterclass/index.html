@@ -179,8 +179,33 @@
     .img-slot{ border-radius:var(--r-lg); overflow:hidden; border:1.5px solid var(--line); position:relative; }
     .img-slot img{ width:100%; height:100%; object-fit:cover; }
 
-    /* hero visual — single portrait card under the CTA block */
-    .hero-shot{ margin-top:clamp(38px,6vw,54px); width:min(430px,86%); aspect-ratio:4/5; }
+    /* ---------- intro proof pair — the system (left) + what it produced (right) ----------
+       This pairing IS the argument of the page, so neither image may be cropped: the
+       workflow screenshot's node web is the entire point, and the cover is the payoff.
+       The two column widths ARE the images' own aspect ratios (1800/1102 and 989/1400),
+       so both render at natural proportions AND land on the same height — equal height
+       without an equal-height box, and therefore without object-fit cropping anything.
+       direction:ltr on the track pins system-left / result-right on this RTL page and
+       makes the mobile stack fall system-first; each figure restores rtl for its caption.
+       The system image is also a link to the full 1800px file — at any phone width the
+       node web reads as structure but not as text, so the detail stays one tap away. */
+    .proof{
+      margin-top:clamp(38px,6vw,58px);
+      display:grid; grid-template-columns:1.6334fr 0.7064fr; gap:clamp(12px,1.6vw,20px);
+      direction:ltr; align-items:start;
+    }
+    .proof figure{ direction:rtl; min-width:0; }
+    .proof .img-slot{ display:block; }
+    .proof .img-slot img{ height:auto; object-fit:contain; }
+    .proof figcaption{
+      margin-top:12px; color:var(--faint); font-size:.82rem; font-weight:800;
+      display:flex; align-items:baseline; gap:10px; justify-content:center; flex-wrap:wrap;
+    }
+    .proof figcaption .zoom-hint{ font-weight:600; font-size:.74rem; opacity:.72; }
+    @media (max-width:760px){
+      .proof{ grid-template-columns:1fr; gap:24px; }
+      .proof .proof-res{ max-width:min(360px,82%); margin-inline:auto; }
+    }
 
     /* market hook — Majid's opening line, sits directly under the hero */
     .hook{
@@ -207,7 +232,9 @@
 
     /* work gallery — no captions, the work speaks */
     .work-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:16px; max-width:860px; margin-inline:auto; }
-    .work-grid .img-slot{ aspect-ratio:4/5; }
+    /* both gallery files are 1047x1400 — matching the slot to their native ratio
+       means object-fit:cover has nothing to crop. */
+    .work-grid .img-slot{ aspect-ratio:1047/1400; }
     @media (max-width:640px){ .work-grid{ grid-template-columns:1fr; gap:14px; } }
 
     /* ---------- about / instructor (ported from creative-ai-workshop) ---------- */
@@ -271,6 +298,36 @@
     }
     .vcard h3{ font-family:var(--disp); font-weight:700; font-size:1.06rem; margin-bottom:8px; line-height:1.6; }
     .vcard p{ color:var(--muted); font-size:.93rem; line-height:1.9; }
+
+    /* ---------- curriculum — رحلة الـ ٩٠ دقيقة (Majid's copy, verbatim) ---------- */
+    .curric{ margin-top:44px; max-width:840px; margin-inline:auto; text-align:right; display:grid; gap:12px; list-style:none; }
+    .cur{
+      display:grid; grid-template-columns:auto 1fr; gap:16px; align-items:start;
+      background:var(--card); border:1.5px solid var(--line); border-radius:var(--r-lg);
+      padding:22px;
+    }
+    .cur .n{
+      display:inline-flex; align-items:center; justify-content:center;
+      width:34px; height:34px; border-radius:50%; background:var(--accent);
+      color:var(--on-accent); font-weight:900; font-size:.95rem;
+      unicode-bidi:isolate;  /* single Arabic-Indic digit in its own run */
+    }
+    .cur h3{ font-family:var(--disp); font-weight:700; font-size:1.03rem; line-height:1.65; margin-bottom:6px; }
+    .cur p{ color:var(--muted); font-size:.93rem; line-height:1.9; }
+    /* Latin words inside an RTL run ("Figma Weave", "Workflow") — isolate so the
+       adjacent neutrals (، : ) can't get parked on the wrong side of the run.
+       Same bug class as .bidi-sep and the .stat-pill "+" guard. */
+    .cur .en{ unicode-bidi:isolate; font-weight:800; color:var(--ink); }
+    /* item 7 — the session's peak; everything before it is tools, this is the system */
+    .cur-peak{
+      background:linear-gradient(180deg, rgba(255,106,60,.14), rgba(255,106,60,.05));
+      border-color:var(--accent); padding:clamp(24px,3.6vw,34px);
+      box-shadow:0 14px 44px rgba(255,106,60,.13);
+    }
+    .cur-peak .n{ width:41px; height:41px; font-size:1.06rem; background:var(--accent-hot); }
+    .cur-peak h3{ font-size:clamp(1.08rem,2.2vw,1.3rem); }
+    .cur-peak p{ color:var(--ink); opacity:.92; font-size:.97rem; }
+    @media (max-width:520px){ .cur{ padding:18px; gap:13px; } }
 
     /* not-recorded warning strip */
     .warnbar{
@@ -401,9 +458,29 @@
           <span>٧:٣٠ مساءً بتوقيت جدة</span>
         </div>
 
-        <div class="img-slot hero-shot">
-          <img src="https://malearnsa.com/creative-ai-workshop/images/work-1.jpg" alt="" width="966" height="1200" fetchpriority="high">
-        </div>
+      </div>
+
+      <!-- SYSTEM -> RESULT — the argument of the whole page in two images.
+           Same blue garment, same red background: the link is meant to be seen
+           before it is read. Labels are deliberately quiet. Lives OUTSIDE
+           .hero-col so it gets the full 1120px wrap, not the 820px text column. -->
+      <div class="proof">
+        <figure class="proof-sys">
+          <a class="img-slot" href="images/workflow-system.jpg" target="_blank" rel="noopener">
+            <img src="images/workflow-system.jpg"
+                 alt="نظام عمل مبني في Figma Weave لإنتاج جلسة تصوير أزياء كاملة"
+                 width="1800" height="1102" fetchpriority="high">
+          </a>
+          <figcaption>النظام <span class="zoom-hint">اضغط للتكبير</span></figcaption>
+        </figure>
+        <figure class="proof-res">
+          <div class="img-slot">
+            <img src="images/workflow-result.jpg"
+                 alt="غلاف مجلة أزياء أنتجه النظام"
+                 width="989" height="1400" loading="lazy">
+          </div>
+          <figcaption>النتيجة</figcaption>
+        </figure>
       </div>
     </div>
   </section>
@@ -421,25 +498,69 @@
   <!-- WHAT YOU GET -->
   <section class="sec sec-tight">
     <div class="wrap">
-      <h2 class="disp">وش بيصير في الـ ٩٠ دقيقة؟</h2>
+      <!-- The three summary cards that used to sit here were folded into the
+           curriculum below: items 1 and 7 said the same thing at less depth.
+           The focus list underneath is UNCHANGED. -->
+      <h2 class="disp">رحلة الـ ٩٠ دقيقة</h2>
 
-      <div class="grid-3">
-        <div class="vcard">
+      <ol class="curric">
+        <li class="cur">
           <span class="n">١</span>
-          <h3>تتعرّف على Figma Weave</h3>
-          <p>نمشي على الأداة من جوّه — وش تسوي، وكيف تختلف عن طريقة شغلك الحالية في توليد الصور.</p>
-        </div>
-        <div class="vcard">
+          <div>
+            <h3>نفتح الأداة سوا</h3>
+            <p>نبدأ من الصفر: وش هي <span class="en">Figma Weave</span>، كيف تفكر، وليش تختلف عن أي أداة جربتها قبل.</p>
+          </div>
+        </li>
+        <li class="cur">
           <span class="n">٢</span>
-          <h3>تشوف النظام يتبنى من الصفر</h3>
-          <p>مو شرح نظري. نبني قدامك نظام عمل متكامل خطوة بخطوة، من أول نقطة لين يشتغل.</p>
-        </div>
-        <div class="vcard">
+          <div>
+            <h3>البرومبت وأدوات النصوص</h3>
+            <p>اللغة اللي تتكلم فيها مع الأداة. كيف تكتب، وكيف تتحكم، وكيف تخلي الوصف يطلع اللي في راسك بالضبط.</p>
+          </div>
+        </li>
+        <li class="cur">
           <span class="n">٣</span>
-          <h3>تفهم الأتمتة عملياً</h3>
-          <p>كيف يصير إنتاج الصور مؤتمت، بدل ما تعيد نفس الشغل يدوي كل مرة.</p>
-        </div>
-      </div>
+          <div>
+            <h3>أدوات توليد الصور</h3>
+            <p>الأدوات اللي تنتج الصورة، وكيف تختار الصح منها لكل نوع شغل.</p>
+          </div>
+        </li>
+        <li class="cur">
+          <span class="n">٤</span>
+          <div>
+            <h3>الأدوات الإبداعية للصور</h3>
+            <p>هنا يبدأ الفرق: كيف تاخذ الصورة وتطوّعها — تعدّل، تدمج، وتوصل للنتيجة اللي في بالك.</p>
+          </div>
+        </li>
+        <li class="cur">
+          <span class="n">٥</span>
+          <div>
+            <h3>أدوات توليد الفيديو</h3>
+            <p>نفس المنطق، بس متحرك.</p>
+          </div>
+        </li>
+        <li class="cur">
+          <span class="n">٦</span>
+          <div>
+            <h3>الأدوات الإبداعية للفيديو</h3>
+            <p>التحكم الكامل في الحركة والمشهد.</p>
+          </div>
+        </li>
+        <li class="cur cur-peak">
+          <span class="n">٧</span>
+          <div>
+            <h3>الفكرة اللي تجمع كل شي: الـ <span class="en">Workflow</span></h3>
+            <p>كل اللي فوق أدوات — والأدوات وحدها ما تكفي. اللي يفرق هو النظام اللي يربطها ببعض. هنا نوقف عند أهم جزء في الجلسة: كيف تبني سير عمل يشتغل معك كل مرة، بدل ما تبدأ من الصفر كل ما فتحت الأداة.</p>
+          </div>
+        </li>
+        <li class="cur">
+          <span class="n">٨</span>
+          <div>
+            <h3>أسئلتكم</h3>
+            <p>نختم بأسئلتكم المباشرة — نجمعها للآخر عشان ما نقطع التسلسل.</p>
+          </div>
+        </li>
+      </ol>
 
       <div class="focus">
         <h3>اللي أبغاك تركز عليه هو:</h3>
@@ -461,8 +582,8 @@
   <section class="sec sec-tight">
     <div class="wrap">
       <div class="work-grid">
-        <div class="img-slot"><img src="https://malearnsa.com/creative-ai-workshop/images/work-2.jpg" alt="" width="900" height="1200" loading="lazy"></div>
-        <div class="img-slot"><img src="https://malearnsa.com/creative-ai-workshop/images/work-3.jpg" alt="" width="966" height="1200" loading="lazy"></div>
+        <div class="img-slot"><img src="images/gallery-1.jpg" alt="" width="1047" height="1400" loading="lazy"></div>
+        <div class="img-slot"><img src="images/gallery-2.jpg" alt="" width="1047" height="1400" loading="lazy"></div>
       </div>
     </div>
   </section>
@@ -584,6 +705,16 @@
                 <option value="طالب / مبتدئ">طالب / مبتدئ</option>
                 <option value="أخرى">أخرى</option>
               </select>
+            </div>
+
+            <!-- Revealed only when «أخرى» is picked. The typed value is posted AS
+                 `industry` (replacing the literal «أخرى»), so the sheet's Industry
+                 column stays single-source and analysable — no new column, no
+                 backend change. maxlength matches the backend's 60-char cap. -->
+            <div class="field" id="f-industry-other-w" hidden>
+              <label for="f-industry-other">اكتب تخصصك <span class="req">*</span></label>
+              <input type="text" id="f-industry-other" name="industry_other"
+                     placeholder="تخصصك" maxlength="60" autocomplete="off">
             </div>
 
             <div class="field" id="f-country-w">
@@ -879,6 +1010,29 @@
       var submitBtn = document.getElementById('submitBtn');
       var formMsg   = document.getElementById('formMsg');
 
+      // ── «أخرى» -> reveal a free-text specialty field ──────────────
+      // Shown only while «أخرى» is selected; switching back hides it AND clears
+      // it, so a stale value can never be submitted. `required` is toggled with
+      // visibility (a required-but-hidden input is an a11y trap and would block
+      // submit on any browser that enforced it). The form is novalidate, so the
+      // real gate is the check in the submit handler below.
+      var OTHER = 'أخرى';
+      var industrySel   = document.getElementById('f-industry');
+      var industryOther = document.getElementById('f-industry-other');
+      var industryOtherW= document.getElementById('f-industry-other-w');
+
+      function syncIndustryOther(focusIt) {
+        var on = industrySel.value === OTHER;
+        industryOtherW.hidden = !on;
+        industryOther.required = on;
+        if (!on) { industryOther.value = ''; return; }
+        // iOS keeps the select wheel up for a beat — let it dismiss before we
+        // pull focus, otherwise the text keyboard never opens.
+        if (focusIt) setTimeout(function () { industryOther.focus(); }, 120);
+      }
+      industrySel.addEventListener('change', function () { syncIndustryOther(true); });
+      syncIndustryOther(false);   // bfcache / restored-value safety on load
+
       function markInvalid(wrapperId) {
         var el = document.getElementById(wrapperId);
         if (!el) return;
@@ -907,6 +1061,15 @@
         if (!email || email.indexOf('@') === -1)   { markInvalid('f-email-w');    bad = true; }
         if (!industry)                             { markInvalid('f-industry-w'); bad = true; }
         if (!country)                              { markInvalid('f-country-w');  bad = true; }
+
+        // «أخرى» -> the typed specialty REPLACES the literal «أخرى» in the
+        // posted `industry`, so the Industry column holds a real answer.
+        if (industry === OTHER) {
+          var other = industryOther.value.trim();
+          if (!other) { markInvalid('f-industry-other-w'); bad = true; }
+          else        { industry = other.slice(0, 60); }
+        }
+
         if (bad) { fail('عبّي كل الحقول المطلوبة.'); return; }
 
         submitBtn.disabled = true;
