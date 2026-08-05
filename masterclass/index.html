@@ -1,6 +1,13 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
+  <!-- charset MUST sit inside the first 1024 bytes of the document, or the browser
+       ignores it and falls back to Latin-1 — every Arabic glyph becomes mojibake.
+       The Pixel + GA blocks and the TIME BLOCK comment below push everything down,
+       so this declaration stays pinned as the very first thing in <head>. Live is
+       also covered by the server's `charset=utf-8` header; this makes the page
+       correct on its own, without depending on that header. -->
+  <meta charset="UTF-8">
   <!-- Meta Pixel Code -->
   <script>
   !function(f,b,e,v,n,t,s)
@@ -54,18 +61,17 @@
    The attendance link arrives before the session; until then this page
    describes a calendar event and nothing more.
   -->
-  <meta charset="UTF-8">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ماستركلاس بناء أنظمة توليد الصور والفيديوهات · MA Learn</title>
-  <meta name="description" content="بث مباشر مجاني لمدة ٩٠ دقيقة تتعرّف خلاله على أداة Figma Weave، وتشوف كيف يتبنى نظام عمل متكامل من الصفر يؤتمت إنتاج الصور والفيديوهات. الأربعاء ١٢ أغسطس، ٧:٣٠ مساءً بتوقيت جدة.">
+  <title>ماستر كلاس بناء أنظمة توليد الصور · MA Learn</title>
+  <meta name="description" content="بث مباشر مجاني لمدة ٩٠ دقيقة تتعرّف خلاله على أداة Figma Weave، وتشوف كيف يتبنى نظام عمل متكامل من الصفر يؤتمت إنتاج الصور. الأربعاء ١٢ أغسطس، ٧:٣٠ مساءً بتوقيت جدة.">
   <link rel="canonical" href="https://malearnsa.com/masterclass/">
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://malearnsa.com/masterclass/">
-  <meta property="og:title" content="ماستركلاس بناء أنظمة توليد الصور والفيديوهات">
+  <meta property="og:title" content="ماستر كلاس بناء أنظمة توليد الصور">
   <meta property="og:description" content="بث مباشر مجاني ٩٠ دقيقة · Figma Weave · الأربعاء ١٢ أغسطس، ٧:٣٠ مساءً بتوقيت جدة.">
   <meta property="og:image" content="https://malearnsa.com/creative-ai-workshop/media/_web/sections/hero-desktop.jpg">
   <meta name="twitter:card" content="summary_large_image">
@@ -168,6 +174,88 @@
       display:flex; flex-wrap:wrap; gap:6px 0; justify-content:center; align-items:center;
     }
     .meta-line .sep{ margin-inline:12px; color:var(--accent); }
+
+    /* image slots (ported from creative-ai-workshop) */
+    .img-slot{ border-radius:var(--r-lg); overflow:hidden; border:1.5px solid var(--line); position:relative; }
+    .img-slot img{ width:100%; height:100%; object-fit:cover; }
+
+    /* hero visual — single portrait card under the CTA block */
+    .hero-shot{ margin-top:clamp(38px,6vw,54px); width:min(430px,86%); aspect-ratio:4/5; }
+
+    /* market hook — Majid's opening line, sits directly under the hero */
+    .hook{
+      max-width:760px; margin-inline:auto; background:var(--card); border:1.5px solid var(--line);
+      border-radius:var(--r-xl); padding:clamp(26px,4.4vw,44px); text-align:right;
+    }
+    .hook p{ color:var(--ink); font-size:clamp(1rem,2vw,1.16rem); line-height:2.05; font-weight:600; }
+    .hook p + p{ margin-top:16px; color:var(--muted); font-weight:400; font-size:clamp(.95rem,1.8vw,1.04rem); }
+    .hook .free{ color:var(--accent-hot); font-weight:800; }
+
+    /* focus list */
+    .focus{
+      margin-top:40px; max-width:720px; margin-inline:auto; text-align:right;
+      background:var(--bg-2); border:1.5px solid var(--line); border-radius:var(--r-lg);
+      padding:clamp(24px,4vw,34px);
+    }
+    .focus h3{ font-family:var(--disp); font-weight:700; font-size:1.06rem; margin-bottom:18px; }
+    .focus ul{ list-style:none; display:grid; gap:14px; }
+    .focus li{ display:flex; gap:12px; align-items:flex-start; color:var(--muted); font-size:.95rem; line-height:1.95; }
+    .focus li::before{
+      content:""; flex:none; width:9px; height:9px; margin-top:.72em;
+      border-radius:50%; background:var(--accent);
+    }
+
+    /* work gallery — no captions, the work speaks */
+    .work-grid{ display:grid; grid-template-columns:repeat(2,1fr); gap:16px; max-width:860px; margin-inline:auto; }
+    .work-grid .img-slot{ aspect-ratio:4/5; }
+    @media (max-width:640px){ .work-grid{ grid-template-columns:1fr; gap:14px; } }
+
+    /* ---------- about / instructor (ported from creative-ai-workshop) ---------- */
+    .about-grid{ display:grid; grid-template-columns:.85fr 1.15fr; gap:clamp(32px,5vw,72px); align-items:start; text-align:center; }
+    /* guard: grid items default to min-width:auto — the marquee track's max-content
+       width (~3.9k px) would blow the column + document width out. */
+    .about-grid > *{ min-width:0; }
+    @media (max-width:900px){ .about-grid{ grid-template-columns:1fr; } }
+    .about-img{ aspect-ratio:4/5; position:sticky; top:90px; }
+    @media (max-width:900px){ .about-img{ position:static; max-width:440px; margin-inline:auto; } }
+    .about-name{ font-size:clamp(1.6rem,3.4vw,2.3rem); }
+    .about-role{ color:var(--accent-hot); font-weight:800; font-size:.92rem; margin-top:10px; }
+    .about-bio{ margin-top:26px; color:var(--muted); display:grid; gap:18px; font-size:.97rem; max-width:640px; margin-inline:auto; text-align:right; }
+    .about-stats{ display:flex; gap:12px; margin-top:32px; flex-wrap:wrap; justify-content:center; }
+    .stat-pill{ border:1.5px solid var(--line-strong); border-radius:22px; padding:16px 28px; background:rgba(248,240,230,.04); }
+    /* "٧٠+" — the trailing "+" is a bidi-NEUTRAL character, so in the RTL run it
+       gets parked on the far side of the digits and renders "+٧٠". Isolating the
+       pill as its own LTR run pins the sign where it was written. Same bug class
+       as the "٩٠ دقيقة" -> ٩٠٠ trap guarded by .bidi-sep below. */
+    .stat-pill .n{ font-family:var(--disp); font-weight:700; font-size:1.7rem; color:var(--accent-hot); line-height:1.2; unicode-bidi:isolate; direction:ltr; }
+    .stat-pill .l{ color:var(--muted); font-size:.78rem; font-weight:700; }
+    .logo-row-label{ margin-top:clamp(40px,6vw,56px); color:var(--faint); font-size:.76rem; font-weight:800; letter-spacing:.04em; }
+    /* seamless marquee — canonical pattern: LTR wrapper AND track, duplicated set,
+       JS-measured pixel offset, intrinsic width/height attrs on every <img>. */
+    .wm-marquee{
+      margin-top:22px; overflow:hidden; direction:ltr; position:relative; max-width:100%;
+      -webkit-mask-image:linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+      mask-image:linear-gradient(90deg, transparent, #000 10%, #000 90%, transparent);
+    }
+    .wm-track{ display:flex; align-items:center; width:max-content; direction:ltr; padding-block:8px; }
+    .wm-track .wordmark{ flex:none; margin-right:46px; }
+    @media (prefers-reduced-motion: reduce){
+      .wm-marquee{ -webkit-mask-image:none; mask-image:none; }
+      .wm-track{ width:auto; flex-wrap:wrap; justify-content:center; gap:14px 36px; }
+      .wm-track .wordmark{ margin-right:0; }
+      .wm-track .wm-dup{ display:none; }
+    }
+    /* real client logo files — normalized to light monochrome marks.
+       Base = grayscale→invert (dark/colored marks become light). .wm-keep = already-light (skip invert). */
+    .wm-track img.wordmark{
+      height:26px; width:auto; opacity:.78;
+      filter:grayscale(1) invert(1) brightness(1.55);
+    }
+    .wm-track img.wm-h18{ height:18px; }
+    .wm-track img.wm-e{ height:38px; }
+    .wm-track img.wm-sq{ height:44px; }
+    .wm-track img.wm-p{ height:48px; }
+    .wm-track img.wm-keep{ filter:grayscale(1) brightness(1.15); }
 
     /* value bullets */
     .grid-3{ display:grid; grid-template-columns:repeat(3,1fr); gap:16px; margin-top:44px; text-align:right; }
@@ -296,10 +384,10 @@
       <div class="hero-col">
         <div class="eyebrow"><span class="dot"></span> بث مباشر مجاني</div>
 
-        <h1 class="disp">تعلّم كيف تبني أنظمة تؤتمت توليد الصور والفيديوهات باستخدام <span class="hl">Figma Weave</span></h1>
+        <h1 class="disp">تعلّم كيف تبني أنظمة تؤتمت توليد الصور باستخدام <span class="hl">Figma Weave</span></h1>
 
         <p class="hero-sub">
-          بث مباشر مجاني لمدة ٩٠ دقيقة تتعرّف خلاله على أداة <span class="en">Figma Weave</span>، وتشوف كيف يتبنى نظام عمل متكامل من الصفر يؤتمت إنتاج الصور والفيديوهات. غير مسجّل — الأربعاء ١٢ أغسطس، ٧:٣٠ مساءً بتوقيت جدة.
+          أنظمة توليد صور قابلة للأتمتة مع تحكم إبداعي كامل. راح نشرح أداة <span class="en">Figma Weave</span> الرائدة في تقديم حلول بناء سير العمل الإبداعي لإنتاج الصور. بث مباشر مجاني لمدة ٩٠ دقيقة، غير مسجّل — الأربعاء ١٢ أغسطس، ٧:٣٠ مساءً بتوقيت جدة.
         </p>
 
         <div class="hero-ctas">
@@ -312,6 +400,20 @@
           <span>مجاني</span><span class="sep">·</span>
           <span>٧:٣٠ مساءً بتوقيت جدة</span>
         </div>
+
+        <div class="img-slot hero-shot">
+          <img src="https://malearnsa.com/creative-ai-workshop/images/work-1.jpg" alt="" width="966" height="1200" fetchpriority="high">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARKET HOOK — Majid's opening, verbatim -->
+  <section class="sec sec-tight">
+    <div class="wrap">
+      <div class="hook">
+        <p>الإنتاج الإبداعي بالذكاء الاصطناعي اليوم بيشهد طلب متزايد لدرجة أن الطلب أعلى من عدد المبدعين اللي بيقدموا الخدمة هذي.</p>
+        <p>عشان كدا حبيت أشارك معاك بعض من هذي المهارات لعلها تفيدك. <span class="free">وبشكل مجاني تماماً.</span></p>
       </div>
     </div>
   </section>
@@ -325,7 +427,7 @@
         <div class="vcard">
           <span class="n">١</span>
           <h3>تتعرّف على Figma Weave</h3>
-          <p>نمشي على الأداة من جوّه — وش تسوي، وكيف تختلف عن طريقة شغلك الحالية في توليد الصور والفيديوهات.</p>
+          <p>نمشي على الأداة من جوّه — وش تسوي، وكيف تختلف عن طريقة شغلك الحالية في توليد الصور.</p>
         </div>
         <div class="vcard">
           <span class="n">٢</span>
@@ -335,13 +437,109 @@
         <div class="vcard">
           <span class="n">٣</span>
           <h3>تفهم الأتمتة عملياً</h3>
-          <p>كيف يصير إنتاج الصور والفيديوهات مؤتمت، بدل ما تعيد نفس الشغل يدوي كل مرة.</p>
+          <p>كيف يصير إنتاج الصور مؤتمت، بدل ما تعيد نفس الشغل يدوي كل مرة.</p>
         </div>
+      </div>
+
+      <div class="focus">
+        <h3>اللي أبغاك تركز عليه هو:</h3>
+        <ul>
+          <li>تشوف بعينك إن النتيجة القوية ما هي صدفة، هي طريقة تبنيها خطوة بخطوة.</li>
+          <li>تعرف كيف تبني الطريقة دي بنفسك، على شغلك انت وأسلوبك.</li>
+          <li>وتطلع من الجلسة قادر تجرّب بنفسك.</li>
+        </ul>
       </div>
 
       <div class="warnbar">
         <b>الجلسة مباشرة وما تنعاد</b>
         <p>ما فيه تسجيل، وما فيه إعادة، وما فيه ملفات تنرسل بعدها. اللي يحضر معنا مباشرة هو اللي يستفيد — فاحجز التاريخ اللي تقدر تلتزم فيه.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORK — no captions, the work is the proof -->
+  <section class="sec sec-tight">
+    <div class="wrap">
+      <div class="work-grid">
+        <div class="img-slot"><img src="https://malearnsa.com/creative-ai-workshop/images/work-2.jpg" alt="" width="900" height="1200" loading="lazy"></div>
+        <div class="img-slot"><img src="https://malearnsa.com/creative-ai-workshop/images/work-3.jpg" alt="" width="966" height="1200" loading="lazy"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ABOUT THE INSTRUCTOR — ported from creative-ai-workshop #about.
+       Asset paths are ABSOLUTE: this page lives at /masterclass/, the assets at
+       /creative-ai-workshop/media/_web/. -->
+  <section class="sec" id="about">
+    <div class="wrap">
+      <div class="eyebrow">عن المدرب</div>
+      <div class="about-grid">
+        <div class="img-slot about-img">
+          <img src="https://malearnsa.com/creative-ai-workshop/media/_web/sections/profile.jpg" alt="ماجد عنقاوي" width="1200" height="1489" loading="lazy">
+        </div>
+        <div>
+          <h2 class="disp about-name">ماجد عنقاوي</h2>
+          <div class="about-role">مؤسِّس ومستشار متخصص في الذكاء الاصطناعي الإبداعي · مؤسِّس MA Learn</div>
+          <div class="about-bio">
+            <p>ماجد عنقاوي مصوّر ومدير إبداعي ومعلّم ورائد أعمال سعودي من جدة. بدأ رحلته بالتصوير كحرفة وكوسيلة سرد وتعبير ثقافي، واشتغل على مدى ١٦ سنة في الأزياء والإعلانات والاستشارات الإبداعية، وتعاون مع برندات عالمية مثل Dior و Gucci و Graff و Chaumet.</p>
+            <p>وعلى مدى السنوات، درّب ووجّه مصوّرين ومبدعين صاعدين في السعودية والخليج من خلال ورش وبرامج تعليمية تجمع بين إتقان الحرفة والنمو الفني والمهني، وتعاون مع Art Jameel و SUNONO في إصدار كتب ومطبوعات فوتوغرافية.</p>
+            <p>أسّس MA Studio و MA Learn، وفيهما يجمع بين عينه الإبداعية وخبرته كصاحب أعمال: يساعد المبدعين يبنون من موهبتهم قيمة حقيقية وشغل مستدام. وهو سفير Fujifilm في السعودية.</p>
+            <p>واليوم تركيزه كله على الذكاء الاصطناعي الإبداعي. نفس المعادلة اللي بتتعلمها في الورشة هي اللي يستخدمها ماجد فعلياً في مشاريعه وشغل عملائه.</p>
+          </div>
+          <div class="about-stats">
+            <div class="stat-pill"><div class="n">١٦</div><div class="l">سنة في المجال الإبداعي</div></div>
+            <div class="stat-pill"><div class="n">٧٠+</div><div class="l">مبدع طبّقوا المعادلة</div></div>
+          </div>
+          <div class="logo-row-label">عمل مع</div>
+          <div class="wm-marquee" id="wm-marquee">
+            <div class="wm-track" id="wm-track">
+              <img class="wordmark" src="https://malearnsa.com/creative-ai-workshop/media/_web/logos/dior.png" alt="Dior" width="800" height="254" loading="lazy">
+              <img class="wordmark wm-sq" src="https://malearnsa.com/creative-ai-workshop/media/_web/logos/gucci.png" alt="Gucci" width="346" height="362" loading="lazy">
+              <img class="wordmark wm-h18" src="https://malearnsa.com/creative-ai-workshop/media/_web/logos/prada.png" alt="Prada" width="730" height="114" loading="lazy">
+              <img class="wordmark wm-h18" src="https://malearnsa.com/creative-ai-workshop/media/_web/logos/bulgari.png" alt="Bulgari" width="786" height="82" loading="lazy">
+              <img class="wordmark wm-e" src="https://malearnsa.com/creative-ai-workshop/media/_web/logos/chaumet.png" alt="Chaumet" width="594" height="342" loading="lazy">
+              <img class="wordmark wm-h18" src="https://malearnsa.com/creative-ai-workshop/media/_web/logos/graff.png" alt="Graff" width="800" height="114" loading="lazy">
+              <img class="wordmark" src="https://malearnsa.com/creative-ai-workshop/media/_web/logos/chopard.png" alt="Chopard" width="773" height="319" loading="lazy">
+              <img class="wordmark wm-h18" src="https://malearnsa.com/creative-ai-workshop/media/_web/logos/boucheron.png" alt="Boucheron" width="800" height="150" loading="lazy">
+              <img class="wordmark wm-e" src="https://malearnsa.com/creative-ai-workshop/media/_web/logos/hublot.png" alt="Hublot" width="798" height="428" loading="lazy">
+              <img class="wordmark wm-e" src="https://malearnsa.com/creative-ai-workshop/media/_web/logos/rolex.png" alt="Rolex" width="616" height="358" loading="lazy">
+              <img class="wordmark" src="https://malearnsa.com/creative-ai-workshop/media/_web/logos/coach.png" alt="Coach" width="779" height="296" loading="lazy">
+              <img class="wordmark wm-e" src="https://malearnsa.com/creative-ai-workshop/media/_web/logos/hm.png" alt="H&amp;M" width="738" height="488" loading="lazy">
+              <img class="wordmark wm-h18" src="https://malearnsa.com/creative-ai-workshop/media/_web/logos/vogue-arabia.png" alt="Vogue Arabia" width="800" height="206" loading="lazy">
+              <img class="wordmark wm-h18" src="https://malearnsa.com/creative-ai-workshop/media/_web/logos/esquire.png" alt="Esquire" width="786" height="199" loading="lazy">
+              <img class="wordmark wm-h18" src="https://malearnsa.com/creative-ai-workshop/media/_web/logos/femi9.png" alt="Femi9" width="566" height="122" loading="lazy">
+              <img class="wordmark wm-e" src="https://malearnsa.com/creative-ai-workshop/media/_web/logos/adnan-akbar.png" alt="Adnan Akbar" width="523" height="227" loading="lazy">
+              <img class="wordmark wm-h18" src="https://malearnsa.com/creative-ai-workshop/media/_web/logos/dar-al-hanouf.png" alt="Dar Al Hanouf" width="570" height="125" loading="lazy">
+              <img class="wordmark" src="https://malearnsa.com/creative-ai-workshop/media/_web/logos/farsi.png" alt="Farsi Jewelry" width="584" height="177" loading="lazy">
+              <img class="wordmark wm-sq" src="https://malearnsa.com/creative-ai-workshop/media/_web/logos/attar-united.png" alt="Attar United" width="462" height="496" loading="lazy">
+              <img class="wordmark wm-sq" src="https://malearnsa.com/creative-ai-workshop/media/_web/logos/huda-bamarouf.png" alt="Huda Bamarouf" width="299" height="340" loading="lazy">
+              <img class="wordmark wm-p" src="https://malearnsa.com/creative-ai-workshop/media/_web/logos/qilada.png" alt="Qilada" width="796" height="1046" loading="lazy">
+              <img class="wordmark wm-h18 wm-keep" src="https://malearnsa.com/creative-ai-workshop/media/_web/logos/hba.png" alt="Harper's Bazaar Arabia" width="762" height="192" loading="lazy">
+              <img class="wordmark wm-dup" aria-hidden="true" src="https://malearnsa.com/creative-ai-workshop/media/_web/logos/dior.png" alt="" width="800" height="254" loading="lazy">
+              <img class="wordmark wm-sq wm-dup" aria-hidden="true" src="https://malearnsa.com/creative-ai-workshop/media/_web/logos/gucci.png" alt="" width="346" height="362" loading="lazy">
+              <img class="wordmark wm-h18 wm-dup" aria-hidden="true" src="https://malearnsa.com/creative-ai-workshop/media/_web/logos/prada.png" alt="" width="730" height="114" loading="lazy">
+              <img class="wordmark wm-h18 wm-dup" aria-hidden="true" src="https://malearnsa.com/creative-ai-workshop/media/_web/logos/bulgari.png" alt="" width="786" height="82" loading="lazy">
+              <img class="wordmark wm-e wm-dup" aria-hidden="true" src="https://malearnsa.com/creative-ai-workshop/media/_web/logos/chaumet.png" alt="" width="594" height="342" loading="lazy">
+              <img class="wordmark wm-h18 wm-dup" aria-hidden="true" src="https://malearnsa.com/creative-ai-workshop/media/_web/logos/graff.png" alt="" width="800" height="114" loading="lazy">
+              <img class="wordmark wm-dup" aria-hidden="true" src="https://malearnsa.com/creative-ai-workshop/media/_web/logos/chopard.png" alt="" width="773" height="319" loading="lazy">
+              <img class="wordmark wm-h18 wm-dup" aria-hidden="true" src="https://malearnsa.com/creative-ai-workshop/media/_web/logos/boucheron.png" alt="" width="800" height="150" loading="lazy">
+              <img class="wordmark wm-e wm-dup" aria-hidden="true" src="https://malearnsa.com/creative-ai-workshop/media/_web/logos/hublot.png" alt="" width="798" height="428" loading="lazy">
+              <img class="wordmark wm-e wm-dup" aria-hidden="true" src="https://malearnsa.com/creative-ai-workshop/media/_web/logos/rolex.png" alt="" width="616" height="358" loading="lazy">
+              <img class="wordmark wm-dup" aria-hidden="true" src="https://malearnsa.com/creative-ai-workshop/media/_web/logos/coach.png" alt="" width="779" height="296" loading="lazy">
+              <img class="wordmark wm-e wm-dup" aria-hidden="true" src="https://malearnsa.com/creative-ai-workshop/media/_web/logos/hm.png" alt="" width="738" height="488" loading="lazy">
+              <img class="wordmark wm-h18 wm-dup" aria-hidden="true" src="https://malearnsa.com/creative-ai-workshop/media/_web/logos/vogue-arabia.png" alt="" width="800" height="206" loading="lazy">
+              <img class="wordmark wm-h18 wm-dup" aria-hidden="true" src="https://malearnsa.com/creative-ai-workshop/media/_web/logos/esquire.png" alt="" width="786" height="199" loading="lazy">
+              <img class="wordmark wm-h18 wm-dup" aria-hidden="true" src="https://malearnsa.com/creative-ai-workshop/media/_web/logos/femi9.png" alt="" width="566" height="122" loading="lazy">
+              <img class="wordmark wm-e wm-dup" aria-hidden="true" src="https://malearnsa.com/creative-ai-workshop/media/_web/logos/adnan-akbar.png" alt="" width="523" height="227" loading="lazy">
+              <img class="wordmark wm-h18 wm-dup" aria-hidden="true" src="https://malearnsa.com/creative-ai-workshop/media/_web/logos/dar-al-hanouf.png" alt="" width="570" height="125" loading="lazy">
+              <img class="wordmark wm-dup" aria-hidden="true" src="https://malearnsa.com/creative-ai-workshop/media/_web/logos/farsi.png" alt="" width="584" height="177" loading="lazy">
+              <img class="wordmark wm-sq wm-dup" aria-hidden="true" src="https://malearnsa.com/creative-ai-workshop/media/_web/logos/attar-united.png" alt="" width="462" height="496" loading="lazy">
+              <img class="wordmark wm-sq wm-dup" aria-hidden="true" src="https://malearnsa.com/creative-ai-workshop/media/_web/logos/huda-bamarouf.png" alt="" width="299" height="340" loading="lazy">
+              <img class="wordmark wm-p wm-dup" aria-hidden="true" src="https://malearnsa.com/creative-ai-workshop/media/_web/logos/qilada.png" alt="" width="796" height="1046" loading="lazy">
+              <img class="wordmark wm-h18 wm-keep wm-dup" aria-hidden="true" src="https://malearnsa.com/creative-ai-workshop/media/_web/logos/hba.png" alt="" width="762" height="192" loading="lazy">
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -353,7 +551,7 @@
 
         <div id="formWrapper">
           <h2 class="disp">احجز مقعدك مجانًا</h2>
-          <p class="form-lead">سجّل بياناتك ونثبّت لك مقعدك.</p>
+          <p class="form-lead">سجّل بياناتك ونثبّت لك مقعدك. وجهز حماسك و إبداعك و أسئلتك.</p>
 
           <form id="mcForm" novalidate>
 
@@ -601,7 +799,7 @@
               <button type="submit" class="btn btn-primary btn-big" id="submitBtn">احجز مقعدك مجانًا</button>
               <p class="form-msg" id="formMsg"></p>
               <p class="privacy-note">
-                بتسجيلك توافق على استلام رسائل متعلقة بالماستركلاس من MA Learn.
+                بتسجيلك توافق على استلام رسائل متعلقة بالجلسة من MA Learn.
                 <a href="https://malearnsa.com/privacy-policy.html">سياسة الخصوصية</a>
               </p>
             </div>
@@ -776,7 +974,7 @@
         document.getElementById('successDate').textContent = meta.label;
         document.getElementById('calBtn').href =
           'https://calendar.google.com/calendar/render?action=TEMPLATE'
-          + '&text='  + encodeURIComponent('ماستركلاس بناء أنظمة توليد الصور والفيديوهات')
+          + '&text='  + encodeURIComponent('ماستر كلاس بناء أنظمة توليد الصور')
           + '&dates=' + meta.gcal
           + '&details=' + encodeURIComponent(MC_DETAILS)
           + '&ctz=Asia%2FRiyadh';
@@ -785,6 +983,38 @@
         document.getElementById('successState').classList.add('show');
         document.getElementById('register').scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
+    })();
+
+    // ---- Client wordmarks marquee (canonical seamless pattern) ----
+    // Traps guarded: JS-measured pixel offset (not -50%), rect-left difference
+    // measurement, LTR on wrapper AND track (RTL page), starts on rAF (not
+    // window.load), re-measures on font load + debounced resize, reduced-motion
+    // = static wrapped row (duplicates hidden in CSS, animation never starts).
+    (function(){
+      var mq = document.getElementById('wm-marquee');
+      var track = document.getElementById('wm-track');
+      if(!mq || !track) return;
+      if(window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+      var anim = null;
+      function start(){
+        var cards = track.querySelectorAll('.wordmark');
+        var half = cards.length / 2;
+        var setWidth = cards[half].getBoundingClientRect().left - cards[0].getBoundingClientRect().left;
+        if(!setWidth) return;
+        if(anim) anim.cancel();
+        anim = track.animate(
+          [{ transform:'translate3d(0,0,0)' }, { transform:'translate3d(-' + setWidth + 'px,0,0)' }],
+          { duration:45000, iterations:Infinity, easing:'linear' }
+        );
+      }
+      requestAnimationFrame(start);
+      if(document.fonts && document.fonts.ready){ document.fonts.ready.then(start); }
+      // logos are <img> — width/height attrs keep layout stable pre-load, but
+      // re-measure once everything is in as a belt-and-braces seam guard.
+      window.addEventListener('load', start);
+      var rz; window.addEventListener('resize', function(){ clearTimeout(rz); rz = setTimeout(start, 200); });
+      mq.addEventListener('mouseenter', function(){ if(anim) anim.pause(); });
+      mq.addEventListener('mouseleave', function(){ if(anim) anim.play(); });
     })();
   </script>
 
