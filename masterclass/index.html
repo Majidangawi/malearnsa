@@ -56,8 +56,12 @@
    NEW_DATE_AR must equal what MC_DATE_ISO computes — see the drift guard below.
    DATE appears in 4:  1. <meta name="description">  2. <meta og:description>
                        3. hero subheadline           4. session banner above submit
-   TIME appears in 6:  the same four, plus the meta-line chip under the hero CTA
-                       and the success-screen time line.
+   TIME appears in 5:  the same four, plus the success-screen time line.
+   The hero date line under the CTA is NOT in either list — it is computed at
+   runtime from MC_DATE_ISO / MC_TIME_AR (empty spans in source), so it needs no
+   sed and can never disagree. Add new date/time surfaces that way, not by typing.
+   (The hero meta-line's time chip was removed when that line landed — it was the
+   same string twice, 20px apart.)
    After editing, the page self-checks on load: the JS compares its computed
    label against the static banner and console.errors on a mismatch (see
    MC_DATE_AR below). Open the page once and watch the console — that check is
@@ -180,6 +184,18 @@
     .hero-sub{ margin-top:28px; color:var(--muted); font-size:clamp(.95rem,1.7vw,1.06rem); max-width:680px; line-height:2.1; }
     .hero-sub .en{ font-weight:800; color:var(--ink); }
     .hero-ctas{ margin-top:40px; display:flex; flex-wrap:wrap; gap:14px; justify-content:center; }
+    /* session date under the CTA — reassurance, not a second CTA. Reads one step
+       below the button and one step above the meta chips: full --ink so it is not
+       missable, but no pill, no border, no accent fill that would compete.
+       CONTENT IS JS-DRIVEN (see SESSION CONSTANTS) — the spans are empty in source
+       on purpose so this line cannot drift from MC_DATE_ISO the way a typed string
+       can. .bidi-sep carries the isolate guard for the "·" between the Arabic month
+       and the Arabic-Indic clock digits. */
+    .hero-date{
+      margin-top:18px; color:var(--ink); font-weight:800;
+      font-size:clamp(.9rem,1.7vw,.98rem); line-height:1.7;
+      display:flex; flex-wrap:wrap; gap:2px 0; justify-content:center; align-items:baseline;
+    }
     .meta-line{
       margin-top:28px; color:var(--faint); font-weight:700; font-size:.88rem;
       display:flex; flex-wrap:wrap; gap:6px 0; justify-content:center; align-items:center;
@@ -191,31 +207,46 @@
     .img-slot img{ width:100%; height:100%; object-fit:cover; }
 
     /* ---------- intro proof pair — the system (left) + what it produced (right) ----------
+       Lives INSIDE the hero, between the badge and the headline (Majid, 2026-08-06).
        This pairing IS the argument of the page, so neither image may be cropped: the
        workflow screenshot's node web is the entire point, and the cover is the payoff.
        The two column widths ARE the images' own aspect ratios (1800/1102 and 989/1400),
        so both render at natural proportions AND land on the same height — equal height
        without an equal-height box, and therefore without object-fit cropping anything.
-       direction:ltr on the track pins system-left / result-right on this RTL page and
-       makes the mobile stack fall system-first; each figure restores rtl for its caption.
+       direction:ltr on the track pins system-left / result-right on this RTL page;
+       each figure restores rtl for its caption.
        The system image is also a link to the full 1800px file — at any phone width the
-       node web reads as structure but not as text, so the detail stays one tap away. */
+       node web reads as structure but not as text, so the detail stays one tap away.
+
+       HEIGHT IS THE CONSTRAINT, not width. Because both columns are ratio-sized, the
+       block's height is ~0.427 x its width — so ONE max-width caps the whole thing:
+       560px -> ~235px tall on desktop. Below 560px it just goes full-width and gets
+       shorter (390px viewport -> ~148px tall). Everything under it — headline, sub,
+       CTA — is pushed down by exactly that number, which is why it is capped and not
+       left to fill the 820px text column.
+
+       NO MOBILE STACK. The old standalone section stacked to one column under 760px;
+       above the headline that costs ~440px and puts the CTA button below the fold on a
+       390x844 phone. Side-by-side at every width costs ~172px and keeps the button up.
+       If this ever stacks again, re-measure the fold before shipping. */
     .proof{
-      margin-top:clamp(38px,6vw,58px);
-      display:grid; grid-template-columns:1.6334fr 0.7064fr; gap:clamp(12px,1.6vw,20px);
+      max-width:560px; width:100%; margin:2px auto clamp(22px,3.4vw,30px);
+      display:grid; grid-template-columns:1.6334fr 0.7064fr; gap:clamp(10px,1.6vw,18px);
       direction:ltr; align-items:start;
     }
     .proof figure{ direction:rtl; min-width:0; }
-    .proof .img-slot{ display:block; }
+    /* --r-lg (28px) was sized for a 700px-wide slot; on the ~105px result column at
+       phone width that radius eats the image. Scale it with the viewport instead. */
+    .proof .img-slot{ display:block; border-radius:clamp(13px,2.4vw,22px); }
     .proof .img-slot img{ height:auto; object-fit:contain; }
     .proof figcaption{
-      margin-top:12px; color:var(--faint); font-size:.82rem; font-weight:800;
-      display:flex; align-items:baseline; gap:10px; justify-content:center; flex-wrap:wrap;
+      margin-top:9px; color:var(--faint); font-size:.76rem; font-weight:800;
+      display:flex; align-items:baseline; gap:8px; justify-content:center; flex-wrap:wrap;
     }
-    .proof figcaption .zoom-hint{ font-weight:600; font-size:.74rem; opacity:.72; }
-    @media (max-width:760px){
-      .proof{ grid-template-columns:1fr; gap:24px; }
-      .proof .proof-res{ max-width:min(360px,82%); margin-inline:auto; }
+    .proof figcaption .zoom-hint{ font-weight:600; font-size:.7rem; opacity:.72; }
+    @media (max-width:520px){
+      .proof figcaption{ font-size:.72rem; gap:6px; }
+      .proof figcaption .zoom-hint{ font-size:.66rem; }
     }
 
     /* market hook — Majid's opening line, sits directly under the hero */
@@ -452,6 +483,32 @@
       <div class="hero-col">
         <div class="eyebrow"><span class="dot"></span> بث مباشر مجاني</div>
 
+        <!-- SYSTEM -> RESULT — the argument of the whole page in two images.
+             Same blue garment, same red background: the link is meant to be seen
+             before it is read. Labels are deliberately quiet. Sits between the badge
+             and the headline (Majid, 2026-08-06) — height-capped in CSS so the CTA
+             below it stays above the fold on a 390x844 phone. -->
+        <div class="proof">
+          <figure class="proof-sys">
+            <a class="img-slot" href="images/workflow-system.jpg" target="_blank" rel="noopener">
+              <img src="images/workflow-system.jpg"
+                   alt="نظام عمل مبني في Figma Weave لإنتاج جلسة تصوير أزياء كاملة"
+                   width="1800" height="1102" fetchpriority="high">
+            </a>
+            <figcaption>النظام <span class="zoom-hint">اضغط للتكبير</span></figcaption>
+          </figure>
+          <figure class="proof-res">
+            <div class="img-slot">
+              <!-- was loading="lazy" as a below-hero section; it is above the
+                   headline now, so lazy would blank the first paint. -->
+              <img src="images/workflow-result.jpg"
+                   alt="غلاف مجلة أزياء أنتجه النظام"
+                   width="989" height="1400">
+            </div>
+            <figcaption>النتيجة</figcaption>
+          </figure>
+        </div>
+
         <!-- Headline drops the tool name (Majid, 2026-08-06): the promise is the
              system, not the software. «Figma Weave» still carries the curriculum
              and the body copy below — it just no longer gates the first line. -->
@@ -465,36 +522,21 @@
           <a class="btn btn-primary btn-big" href="#register">احجز مقعدك مجانًا</a>
         </div>
 
+        <!-- Session date + time. Populated from MC_DATE_ISO / MC_TIME_AR at the
+             bottom of this file — empty in source ON PURPOSE, see .hero-date. -->
+        <p class="hero-date bidi-sep" id="heroDate">
+          <span id="heroDateLabel"></span><span class="sep">·</span><span id="heroDateTime"></span>
+        </p>
+
+        <!-- The time chip that used to close this row was dropped when the date
+             line above landed: it repeated «٧:٣٠ مساءً بتوقيت جدة» ~20px below
+             its own restatement. TIME now appears once in the hero. -->
         <div class="meta-line">
           <span>٩٠ دقيقة</span><span class="sep">·</span>
           <span>مباشر</span><span class="sep">·</span>
-          <span>مجاني</span><span class="sep">·</span>
-          <span>٧:٣٠ مساءً بتوقيت جدة</span>
+          <span>مجاني</span>
         </div>
 
-      </div>
-
-      <!-- SYSTEM -> RESULT — the argument of the whole page in two images.
-           Same blue garment, same red background: the link is meant to be seen
-           before it is read. Labels are deliberately quiet. Lives OUTSIDE
-           .hero-col so it gets the full 1120px wrap, not the 820px text column. -->
-      <div class="proof">
-        <figure class="proof-sys">
-          <a class="img-slot" href="images/workflow-system.jpg" target="_blank" rel="noopener">
-            <img src="images/workflow-system.jpg"
-                 alt="نظام عمل مبني في Figma Weave لإنتاج جلسة تصوير أزياء كاملة"
-                 width="1800" height="1102" fetchpriority="high">
-          </a>
-          <figcaption>النظام <span class="zoom-hint">اضغط للتكبير</span></figcaption>
-        </figure>
-        <figure class="proof-res">
-          <div class="img-slot">
-            <img src="images/workflow-result.jpg"
-                 alt="غلاف مجلة أزياء أنتجه النظام"
-                 width="989" height="1400" loading="lazy">
-          </div>
-          <figcaption>النتيجة</figcaption>
-        </figure>
       </div>
     </div>
   </section>
@@ -1048,6 +1090,19 @@
         time:  MC_TIME_AR,
         gcal:  MC_GCAL
       };
+
+      // ── hero date line (under the CTA) ─────────────────────────
+      // Written from the computed label, never from source text, so it is
+      // structurally incapable of drifting: move MC_DATE_ISO and this line moves
+      // with it, weekday included. The two spans are separate because .bidi-sep
+      // isolates each one — a bare "·" between «أغسطس» and «٧:٣٠» is a neutral
+      // character and the RTL run would park it past the digits.
+      (function () {
+        var l = document.getElementById('heroDateLabel');
+        var t = document.getElementById('heroDateTime');
+        if (l) l.textContent = MC_DATE_AR;
+        if (t) t.textContent = MC_TIME_AR;
+      })();
 
       // ── drift guard ────────────────────────────────────────────
       // meta/OG/hero copy must stay static for crawlers, so those strings are
