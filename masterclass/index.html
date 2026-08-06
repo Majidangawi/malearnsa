@@ -245,27 +245,10 @@
        «النتيجة» / «النظام» stay. The canvas keeps its tap-to-enlarge <a> with no
        visible hint text.
 
-       ---- WHY THE COVER IS SIZED IN VIEWPORT UNITS, NOT PIXELS ----
-       A fixed px height is the wrong tool: 170px is generous on a 932px-tall phone
-       and fatal on a 568px one. The cover is ratio-locked (989x1400 -> h = 1.4156w),
-       so setting HEIGHT drives width and nothing can crop. min(38svh,420px) gives
-       the image whatever room the device actually has, and caps it on desktop.
-       svh (small viewport height) not vh: on iOS the first paint happens with the
-       address bar SHOWN, which is the small viewport — sizing to vh there would
-       overshoot the real fold by ~60-80px. vh is kept as the fallback for engines
-       without svh.
-
-       ---- THE 320px CARVE-OUT ----
-       HARD RULE ON THIS PAGE: the CTA button beats the image at every width. At
-       320x568 the text block alone (badge + headline + 6-line sub + CTA) nearly
-       fills the fold, so 38svh still misses. Below 360px the cover steps down to
-       26svh and the hero's vertical rhythm tightens — the button never moves down
-       to make room for a picture. Measured CTA bottom vs fold, this layout:
-         320x568 ..... 528  ( 40px headroom, cover 148px)
-         360x640 ..... 585  ( 55px headroom, cover 243px)
-         390x844 ..... 660  (184px headroom, cover 320px)
-         430x932 ..... 705  (227px headroom, cover 354px)
-       Re-measure all four before changing any number above. */
+       HARD RULE ON THIS PAGE: the CTA button beats the image at every width.
+       Nothing here may push the button below the fold to make room for a picture.
+       Sizing model and measured numbers are documented in the block directly
+       below; re-measure 320/360/390/430 before changing any value in it. */
     /* ---- HOW THE COVER IS SIZED: fold MINUS a constant, not a ratio ----
        A percentage of the viewport (38vh etc.) was tried first and is WRONG here.
        Measured with the cover hidden, the hero's text block costs a near-CONSTANT
