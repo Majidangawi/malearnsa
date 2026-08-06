@@ -35,22 +35,33 @@
   </script>
   <!--
   ══════════════════════════════════════════════════════════════════
-   TIME BLOCK — every place the session time appears on this page
+   DATE + TIME BLOCK — every place the session moment appears here
   ══════════════════════════════════════════════════════════════════
-   Session: Wed 12 Aug 2026, 19:30 Asia/Riyadh, 90 min (ends 21:00).
+   Session: Sun 16 Aug 2026, 19:30 Asia/Riyadh, 90 min (ends 21:00).
    KSA is UTC+3 all year (no DST) -> 16:30Z / 18:00Z.
+   (Moved from Wed 12 Aug on 2026-08-06, pre-announcement.)
 
-   DRIVEN BY JS (bottom of file, search "TIME CONSTANTS"):
-     MC_TIME_AR -> success-screen time line + calendar-link details
-     MC_GCAL    -> calendar link range
+   DRIVEN BY JS — ONE EDIT (bottom of file, search "SESSION CONSTANTS"):
+     MC_DATE_ISO is the single source. The session key, the Google Calendar
+     range, and the Arabic label «الأحد ١٦ أغسطس» are all COMPUTED from it,
+     weekday name included. Nothing below is hand-typed, so no value here can
+     disagree with another — which is exactly how a moved date used to keep the
+     PREVIOUS weekday name and still read perfectly while being wrong.
 
-   STATIC copy strings — these CANNOT be JS-driven, because meta/OG must be
-   in the served HTML for crawlers and link unfurls. All six are
-   byte-identical, so one command flips them:
-       sed -i '' 's/OLD_TIME/NEW_TIME/g' index.html
-     1. <meta name="description">        4. meta-line chip under hero CTA
-     2. <meta property="og:description"> 5. session banner above submit
-     3. hero subheadline                 6. success-screen time line
+   STATIC copy strings — these CANNOT be JS-driven, because meta/OG must be in
+   the served HTML for crawlers and link unfurls. Each string below is
+   byte-identical to its siblings, so one command per string flips them all:
+       sed -i '' 's/OLD_DATE_AR/NEW_DATE_AR/g' index.html
+       sed -i '' 's/OLD_TIME_AR/NEW_TIME_AR/g' index.html
+   NEW_DATE_AR must equal what MC_DATE_ISO computes — see the drift guard below.
+   DATE appears in 4:  1. <meta name="description">  2. <meta og:description>
+                       3. hero subheadline           4. session banner above submit
+   TIME appears in 6:  the same four, plus the meta-line chip under the hero CTA
+                       and the success-screen time line.
+   After editing, the page self-checks on load: the JS compares its computed
+   label against the static banner and console.errors on a mismatch (see
+   MC_DATE_AR below). Open the page once and watch the console — that check is
+   the reason a drifted string cannot reach production unnoticed.
 
    The BACKEND has its own single source: MC_DATE + MC_TIME in
    ~/code/.clasp-token-validator/Masterclass.js. Change BOTH sides together.
@@ -65,14 +76,14 @@
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>ماستر كلاس بناء أنظمة توليد الصور · MA Learn</title>
-  <meta name="description" content="بث مباشر مجاني لمدة ٩٠ دقيقة تتعرّف خلاله على أداة Figma Weave، وتشوف كيف يتبنى نظام عمل متكامل من الصفر يؤتمت إنتاج الصور. الأربعاء ١٢ أغسطس، ٧:٣٠ مساءً بتوقيت جدة.">
+  <meta name="description" content="بث مباشر مجاني لمدة ٩٠ دقيقة تتعرّف خلاله على أداة Figma Weave، وتشوف كيف يتبنى نظام عمل متكامل من الصفر يؤتمت إنتاج الصور. الأحد ١٦ أغسطس، ٧:٣٠ مساءً بتوقيت جدة.">
   <link rel="canonical" href="https://malearnsa.com/masterclass/">
 
   <!-- Open Graph -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://malearnsa.com/masterclass/">
   <meta property="og:title" content="ماستر كلاس بناء أنظمة توليد الصور">
-  <meta property="og:description" content="بث مباشر مجاني ٩٠ دقيقة · Figma Weave · الأربعاء ١٢ أغسطس، ٧:٣٠ مساءً بتوقيت جدة.">
+  <meta property="og:description" content="بث مباشر مجاني ٩٠ دقيقة · Figma Weave · الأحد ١٦ أغسطس، ٧:٣٠ مساءً بتوقيت جدة.">
   <meta property="og:image" content="https://malearnsa.com/creative-ai-workshop/media/_web/sections/hero-desktop.jpg">
   <meta name="twitter:card" content="summary_large_image">
 
@@ -441,10 +452,13 @@
       <div class="hero-col">
         <div class="eyebrow"><span class="dot"></span> بث مباشر مجاني</div>
 
-        <h1 class="disp">تعلّم كيف تبني أنظمة تؤتمت توليد الصور باستخدام <span class="hl">Figma Weave</span></h1>
+        <!-- Headline drops the tool name (Majid, 2026-08-06): the promise is the
+             system, not the software. «Figma Weave» still carries the curriculum
+             and the body copy below — it just no longer gates the first line. -->
+        <h1 class="disp">تعلّم كيف تبني أنظمة تؤتمت توليد الصور</h1>
 
         <p class="hero-sub">
-          أنظمة توليد صور قابلة للأتمتة مع تحكم إبداعي كامل. راح نشرح أداة <span class="en">Figma Weave</span> الرائدة في تقديم حلول بناء سير العمل الإبداعي لإنتاج الصور. بث مباشر مجاني لمدة ٩٠ دقيقة، غير مسجّل — الأربعاء ١٢ أغسطس، ٧:٣٠ مساءً بتوقيت جدة.
+          أنظمة توليد صور قابلة للأتمتة مع تحكم إبداعي كامل. راح نشرح أداة <span class="en">Figma Weave</span> الرائدة في تقديم حلول بناء سير العمل الإبداعي لإنتاج الصور. بث مباشر مجاني لمدة ٩٠ دقيقة، غير مسجّل — الأحد ١٦ أغسطس، ٧:٣٠ مساءً بتوقيت جدة.
         </p>
 
         <div class="hero-ctas">
@@ -499,7 +513,7 @@
   <section class="sec sec-tight">
     <div class="wrap">
       <!-- The three summary cards that used to sit here were folded into the
-           curriculum below: items 1 and 7 said the same thing at less depth.
+           curriculum below: items 2 and 8 said the same thing at less depth.
            The focus list underneath is UNCHANGED. -->
       <h2 class="disp">رحلة الـ ٩٠ دقيقة</h2>
 
@@ -507,54 +521,61 @@
         <li class="cur">
           <span class="n">١</span>
           <div>
-            <h3>نفتح الأداة سوا</h3>
-            <p>نبدأ من الصفر: وش هي <span class="en">Figma Weave</span>، كيف تفكر، وليش تختلف عن أي أداة جربتها قبل.</p>
+            <h3>مقدمة عن أدوات الذكاء الاصطناعي الإبداعي</h3>
+            <p>جولة سريعة على المشهد اليوم: وش الموجود، وش يسوي كل نوع، وفين مكانه — قبل ما نركّز على أداة وحدة.</p>
           </div>
         </li>
         <li class="cur">
           <span class="n">٢</span>
+          <div>
+            <h3>مقدمة عن أداة <span class="en">Figma Weave</span></h3>
+            <p>نبدأ من الصفر: وش هي <span class="en">Figma Weave</span>، ايش استخداماتها، وليش تختلف عن أي أداة جربتها قبل.</p>
+          </div>
+        </li>
+        <li class="cur">
+          <span class="n">٣</span>
           <div>
             <h3>البرومبت وأدوات النصوص</h3>
             <p>اللغة اللي تتكلم فيها مع الأداة. كيف تكتب، وكيف تتحكم، وكيف تخلي الوصف يطلع اللي في راسك بالضبط.</p>
           </div>
         </li>
         <li class="cur">
-          <span class="n">٣</span>
+          <span class="n">٤</span>
           <div>
             <h3>أدوات توليد الصور</h3>
             <p>الأدوات اللي تنتج الصورة، وكيف تختار الصح منها لكل نوع شغل.</p>
           </div>
         </li>
         <li class="cur">
-          <span class="n">٤</span>
+          <span class="n">٥</span>
           <div>
             <h3>الأدوات الإبداعية للصور</h3>
             <p>هنا يبدأ الفرق: كيف تاخذ الصورة وتطوّعها — تعدّل، تدمج، وتوصل للنتيجة اللي في بالك.</p>
           </div>
         </li>
         <li class="cur">
-          <span class="n">٥</span>
+          <span class="n">٦</span>
           <div>
             <h3>أدوات توليد الفيديو</h3>
             <p>نفس المنطق، بس متحرك.</p>
           </div>
         </li>
         <li class="cur">
-          <span class="n">٦</span>
+          <span class="n">٧</span>
           <div>
             <h3>الأدوات الإبداعية للفيديو</h3>
             <p>التحكم الكامل في الحركة والمشهد.</p>
           </div>
         </li>
         <li class="cur cur-peak">
-          <span class="n">٧</span>
+          <span class="n">٨</span>
           <div>
             <h3>الفكرة اللي تجمع كل شي: الـ <span class="en">Workflow</span></h3>
             <p>كل اللي فوق أدوات — والأدوات وحدها ما تكفي. اللي يفرق هو النظام اللي يربطها ببعض. هنا نوقف عند أهم جزء في الجلسة: كيف تبني سير عمل يشتغل معك كل مرة، بدل ما تبدأ من الصفر كل ما فتحت الأداة.</p>
           </div>
         </li>
         <li class="cur">
-          <span class="n">٨</span>
+          <span class="n">٩</span>
           <div>
             <h3>أسئلتكم</h3>
             <p>نختم بأسئلتكم المباشرة — نجمعها للآخر عشان ما نقطع التسلسل.</p>
@@ -922,7 +943,7 @@
             </div>
 
             <div class="session-note">
-              <b>الأربعاء ١٢ أغسطس</b>
+              <b id="sessionNoteDate">الأحد ١٦ أغسطس</b>
               <small class="bidi-sep"><span>٧:٣٠ مساءً بتوقيت جدة</span><span class="sep">·</span><span>٩٠ دقيقة</span></small>
             </div>
 
@@ -968,27 +989,80 @@
 
       var SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbznjcsYu8gLDZqFJGededAQaATad_L8vlhRQV04pOqh57HB5nFVRy9zUHAcg6goyj8DKA/exec';
 
-      // ══ TIME CONSTANTS ══════════════════════════════════════════
+      // ══ SESSION CONSTANTS ═══════════════════════════════════════
       // ONE session (Majid, 2026-08-03 — the 11 Aug date was cancelled before
       // announcement). The key is still posted to the backend so the sheet's
       // Session Date column stays populated; the backend pins it server-side
       // and ignores whatever the form sends.
       //
-      // Wed 12 Aug 2026, 19:30 KSA, 90 min. KSA = UTC+3, no DST -> 16:30Z/18:00Z.
-      // These two drive the success screen and the calendar link. The six STATIC
-      // copy strings are listed in the TIME BLOCK comment at the top of this file
-      // and must be flipped alongside — meta/OG cannot be JS-driven.
-      var SESSION_KEY = '12-Aug';
-      var MC_TIME_AR  = '٧:٣٠ مساءً بتوقيت جدة';
-      var MC_GCAL     = '20260812T163000Z/20260812T180000Z';
+      // ┌── THE ONE EDIT ────────────────────────────────────────────┐
+      // │ Move the session? Change MC_DATE_ISO and MC_TIME_KSA. Every │
+      // │ JS-driven surface below follows: the session key, the       │
+      // │ calendar range, and the Arabic label WITH ITS WEEKDAY.      │
+      // └────────────────────────────────────────────────────────────┘
+      // Sun 16 Aug 2026, 19:30 KSA, 90 min. KSA = UTC+3, no DST -> 16:30Z/18:00Z.
+      var MC_DATE_ISO  = '2026-08-16';
+      var MC_TIME_KSA  = { hour: 19, minute: 30, durationMin: 90 };
+      var MC_TIME_AR   = '٧:٣٠ مساءً بتوقيت جدة';
       // Platform is never named (Majid) — link arrives before the session.
-      var MC_DETAILS  = 'بث مباشر مجاني لمدة ٩٠ دقيقة. رابط الحضور يوصلك قبل الجلسة.';
+      var MC_DETAILS   = 'بث مباشر مجاني لمدة ٩٠ دقيقة. رابط الحضور يوصلك قبل الجلسة.';
+
+      // ── derived — nothing below is hand-typed ──────────────────
+      // Mirrors _mc_labelAr_() / _mc_sessionKeyFromDate_() in the backend
+      // (~/code/.clasp-token-validator/Masterclass.js). Kept in lockstep so the
+      // page and the confirmation email can never name different days.
+      var MC_AR_DAYS   = ['الأحد','الاثنين','الثلاثاء','الأربعاء','الخميس','الجمعة','السبت'];
+      var MC_AR_MONTHS = ['يناير','فبراير','مارس','أبريل','مايو','يونيو',
+                          'يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+      var MC_EN_MONTHS = ['Jan','Feb','Mar','Apr','May','Jun',
+                          'Jul','Aug','Sep','Oct','Nov','Dec'];
+
+      var _mcYMD = MC_DATE_ISO.split('-').map(Number);   // [2026, 8, 16]
+      var _mcY = _mcYMD[0], _mcM = _mcYMD[1] - 1, _mcD = _mcYMD[2];
+
+      function mcArNum(n) {
+        return String(n).replace(/[0-9]/g, function (d) { return '٠١٢٣٤٥٦٧٨٩'.charAt(+d); });
+      }
+      function mcPad(n) { return (n < 10 ? '0' : '') + n; }
+      function mcFmtUTC(ms) {
+        var d = new Date(ms);
+        return String(d.getUTCFullYear()) + mcPad(d.getUTCMonth() + 1) + mcPad(d.getUTCDate())
+             + 'T' + mcPad(d.getUTCHours()) + mcPad(d.getUTCMinutes()) + '00Z';
+      }
+
+      // Noon-UTC anchor: any hour near midnight could be shoved across a day
+      // boundary by a timezone offset, and that silently renames the weekday.
+      var MC_WEEKDAY = new Date(Date.UTC(_mcY, _mcM, _mcD, 12)).getUTCDay();
+
+      // "الأحد ١٦ أغسطس"
+      var MC_DATE_AR  = MC_AR_DAYS[MC_WEEKDAY] + ' ' + mcArNum(_mcD) + ' ' + MC_AR_MONTHS[_mcM];
+      // "16-Aug" — must match the backend's sheet key exactly
+      var SESSION_KEY = String(_mcD) + '-' + MC_EN_MONTHS[_mcM];
+
+      var _mcStartMs = Date.UTC(_mcY, _mcM, _mcD, MC_TIME_KSA.hour - 3, MC_TIME_KSA.minute);
+      var MC_GCAL    = mcFmtUTC(_mcStartMs) + '/'
+                     + mcFmtUTC(_mcStartMs + MC_TIME_KSA.durationMin * 60000);
 
       var SESSION_META = {
-        label: 'الأربعاء ١٢ أغسطس',
+        label: MC_DATE_AR,
         time:  MC_TIME_AR,
         gcal:  MC_GCAL
       };
+
+      // ── drift guard ────────────────────────────────────────────
+      // meta/OG/hero copy must stay static for crawlers, so those strings are
+      // the one thing that can fall out of step with MC_DATE_ISO. The session
+      // banner carries the same string, so comparing against it catches a
+      // half-finished date move on the very first page load instead of in a
+      // wrong-day email. Console-only — never shown to a visitor.
+      (function () {
+        var el = document.getElementById('sessionNoteDate');
+        if (el && el.textContent.trim() !== MC_DATE_AR) {
+          console.error('[masterclass] DATE DRIFT — static copy says "'
+            + el.textContent.trim() + '" but MC_DATE_ISO computes "' + MC_DATE_AR
+            + '". Flip the static strings listed in the DATE + TIME BLOCK comment.');
+        }
+      })();
 
       // nav shadow
       var nav = document.getElementById('nav');
