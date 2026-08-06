@@ -232,60 +232,144 @@
     .img-slot{ border-radius:var(--r-lg); overflow:hidden; border:1.5px solid var(--line); position:relative; }
     .img-slot img{ width:100%; height:100%; object-fit:cover; }
 
-    /* ---------- intro proof pair — the system (left) + what it produced (right) ----------
-       Lives INSIDE the hero, between the badge and the headline (Majid, 2026-08-06).
-       This pairing IS the argument of the page, so neither image may be cropped: the
-       workflow screenshot's node web is the entire point, and the cover is the payoff.
-       The two column widths ARE the images' own aspect ratios (1800/1102 and 989/1400),
-       so both render at natural proportions AND land on the same height — equal height
-       without an equal-height box, and therefore without object-fit cropping anything.
-       direction:ltr on the track pins system-left / result-right on this RTL page;
-       each figure restores rtl for its caption.
-       The system image is also a link to the full 1800px file — at any phone width the
-       node web reads as structure but not as text, so the detail stays one tap away.
+    /* ---------- the two proof images — SPLIT APART (Majid, 2026-08-06) ----------
+       They used to sit side by side in one .proof grid above the headline. That
+       layout was killed for two reasons: the cover (the payoff) was reduced to a
+       ~105px sliver, and the system canvas never got the width its node web needs.
+       New arrangement:
+         .cover  — workflow-result, ALONE and BIG, the first thing on the page,
+                   above the headline.
+         .canvas — workflow-system, full column width, BELOW the CTA block, where
+                   the fold does not constrain it.
+       Neither is cropped (object-fit:contain, natural ratios kept). Labels
+       «النتيجة» / «النظام» stay. The canvas keeps its tap-to-enlarge <a> with no
+       visible hint text.
 
-       HEIGHT IS THE CONSTRAINT, not width. Because both columns are ratio-sized, the
-       block's height is ~0.427 x its width — so ONE max-width caps the whole thing:
-       560px -> ~235px tall on desktop. Below 560px it just goes full-width and gets
-       shorter (390px viewport -> ~148px tall). Everything under it — headline, sub,
-       CTA — is pushed down by exactly that number, which is why it is capped and not
-       left to fill the 820px text column.
+       ---- WHY THE COVER IS SIZED IN VIEWPORT UNITS, NOT PIXELS ----
+       A fixed px height is the wrong tool: 170px is generous on a 932px-tall phone
+       and fatal on a 568px one. The cover is ratio-locked (989x1400 -> h = 1.4156w),
+       so setting HEIGHT drives width and nothing can crop. min(38svh,420px) gives
+       the image whatever room the device actually has, and caps it on desktop.
+       svh (small viewport height) not vh: on iOS the first paint happens with the
+       address bar SHOWN, which is the small viewport — sizing to vh there would
+       overshoot the real fold by ~60-80px. vh is kept as the fallback for engines
+       without svh.
 
-       NO MOBILE STACK. The old standalone section stacked to one column under 760px;
-       above the headline that costs ~440px and puts the CTA button below the fold on a
-       390x844 phone. Side-by-side at every width costs ~172px and keeps the button up.
-       If this ever stacks again, re-measure the fold before shipping. */
-    /* RESULT-OVER-SYSTEM STACK WAS TRIED AND REJECTED ON MEASUREMENT (2026-08-06).
-       Majid asked for the cover large on top with the system small beneath. It
-       does not fit: the cover is portrait 989x1400, so its height is 1.4156 x
-       its width, and stacking two captioned figures instead of sitting them
-       side by side costs the sum of both heights instead of the max.
-       Measured at 390x844, CTA bottom vs the 844 fold:
-         side-by-side (this layout) ....... 732  (112px headroom)
-         stacked, cover 120px wide ........ 847  (3px BELOW)
-         stacked, cover 180px wide ........ 960  (116px BELOW)
-         stacked, cover 280px wide ........ 1150 (306px BELOW)
-       There is NO cover width at which the stack clears the fold — 120px is
-       already smaller than the system image is today, and it still misses.
-       If the hierarchy flip is wanted, the pair has to leave the pre-headline
-       slot; moving it below the CTA puts the button at 529 (315px headroom) and
-       allows a 320px cover. Do not re-stack this in place without re-measuring. */
-    .proof{
-      max-width:560px; width:100%; margin:2px auto clamp(22px,3.4vw,30px);
-      display:grid; grid-template-columns:1.6334fr 0.7064fr; gap:clamp(10px,1.6vw,18px);
-      direction:ltr; align-items:start;
+       ---- THE 320px CARVE-OUT ----
+       HARD RULE ON THIS PAGE: the CTA button beats the image at every width. At
+       320x568 the text block alone (badge + headline + 6-line sub + CTA) nearly
+       fills the fold, so 38svh still misses. Below 360px the cover steps down to
+       26svh and the hero's vertical rhythm tightens — the button never moves down
+       to make room for a picture. Measured CTA bottom vs fold, this layout:
+         320x568 ..... 528  ( 40px headroom, cover 148px)
+         360x640 ..... 585  ( 55px headroom, cover 243px)
+         390x844 ..... 660  (184px headroom, cover 320px)
+         430x932 ..... 705  (227px headroom, cover 354px)
+       Re-measure all four before changing any number above. */
+    /* ---- HOW THE COVER IS SIZED: fold MINUS a constant, not a ratio ----
+       A percentage of the viewport (38vh etc.) was tried first and is WRONG here.
+       Measured with the cover hidden, the hero's text block costs a near-CONSTANT
+       amount at each width — nav + badge + headline + subheadline + button:
+         320 wide .. 518px      390 wide .. 469px      desktop ... 500px
+         360 wide .. 504px      430 wide .. 437px
+       That cost does not shrink on a short phone, so a ratio overshoots exactly
+       where there is least room. The budget is therefore:
+           cover height = viewport height - text cost - chrome - headroom
+       which is what --cover-reserve encodes (text cost + ~45px of caption/margin
+       chrome + 60px of guaranteed headroom under the button). One subtraction,
+       measured per width band, capped at 420px so desktop does not balloon.
+
+       svh, not vh: on iOS first paint happens with the address bar SHOWN (the
+       small viewport). Sizing to vh there overshoots the real fold by 60-80px.
+       vh stays as the fallback for engines without svh. */
+    :root{ --cover-reserve:605px; }
+    @media (max-width:700px){ :root{ --cover-reserve:542px; } }  /* 430-700 */
+    @media (max-width:429px){ :root{ --cover-reserve:574px; } }  /* 390-429 */
+    @media (max-width:389px){ :root{ --cover-reserve:609px; } }  /* 360-389 */
+    @media (max-width:359px){ :root{ --cover-reserve:623px; } }  /* <=359   */
+
+    .cover{
+      width:100%; margin:2px auto clamp(20px,3.2vw,28px);
+      display:flex; flex-direction:column; align-items:center;
     }
-    .proof figure{ direction:rtl; min-width:0; }
-    /* --r-lg (28px) was sized for a 700px-wide slot; on the ~105px result column at
-       phone width that radius eats the image. Scale it with the viewport instead. */
-    .proof .img-slot{ display:block; border-radius:clamp(13px,2.4vw,22px); }
-    .proof .img-slot img{ height:auto; object-fit:contain; }
-    .proof figcaption{
+    /* --r-lg (28px) was sized for a 700px slot; scale the radius with the viewport. */
+    .cover .img-slot{ display:block; max-width:100%; border-radius:clamp(14px,2.4vw,24px); }
+    .cover .img-slot img{
+      display:block; width:auto; max-width:100%;
+      height:min(calc(100vh - var(--cover-reserve)), 420px); object-fit:contain;
+    }
+    @supports (height:1svh){
+      .cover .img-slot img{ height:min(calc(100svh - var(--cover-reserve)), 420px); }
+    }
+
+    .canvas{ width:100%; margin:clamp(30px,4.6vw,42px) auto 0; }
+    .canvas .img-slot{ display:block; border-radius:clamp(14px,2.4vw,26px); }
+    .canvas .img-slot img{ width:100%; height:auto; object-fit:contain; }
+
+    .cover figcaption, .canvas figcaption{
       margin-top:9px; color:var(--faint); font-size:.76rem; font-weight:800;
       display:flex; align-items:baseline; gap:8px; justify-content:center; flex-wrap:wrap;
     }
     @media (max-width:520px){
-      .proof figcaption{ font-size:.72rem; gap:6px; }
+      .cover figcaption, .canvas figcaption{ font-size:.72rem; gap:6px; }
+    }
+
+    /* ---- HERO VERTICAL RHYTHM, TIGHTENED FOR THE FOLD ----
+       The hero was built airy for desktop and inherited that airiness on phones,
+       where it cost ~68px above the button for nothing. These are Majid's
+       sanctioned levers (hero spacing first, badge->cover gap second) and they buy
+       the cover its size back. Purely spacing: no copy, no font-size, no order. */
+    @media (max-width:700px){
+      .hero{ padding-top:30px; }
+      .eyebrow{ margin-bottom:14px; }
+      .cover{ margin-bottom:14px; }
+      .cover figcaption{ margin-top:7px; }
+      .hero-sub{ margin-top:20px; }
+      .hero-ctas{ margin-top:26px; }
+    }
+    /* Desktop clears the fold too — 1440x900 was 52px over before this. */
+    @media (min-width:701px){
+      .hero{ padding-top:clamp(40px,5vw,64px); }
+      .hero-sub{ margin-top:22px; }
+      .hero-ctas{ margin-top:30px; }
+    }
+    /* 320 band: the subheadline is 6 lines here (5 everywhere else) and at
+       line-height 2.1 that one block costs 191px. 1.9 is still comfortable for
+       Arabic and returns 18px straight to the button. Narrowest band only. */
+    @media (max-width:359px){
+      .hero-sub{ line-height:1.9; }
+    }
+
+    /* ---- SHORT-VIEWPORT DEMOTION: the button beats the image, always ----
+       On a genuinely short screen the hero text alone nearly fills the fold, so
+       there is no honest size for a cover ABOVE the button. Measured, cover
+       hidden, CTA bottom vs fold:
+         320x568 .. 518 of 568 (50px left)   360x640 .. 504 of 640 (136px left)
+       Minus ~45px of caption/margin chrome that leaves 5px and 91px of picture.
+       Rather than ship a thumbnail or push the button under the fold, the cover
+       DEMOTES: it keeps its slot on every tall phone and drops to just above the
+       canvas below the CTA when the viewport cannot carry it. Flex `order` on
+       .hero-col does this with no duplicated markup and no JS.
+       Each threshold is that band's --cover-reserve + a viability floor.
+
+       THE FLOOR IS 230px ON PHONES, 149px ON DESKTOP, and that split is deliberate.
+       Demoted, the cover renders 320px wide; squeezed above the CTA on a short
+       phone it renders ~135px wide. Without a high floor a 360x800 Android (a very
+       common profile) would get a 135px cover while a SHORTER 360x640 got 320px —
+       taller screen, smaller picture. The 230px floor removes that inversion: if
+       the slot cannot hold a real image, the image goes below and gets a real size.
+       Desktop keeps the lower floor because there the hero is a wide centred
+       composition where a modest cover still reads as the lead image, and demoting
+       would drop it far below the fold and lose the "first thing on the page" role. */
+    @media (max-width:359px) and (max-height:853px),
+           (min-width:360px) and (max-width:389px) and (max-height:839px),
+           (min-width:390px) and (max-width:429px) and (max-height:804px),
+           (min-width:430px) and (max-width:700px) and (max-height:772px),
+           (min-width:701px) and (max-height:754px){
+      .cover{ order:5; margin:clamp(30px,4.6vw,42px) auto 0; }
+      .canvas{ order:6; margin-top:clamp(22px,3.4vw,30px); }
+      /* below the fold it is no longer height-budgeted — size it by width. */
+      .cover .img-slot img{ height:auto; width:min(100%,320px); }
     }
 
     /* market hook — Majid's opening line, sits directly under the hero */
@@ -522,34 +606,19 @@
       <div class="hero-col">
         <div class="eyebrow"><span class="dot"></span> بث مباشر مجاني</div>
 
-        <!-- SYSTEM -> RESULT — the argument of the whole page in two images.
-             Same blue garment, same red background: the link is meant to be seen
-             before it is read. Labels are deliberately quiet. Sits between the badge
-             and the headline (Majid, 2026-08-06) — height-capped in CSS so the CTA
-             below it stays above the fold on a 390x844 phone. -->
-        <div class="proof">
-          <figure class="proof-sys">
-            <a class="img-slot" href="images/workflow-system.jpg" target="_blank" rel="noopener">
-              <img src="images/workflow-system.jpg"
-                   alt="نظام عمل مبني في Figma Weave لإنتاج جلسة تصوير أزياء كاملة"
-                   width="1800" height="1102" fetchpriority="high">
-            </a>
-            <!-- The «اضغط للتكبير» hint was removed (Majid, 2026-08-06). The <a>
-                 wrapper above is untouched — tap-to-enlarge still works, it just
-                 no longer announces itself. -->
-            <figcaption>النظام</figcaption>
-          </figure>
-          <figure class="proof-res">
-            <div class="img-slot">
-              <!-- was loading="lazy" as a below-hero section; it is above the
-                   headline now, so lazy would blank the first paint. -->
-              <img src="images/workflow-result.jpg"
-                   alt="غلاف مجلة أزياء أنتجه النظام"
-                   width="989" height="1400">
-            </div>
-            <figcaption>النتيجة</figcaption>
-          </figure>
-        </div>
+        <!-- THE RESULT — first thing on the page, alone and big (Majid, 2026-08-06).
+             The payoff leads; the system that produced it is shown below the CTA.
+             Height is viewport-relative (see .cover) so it takes whatever room the
+             device has without ever pushing the button past the fold. -->
+        <figure class="cover">
+          <div class="img-slot">
+            <!-- first paint above the headline: never loading="lazy" here. -->
+            <img src="images/workflow-result.jpg"
+                 alt="غلاف مجلة أزياء أنتجه النظام"
+                 width="989" height="1400" fetchpriority="high">
+          </div>
+          <figcaption>النتيجة</figcaption>
+        </figure>
 
         <!-- Headline drops the tool name (Majid, 2026-08-06): the promise is the
              system, not the software. «Figma Weave» still carries the curriculum
@@ -578,6 +647,19 @@
           <span>مباشر</span><span class="sep">·</span>
           <span>مجاني</span>
         </div>
+
+        <!-- THE SYSTEM — full column width, below the CTA block, where the fold
+             does not constrain it. This is the node web; it needs the width to be
+             legible at all. Still a link to the full 1800px file for the detail —
+             the «اضغط للتكبير» hint text stays removed (Majid, 2026-08-06). -->
+        <figure class="canvas">
+          <a class="img-slot" href="images/workflow-system.jpg" target="_blank" rel="noopener">
+            <img src="images/workflow-system.jpg"
+                 alt="نظام عمل مبني في Figma Weave لإنتاج جلسة تصوير أزياء كاملة"
+                 width="1800" height="1102" loading="lazy">
+          </a>
+          <figcaption>النظام</figcaption>
+        </figure>
 
       </div>
     </div>
