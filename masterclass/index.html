@@ -861,10 +861,15 @@
               <input type="email" id="f-email" name="email" autocomplete="email" inputmode="email" placeholder="name@example.com" required>
             </div>
 
+            <!-- OPTIONAL (Majid, 2026-08-06). Still collected, no longer enforced.
+                 No `required`, no asterisk, and the placeholder is NOT disabled so
+                 the field can be CLEARED again after a choice is made. Its value is
+                 "" so an untouched or cleared select posts empty and the backend
+                 writes a BLANK cell — never the placeholder text «اختر تخصصك». -->
             <div class="field" id="f-industry-w">
-              <label for="f-industry">التخصص / المجال <span class="req">*</span></label>
-              <select id="f-industry" name="industry" required>
-                <option value="" disabled selected>اختر تخصصك</option>
+              <label for="f-industry">التخصص / المجال</label>
+              <select id="f-industry" name="industry">
+                <option value="" selected>اختر تخصصك</option>
                 <option value="مصوّر">مصوّر</option>
                 <option value="مصمم جرافيك">مصمم جرافيك</option>
                 <option value="صانع محتوى">صانع محتوى</option>
@@ -880,17 +885,23 @@
             <!-- Revealed only when «أخرى» is picked. The typed value is posted AS
                  `industry` (replacing the literal «أخرى»), so the sheet's Industry
                  column stays single-source and analysable — no new column, no
-                 backend change. maxlength matches the backend's 60-char cap. -->
+                 backend change. maxlength matches the backend's 60-char cap.
+                 OPTIONAL (Majid, 2026-08-06): leaving it empty no longer traps the
+                 user; «أخرى» itself is submitted as the value. -->
             <div class="field" id="f-industry-other-w" hidden>
-              <label for="f-industry-other">اكتب تخصصك <span class="req">*</span></label>
+              <label for="f-industry-other">اكتب تخصصك</label>
               <input type="text" id="f-industry-other" name="industry_other"
                      placeholder="تخصصك" maxlength="60" autocomplete="off">
             </div>
 
+            <!-- OPTIONAL (Majid, 2026-08-06) — same treatment as التخصص. The «الدولة»
+                 placeholder loses `disabled` so the field can be cleared back to
+                 empty; the «──────────» rule below it stays disabled because it is a
+                 visual separator, not a choice. Saudi Arabia remains preselected. -->
             <div class="field" id="f-country-w">
-              <label for="f-country">الدولة <span class="req">*</span></label>
-              <select id="f-country" name="country" required>
-              <option value="" disabled>الدولة</option>
+              <label for="f-country">الدولة</label>
+              <select id="f-country" name="country">
+              <option value="">الدولة</option>
               <!-- Pinned: Saudi Arabia first -->
               <option value="المملكة العربية السعودية" selected>المملكة العربية السعودية</option>
               <option value="" disabled>──────────</option>
@@ -1248,10 +1259,9 @@
 
       // ── «أخرى» -> reveal a free-text specialty field ──────────────
       // Shown only while «أخرى» is selected; switching back hides it AND clears
-      // it, so a stale value can never be submitted. `required` is toggled with
-      // visibility (a required-but-hidden input is an a11y trap and would block
-      // submit on any browser that enforced it). The form is novalidate, so the
-      // real gate is the check in the submit handler below.
+      // it, so a stale value can never be submitted. It is never marked `required`
+      // (Majid, 2026-08-06 — the field is optional now), and a required-but-hidden
+      // input would be an a11y trap besides. The form is novalidate.
       var OTHER = 'أخرى';
       var industrySel   = document.getElementById('f-industry');
       var industryOther = document.getElementById('f-industry-other');
@@ -1260,7 +1270,6 @@
       function syncIndustryOther(focusIt) {
         var on = industrySel.value === OTHER;
         industryOtherW.hidden = !on;
-        industryOther.required = on;
         if (!on) { industryOther.value = ''; return; }
         // iOS keeps the select wheel up for a beat — let it dismiss before we
         // pull focus, otherwise the text keyboard never opens.
@@ -1292,18 +1301,20 @@
         var country  = document.getElementById('f-country').value;
 
         var bad = false;
+        // Name, phone and email are the only enforced fields. التخصص and الدولة are
+        // collected but OPTIONAL (Majid, 2026-08-06) — empty posts as "" and the
+        // backend writes a blank cell.
         if (!name)                                 { markInvalid('f-name-w');     bad = true; }
         if (!phone)                                { markInvalid('f-phone-w');    bad = true; }
         if (!email || email.indexOf('@') === -1)   { markInvalid('f-email-w');    bad = true; }
-        if (!industry)                             { markInvalid('f-industry-w'); bad = true; }
-        if (!country)                              { markInvalid('f-country-w');  bad = true; }
 
-        // «أخرى» -> the typed specialty REPLACES the literal «أخرى» in the
-        // posted `industry`, so the Industry column holds a real answer.
+        // «أخرى» -> the typed specialty REPLACES the literal «أخرى» in the posted
+        // `industry`, so the Industry column holds a real answer. Leaving it empty
+        // does NOT block submission: «أخرى» is submitted as-is rather than trapping
+        // someone behind a field they chose not to fill.
         if (industry === OTHER) {
           var other = industryOther.value.trim();
-          if (!other) { markInvalid('f-industry-other-w'); bad = true; }
-          else        { industry = other.slice(0, 60); }
+          if (other) { industry = other.slice(0, 60); }
         }
 
         if (bad) { fail('عبّي كل الحقول المطلوبة.'); return; }
