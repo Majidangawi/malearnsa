@@ -18,11 +18,22 @@
   t.src=v;s=b.getElementsByTagName(e)[0];
   s.parentNode.insertBefore(t,s)}(window, document,'script',
   'https://connect.facebook.net/en_US/fbevents.js');
+  // Two pixels fire here, deliberately (2026-08-09):
+  //   961157069802409 — the long-standing MA Learn/CIW pixel, keeps funnel continuity
+  //   248467404291359 — "MA Learn Pixel", the one OWNED BY the ad account
+  //                      act_1054311129898557. Ads can only optimize toward a pixel
+  //                      the ad account can read, and it cannot read the first one.
+  // fbq dispatches every subsequent track/trackCustom to ALL initialised pixels,
+  // so the Lead event on successful form submit reaches both automatically.
   fbq('init', '961157069802409');
+  fbq('init', '248467404291359');
   fbq('track', 'PageView');
   </script>
   <noscript><img height="1" width="1" style="display:none"
   src="https://www.facebook.com/tr?id=961157069802409&ev=PageView&noscript=1"
+  /></noscript>
+  <noscript><img height="1" width="1" style="display:none"
+  src="https://www.facebook.com/tr?id=248467404291359&ev=PageView&noscript=1"
   /></noscript>
   <!-- End Meta Pixel Code -->
   <!-- Google Analytics -->
