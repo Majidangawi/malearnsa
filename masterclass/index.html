@@ -488,6 +488,59 @@
     .cur-peak p{ color:var(--ink); opacity:.92; font-size:.97rem; }
     @media (max-width:520px){ .cur{ padding:18px; gap:13px; } }
 
+    /* Access warning on the success state (2026-08-15). Loud on purpose —
+       WhatsApp is the ONLY join-link route, so missing this costs the seat. */
+    .s-alert{
+      max-width:560px; margin:24px auto 0; padding:22px 24px;
+      background:linear-gradient(180deg, rgba(224,86,79,.18), rgba(224,86,79,.07));
+      border:2px solid #e0564f; border-radius:var(--r-lg); text-align:right;
+    }
+    .s-alert-tag{
+      display:inline-block; margin-bottom:9px; padding:5px 13px; border-radius:999px;
+      background:#e0564f; color:#fff; font-size:.74rem; font-weight:900; letter-spacing:.05em;
+    }
+    .s-alert b{
+      display:block; font-family:var(--disp); font-weight:700;
+      font-size:clamp(1.04rem,2.3vw,1.22rem); line-height:1.6; color:var(--ink); margin-bottom:7px;
+    }
+    .s-alert p{ color:var(--muted); font-size:.92rem; line-height:1.9; }
+    .s-alert strong{ color:#ff8a80; font-weight:900; }
+    @media (max-width:520px){ .s-alert{ padding:18px 17px; } }
+
+    /* WhatsApp channel card on the success state (2026-08-15).
+       Green is borrowed deliberately: people recognise the channel by its colour,
+       and this is the one CTA that must not read as decoration. */
+    .wa-card{
+      display:grid; grid-template-columns:auto 1fr auto; gap:16px; align-items:center;
+      max-width:560px; margin:26px auto 0; padding:20px 22px;
+      background:linear-gradient(180deg, rgba(37,211,102,.16), rgba(37,211,102,.06));
+      border:1.5px solid #25d366; border-radius:var(--r-lg);
+      text-align:right; text-decoration:none; color:inherit;
+      transition:transform .18s ease, box-shadow .18s ease, background .18s ease;
+    }
+    .wa-card:hover{
+      transform:translateY(-2px);
+      box-shadow:0 14px 40px rgba(37,211,102,.20);
+      background:linear-gradient(180deg, rgba(37,211,102,.22), rgba(37,211,102,.08));
+    }
+    .wa-ico{
+      display:inline-flex; align-items:center; justify-content:center;
+      width:46px; height:46px; border-radius:50%;
+      background:#25d366; color:#07301f; flex:none;
+    }
+    .wa-txt{ display:block; }
+    .wa-txt b{
+      display:block; font-family:var(--disp); font-weight:700;
+      font-size:1.02rem; line-height:1.6; color:var(--ink); margin-bottom:4px;
+    }
+    .wa-txt span{ display:block; color:var(--muted); font-size:.88rem; line-height:1.85; }
+    /* the arrow is a neutral character in an RTL run — isolate it or it jumps sides */
+    .wa-go{ color:#25d366; font-size:1.5rem; font-weight:900; unicode-bidi:isolate; }
+    @media (max-width:520px){
+      .wa-card{ grid-template-columns:auto 1fr; gap:13px; padding:17px 18px; }
+      .wa-go{ display:none; }
+    }
+
     /* not-recorded warning strip */
     .warnbar{
       margin-top:36px; background:#f0e6d2; color:#1a1207; border-radius:var(--r-lg);
@@ -753,8 +806,8 @@
       </div>
 
       <div class="warnbar">
-        <b>الجلسة مباشرة وما تنعاد</b>
-        <p>ما فيه تسجيل، وما فيه إعادة، وما فيه ملفات تنرسل بعدها. اللي يحضر معنا مباشرة هو اللي يستفيد.</p>
+        <b>بث مباشر غير مسجل</b>
+        <p>ما فيه تسجيل ينرسل بعد الجلسة، فاللي تشوفه معنا مباشرة هو اللي تطلع فيه.</p>
       </div>
     </div>
   </section>
@@ -1135,14 +1188,38 @@
           <div class="tick">✓</div>
           <h2 class="disp">تم تسجيلك</h2>
           <p>وصلك إيميل تأكيد فيه كل التفاصيل.</p>
+
+          <!-- ACCESS WARNING — WhatsApp is the ONLY route for the join link
+               (Majid, 2026-08-15). Highest position in the success state: a
+               registrant who reads nothing else must still read this. -->
+          <div class="s-alert" role="alert">
+            <span class="s-alert-tag">تنبيه مهم</span>
+            <b>عشان ما تفوتك الماستركلاس، انضم لقناة الواتساب</b>
+            <p>رابط الدخول للماستركلاس بنرسله في قناة الواتساب <strong>فقط</strong>. إذا ما انضميت للقناة، ما راح يوصلك الرابط وما راح تقدر تحضر.</p>
+          </div>
+
+          <!-- WhatsApp channel — the primary route for the join link (2026-08-15).
+               Sits ABOVE the calendar/warning blocks on purpose: it is the one
+               action that decides whether they can actually attend. -->
+          <a class="wa-card" href="https://whatsapp.com/channel/0029VbDWbG75fM5SI14hFs0C" target="_blank" rel="noopener">
+            <span class="wa-ico" aria-hidden="true">
+              <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor"><path d="M17.47 14.38c-.3-.15-1.74-.86-2.01-.96-.27-.1-.47-.15-.66.15-.2.29-.76.95-.93 1.15-.17.2-.34.22-.63.07-.3-.15-1.25-.46-2.38-1.47-.88-.78-1.47-1.75-1.65-2.05-.17-.29-.02-.45.13-.6.13-.13.3-.35.44-.52.15-.17.2-.29.3-.49.1-.2.05-.37-.02-.52-.08-.15-.66-1.6-.9-2.19-.24-.57-.48-.5-.66-.5h-.57c-.2 0-.52.07-.79.37-.27.29-1.04 1.01-1.04 2.47s1.06 2.86 1.21 3.06c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.22 1.36.19 1.87.12.57-.09 1.74-.71 1.99-1.4.24-.69.24-1.28.17-1.4-.07-.13-.27-.2-.57-.35zM12.04 2.02c-5.5 0-9.97 4.47-9.97 9.97 0 1.76.46 3.48 1.34 4.99L2 22.05l5.2-1.36a9.93 9.93 0 0 0 4.84 1.24h.01c5.5 0 9.97-4.47 9.97-9.97s-4.48-9.94-9.98-9.94z"/></svg>
+            </span>
+            <span class="wa-txt">
+              <b>انضم لقناة الواتساب</b>
+              <span>كل الروابط والتنبيهات هناك: رابط الحضور، التذكير قبل الجلسة، وأي تحديث على الموعد.</span>
+            </span>
+            <span class="wa-go" aria-hidden="true">←</span>
+          </a>
           <div class="s-date" id="successDate"></div>
           <p class="bidi-sep"><span>٧:٣٠ مساءً بتوقيت جدة</span><span class="sep">·</span><span>٩٠ دقيقة</span></p>
           <div class="s-cal">
             <a class="btn btn-primary" id="calBtn" href="#" target="_blank" rel="noopener">أضف الموعد لتقويمك</a>
           </div>
+
           <div class="s-warn">
-            <b>الجلسة مباشرة وما تنعاد</b>
-            <p>ما فيه تسجيل ولا إعادة ولا ملفات بعدها. رابط الحضور يوصلك على إيميلك قبل الجلسة.</p>
+            <b>بث مباشر غير مسجل</b>
+            <p>ما فيه تسجيل ينرسل بعد الجلسة، فاللي تشوفه معنا مباشرة هو اللي تطلع فيه.</p>
           </div>
         </div>
 
@@ -1176,7 +1253,7 @@
       var MC_TIME_KSA  = { hour: 19, minute: 30, durationMin: 90 };
       var MC_TIME_AR   = '٧:٣٠ مساءً بتوقيت جدة';
       // Platform is never named (Majid) — link arrives before the session.
-      var MC_DETAILS   = 'بث مباشر مجاني لمدة ٩٠ دقيقة. رابط الحضور يوصلك قبل الجلسة.';
+      var MC_DETAILS   = 'بث مباشر مجاني لمدة ٩٠ دقيقة. رابط الحضور ينزل في قناة الواتساب.';
 
       // ── derived — nothing below is hand-typed ──────────────────
       // Mirrors _mc_labelAr_() / _mc_sessionKeyFromDate_() in the backend
