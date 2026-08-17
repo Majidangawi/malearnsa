@@ -235,7 +235,7 @@
     if (btn) { btn.disabled = true; btn.textContent = '...'; }
 
     try {
-      const url = `${cfg.appsScriptUrl}?action=validate_coupon&code=${encodeURIComponent(code)}&amount=${baseAmountHalalas}`;
+      const url = `${cfg.appsScriptUrl}?action=validate_coupon&code=${encodeURIComponent(code)}&amount=${baseAmountHalalas}&product=${encodeURIComponent(cfg.productId || '')}`;
       const res = await fetch(url);
       const data = await res.json();
       if (msg) msg.style.display = 'block';
