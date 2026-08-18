@@ -69,10 +69,27 @@
     navigator.clipboard.writeText(el.textContent.trim()).catch(() => {});
   }
 
+  // Cohort-date line (date-select checkouts, معادلة 2.0 — added 2026-08-18).
+  // Renders the buyer's picked cohort into #cohort-date-line IF the page
+  // provides cfg.cohortDateLabels AND the localStorage blob carries
+  // cohort_date. Labels live in the PAGE (B1 rule — no cohort dates
+  // hardcoded in shared modules). When context is lost (cross-device,
+  // cleared storage, webhook-first Apple Pay), the page's fallback text
+  // stays — we never guess a date.
+  function renderCohortDate_(purchaseData) {
+    try {
+      const els = document.querySelectorAll('#cohort-date-line, [data-ma-cohort-date]');
+      if (!els.length) return;
+      const label = (cfg.cohortDateLabels || {})[String(purchaseData.cohort_date || '').trim()];
+      if (label) els.forEach(function (el) { el.textContent = label; el.style.display = 'inline-block'; });
+    } catch (_) {}
+  }
+
   async function handle_() {
     let purchaseData = {};
     try { purchaseData = JSON.parse(localStorage.getItem(storageKey) || '{}'); }
     catch (_) {}
+    renderCohortDate_(purchaseData);
 
     const params  = new URLSearchParams(window.location.search);
     const status  = params.get('status');
