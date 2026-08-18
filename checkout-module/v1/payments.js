@@ -355,6 +355,7 @@
       email:   buyer.email,
       phone:   buyer.phone,
       product: cfg.productId,
+      cohort_date: selectedCohortDate,
       coupon,
       amount: (finalAmount / 100).toFixed(2)
     }));
@@ -400,6 +401,7 @@
       email:   document.getElementById('email').value.trim(),
       phone:   document.getElementById('phone').value.trim(),
       product: cfg.productId,
+      cohort_date: selectedCohortDate,
       coupon,
       amount:  (finalAmount / 100).toFixed(2)
     }));
@@ -523,6 +525,7 @@
           email:   buyer.email,
           phone:   buyer.phone,
           product: cfg.productId,
+          cohort_date: selectedCohortDate,
           coupon,
           amount: (finalAmount / 100).toFixed(2),
           payment_method:  'bank',
@@ -634,6 +637,7 @@
           email:   buyer.email,
           phone:   buyer.phone,
           product: cfg.productId,
+          cohort_date: selectedCohortDate,
           coupon,
           amount: (finalAmount / 100).toFixed(2),
           payment_method: 'tamara',
@@ -685,6 +689,7 @@
           email:   buyer.email,
           phone:   buyer.phone,
           product: cfg.productId,
+          cohort_date: selectedCohortDate,
           coupon,
           amount: (finalAmount / 100).toFixed(2),
           payment_method: 'paypal'
