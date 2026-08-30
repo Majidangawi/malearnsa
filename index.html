@@ -55,14 +55,16 @@
 
 <style>
   :root {
-    --gold: #C9A84C;
-    --gold-light: #E8D08A;
-    --bg: #080808;
-    --bg2: #0E0E0E;
-    --bg3: #141414;
-    --white: #F5F0E8;
-    --muted: #888;
-    --body: #BBBBBB;
+    /* Design system: poster-dark × chunky rounded V4 (matches معادلة 2.0 landing) */
+    --gold: #FF6A3C;        /* accent */
+    --gold-light: #FF8A5C;  /* accent-hot */
+    --bg: #151009;
+    --bg2: #1D1610;
+    --bg3: #231A12;
+    --white: #F8F0E6;       /* ink */
+    --muted: #96897A;       /* faint */
+    --body: #CBBBA9;        /* muted */
+    --on-accent: #2A1105;
   }
 
   @font-face {
@@ -90,12 +92,13 @@
 
   * { margin: 0; padding: 0; box-sizing: border-box; }
   html { scroll-behavior: smooth; }
+  ::selection { background: var(--gold); color: var(--on-accent); }
 
   body {
     background: var(--bg);
     color: var(--white);
-    font-family: 'GumelaArabic', 'Cairo', sans-serif;
-    font-weight: 300;
+    font-family: 'Cairo', sans-serif;
+    font-weight: 400;
     min-height: 100vh;
     overflow-x: hidden;
     word-break: keep-all;
@@ -125,10 +128,10 @@
   }
 
   header.scrolled {
-    background: rgba(8,8,8,0.96);
+    background: rgba(21,16,9,0.96);
     backdrop-filter: blur(12px);
     padding: 14px 48px;
-    border-bottom: 1px solid rgba(201,168,76,0.1);
+    border-bottom: 1px solid rgba(255,106,60,0.1);
   }
 
   .logo-img { height: 36px; max-height: 36px; width: auto; max-width: 160px; object-fit: contain; display: block; }
@@ -138,7 +141,7 @@
 
   nav { display: flex; align-items: center; }
   nav a {
-    color: rgba(245,240,232,0.75); text-decoration: none; font-size: 16px;
+    color: rgba(248,240,230,0.75); text-decoration: none; font-size: 16px;
     margin-right: 32px; transition: color 0.3s; white-space: nowrap;
   }
   nav a:hover { color: var(--gold); }
@@ -150,7 +153,11 @@
     width: 100%;
     min-height: 100vh;
     overflow: hidden;
-    background: var(--bg);
+    /* V4 warm poster glow field over the base surface */
+    background:
+      radial-gradient(58% 44% at 50% -4%, rgba(255,96,44,0.30), transparent 68%),
+      radial-gradient(34% 26% at 88% 22%, rgba(255,132,72,0.10), transparent 70%),
+      var(--bg);
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -171,9 +178,9 @@
 
   .hero3-tagline {
     display: inline-block;
-    border: 1px solid rgba(201,168,76,0.3);
-    background: rgba(14,14,14,0.55);
-    color: rgba(201,168,76,0.92);
+    border: 1px solid rgba(255,106,60,0.3);
+    background: rgba(29,22,16,0.55);
+    color: rgba(255,106,60,0.92);
     padding: 7px 18px;
     font-size: 12px;
     font-weight: 700;
@@ -204,7 +211,7 @@
 
   .hero3-desc {
     font-size: clamp(15px, 1.7vw, 19px);
-    color: rgba(245,240,232,0.78);
+    color: rgba(248,240,230,0.78);
     max-width: 540px;
     line-height: 1.85;
     font-weight: 300;
@@ -218,23 +225,23 @@
     display: inline-flex;
     align-items: center;
     gap: 10px;
-    background: var(--gold);
-    color: #080808;
+    background: linear-gradient(180deg, var(--gold-light), var(--gold) 55%, #F0501F);
+    color: var(--on-accent);
     text-decoration: none;
     padding: 15px 44px;
     font-size: 16px;
     font-weight: 700;
     letter-spacing: 0.5px;
     border-radius: 999px;
-    font-family: 'GumelaArabic','Cairo',sans-serif;
+    font-family: 'Cairo', sans-serif;
     opacity: 0;
     animation: hero3FadeIn 0.9s cubic-bezier(0.16,1,0.3,1) 0.7s forwards;
     transition: background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
   }
   .hero3-cta:hover {
-    background: var(--gold-light);
+    background: linear-gradient(180deg, var(--gold-light), var(--gold-light) 55%, var(--gold));
     transform: scale(1.04);
-    box-shadow: 0 18px 50px rgba(201,168,76,0.30);
+    box-shadow: 0 18px 50px rgba(255,106,60,0.30);
   }
   .hero3-cta:active { transform: scale(0.96); }
 
@@ -275,9 +282,9 @@
     flex-shrink: 0;
     height: clamp(190px, 28vh, 260px);
     aspect-ratio: 3/4;
-    border-radius: 16px;
+    border-radius: 22px;
     overflow: hidden;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.45), 0 0 0 1px rgba(201,168,76,0.08);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,106,60,0.08);
     margin-right: 18px;
   }
   .hero3-marquee-card:nth-child(odd)  { transform: rotate(-2deg); }
@@ -313,7 +320,7 @@
   }
   .section-line {
     flex: 1; height: 1px;
-    background: linear-gradient(to left, transparent, rgba(201,168,76,0.3));
+    background: linear-gradient(to left, transparent, rgba(255,106,60,0.3));
   }
 
   .courses-grid {
@@ -327,8 +334,8 @@
   /* ── COURSE CARD V2 (image-led, countdown for cohorts) ── */
   .course-card {
     background: var(--bg2);
-    border: 1px solid rgba(201,168,76,0.18);
-    border-radius: 16px;
+    border: 1px solid rgba(255,106,60,0.18);
+    border-radius: 22px;
     overflow: hidden;
     text-decoration: none;
     color: inherit;
@@ -336,13 +343,13 @@
     transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1),
                 border-color 0.3s ease,
                 box-shadow 0.45s ease;
-    box-shadow: 0 1px 0 rgba(255,255,255,0.02);
+    box-shadow: 0 1px 0 rgba(248,240,230,0.03);
     position: relative;
   }
   .course-card:hover {
     transform: translateY(-6px) scale(1.015);
-    border-color: rgba(201,168,76,0.45);
-    box-shadow: 0 14px 36px rgba(0,0,0,0.45), 0 0 0 1px rgba(201,168,76,0.12);
+    border-color: rgba(255,106,60,0.45);
+    box-shadow: 0 14px 36px rgba(0,0,0,0.45), 0 0 0 1px rgba(255,106,60,0.12);
   }
 
   .course-img-wrap {
@@ -359,7 +366,7 @@
   .course-card:hover .course-img-wrap img { transform: scale(1.06); }
   .course-img-wrap::after {
     content: ''; position: absolute; inset: 0;
-    background: linear-gradient(180deg, rgba(8,8,8,0) 55%, rgba(8,8,8,0.55) 100%);
+    background: linear-gradient(180deg, rgba(21,16,9,0) 55%, rgba(21,16,9,0.55) 100%);
     pointer-events: none;
   }
 
@@ -368,9 +375,9 @@
     position: absolute; top: 14px; right: 14px;
     font-size: 11px; font-weight: 700; letter-spacing: 0.05em;
     padding: 6px 12px; border-radius: 999px;
-    background: rgba(8,8,8,0.78);
+    background: rgba(21,16,9,0.78);
     backdrop-filter: blur(8px);
-    border: 1px solid rgba(201,168,76,0.35);
+    border: 1px solid rgba(255,106,60,0.35);
     color: var(--gold);
     z-index: 2;
   }
@@ -420,9 +427,9 @@
     gap: 8px;
   }
   .countdown-cell {
-    background: rgba(255,255,255,0.03);
-    border: 1px solid rgba(201,168,76,0.15);
-    border-radius: 10px;
+    background: rgba(248,240,230,0.04);
+    border: 1px solid rgba(255,106,60,0.15);
+    border-radius: 14px;
     padding: 10px 4px;
     text-align: center;
     direction: ltr;
@@ -446,7 +453,7 @@
   .course-started {
     background: rgba(76,175,82,0.08);
     border: 1px solid rgba(76,175,82,0.25);
-    border-radius: 10px;
+    border-radius: 14px;
     padding: 14px 16px;
     text-align: center;
   }
@@ -456,9 +463,9 @@
   /* Evergreen "available now" block */
   .course-availability {
     display: flex; align-items: center; justify-content: space-between;
-    background: rgba(201,168,76,0.06);
-    border: 1px solid rgba(201,168,76,0.18);
-    border-radius: 10px;
+    background: rgba(255,106,60,0.06);
+    border: 1px solid rgba(255,106,60,0.18);
+    border-radius: 14px;
     padding: 12px 14px;
   }
   .course-availability-text { font-size: 13px; color: var(--white); font-weight: 600; }
@@ -469,7 +476,7 @@
     display: flex; align-items: center; justify-content: space-between;
     margin-top: auto;
     padding-top: 14px;
-    border-top: 1px solid rgba(255,255,255,0.05);
+    border-top: 1px solid rgba(248,240,230,0.08);
     gap: 12px;
   }
   .course-price { font-size: 22px; font-weight: 900; color: var(--gold); direction: ltr; line-height: 1; }
@@ -477,7 +484,7 @@
 
   .course-cta {
     display: inline-flex; align-items: center; gap: 6px;
-    background: var(--gold); color: #080808;
+    background: var(--gold); color: var(--on-accent);
     font-family: 'Cairo', sans-serif; font-weight: 700; font-size: 13px;
     padding: 10px 18px; border-radius: 999px;
     transition: background 0.2s, transform 0.2s;
@@ -494,8 +501,8 @@
   /* ── ABOUT ME SECTION ── */
   .about-me {
     background: var(--bg2);
-    border-top: 1px solid rgba(201,168,76,0.15);
-    border-bottom: 1px solid rgba(201,168,76,0.15);
+    border-top: 1px solid rgba(255,106,60,0.15);
+    border-bottom: 1px solid rgba(255,106,60,0.15);
     padding: 100px 48px;
   }
 
@@ -546,11 +553,11 @@
   .achieve-item {
     background: var(--bg3);
     padding: 24px 20px;
-    border-top: 1px solid rgba(201,168,76,0.15);
+    border-top: 1px solid rgba(255,106,60,0.15);
     transition: background 0.3s;
   }
 
-  .achieve-item:hover { background: #1a1a1a; }
+  .achieve-item:hover { background: #2A2016; }
 
   .achieve-number {
     font-size: 36px;
@@ -582,13 +589,13 @@
     font-weight: 700;
     letter-spacing: 1px;
     color: var(--muted);
-    border: 1px solid rgba(255,255,255,0.08);
+    border: 1px solid rgba(248,240,230,0.11);
     padding: 6px 14px;
     transition: all 0.3s;
     direction: ltr;
   }
 
-  .brand-tag:hover { color: var(--gold); border-color: rgba(201,168,76,0.3); }
+  .brand-tag:hover { color: var(--gold); border-color: rgba(255,106,60,0.3); }
 
   /* Photo */
   .about-me-photo {
@@ -628,11 +635,11 @@
     header.scrolled { padding: 8px 16px; }
     nav {
       display: flex; width: 100%; justify-content: center; gap: 0;
-      border-top: 1px solid rgba(201,168,76,0.1); padding-top: 6px;
+      border-top: 1px solid rgba(255,106,60,0.1); padding-top: 6px;
     }
     nav a {
       font-size: 12px; margin-right: 0; padding: 4px 10px;
-      border-right: 1px solid rgba(201,168,76,0.15);
+      border-right: 1px solid rgba(255,106,60,0.15);
     }
     nav a:last-child { border-right: none; }
 
@@ -655,7 +662,7 @@
     }
     .hero3-cta { padding: 13px 30px; font-size: 14px; }
     .hero3-marquee { height: 32vh; }
-    .hero3-marquee-card { height: clamp(160px, 24vh, 220px); border-radius: 12px; margin-right: 12px; }
+    .hero3-marquee-card { height: clamp(160px, 24vh, 220px); border-radius: 16px; margin-right: 12px; }
     .hero3-marquee-track { animation-duration: 50s; }
 
     /* About me */
@@ -1110,7 +1117,7 @@
            The B&W image from your screenshot works perfectly here.
       -->
       <img src="images/Majid-profile.png" alt="ماجد عنقاوي"
-        onerror="this.style.background='#1a1a1a'; this.style.minHeight='480px';"
+        onerror="this.style.background='#231A12'; this.style.minHeight='480px';"
       >
       <div class="photo-caption">
         ماجد عنقاوي — مدير إبداعي · مبتكر بصري بالذكاء الاصطناعي · معلِّم ومرشد للمبدعين · سفير Fujifilm الرسمي في المملكة العربية السعودية
