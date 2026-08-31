@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>MA Brand Guideline V4</title>
+<meta name="description" content="MA Learn × Majid Angawi — Brand Guideline V4 (2026). Identity, architecture, logo, color, type, voice, imagery, applications, governance.">
+<link rel="stylesheet" href="ma-v4.css">
+<style>
+  .book { width: min(920px, 92%); margin-inline: auto; }
+  .chapter { padding-block: 72px; border-bottom: 1px solid var(--line); scroll-margin-top: 80px; }
+  .chapter:last-of-type { border-bottom: none; }
+  .ch-num { font-family: ui-monospace, Menlo, monospace; color: var(--accent-hot); font-size: .78rem; font-weight: 800; letter-spacing: .14em; margin-bottom: 10px; }
+  .chapter h2 { font-family: var(--disp); font-size: clamp(1.7rem, 3.4vw, 2.4rem); line-height: 1.3; margin-bottom: 18px; }
+  .chapter h3 { font-size: 1.05rem; font-weight: 800; margin: 36px 0 12px; }
+  .chapter p, .chapter li { color: var(--muted); font-size: .96rem; }
+  .chapter p + p { margin-top: 12px; }
+  .chapter ul { padding-left: 20px; display: grid; gap: 8px; margin-top: 10px; }
+  .chapter b, .chapter strong { color: var(--ink); }
+  .ar { direction: rtl; text-align: right; font-size: 1.15rem; color: var(--ink); }
+  .quote { border-inline-start: 3px solid var(--accent); padding: 8px 20px; margin: 22px 0; color: var(--ink); font-size: 1.05rem; }
+  .quote.ar { border-inline-start: 3px solid var(--accent); }
+  .kv { display: grid; grid-template-columns: 180px 1fr; gap: 8px 20px; font-size: .92rem; }
+  .kv dt { color: var(--faint); font-weight: 800; }
+  .kv dd { color: var(--muted); }
+  table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; color: var(--muted); }
+  th { color: var(--faint); font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; font-weight: 800; }
+  td b { color: var(--ink); }
+  .tbl { overflow-x: auto; border: 1.5px solid var(--line); border-radius: var(--r-md); margin-top: 14px; }
+  .dd { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; margin-top: 16px; }
+  .dd > div { border-radius: var(--r-lg); padding: 20px 22px; border: 1.5px solid; }
+  .dd .do { border-color: var(--ok-line); background: var(--ok-bg); } .dd .dont { border-color: var(--danger-line); background: var(--danger-bg); }
+  .dd b { display: block; font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; margin-bottom: 8px; color: var(--ink); }
+  .dd .do b { color: var(--ok); } .dd .dont b { color: var(--danger); }
+  .dd ul { margin-top: 0; }
+  .logos { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-top: 16px; }
+  .logo-tile { border-radius: var(--r-lg); border: 1.5px solid var(--line); padding: 36px; display: flex; align-items: center; justify-content: center; min-height: 220px; }
+  .logo-tile.dark { background: var(--bg); } .logo-tile.light { background: #f8f0e6; }
+  .logo-tile img { max-height: 120px; width: auto; }
+  .pal { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin-top: 14px; }
+  .pal > div { border-radius: var(--r-md); border: 1.5px solid var(--line); overflow: hidden; font-size: .72rem; }
+  .pal .c { height: 64px; } .pal .m { padding: 8px 10px; color: var(--faint); } .pal .m b { display: block; color: var(--ink); font-size: .76rem; } .pal .m code { color: var(--accent-hot); font-family: Menlo, monospace; }
+  .type-demo { display: grid; gap: 14px; margin-top: 14px; }
+  .type-demo > div { background: var(--card); border: 1.5px solid var(--line); border-radius: var(--r-lg); padding: 22px 26px; direction: rtl; text-align: right; }
+  .type-demo .tag { position: relative; float: left; direction: ltr; }
+  .cover { min-height: 78vh; display: flex; flex-direction: column; justify-content: center; padding-block: 80px; }
+  .toc-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 8px 24px; margin-top: 28px; font-size: .9rem; }
+  .toc-grid a { color: var(--muted); text-decoration: none; padding: 8px 0; border-bottom: 1px solid var(--line); display: flex; gap: 12px; }
+  .toc-grid a span { color: var(--accent-hot); font-family: Menlo, monospace; font-size: .74rem; font-weight: 800; }
+  .toc-grid a:hover { color: var(--ink); }
+  @media print {
+    .chapter { break-before: page; padding-block: 24px; border: none; }
+    .cover { min-height: auto; }
+    a[href]::after { content: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap top-in">
+    <div style="display:flex;align-items:center;gap:14px">
+      <img class="logo" src="https://malearnsa.com/brand_assets/logo-malearn-white.png" alt="MA Learn" style="height:34px">
+      <span class="tag tag-solid">BRAND GUIDELINE V4.0</span>
+    </div>
+    <nav class="nav-links"><a href="index.html">Design System</a><a href="tokens.css">tokens.css</a><a href="#" onclick="window.print();return false;">Print / PDF</a></nav>
+  </div>
+</header>
+
+<!-- ═══════════ COVER ═══════════ -->
+<section class="glow-wrap cover">
+  <div class="book" style="position:relative;z-index:1">
+    <span class="eyebrow"><span class="num">V4.0</span> Brand Guideline · 2026-08-31</span>
+    <h1 class="disp" style="font-size:clamp(2.2rem,5.4vw,4rem);line-height:1.25">صناعة <span class="hl">الإلهام</span></h1>
+    <p class="lead" style="margin-top:8px;font-size:1.2rem">Crafting Inspiration — the brand guideline for <b style="color:var(--ink)">MA Learn</b> and <b style="color:var(--ink)">Majid Angawi</b>.</p>
+    <p style="color:var(--faint);margin-top:28px;max-width:640px;font-size:.9rem">This document is the standard for every page, website, PDF, deck, video frame and social visual we ship. Its tokens live at <a href="tokens.css" style="color:var(--accent-hot)">malearnsa.com/brand/tokens.css</a>; the component spec at <a href="index.html" style="color:var(--accent-hot)">malearnsa.com/brand/</a>. Where this guideline and a live file disagree, this guideline wins — fix the file.</p>
+    <div class="toc-grid">
+      <a href="#c01"><span>01</span> Brand foundation</a><a href="#c02"><span>02</span> Brand architecture</a><a href="#c03"><span>03</span> The mark</a>
+      <a href="#c04"><span>04</span> Color</a><a href="#c05"><span>05</span> Typography</a><a href="#c06"><span>06</span> Layout &amp; shape</a>
+      <a href="#c07"><span>07</span> Voice &amp; language</a><a href="#c08"><span>08</span> Imagery &amp; motion</a><a href="#c09"><span>09</span> Applications</a>
+      <a href="#c10"><span>10</span> Accessibility &amp; RTL</a><a href="#c11"><span>11</span> Governance</a>
+    </div>
+  </div>
+</section>
+
+<div class="book">
+
+<!-- ═══════════ 01 FOUNDATION ═══════════ -->
+<section class="chapter" id="c01">
+  <div class="ch-num">01 — BRAND FOUNDATION</div>
+  <h2>Who we are</h2>
+  <p><b>Majid Angawi</b> is a <b>Creative AI Founder &amp; Advisor</b> — 16 years in the creative industry, crossed into AI, now building and advising. He founded three businesses: <b>MA Learn</b> (creative-AI education), <b>MA Studio</b> (creative-AI advisory and builds) and <b>Malsoon</b> (a dictation app). He is trusted by companies locally and globally.</p>
+  <p class="ar" style="margin-top:14px">ماجد عنقاوي — مؤسِّس ومستشار متخصص في الذكاء الاصطناعي الإبداعي · مؤسِّس MA Learn و MA Studio</p>
+  <p><b>MA Learn</b> helps creatives and creative businesses thrive with AI — done-for-you systems, done-with-you advisory and cohorts, done-by-you courses — Arabic-first, built for the MENA creative.</p>
+
+  <h3>North star</h3>
+  <div class="quote ar">إلهام مليون شخص — أن يؤمن مليون إنسان بإمكانياته الإبداعية.</div>
+  <p>Everything serves one goal: Majid becomes the best creative educator and mentor in the Arab world. “Educator and mentor” is the reputation being earned — it is <b>conferred by the audience, never self-applied</b>.</p>
+
+  <h3>Slogan &amp; signature</h3>
+  <dl class="kv">
+    <dt>Slogan</dt><dd><span class="ar" style="display:inline">صناعة الإلهام</span> — Crafting Inspiration. Appears on every surface as the brand's sentence.</dd>
+    <dt>Signature word</dt><dd><span class="ar" style="display:inline">ألهم</span> — the closing stamp and call to action.</dd>
+    <dt>Standard intro</dt><dd><span class="ar" style="display:inline">أهلاً، أنا ماجد عنقاوي — وهنا نصنع الإلهام.</span></dd>
+    <dt>Long-form outro</dt><dd><span class="ar" style="display:inline">إذا ألهمك المحتوى، شاركه مع مبدع عشان تلهمه.</span></dd>
+  </dl>
+
+  <h3>Titles — the credibility rule</h3>
+  <p>Titles lead with what is <b>provable</b>: <b>Founder</b> and <b>Advisor</b>. Softer, conferred titles — mentor, educator, expert, guru — are demonstrated through the work and never written into his own bio. Tenure is always <b>“16 years in the creative industry”</b>, never “16 years as a creative director”. Photography and creative direction are the <b>source of authority, not a service for sale</b>. The Fujifilm ambassadorship is quiet background credibility — present, never leading.</p>
+  <div class="dd">
+    <div class="do"><b>Public bio — say</b><ul><li>Creative AI Founder &amp; Advisor</li><li>Founder of MA Learn &amp; MA Studio</li><li>16 years in the creative industry</li><li>3× founder · trusted by companies locally and globally</li></ul></div>
+    <div class="dont"><b>Public bio — never</b><ul><li>“The bridge between creativity and AI” — internal strategy shorthand only; self-declaring it reads grandiose.</li><li>Mentor · educator · expert · guru as self-labels</li><li>Working photographer / creative director for hire</li><li>“MA Group” — does not exist yet</li></ul></div>
+  </div>
+
+  <h3>The two identities (content lock)</h3>
+  <p>Every week of content must show both: <b>1)</b> the best creative educator who helps creatives build a business, and <b>2)</b> the AI creative-director figure in the fashion industry — work, not teaching. Neither alone is enough. Every piece must activate at least one of <b>Person</b> (face, voice, story), <b>Saudi / Arabic</b> (dialect, cultural reference), or <b>Lineage</b> (16 years, real campaigns, eye-before-tool).</p>
+
+  <h3>What we refuse to be</h3>
+  <p>Simple photographer · simple freelancer / service provider · employee · priced cheaply · hustle-bro flexing wealth · “I'm just like you” relatability theater. The relationship target is the <b>humble, successful person who stays close to the people</b> — visible success, visible humility, visible care.</p>
+
+  <h3>Who we speak to — المبدع الباني</h3>
+  <p>The Creative Builder: a Saudi/GCC creative, 28–38, already working professionally, earning 8–25K SAR a month and aspiring to 30–100K, premium-conscious, anti-bargain. Lighthouse: a 32-year-old fashion photographer in Jeddah or Riyadh who just lost a pitch to a younger AI-savvy creator and is considering opening an agency. Three pains stack: <b>talented but stuck</b>, <b>AI anxiety</b>, <b>no leverage</b>. The transformation: AI as leverage for a business and life they're proud of.</p>
+</section>
+
+<!-- ═══════════ 02 ARCHITECTURE ═══════════ -->
+<section class="chapter" id="c02">
+  <div class="ch-num">02 — BRAND ARCHITECTURE</div>
+  <h2>One mark, two identities, one system</h2>
+  <p>The MA mark is shared. The typographic treatment tells them apart. Both now run on Design System V4 — the same ground, accent, type and shapes — so a visitor moving from a course page to Majid's link-in-bio feels one hand behind both.</p>
+  <div class="tbl"><table>
+    <tr><th>Entity</th><th>Role today</th><th>Voice</th><th>Surfaces</th></tr>
+    <tr><td><b>MA Learn</b></td><td>The one active operating entity — the umbrella for courses, cohorts, advisory and builds</td><td>Institutional-warm; platform</td><td>malearnsa.com · checkout · player · emails · community</td></tr>
+    <tr><td><b>Majid Angawi</b></td><td>Personal brand — founder, advisor, public figure</td><td>Personal, first-person, calm authority</td><td>@majidangawi · majidangawi.com · LinkedIn · X · decks</td></tr>
+    <tr><td><b>MA Studio</b></td><td>Dormant heritage asset (history, client base, credentials) — reactivates later as the build arm</td><td>—</td><td>@angawi.studio · Meta ad Page</td></tr>
+    <tr><td><b>Malsoon</b></td><td>Independent product; own identity and its own guideline</td><td>Own</td><td>malsoon.pro — does <b>not</b> use this system</td></tr>
+  </table></div>
+  <p style="margin-top:14px"><b>Now vs. plan.</b> “MA Group” (holding), the “in.makers / مجتمع صناع الإلهام” rebrand and the Studio reactivation are budgeted for later and are never described publicly as if they exist.</p>
+</section>
+
+<!-- ═══════════ 03 THE MARK ═══════════ -->
+<section class="chapter" id="c03">
+  <div class="ch-num">03 — THE MARK</div>
+  <h2>The MA lettermark</h2>
+  <p>Three grouped angular strokes form the letters <b>M</b> and <b>A</b> at once: the outer groups are the legs of the M; the centre stroke is the valley of the M and the peak of the A. Sharp, architectural, precise — creative vision with structural discipline.</p>
+  <div class="logos">
+    <div class="logo-tile dark"><img src="https://malearnsa.com/brand_assets/logo-malearn-white.png" alt="MA Learn — white on dark"></div>
+    <div class="logo-tile light"><img src="https://malearnsa.com/brand_assets/logo-malearn-black.png" alt="MA Learn — black on light"></div>
+  </div>
+  <div class="tbl"><table>
+    <tr><th>Element</th><th>MA Learn</th><th>Majid Angawi</th></tr>
+    <tr><td>Mark weight</td><td>Light / refined</td><td>Bold / authoritative</td></tr>
+    <tr><td>Wordmark</td><td>LEARN — light</td><td>MAJID ANGAWI — bold, stacked</td></tr>
+    <tr><td>Primary use</td><td>Website, player, checkout, courses</td><td>Link in bio, socials, personal work, decks</td></tr>
+    <tr><td>Files</td><td><code>logo-malearn-white.png</code> · <code>logo-malearn-black.png</code></td><td><code>logo-majid-white.png</code> · <code>logo-majid-black.png</code></td></tr>
+  </table></div>
+  <h3>Rules</h3>
+  <ul>
+    <li>The mark is <b>strictly monochrome</b>: cream/white on dark surfaces, black on light. <b>Never orange, never lavender</b>, never a gradient.</li>
+    <li>Clear space all round equal to the height of the letter A in the wordmark. Minimum width 80px digital, 25mm print.</li>
+    <li>Never stretch, rotate, outline, add shadow or glow, or place on a busy image without a scrim.</li>
+    <li>Never place the MA Learn and Majid Angawi logos side by side without intentional design context (a co-branded deck cover, for example).</li>
+    <li>In a V4 header the logo sits at 30–34px height on the scrim bar; on a hero it may be replaced by the wordmark treatment “MA | LEARN” in accent only when the image logo cannot load.</li>
+  </ul>
+  <p>Source files: <code>MA EA/brand_assets/</code> (working) · served from <code>malearnsa.com/brand_assets/</code> (live).</p>
+</section>
+
+<!-- ═══════════ 04 COLOR ═══════════ -->
+<section class="chapter" id="c04">
+  <div class="ch-num">04 — COLOR</div>
+  <h2>A poster in a dark room</h2>
+  <p>V4 retires the near-black + heritage-gold palette. The ground is now a <b>warm poster brown</b>, the ink is <b>cream</b>, and the accent is a single <b>inspiration orange</b> — the colour of the one warm light source the old guideline described, finally made literal. <b>Lavender</b> is the calm counterpoint for foundations and community.</p>
+  <div class="pal">
+    <div><div class="c" style="background:#151009"></div><div class="m"><b>Ground</b><code>#151009</code></div></div>
+    <div><div class="c" style="background:#231a12"></div><div class="m"><b>Card</b><code>#231A12</code></div></div>
+    <div><div class="c" style="background:#f8f0e6"></div><div class="m"><b>Ink</b><code>#F8F0E6</code></div></div>
+    <div><div class="c" style="background:#cbbba9"></div><div class="m"><b>Muted</b><code>#CBBBA9</code></div></div>
+    <div><div class="c" style="background:#96897a"></div><div class="m"><b>Faint</b><code>#96897A</code></div></div>
+    <div><div class="c" style="background:#ff6a3c"></div><div class="m"><b>Accent</b><code>#FF6A3C</code></div></div>
+    <div><div class="c" style="background:#ff8a5c"></div><div class="m"><b>Accent hot</b><code>#FF8A5C</code></div></div>
+    <div><div class="c" style="background:#c8390f"></div><div class="m"><b>Accent deep</b><code>#C8390F</code></div></div>
+    <div><div class="c" style="background:#2a1105"></div><div class="m"><b>On accent</b><code>#2A1105</code></div></div>
+    <div><div class="c" style="background:#cfc2f5"></div><div class="m"><b>Lavender</b><code>#CFC2F5</code></div></div>
+    <div><div class="c" style="background:#4f4380"></div><div class="m"><b>Lavender deep</b><code>#4F4380</code></div></div>
+    <div><div class="c" style="background:#221a3d"></div><div class="m"><b>On lavender</b><code>#221A3D</code></div></div>
+  </div>
+  <h3>How the palette is used</h3>
+  <ul>
+    <li><b>70 / 20 / 10.</b> Surfaces ~70% of any view, ink and lines ~20%, accent ~10%. Orange is loud by design, so it is rare.</li>
+    <li><b>Orange owns the CTA.</b> One primary button per view. The highlighted word in a heading (<code>.hl</code>) is the only other place orange text appears at size.</li>
+    <li><b>Lavender cools a section.</b> Included value (ITCAI), community, foundations. A whole card or section goes lavender — never a lavender button beside an orange one.</li>
+    <li><b>Lines are cream at 11% / 20%.</b> Never solid grey borders.</li>
+    <li><b>Semantic colours</b> (green / amber / red) are muted and used only for state: live, started, urgent, sold out, error.</li>
+    <li><b>Retired:</b> heritage gold <code>#C9A84C</code>, luminous gold <code>#E8D08A</code>, void black <code>#080808</code>. The only surviving gold is the player's loading mark, pinned by Majid.</li>
+  </ul>
+  <div class="dd">
+    <div class="do"><b>Do</b><ul><li>Tint with alpha versions of the accent for fills and borders.</li><li>Put the hero glow at the top of a page, once.</li><li>Keep photos warm-graded so they sit on the brown ground.</li></ul></div>
+    <div class="dont"><b>Don't</b><ul><li>Introduce a new hue — no blue, teal, pink, neon green.</li><li>Use pure black or pure white anywhere.</li><li>Gradient text, glowing text, orange on lavender.</li></ul></div>
+  </div>
+</section>
+
+<!-- ═══════════ 05 TYPOGRAPHY ═══════════ -->
+<section class="chapter" id="c05">
+  <div class="ch-num">05 — TYPOGRAPHY</div>
+  <h2>Gumela speaks, Cairo explains</h2>
+  <p><b>Gumela Arabic</b> is the brand voice — every heading, name, and hero number. It bridges traditional Arabic letterforms with a modern editorial feel. <b>Cairo</b> (Google Fonts, 400–900) carries all running text, UI, labels and buttons. Cairo is not a fallback in V4 — it is the body face by design.</p>
+  <div class="type-demo">
+    <div><span class="tag tag-neutral">Gumela 700 · H1</span><h1 class="disp" style="margin-top:8px">مكانك الأول لتعلم <span class="hl">الإبداع</span></h1></div>
+    <div><span class="tag tag-neutral">Gumela 700 · H2</span><h2 class="disp" style="margin-top:8px">في زمن الذكاء الاصطناعي</h2></div>
+    <div><span class="tag tag-neutral">Cairo 400 · lead</span><p class="lead" style="margin-top:8px">النظام الإبداعي المدعوم بالـ <span class="en">AI</span> اللي يحوّل رؤيتك إلى نتايج قوية كل مرة.</p></div>
+    <div><span class="tag tag-neutral">Cairo 800 · button / label</span><div style="margin-top:8px"><a class="btn btn-primary btn-sm" href="#">احجز مقعدك</a> <span class="label" style="margin-inline-start:14px">الدفعة الخامسة · ٨–١٠ سبتمبر</span></div></div>
+  </div>
+  <div class="tbl"><table>
+    <tr><th>Role</th><th>Face / weight</th><th>Size</th><th>Notes</th></tr>
+    <tr><td>H1</td><td>Gumela 700</td><td>clamp(1.62rem, 5.2vw, 3.05rem)</td><td>lh 1.4 · one highlighted word max</td></tr>
+    <tr><td>H2 / H3</td><td>Gumela 700</td><td>2.4rem / 1.6rem (fluid)</td><td>section titles, card titles</td></tr>
+    <tr><td>Lead</td><td>Cairo 400 · muted</td><td>0.98–1.14rem</td><td>under a heading, max 680px</td></tr>
+    <tr><td>Body</td><td>Cairo 400</td><td>1rem · lh 1.75</td><td>2.0 for long Arabic paragraphs</td></tr>
+    <tr><td>Buttons / chips</td><td>Cairo 800 / 700</td><td>1.02rem / .86rem</td><td>never Gumela</td></tr>
+    <tr><td>Labels / meta</td><td>Cairo 800 · faint</td><td>.78rem</td><td>no letter-spacing on Arabic</td></tr>
+    <tr><td>Hero numbers</td><td>Gumela 700 · accent-hot</td><td>1.7rem+</td><td>stat pills, prices in feature cards</td></tr>
+  </table></div>
+  <h3>Language rules in type</h3>
+  <ul>
+    <li>Arabic is primary. <b>Brand and product names stay in Latin</b> — MA Learn, Midjourney, Higgsfield, AI — never transliterated.</li>
+    <li><b>Arabic-Indic numerals</b> (٢٥–٢٧ أغسطس) for dates and counts inside Arabic copy; <b>Latin digits</b> for prices (1,399 SAR), statistics (16 · 500+) and anything tabular.</li>
+    <li>No all-caps Arabic. Latin uppercase only for short labels (DESIGN SYSTEM, LEARN) with wide tracking.</li>
+    <li>Majid's Arabic name is spelled <b>ماجد عنقاوي</b>. The word for cohort is <b>دفعة</b> — never كوهورت.</li>
+  </ul>
+</section>
+
+<!-- ═══════════ 06 LAYOUT ═══════════ -->
+<section class="chapter" id="c06">
+  <div class="ch-num">06 — LAYOUT &amp; SHAPE</div>
+  <h2>Centered, airy, chunky</h2>
+  <ul>
+    <li><b>Centered by default.</b> Headings, leads, chips and CTAs align to the centre of a 1120px column. Left/right alignment is reserved for lists, forms and app shells.</li>
+    <li><b>Sections breathe.</b> 88–176px vertical rhythm on marketing pages; 56–108px on dense pages and app UI. The eye rests between ideas.</li>
+    <li><b>Chunky corners.</b> 22px on cards, 28px on feature cards, 34px on hero panels, pills on everything you can press. Nothing interactive is squarer than 10px.</li>
+    <li><b>1.5px lines.</b> Every border is a cream line at 11% (default) or 20% (interactive). Hairlines (1px) only for list rows and the footer.</li>
+    <li><b>Light from the top.</b> One warm glow on the hero. Cards float on a line, not a shadow; only the primary button casts orange light.</li>
+    <li><b>One column tells the story.</b> Hero → clarification → proof → offer → curriculum → about → FAQ → CTA. Grids of two or three appear only for peers (cards, tiles, testimonials).</li>
+    <li><b>Mobile is the first read.</b> Design at 390px, then let it grow. Sticky CTA bar appears after the hero scrolls out.</li>
+  </ul>
+</section>
+
+<!-- ═══════════ 07 VOICE ═══════════ -->
+<section class="chapter" id="c07">
+  <div class="ch-num">07 — VOICE &amp; LANGUAGE</div>
+  <h2>A friend and mentor, not an instructor</h2>
+  <p>Warm, calm, wise. Direct because we care. Light humour is welcome; tough love is encouraged; condescension and corporate tone never. The person who doesn't need to raise his voice because what he says carries weight.</p>
+  <div class="tbl"><table>
+    <tr><th>Register</th><th>Where</th><th>How</th></tr>
+    <tr><td><b>Arabic — Saudi / Hijazi dialect</b></td><td>All customer-facing copy: pages, emails, DMs, community, video</td><td>Warmer and more direct than English. Never formal فصحى for marketing. Inspirational, blunt, funny.</td></tr>
+    <tr><td><b>English</b></td><td>Technical vocabulary, LinkedIn, partners, internal</td><td>Same warmth, slightly tighter. Friend and mentor.</td></tr>
+    <tr><td><b>First person, argumentative</b></td><td>Paid statics, hooks, hot takes</td><td>Speak as a person making a deal; voice the objection then overturn it; end on a question; use a specific number.</td></tr>
+  </table></div>
+  <h3>Hard rules (every writer, every agent)</h3>
+  <div class="dd">
+    <div class="do"><b>Always</b><ul>
+      <li>Plain value exchange: what you get, what it costs, when. Compassion over pressure.</li>
+      <li>Real numbers only — pulled, never projected.</li>
+      <li>“<span class="ar" style="display:inline">بث مباشر غير مسجل</span>” is the only scarcity we state, because it is true.</li>
+      <li>Bundle components are “included” (<span class="ar" style="display:inline">مضمّن</span>), never “gifts”.</li>
+      <li>Testimonials or a student result in every launch piece.</li>
+      <li>Close with <span class="ar" style="display:inline">ألهم</span> where a stamp fits.</li>
+    </ul></div>
+    <div class="dont"><b>Never</b><ul>
+      <li>False scarcity — no “<span class="ar" style="display:inline">ما ينعاد</span>”. We repeat lives.</li>
+      <li>Guru framing — no “access to Majid”, no “secrets”.</li>
+      <li>Exaggeration, hype, superlatives without proof.</li>
+      <li>Internal acronyms in public (CIW, ITCAI, T3, C4). Say the product's name.</li>
+      <li>Emojis in emails; unsolicited emojis anywhere.</li>
+      <li>Announcing the “sister voice” or the “bridge” — internal framings stay internal.</li>
+    </ul></div>
+  </div>
+  <h3>Naming</h3>
+  <ul>
+    <li>Products carry their Arabic names publicly: <span class="ar" style="display:inline">معادلة صناعة الإلهام 2.0</span> · <span class="ar" style="display:inline">مدخل إلى الذكاء الاصطناعي الإبداعي</span> · <span class="ar" style="display:inline">أبعد من إمكانيات الإضاءة</span> · <span class="ar" style="display:inline">مجتمع صُنّاع الإلهام</span> (full name, no acronym).</li>
+    <li>Cohorts are numbered in Arabic: <span class="ar" style="display:inline">الدفعة الرابعة</span>, never “C4” outside the team.</li>
+  </ul>
+</section>
+
+<!-- ═══════════ 08 IMAGERY ═══════════ -->
+<section class="chapter" id="c08">
+  <div class="ch-num">08 — IMAGERY &amp; MOTION</div>
+  <h2>Reference over invention</h2>
+  <p>Our images look photographed, not rendered. They carry the lineage — 16 years of fashion and jewellery campaigns — into AI work. The visual formula book is co-built by Majid with Layan (review) and Nahar (production).</p>
+  <ul>
+    <li><b>Name the legend.</b> Every visual brief cites a real reference — a photographer, a creative director, a cinematographer — never “make it cinematic”.</li>
+    <li><b>Warm grade.</b> Images sit on the brown ground: warm shadows, cream highlights, restrained saturation. Orange appears in the image only when the subject brings it.</li>
+    <li><b>Real people, real work.</b> Majid's face and voice, student results, screenshots of actual sessions. No stock, no generic AI faces. No named celebrities in prompts.</li>
+    <li><b>Soul-id / likeness models are R&amp;D only</b> — never a shipped output, including Majid's own.</li>
+    <li><b>Layan reviews, Majid signs.</b> Nothing visual ships without both — five axes, minimum 7/10 each: craft, reference fidelity, brand fit, cultural fit, detail integrity.</li>
+    <li><b>Media frames</b> use the 22px slot with a cream line; captions are pills on a scrim; empty slots are dashed placeholders, never blank.</li>
+  </ul>
+  <h3>Motion</h3>
+  <p>One easing curve — <code>cubic-bezier(.22, 1, .36, 1)</code> — for everything. Hover lifts 2px, cards 4px. Sections reveal once as they enter (26px, 800ms). Marquees loop seamlessly. Pulses only for live urgency. No bounce, no parallax, no animated gradients. Reduced-motion collapses everything; the page still works.</p>
+  <p><b>Loaders.</b> The “<span class="ar" style="display:inline">جاري صناعة الإلهام</span>” Gumela loader is the one exception to the retired gold — Majid's call. It stays as it is.</p>
+</section>
+
+<!-- ═══════════ 09 APPLICATIONS ═══════════ -->
+<section class="chapter" id="c09">
+  <div class="ch-num">09 — APPLICATIONS</div>
+  <h2>Every surface, one system</h2>
+  <div class="tbl"><table>
+    <tr><th>Surface</th><th>Standard</th></tr>
+    <tr><td><b>Web pages &amp; sites</b></td><td>Link <code>https://malearnsa.com/brand/ma-v4.css</code> (or <code>tokens.css</code> for pages with their own CSS). RTL-first, one primary CTA, hero glow once, sticky bar after the hero. Verify at 390 and 1440px. Never redeclare tokens.</td></tr>
+    <tr><td><b>PDFs, guides, decks, proposals</b></td><td>Screen PDFs stay poster-dark: cover with hero glow + eyebrow + Gumela title; inner pages on <code>--bg</code> with <code>.card</code> blocks; Cairo body 11–12pt, lh 1.75; page numbers in <code>--faint</code>. Export with backgrounds on. Physical print (invoices, handouts) uses <b>paper mode</b> — cream ground, ink text, same accent.</td></tr>
+    <tr><td><b>Player &amp; app shells</b></td><td>Same tokens with the tight rhythm; 14px rows, 22px cards; sidebar on <code>--bg-2</code>; active state = accent line + <code>--accent-soft</code> fill.</td></tr>
+    <tr><td><b>Paid statics (Meta)</b></td><td>Flat accent-orange field edge to edge, loud, first-person copy burned onto the image, a specific number, a hand-scrawled reveal. Premium restraint disappears in a feed — this is the one place V4 shouts.</td></tr>
+    <tr><td><b>Instagram &amp; social</b></td><td>Layan's content factory. Carousels on the brown ground with cream type and one orange word; Majid's face on cover slides; Person / Saudi / Lineage on every post.</td></tr>
+    <tr><td><b>Community (SKOOL)</b></td><td>Lavender-led banners (community = included value), full Arabic name, concise info-first posts, no hype.</td></tr>
+    <tr><td><b>Emails</b></td><td><b>Open decision.</b> The house email template still runs the dark-gold palette. Until Majid approves an email migration, customer emails keep the current standard — never a plain card.</td></tr>
+    <tr><td><b>Video &amp; motion graphics</b></td><td>Lower thirds: Gumela name on a scrim pill; captions Cairo 700 cream; one accent bar. Intro/outro cards on the brown ground with the mark in cream.</td></tr>
+    <tr><td><b>Malsoon</b></td><td>Not this system. Malsoon has its own identity and email standard.</td></tr>
+  </table></div>
+</section>
+
+<!-- ═══════════ 10 ACCESSIBILITY ═══════════ -->
+<section class="chapter" id="c10">
+  <div class="ch-num">10 — ACCESSIBILITY &amp; RTL</div>
+  <h2>Readable by everyone, native in Arabic</h2>
+  <ul>
+    <li>Ink on ground is 16:1; body muted is 10.5:1; labels 5.6:1; accent-hot on ground 7.6:1; on-accent on accent 6.9:1. Never place readable copy in <code>--faint-2</code>.</li>
+    <li>Focus is visible: a 2px orange ring at 35%. Every interactive element is reachable by keyboard.</li>
+    <li>Reduced motion is honoured through the tokens; reveals resolve to visible.</li>
+    <li>Minimum tap target 44px; minimum body 16px on mobile; line-height 1.75+ for Arabic.</li>
+    <li>RTL-first: logical CSS properties only. Marquee and media tracks are internally LTR. Numbers and Latin fragments carry <code>dir="ltr"</code> where they would otherwise mirror.</li>
+    <li>Alt text on every meaningful image, in the page's language.</li>
+  </ul>
+</section>
+
+<!-- ═══════════ 11 GOVERNANCE ═══════════ -->
+<section class="chapter" id="c11">
+  <div class="ch-num">11 — GOVERNANCE</div>
+  <h2>Single source of truth</h2>
+  <dl class="kv">
+    <dt>Tokens</dt><dd><a href="tokens.css" style="color:var(--accent-hot)">malearnsa.com/brand/tokens.css</a> — the only place a colour, radius, font or duration is defined.</dd>
+    <dt>Components</dt><dd><a href="ma-v4.css" style="color:var(--accent-hot)">malearnsa.com/brand/ma-v4.css</a> + the living spec at <a href="index.html" style="color:var(--accent-hot)">malearnsa.com/brand/</a>.</dd>
+    <dt>This guideline</dt><dd><a href="guidelines.html" style="color:var(--accent-hot)">malearnsa.com/brand/guidelines.html</a> — print to PDF from the header link.</dd>
+    <dt>Assets</dt><dd><code>malearnsa.com/brand_assets/</code> — logos (4 files), Gumela (3 weights), profile photo.</dd>
+    <dt>Repository</dt><dd><code>Majidangawi/malearnsa</code> → <code>/brand/</code>. Changes ship as a commit with the version bumped in all three files.</dd>
+    <dt>Owner</dt><dd><b>Majid Angawi</b> approves every change to the system and every shipped visual.</dd>
+    <dt>Maintainers</dt><dd>Noor + Maher (tokens, CSS, migrations) · Layan + Nahar (visual formula, imagery) · Hala (community application) · Tariq (paid statics).</dd>
+    <dt>Versioning</dt><dd>Semantic: <b>major</b> = palette/type change (needs Majid) · <b>minor</b> = new token or component · <b>patch</b> = fix. Changelog lives on the Design System page.</dd>
+    <dt>Exceptions</dt><dd>The player loader (legacy gold, pinned) and the email template (pending decision). Any new exception is logged in the changelog with Majid's approval date.</dd>
+  </dl>
+  <h3>Migration order for surfaces still on the old system</h3>
+  <p>Shared footer module → product landings on their next launch touch → player guides on next edit → admin dashboard when convenient → emails after Majid's decision. Every migration is a token remap first, a literal sweep second, and never a layout change.</p>
+  <div class="quote ar" style="margin-top:36px">هنا نصنع الإلهام. ألهم.</div>
+</section>
+
+</div>
+
+<footer class="foot"><div class="wrap foot-in"><div class="foot-copy">MA Learn × Majid Angawi — Brand Guideline V4.0 · 2026-08-31 · Confidential</div><div class="foot-links"><a href="index.html">Design System</a><a href="tokens.css">tokens.css</a></div></div></footer>
+</body>
+</html>

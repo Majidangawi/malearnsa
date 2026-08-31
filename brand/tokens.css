@@ -1,0 +1,135 @@
+/* ==========================================================================
+   MA Learn × Majid Angawi — DESIGN SYSTEM V4 · "poster-dark × chunky rounded"
+   SINGLE SOURCE OF TRUTH — design tokens.
+   Canonical URL : https://malearnsa.com/brand/tokens.css
+   Spec (HTML)   : https://malearnsa.com/brand/
+   Guideline     : https://malearnsa.com/brand/guidelines.html
+   Version       : 4.0.0 · approved by Majid Angawi 2026-08-31
+   Rule          : every new page, site, and PDF consumes these tokens.
+                   Never redeclare a token at page scope — override only via
+                   a scoped class, and log the exception in the changelog.
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap');
+
+/* ── Brand display face — Gumela Arabic ─────────────────────────────── */
+@font-face { font-family:'Gumela'; src:url('https://malearnsa.com/brand_assets/gumela-arabic-light.otf')   format('opentype'); font-weight:300; font-style:normal; font-display:swap; }
+@font-face { font-family:'Gumela'; src:url('https://malearnsa.com/brand_assets/gumela-arabic-regular.otf') format('opentype'); font-weight:400; font-style:normal; font-display:swap; }
+@font-face { font-family:'Gumela'; src:url('https://malearnsa.com/brand_assets/gumela-arabic-bold.otf')    format('opentype'); font-weight:700; font-style:normal; font-display:swap; }
+
+:root {
+  /* ── Surfaces (warm poster browns — never pure black) ─────────────── */
+  --bg:            #151009;   /* page ground */
+  --bg-2:          #1d1610;   /* sticky bars, alt bands, inputs */
+  --card:          #231a12;   /* card fill */
+  --card-2:        #2a2016;   /* nested / hover card */
+  --card-3:        #372c1e;   /* dividers on cards, chevrons */
+  --card-4:        #4a3d2c;   /* strongest solid line */
+  --media:         #0d0a06;   /* behind video / media frames */
+
+  /* ── Ink (warm cream — never pure white) ──────────────────────────── */
+  --ink:           #f8f0e6;   /* headings, primary text */
+  --muted:         #cbbba9;   /* body / lead text */
+  --faint:         #96897a;   /* meta, labels, placeholders */
+  --faint-2:       #756a5c;   /* disabled, lowest-contrast text */
+
+  /* ── Accent — inspiration orange ──────────────────────────────────── */
+  --accent:        #ff6a3c;
+  --accent-hot:    #ff8a5c;   /* highlight words, hover */
+  --accent-deep:   #c8390f;   /* pressed, hairlines, watched-state */
+  --on-accent:     #2a1105;   /* text ON an accent fill */
+  --accent-soft:   rgba(255,106,60,.12);   /* tinted fills */
+  --accent-line:   rgba(255,106,60,.35);   /* tinted borders */
+
+  /* ── Secondary — lavender (calm counterpoint; ITCAI + community) ──── */
+  --lav:           #cfc2f5;
+  --lav-soft:      #e4dcfb;
+  --lav-deep:      #4f4380;
+  --on-lav:        #221a3d;   /* text ON a lavender fill */
+  --lav-soft-bg:   rgba(207,194,245,.14);
+  --lav-line:      rgba(207,194,245,.45);
+
+  /* ── Lines & washes (cream at low alpha) ──────────────────────────── */
+  --line:          rgba(248,240,230,.11);
+  --line-strong:   rgba(248,240,230,.20);
+  --wash:          rgba(248,240,230,.04);
+  --wash-2:        rgba(248,240,230,.07);
+  --scrim:         rgba(21,16,9,.72);       /* over media */
+  --scrim-bar:     rgba(21,16,9,.78);       /* sticky header */
+
+  /* ── Semantic (muted to sit on the warm ground) ───────────────────── */
+  --ok:            #6ed591;  --ok-bg:      rgba(76,175,82,.14);   --ok-line:     rgba(76,175,82,.35);
+  --warn:          #f2c14e;  --warn-bg:    rgba(242,193,78,.14);  --warn-line:   rgba(242,193,78,.35);
+  --danger:        #ff5959;  --danger-bg:  rgba(220,53,69,.16);   --danger-line: rgba(255,89,89,.40);
+
+  /* ── Radius — chunky rounded ──────────────────────────────────────── */
+  --r-xs:   6px;    /* checkboxes, tiny badges */
+  --r-sm:  10px;    /* inputs, small tiles */
+  --r-md:  14px;    /* list rows, counters, number squares */
+  --r-lg:  22px;    /* cards, accordions, media tiles */
+  --r-xl:  28px;    /* feature cards, router buttons */
+  --r-2xl: 34px;    /* hero panels */
+  --r-pill: 999px;  /* buttons, chips, eyebrows, tags */
+
+  /* ── Spacing — 8pt ────────────────────────────────────────────────── */
+  --s-1: 4px;  --s-2: 8px;  --s-3: 12px; --s-4: 16px;
+  --s-5: 24px; --s-6: 32px; --s-7: 48px; --s-8: 64px;
+  --wrap:   1120px;
+  --wrap-w: min(var(--wrap), 92%);
+  --sec-y:       clamp(88px, 14vw, 176px);   /* section rhythm — airy */
+  --sec-y-tight: clamp(56px,  9vw, 108px);
+  --page-x: clamp(16px, 3vw, 40px);
+
+  /* ── Typography ───────────────────────────────────────────────────── */
+  --disp: 'Gumela', 'Cairo', sans-serif;   /* headings, names, numbers */
+  --body: 'Cairo', sans-serif;             /* everything else */
+  --fs-h1:    clamp(1.62rem, 5.2vw, 3.05rem);
+  --fs-h2:    clamp(1.42rem, 3.8vw, 2.40rem);
+  --fs-h3:    clamp(1.15rem, 2.6vw, 1.60rem);
+  --fs-lead:  clamp(.98rem, 1.8vw, 1.14rem);
+  --fs-body:  1rem;
+  --fs-sm:    .88rem;
+  --fs-label: .78rem;
+  --fs-micro: .72rem;
+  --lh-disp:  1.4;
+  --lh-body:  1.75;
+  --lh-loose: 2.0;
+  --track-disp: -0.01em;
+
+  /* ── Elevation & light ────────────────────────────────────────────── */
+  --shadow-card:   0 1px 2px rgba(0,0,0,.4), 0 0 0 1px var(--line);
+  --shadow-raised: 0 18px 44px -14px rgba(0,0,0,.55);
+  --shadow-modal:  0 24px 64px rgba(0,0,0,.7), 0 0 0 1px rgba(248,240,230,.14);
+  --shadow-accent: 0 10px 34px -10px rgba(255,106,60,.55), inset 0 1px 0 rgba(255,255,255,.28);
+  --shadow-accent-hover: 0 16px 44px -12px rgba(255,106,60,.70), inset 0 1px 0 rgba(255,255,255,.28);
+  --focus:         0 0 0 2px rgba(255,106,60,.35);
+  --glow-hero:     radial-gradient(58% 44% at 50% -4%, rgba(255,96,44,.30), transparent 68%),
+                   radial-gradient(34% 26% at 88% 22%, rgba(255,132,72,.10), transparent 70%);
+  --grad-accent:   linear-gradient(180deg, var(--accent-hot), var(--accent) 55%, #f0501f);
+  --grad-accent-card: linear-gradient(160deg, #ff7a48, var(--accent) 45%, #e6501f);
+  --grad-lav-card:    linear-gradient(160deg, var(--lav-soft), var(--lav) 60%, #b8a7ee);
+
+  /* ── Motion ───────────────────────────────────────────────────────── */
+  --ease:      cubic-bezier(.22, 1, .36, 1);
+  --ease-in:   cubic-bezier(.64, 0, .78, 0);
+  --dur-fast:  150ms;
+  --dur-med:   250ms;
+  --dur-slow:  500ms;
+  --dur-reveal: 800ms;
+  --lift:      translateY(-2px);   /* hover lift for buttons/chips */
+  --lift-card: translateY(-4px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root { --dur-fast: 1ms; --dur-med: 1ms; --dur-slow: 1ms; --dur-reveal: 1ms; --lift: none; --lift-card: none; }
+}
+
+/* ── Paper mode — physical print only (invoices, printed handouts).
+      Screen PDFs stay poster-dark. Apply class="paper" on <html> or <body>. ── */
+.paper {
+  --bg: #f8f0e6; --bg-2: #f1e8dc; --card: #ffffff; --card-2: #f6efe5; --card-3: #e6dccf; --card-4: #d2c6b6;
+  --ink: #151009; --muted: #4a3d2c; --faint: #756a5c; --faint-2: #96897a;
+  --line: rgba(21,16,9,.12); --line-strong: rgba(21,16,9,.22); --wash: rgba(21,16,9,.04); --wash-2: rgba(21,16,9,.07);
+  --shadow-card: 0 1px 2px rgba(0,0,0,.08), 0 0 0 1px var(--line);
+  --glow-hero: none;
+}

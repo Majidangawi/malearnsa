@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>MA Design System V4 · Single Source of Truth</title>
+<meta name="description" content="MA Learn × Majid Angawi — Design System V4 (poster-dark × chunky rounded). Tokens, type, components, and rules. Single source of truth.">
+<link rel="stylesheet" href="ma-v4.css">
+<style>
+  /* ── Doc chrome (this page only) ── */
+  .doc { display: grid; grid-template-columns: 232px 1fr; gap: 48px; align-items: start; width: min(1280px, 94%); margin-inline: auto; }
+  .toc { position: sticky; top: 84px; display: grid; gap: 4px; font-size: .84rem; font-weight: 700; }
+  .toc a { color: var(--faint); text-decoration: none; padding: 7px 12px; border-radius: var(--r-sm); transition: color var(--dur-fast), background var(--dur-fast); }
+  .toc a:hover, .toc a.on { color: var(--ink); background: var(--wash-2); }
+  .toc .grp { color: var(--faint-2); font-size: .68rem; letter-spacing: .12em; text-transform: uppercase; margin: 16px 12px 4px; }
+  main { min-width: 0; }
+  section.ds { padding-block: 56px; border-bottom: 1px solid var(--line); scroll-margin-top: 80px; }
+  section.ds:last-child { border-bottom: none; }
+  .ds h2 { font-family: var(--disp); font-size: 1.8rem; margin-bottom: 8px; }
+  .ds .intro { color: var(--muted); max-width: 720px; margin-bottom: 32px; }
+  .ds h3 { font-size: 1rem; font-weight: 800; margin: 36px 0 14px; color: var(--ink); }
+  .ds h3 small { color: var(--faint); font-weight: 700; margin-left: 10px; }
+  .grid { display: grid; gap: 14px; }
+  .g2 { grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+  .g3 { grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+  .g4 { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+  .spec { background: var(--card); border: 1.5px solid var(--line); border-radius: var(--r-lg); padding: 28px; }
+  .spec.rtl { direction: rtl; text-align: center; }
+  .spec.start { text-align: start; }
+  .spec.on-bg { background: var(--bg); }
+  .spec.glow { background: var(--glow-hero), var(--bg); }
+  .row { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; justify-content: center; }
+  .row.start { justify-content: flex-start; }
+  /* swatches */
+  .sw { border-radius: var(--r-md); overflow: hidden; border: 1.5px solid var(--line); cursor: pointer; background: var(--card); transition: transform var(--dur-med) var(--ease); }
+  .sw:hover { transform: var(--lift); }
+  .sw .c { height: 84px; }
+  .sw .m { padding: 10px 12px; font-size: .74rem; line-height: 1.5; }
+  .sw .m b { display: block; color: var(--ink); font-size: .8rem; }
+  .sw .m code { color: var(--accent-hot); font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .74rem; }
+  .sw .m span { color: var(--faint); display: block; }
+  /* token table */
+  table { width: 100%; border-collapse: collapse; font-size: .84rem; }
+  th, td { text-align: left; padding: 10px 12px; border-bottom: 1px solid var(--line); vertical-align: top; }
+  th { color: var(--faint); font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; font-weight: 800; }
+  td code { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; color: var(--accent-hot); font-size: .8rem; cursor: pointer; }
+  td code:hover { text-decoration: underline; }
+  .tbl-wrap { overflow-x: auto; border: 1.5px solid var(--line); border-radius: var(--r-md); }
+  /* code blocks */
+  pre { background: var(--bg-2); border: 1.5px solid var(--line); border-radius: var(--r-md); padding: 18px 20px; overflow-x: auto; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: .78rem; line-height: 1.7; color: var(--muted); position: relative; direction: ltr; text-align: left; }
+  pre .k { color: var(--lav); } pre .v { color: var(--accent-hot); } pre .c { color: var(--faint-2); }
+  .copy { position: absolute; top: 10px; right: 10px; background: var(--wash-2); border: 1px solid var(--line-strong); color: var(--muted); border-radius: var(--r-pill); padding: 4px 12px; font-size: .7rem; font-weight: 800; cursor: pointer; font-family: var(--body); }
+  .copy:hover { color: var(--ink); }
+  /* do / don't */
+  .dd { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; }
+  .dd > div { border-radius: var(--r-lg); padding: 20px 22px; border: 1.5px solid; font-size: .88rem; }
+  .dd .do { border-color: var(--ok-line); background: var(--ok-bg); }
+  .dd .dont { border-color: var(--danger-line); background: var(--danger-bg); }
+  .dd b { display: block; font-size: .72rem; letter-spacing: .12em; text-transform: uppercase; margin-bottom: 8px; }
+  .dd .do b { color: var(--ok); } .dd .dont b { color: var(--danger); }
+  .dd ul { padding-left: 18px; color: var(--muted); display: grid; gap: 6px; }
+  /* type scale */
+  .ts { display: grid; gap: 18px; }
+  .ts > div { display: grid; grid-template-columns: 150px 1fr; gap: 20px; align-items: baseline; border-bottom: 1px solid var(--line); padding-bottom: 14px; }
+  .ts .meta { font-size: .72rem; color: var(--faint); font-family: ui-monospace, Menlo, monospace; line-height: 1.6; }
+  .ts .sample { direction: rtl; text-align: right; }
+  /* radius demo */
+  .rd { display: grid; grid-template-columns: repeat(auto-fit, minmax(110px, 1fr)); gap: 12px; }
+  .rd > div { aspect-ratio: 1; background: var(--card-2); border: 1.5px solid var(--line-strong); display: flex; align-items: flex-end; justify-content: center; padding: 10px; font-size: .7rem; color: var(--faint); font-family: ui-monospace, Menlo, monospace; }
+  /* spacing demo */
+  .sp { display: flex; gap: 10px; align-items: flex-end; flex-wrap: wrap; }
+  .sp > div { background: var(--accent); border-radius: 4px; position: relative; }
+  .sp > div::after { content: attr(data-l); position: absolute; top: 100%; left: 0; margin-top: 6px; font-size: .68rem; color: var(--faint); font-family: ui-monospace, Menlo, monospace; white-space: nowrap; }
+  .toast { position: fixed; bottom: 24px; left: 50%; transform: translate(-50%, 30px); background: var(--accent); color: var(--on-accent); font-weight: 900; font-size: .84rem; border-radius: var(--r-pill); padding: 10px 22px; opacity: 0; transition: all var(--dur-med) var(--ease); z-index: 999; pointer-events: none; }
+  .toast.on { opacity: 1; transform: translate(-50%, 0); }
+  .status-ok { color: var(--ok); } .status-old { color: var(--warn); }
+  @media (max-width: 900px) { .doc { grid-template-columns: 1fr; } .toc { display: none; } }
+  @media print { .toc { display: none; } .doc { grid-template-columns: 1fr; } section.ds { break-inside: avoid; } }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap top-in" style="width:min(1280px,94%)">
+    <div style="display:flex;align-items:center;gap:14px">
+      <img class="logo" src="https://malearnsa.com/brand_assets/logo-malearn-white.png" alt="MA Learn" style="height:34px">
+      <span class="tag tag-solid">DESIGN SYSTEM V4.0.0</span>
+    </div>
+    <nav class="nav-links">
+      <a href="guidelines.html">Brand Guideline</a>
+      <a href="tokens.css">tokens.css</a>
+      <a href="ma-v4.css">ma-v4.css</a>
+      <a href="https://malearnsa.com/creative-ai-workshop/">Reference build ↗</a>
+    </nav>
+  </div>
+</header>
+
+<section class="glow-wrap" style="padding:72px 0 48px">
+  <div class="wrap" style="width:min(1280px,94%);text-align:center">
+    <span class="eyebrow"><span class="num">SSOT</span> Single Source of Truth · approved 2026-08-31</span>
+    <h1 class="disp" style="font-size:clamp(2rem,4.6vw,3.4rem)">MA Design System <span class="hl">V4</span></h1>
+    <p class="lead" style="max-width:720px;margin:20px auto 0">“Poster-dark × chunky rounded.” One warm ground, one inspiration orange, one calm lavender, Gumela for the voice, Cairo for the words. Every new page, site, and PDF for MA Learn and Majid Angawi consumes these tokens — never a private copy.</p>
+    <div class="row" style="margin-top:32px">
+      <a class="btn btn-primary" href="#quickstart">Quick start</a>
+      <a class="btn btn-ghost" href="guidelines.html">Read the Brand Guideline</a>
+    </div>
+  </div>
+</section>
+
+<div class="doc">
+  <aside class="toc" aria-label="Contents">
+    <div class="grp">Foundations</div>
+    <a href="#principles">Principles</a>
+    <a href="#color">Color</a>
+    <a href="#type">Typography</a>
+    <a href="#shape">Shape &amp; space</a>
+    <a href="#light">Light &amp; elevation</a>
+    <a href="#motion">Motion</a>
+    <div class="grp">Components</div>
+    <a href="#buttons">Buttons</a>
+    <a href="#chips">Eyebrows · chips · tags</a>
+    <a href="#cards">Cards</a>
+    <a href="#forms">Forms</a>
+    <a href="#accordion">Accordion &amp; lists</a>
+    <a href="#media">Media</a>
+    <a href="#nav">Header · sticky · footer</a>
+    <div class="grp">Usage</div>
+    <a href="#quickstart">Quick start</a>
+    <a href="#rules">Rules</a>
+    <a href="#surfaces">Surfaces &amp; status</a>
+    <a href="#changelog">Changelog</a>
+  </aside>
+
+  <main>
+
+  <!-- ═══════════════════ PRINCIPLES ═══════════════════ -->
+  <section class="ds" id="principles">
+    <h2>Principles</h2>
+    <p class="intro">Five decisions that make a page read as ours before a single word is read.</p>
+    <div class="grid g2">
+      <div class="spec"><div class="tag" style="margin-bottom:12px">01</div><h3 style="margin:0 0 8px">One warm ground</h3><p style="color:var(--muted);font-size:.9rem">The page is a poster in a dark room, not a screen. Backgrounds are warm browns — <code>#151009</code> — never pure black. Light comes from one direction (the hero glow) and falls off.</p></div>
+      <div class="spec"><div class="tag" style="margin-bottom:12px">02</div><h3 style="margin:0 0 8px">One inspiration orange</h3><p style="color:var(--muted);font-size:.9rem">Accent is a single hot orange used for the thing you want the eye to land on — the CTA, the highlighted word, the live state. It is loud on purpose, so it is used sparingly (≈10% of any view).</p></div>
+      <div class="spec"><div class="tag tag-lav" style="margin-bottom:12px">03</div><h3 style="margin:0 0 8px">Lavender is the calm counterpoint</h3><p style="color:var(--muted);font-size:.9rem">The second family — foundations, community, “included” value — is lavender. It never competes with orange for the CTA; it cools a section down.</p></div>
+      <div class="spec"><div class="tag" style="margin-bottom:12px">04</div><h3 style="margin:0 0 8px">Chunky, rounded, airy</h3><p style="color:var(--muted);font-size:.9rem">Big radii (22–34px), 1.5px lines, pill buttons, generous section rhythm (88–176px). Everything is centered by default. Nothing is cramped.</p></div>
+      <div class="spec"><div class="tag" style="margin-bottom:12px">05</div><h3 style="margin:0 0 8px">Gumela speaks, Cairo explains</h3><p style="color:var(--muted);font-size:.9rem">Gumela Arabic Bold for every heading, name, and number that carries the voice. Cairo for all running text, UI and buttons. Arabic first, Latin brand names stay Latin.</p></div>
+      <div class="spec"><div class="tag tag-neutral" style="margin-bottom:12px">RTL</div><h3 style="margin:0 0 8px">Arabic-native, not translated</h3><p style="color:var(--muted);font-size:.9rem">Every layout is designed in RTL. Use logical properties (<code>inset-inline-start</code>, <code>margin-inline</code>), never left/right. Marquees and media tracks are forced LTR internally.</p></div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ COLOR ═══════════════════ -->
+  <section class="ds" id="color">
+    <h2>Color</h2>
+    <p class="intro">Click any swatch to copy its token. Ratio guide for any view: ~70% surfaces · ~20% ink &amp; lines · ~10% accent. Lavender replaces accent in a section, never joins it.</p>
+
+    <h3>Surfaces <small>warm poster browns</small></h3>
+    <div class="grid g4">
+      <div class="sw" data-copy="var(--bg)"><div class="c" style="background:var(--bg)"></div><div class="m"><b>bg</b><code>#151009</code><span>page ground</span></div></div>
+      <div class="sw" data-copy="var(--bg-2)"><div class="c" style="background:var(--bg-2)"></div><div class="m"><b>bg-2</b><code>#1d1610</code><span>bars · bands · inputs</span></div></div>
+      <div class="sw" data-copy="var(--card)"><div class="c" style="background:var(--card)"></div><div class="m"><b>card</b><code>#231a12</code><span>card fill</span></div></div>
+      <div class="sw" data-copy="var(--card-2)"><div class="c" style="background:var(--card-2)"></div><div class="m"><b>card-2</b><code>#2a2016</code><span>nested · hover</span></div></div>
+      <div class="sw" data-copy="var(--card-3)"><div class="c" style="background:var(--card-3)"></div><div class="m"><b>card-3</b><code>#372c1e</code><span>solid dividers</span></div></div>
+      <div class="sw" data-copy="var(--card-4)"><div class="c" style="background:var(--card-4)"></div><div class="m"><b>card-4</b><code>#4a3d2c</code><span>strongest solid line</span></div></div>
+      <div class="sw" data-copy="var(--media)"><div class="c" style="background:var(--media)"></div><div class="m"><b>media</b><code>#0d0a06</code><span>behind video frames</span></div></div>
+    </div>
+
+    <h3>Ink <small>warm cream — never #fff</small></h3>
+    <div class="grid g4">
+      <div class="sw" data-copy="var(--ink)"><div class="c" style="background:var(--ink)"></div><div class="m"><b>ink</b><code>#f8f0e6</code><span>headings · primary text</span></div></div>
+      <div class="sw" data-copy="var(--muted)"><div class="c" style="background:var(--muted)"></div><div class="m"><b>muted</b><code>#cbbba9</code><span>body · lead</span></div></div>
+      <div class="sw" data-copy="var(--faint)"><div class="c" style="background:var(--faint)"></div><div class="m"><b>faint</b><code>#96897a</code><span>meta · labels</span></div></div>
+      <div class="sw" data-copy="var(--faint-2)"><div class="c" style="background:var(--faint-2)"></div><div class="m"><b>faint-2</b><code>#756a5c</code><span>disabled</span></div></div>
+    </div>
+
+    <h3>Accent <small>inspiration orange</small></h3>
+    <div class="grid g4">
+      <div class="sw" data-copy="var(--accent)"><div class="c" style="background:var(--accent)"></div><div class="m"><b>accent</b><code>#ff6a3c</code><span>CTA · live · the one thing</span></div></div>
+      <div class="sw" data-copy="var(--accent-hot)"><div class="c" style="background:var(--accent-hot)"></div><div class="m"><b>accent-hot</b><code>#ff8a5c</code><span>highlight words · hover</span></div></div>
+      <div class="sw" data-copy="var(--accent-deep)"><div class="c" style="background:var(--accent-deep)"></div><div class="m"><b>accent-deep</b><code>#c8390f</code><span>pressed · hairlines</span></div></div>
+      <div class="sw" data-copy="var(--on-accent)"><div class="c" style="background:var(--on-accent)"></div><div class="m"><b>on-accent</b><code>#2a1105</code><span>text ON accent</span></div></div>
+      <div class="sw" data-copy="var(--accent-soft)"><div class="c" style="background:var(--accent-soft)"></div><div class="m"><b>accent-soft</b><code>rgba(255,106,60,.12)</code><span>tinted fills</span></div></div>
+      <div class="sw" data-copy="var(--accent-line)"><div class="c" style="background:var(--accent-line)"></div><div class="m"><b>accent-line</b><code>rgba(255,106,60,.35)</code><span>tinted borders</span></div></div>
+    </div>
+
+    <h3>Secondary <small>lavender</small></h3>
+    <div class="grid g4">
+      <div class="sw" data-copy="var(--lav)"><div class="c" style="background:var(--lav)"></div><div class="m"><b>lav</b><code>#cfc2f5</code><span>lavender fills · text on dark</span></div></div>
+      <div class="sw" data-copy="var(--lav-soft)"><div class="c" style="background:var(--lav-soft)"></div><div class="m"><b>lav-soft</b><code>#e4dcfb</code><span>gradient top</span></div></div>
+      <div class="sw" data-copy="var(--lav-deep)"><div class="c" style="background:var(--lav-deep)"></div><div class="m"><b>lav-deep</b><code>#4f4380</code><span>deep accents</span></div></div>
+      <div class="sw" data-copy="var(--on-lav)"><div class="c" style="background:var(--on-lav)"></div><div class="m"><b>on-lav</b><code>#221a3d</code><span>text ON lavender</span></div></div>
+    </div>
+
+    <h3>Lines &amp; washes <small>cream at low alpha</small></h3>
+    <div class="grid g4">
+      <div class="sw" data-copy="var(--line)"><div class="c" style="background:var(--line)"></div><div class="m"><b>line</b><code>rgba(248,240,230,.11)</code><span>default 1.5px border</span></div></div>
+      <div class="sw" data-copy="var(--line-strong)"><div class="c" style="background:var(--line-strong)"></div><div class="m"><b>line-strong</b><code>rgba(248,240,230,.20)</code><span>chips · inputs · ghost buttons</span></div></div>
+      <div class="sw" data-copy="var(--wash)"><div class="c" style="background:var(--wash)"></div><div class="m"><b>wash</b><code>rgba(248,240,230,.04)</code><span>chip / pill fill</span></div></div>
+      <div class="sw" data-copy="var(--wash-2)"><div class="c" style="background:var(--wash-2)"></div><div class="m"><b>wash-2</b><code>rgba(248,240,230,.07)</code><span>ghost button · icon tile</span></div></div>
+    </div>
+
+    <h3>Semantic <small>muted, warm-compatible</small></h3>
+    <div class="grid g4">
+      <div class="sw" data-copy="var(--ok)"><div class="c" style="background:var(--ok)"></div><div class="m"><b>ok</b><code>#6ed591</code><span>started · success · live</span></div></div>
+      <div class="sw" data-copy="var(--warn)"><div class="c" style="background:var(--warn)"></div><div class="m"><b>warn</b><code>#f2c14e</code><span>attention</span></div></div>
+      <div class="sw" data-copy="var(--danger)"><div class="c" style="background:var(--danger)"></div><div class="m"><b>danger</b><code>#ff5959</code><span>urgent · error · sold out</span></div></div>
+    </div>
+
+    <h3>Contrast <small>WCAG on --bg #151009</small></h3>
+    <div class="tbl-wrap"><table>
+      <tr><th>Pair</th><th>Ratio</th><th>Verdict</th></tr>
+      <tr><td>ink #f8f0e6 on bg</td><td>16.4 : 1</td><td class="status-ok">AAA — any size</td></tr>
+      <tr><td>muted #cbbba9 on bg</td><td>10.5 : 1</td><td class="status-ok">AAA — body text</td></tr>
+      <tr><td>faint #96897a on bg</td><td>5.6 : 1</td><td class="status-ok">AA — labels, meta (≥ 12px bold)</td></tr>
+      <tr><td>accent-hot #ff8a5c on bg</td><td>7.6 : 1</td><td class="status-ok">AAA — highlight words</td></tr>
+      <tr><td>accent #ff6a3c on bg</td><td>6.3 : 1</td><td class="status-ok">AA — text, AAA large</td></tr>
+      <tr><td>on-accent #2a1105 on accent</td><td>6.9 : 1</td><td class="status-ok">AA — button labels (800 weight)</td></tr>
+      <tr><td>on-lav #221a3d on lav</td><td>10.1 : 1</td><td class="status-ok">AAA</td></tr>
+      <tr><td>faint-2 #756a5c on bg</td><td>3.6 : 1</td><td class="status-old">Disabled states only — never for readable copy</td></tr>
+    </table></div>
+
+    <div class="dd" style="margin-top:28px">
+      <div class="do"><b>Do</b><ul><li>One accent moment per view — the CTA owns orange.</li><li>Use <code>--accent-hot</code> for highlighted words inside headings (<code>.hl</code>).</li><li>Use lavender for whole sections/cards, never as a second button color next to orange.</li><li>Tint with <code>--accent-soft</code> / <code>--accent-line</code>, not with lowered opacity on the element.</li></ul></div>
+      <div class="dont"><b>Don't</b><ul><li>Heritage gold <code>#C9A84C</code> is retired. Never reintroduce it (exception: the player loader, pinned by Majid).</li><li>No pure black <code>#000</code> surfaces and no pure white <code>#fff</code> text.</li><li>No gradients on body text. No orange on lavender, no lavender on orange.</li><li>No new hues. Blue, teal, pink, neon — not in the family.</li></ul></div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ TYPOGRAPHY ═══════════════════ -->
+  <section class="ds" id="type">
+    <h2>Typography</h2>
+    <p class="intro"><b>Gumela Arabic</b> (display) for headings, names and hero numbers. <b>Cairo</b> (body) for running copy, UI, labels and buttons at 600–900. Gumela is never used for body text or buttons; Cairo Bold is never used for an H1.</p>
+
+    <div class="spec start">
+      <div class="ts">
+        <div><div class="meta">h1.disp<br>Gumela 700<br>clamp(1.62rem, 5.2vw, 3.05rem)<br>lh 1.4 · track −.01em</div><div class="sample"><h1 class="disp">مكانك الأول لتعلم <span class="hl">الإبداع</span></h1></div></div>
+        <div><div class="meta">h2.disp<br>Gumela 700<br>clamp(1.42rem, 3.8vw, 2.4rem)</div><div class="sample"><h2 class="disp">معادلة صناعة الإلهام 2.0</h2></div></div>
+        <div><div class="meta">h3.disp<br>Gumela 700<br>clamp(1.15rem, 2.6vw, 1.6rem)</div><div class="sample"><h3 class="disp" style="margin:0">اليوم الأول — العين قبل الأداة</h3></div></div>
+        <div><div class="meta">.lead<br>Cairo 400 · muted<br>clamp(.98rem, 1.8vw, 1.14rem)</div><div class="sample"><p class="lead">النظام الإبداعي المدعوم بالـ <span class="en">AI</span> اللي يحوّل رؤيتك إلى نتايج قوية كل مرة.</p></div></div>
+        <div><div class="meta">body<br>Cairo 400 · ink/muted<br>1rem · lh 1.75</div><div class="sample"><p style="color:var(--muted)">دورات، جلسات مباشرة، وتجارب فردية — صُممت للمبدع العربي الذي يريد أن يتقدم، لا أن يُستبدل.</p></div></div>
+        <div><div class="meta">.label<br>Cairo 800 · faint<br>.78rem</div><div class="sample"><span class="label">الدفعة الرابعة · ٢٥–٢٧ أغسطس</span></div></div>
+        <div><div class="meta">.stat-pill .n<br>Gumela 700 · accent-hot<br>1.7rem</div><div class="sample"><span class="stat-pill"><div class="n">16</div><div class="l">سنة في الصناعة الإبداعية</div></span></div></div>
+      </div>
+    </div>
+
+    <h3>Rules</h3>
+    <div class="dd">
+      <div class="do"><b>Do</b><ul><li>Arabic is primary; Latin brand names stay Latin (<b>MA Learn</b>, <b>Midjourney</b>, <b>AI</b>) wrapped in <code>.en</code>.</li><li>Arabic-Indic numerals for dates and counts in copy (٢٥–٢٧ أغسطس); Latin digits for prices, stats and code (1,399 SAR · 16).</li><li>Line-height 1.75–2.0 for Arabic body; 1.4 for display.</li><li>Cairo weights: 400 body · 600 rows · 700 chips · 800 buttons/labels · 900 numbers in pills.</li></ul></div>
+      <div class="dont"><b>Don't</b><ul><li>No all-caps Arabic. Uppercase only for short Latin labels with letter-spacing.</li><li>No system fonts, no Tajawal/Almarai/Noto substitutes. If Gumela fails, Cairo carries the heading.</li><li>No letter-spacing on Arabic text.</li><li>Never write كوهورت — the word is <b>دفعة</b>.</li></ul></div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ SHAPE & SPACE ═══════════════════ -->
+  <section class="ds" id="shape">
+    <h2>Shape &amp; space</h2>
+    <p class="intro">Radius says “chunky”. Lines are 1.5px. Sections breathe. The wrap is 1120px at 92% width, centered.</p>
+    <h3>Radius scale</h3>
+    <div class="rd">
+      <div style="border-radius:var(--r-xs)">xs 6</div><div style="border-radius:var(--r-sm)">sm 10</div><div style="border-radius:var(--r-md)">md 14</div>
+      <div style="border-radius:var(--r-lg)">lg 22</div><div style="border-radius:var(--r-xl)">xl 28</div><div style="border-radius:var(--r-2xl)">2xl 34</div><div style="border-radius:var(--r-pill)">pill</div>
+    </div>
+    <div class="tbl-wrap" style="margin-top:20px"><table>
+      <tr><th>Token</th><th>Use</th></tr>
+      <tr><td><code>--r-xs</code> 6px</td><td>checkboxes, tiny badges, hero version tag</td></tr>
+      <tr><td><code>--r-sm</code> 10px</td><td>inputs, selects, small tiles, ghost icon buttons</td></tr>
+      <tr><td><code>--r-md</code> 14px</td><td>list rows, countdown cells, number squares, masonry tiles</td></tr>
+      <tr><td><code>--r-lg</code> 22px</td><td>cards, accordions, media slots, sticky bar, stat pills</td></tr>
+      <tr><td><code>--r-xl</code> 28px</td><td>feature cards, router buttons, banner image insets</td></tr>
+      <tr><td><code>--r-2xl</code> 34px</td><td>hero panels, full-bleed feature blocks</td></tr>
+      <tr><td><code>--r-pill</code></td><td>buttons, chips, eyebrows, tags, captions</td></tr>
+    </table></div>
+
+    <h3>Spacing <small>8pt scale</small></h3>
+    <div class="spec start" style="padding-bottom:44px">
+      <div class="sp">
+        <div data-l="s-1 4" style="width:4px;height:40px"></div><div data-l="s-2 8" style="width:8px;height:40px"></div><div data-l="s-3 12" style="width:12px;height:40px"></div><div data-l="s-4 16" style="width:16px;height:40px"></div>
+        <div data-l="s-5 24" style="width:24px;height:40px"></div><div data-l="s-6 32" style="width:32px;height:40px"></div><div data-l="s-7 48" style="width:48px;height:40px"></div><div data-l="s-8 64" style="width:64px;height:40px"></div>
+      </div>
+    </div>
+    <div class="tbl-wrap" style="margin-top:20px"><table>
+      <tr><th>Token</th><th>Value</th><th>Use</th></tr>
+      <tr><td><code>--wrap</code></td><td>1120px · <code>min(1120px, 92%)</code></td><td>content column, centered</td></tr>
+      <tr><td><code>--sec-y</code></td><td>clamp(88px, 14vw, 176px)</td><td>section padding — default</td></tr>
+      <tr><td><code>--sec-y-tight</code></td><td>clamp(56px, 9vw, 108px)</td><td>section padding — dense pages, app UI</td></tr>
+      <tr><td><code>--page-x</code></td><td>clamp(16px, 3vw, 40px)</td><td>app-shell horizontal padding (player, dashboard)</td></tr>
+      <tr><td>card padding</td><td>clamp(24px, 3.6vw, 38px)</td><td>inside <code>.card</code></td></tr>
+      <tr><td>lines</td><td>1.5px solid</td><td>all borders; 1px only for hairlines and list rows</td></tr>
+    </table></div>
+  </section>
+
+  <!-- ═══════════════════ LIGHT ═══════════════════ -->
+  <section class="ds" id="light">
+    <h2>Light &amp; elevation</h2>
+    <p class="intro">Depth comes from light, not from shadows. One warm glow at the top of a hero; cards are lifted by a 1.5px cream line, and only the primary button glows orange.</p>
+    <div class="grid g2">
+      <div class="spec glow rtl" style="min-height:220px;display:flex;align-items:center;justify-content:center"><div><div class="label" style="margin-bottom:10px">--glow-hero</div><h3 class="disp" style="margin:0">الضوء يجي من فوق</h3></div></div>
+      <div class="spec rtl" style="display:grid;gap:14px;align-content:center">
+        <div class="card" style="padding:18px"><div class="label">--shadow-card</div>بطاقة عادية — خط كريمي 1.5px</div>
+        <div class="card" style="padding:18px;box-shadow:var(--shadow-raised);border-color:var(--accent-line)"><div class="label">--shadow-raised</div>بطاقة مرفوعة (hover)</div>
+        <button class="btn btn-primary">--shadow-accent</button>
+      </div>
+    </div>
+    <div class="tbl-wrap" style="margin-top:20px"><table>
+      <tr><th>Token</th><th>Value</th></tr>
+      <tr><td><code>--glow-hero</code></td><td>radial-gradient(58% 44% at 50% -4%, rgba(255,96,44,.30), transparent 68%), radial-gradient(34% 26% at 88% 22%, rgba(255,132,72,.10), transparent 70%)</td></tr>
+      <tr><td><code>--shadow-card</code></td><td>0 1px 2px rgba(0,0,0,.4), 0 0 0 1px var(--line)</td></tr>
+      <tr><td><code>--shadow-raised</code></td><td>0 18px 44px -14px rgba(0,0,0,.55)</td></tr>
+      <tr><td><code>--shadow-accent</code></td><td>0 10px 34px -10px rgba(255,106,60,.55), inset 0 1px 0 rgba(255,255,255,.28)</td></tr>
+      <tr><td><code>--focus</code></td><td>0 0 0 2px rgba(255,106,60,.35)</td></tr>
+      <tr><td><code>--scrim</code> / <code>--scrim-bar</code></td><td>rgba(21,16,9,.72) over media · rgba(21,16,9,.78) + blur(14px) for sticky headers</td></tr>
+    </table></div>
+  </section>
+
+  <!-- ═══════════════════ MOTION ═══════════════════ -->
+  <section class="ds" id="motion">
+    <h2>Motion</h2>
+    <p class="intro">One easing curve for everything that moves. Hover lifts 2px. Sections reveal once, 26px up over 800ms. Reduced-motion collapses all of it.</p>
+    <div class="tbl-wrap"><table>
+      <tr><th>Token</th><th>Value</th><th>Use</th></tr>
+      <tr><td><code>--ease</code></td><td>cubic-bezier(.22, 1, .36, 1)</td><td>every transition and reveal</td></tr>
+      <tr><td><code>--dur-fast</code></td><td>150ms</td><td>color, border, focus</td></tr>
+      <tr><td><code>--dur-med</code></td><td>250ms</td><td>hover lift, chevrons, chips</td></tr>
+      <tr><td><code>--dur-slow</code></td><td>500ms</td><td>card lift, sticky bar in/out</td></tr>
+      <tr><td><code>--dur-reveal</code></td><td>800ms</td><td><code>.rv → .rv.in</code> scroll reveal (opacity + 26px)</td></tr>
+      <tr><td><code>--lift</code> / <code>--lift-card</code></td><td>translateY(−2px) / translateY(−4px)</td><td>button · card hover</td></tr>
+      <tr><td><code>bob</code> keyframe</td><td>1.6s infinite, 7px</td><td>“scroll to why” arrow only</td></tr>
+    </table></div>
+    <div class="dd" style="margin-top:20px">
+      <div class="do"><b>Do</b><ul><li>Reveal sections once as they enter (IntersectionObserver adds <code>.in</code>).</li><li>Marquees: seamless loop, JS-measured offset, LTR on wrapper AND track, masked edges.</li><li>Pulse only for live urgency (countdown seconds, LIVE badge) — 1–2s, opacity or ≤ 6% scale.</li></ul></div>
+      <div class="dont"><b>Don't</b><ul><li>No bounce, no spring overshoot, no parallax.</li><li>No animated gradients or moving glows.</li><li>No motion on text lines other than the reveal.</li></ul></div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ BUTTONS ═══════════════════ -->
+  <section class="ds" id="buttons">
+    <h2>Buttons</h2>
+    <p class="intro">Pill, Cairo 800, 16×38px. One primary per view. Ghost for the secondary path. Lavender only inside a lavender section.</p>
+    <div class="spec rtl">
+      <div class="row">
+        <a class="btn btn-primary" href="#">احجز مقعدك — 1,399 ر.س</a>
+        <a class="btn btn-ghost" href="#">شوف المنهج أول</a>
+        <a class="btn btn-lav" href="#">ادخل المجتمع</a>
+        <a class="btn btn-quiet" href="#">لاحقاً</a>
+      </div>
+      <div class="row" style="margin-top:18px">
+        <a class="btn btn-primary btn-big" href="#">ابدأ الآن</a>
+        <a class="btn btn-primary btn-sm" href="#">تسجيل</a>
+        <a class="btn btn-ghost btn-sm" href="#">التفاصيل</a>
+        <button class="btn btn-primary" disabled>اكتملت المقاعد</button>
+      </div>
+    </div>
+<pre><button class="copy">copy</button><span class="c">&lt;!-- primary · ghost · lavender · quiet --&gt;</span>
+&lt;a class="<span class="v">btn btn-primary</span>" href="…"&gt;احجز مقعدك&lt;/a&gt;
+&lt;a class="<span class="v">btn btn-ghost</span>" href="…"&gt;شوف المنهج&lt;/a&gt;
+&lt;a class="<span class="v">btn btn-lav</span>" href="…"&gt;ادخل المجتمع&lt;/a&gt;
+<span class="c">&lt;!-- sizes: .btn-big  .btn-sm   states: [disabled] --&gt;</span></pre>
+  </section>
+
+  <!-- ═══════════════════ CHIPS ═══════════════════ -->
+  <section class="ds" id="chips">
+    <h2>Eyebrows · chips · tags</h2>
+    <p class="intro">Three sizes of pill for three jobs: the eyebrow introduces a section, chips carry facts, tags mark state.</p>
+    <div class="spec rtl">
+      <div class="row"><span class="eyebrow" style="margin:0"><span class="num">٠١</span> ليه هذي الورشة</span><span class="eyebrow lav-e" style="margin:0"><span class="num">مضمّن</span> مدخل إلى الذكاء الاصطناعي الإبداعي</span></div>
+      <div class="chips" style="margin-top:20px">
+        <span class="chip">٣ جلسات مباشرة</span><span class="chip"><b>30</b> مقعد فقط</span><span class="chip chip-solid">بث مباشر غير مسجل</span><span class="chip chip-live">الدفعة الرابعة · ٢٥–٢٧ أغسطس</span><span class="chip chip-lav">وصول مدى الحياة</span>
+      </div>
+      <div class="row" style="margin-top:20px">
+        <span class="tag">مسجّلة</span><span class="tag tag-solid">بدأت الآن</span><span class="tag tag-lav">مضمّن</span><span class="tag tag-ok">متاحة الآن</span><span class="tag tag-warn">آخر ٣ مقاعد</span><span class="tag tag-danger">اكتملت</span><span class="tag tag-neutral">قريباً</span>
+      </div>
+      <div class="meta-line" style="margin-top:20px"><span>٧–١٠ مساءً</span><span class="sep">·</span><span>عبر Google Meet</span><span class="sep">·</span><span>تسجيل الجلسات متاح ٣٠ يوم</span></div>
+    </div>
+<pre><button class="copy">copy</button>&lt;span class="<span class="v">eyebrow</span>"&gt;&lt;span class="num"&gt;٠١&lt;/span&gt; ليه هذي الورشة&lt;/span&gt;
+&lt;div class="<span class="v">chips</span>"&gt;&lt;span class="<span class="v">chip</span>"&gt;&lt;b&gt;30&lt;/b&gt; مقعد&lt;/span&gt;&lt;span class="<span class="v">chip chip-solid</span>"&gt;بث مباشر&lt;/span&gt;&lt;/div&gt;
+&lt;span class="<span class="v">tag tag-ok</span>"&gt;متاحة الآن&lt;/span&gt;   <span class="c">tag · tag-solid · tag-lav · tag-ok · tag-warn · tag-danger · tag-neutral</span></pre>
+  </section>
+
+  <!-- ═══════════════════ CARDS ═══════════════════ -->
+  <section class="ds" id="cards">
+    <h2>Cards</h2>
+    <p class="intro">Default card = card fill + 1.5px line + 22px radius. Accent and lavender cards are gradient-filled, borderless, and carry their own “on” ink.</p>
+    <div class="grid g3" dir="rtl">
+      <div class="card card-hover"><span class="tag" style="margin-bottom:14px">افتراضي</span><h3 class="disp" style="margin:0 0 10px">.card</h3><p style="color:var(--muted);font-size:.9rem">للمحتوى العادي — المنهج، الأسئلة، الشهادات.</p></div>
+      <div class="card card-accent"><span class="tag tag-neutral" style="background:rgba(42,17,5,.18);color:var(--on-accent);margin-bottom:14px">تركيز</span><h3 class="disp" style="margin:0 0 10px">.card-accent</h3><p class="c-muted" style="font-size:.9rem">للعرض الرئيسي، السعر، أو الرسالة الوحيدة اللي تبغى العين تقف عندها.</p></div>
+      <div class="card card-lav"><span class="tag tag-neutral" style="background:rgba(34,26,61,.14);color:var(--on-lav);margin-bottom:14px">مضمّن</span><h3 class="disp" style="margin:0 0 10px">.card-lav</h3><p class="c-muted" style="font-size:.9rem">للأساسيات والمجتمع — القيمة الهادية اللي تجي مع الباقة.</p></div>
+    </div>
+    <div class="grid g3" style="margin-top:14px" dir="rtl">
+      <span class="stat-pill" style="text-align:center"><div class="n">500+</div><div class="l">مبدع ومبدعة تم تدريبهم</div></span>
+      <span class="stat-pill" style="text-align:center"><div class="n">17+</div><div class="l">غلاف مجلة عالمية</div></span>
+      <span class="stat-pill" style="text-align:center"><div class="n">1M</div><div class="l">هدف الإلهام</div></span>
+    </div>
+<pre><button class="copy">copy</button>&lt;div class="<span class="v">card</span>"&gt;…&lt;/div&gt;
+&lt;div class="<span class="v">card card-accent</span>"&gt;… &lt;p class="c-muted"&gt;secondary text&lt;/p&gt;&lt;/div&gt;
+&lt;div class="<span class="v">card card-lav</span>"&gt;…&lt;/div&gt;
+&lt;span class="<span class="v">stat-pill</span>"&gt;&lt;div class="n"&gt;16&lt;/div&gt;&lt;div class="l"&gt;سنة&lt;/div&gt;&lt;/span&gt;
+<span class="c">modifiers: .card-xl (28px) · .card-hover (lift + accent line)</span></pre>
+  </section>
+
+  <!-- ═══════════════════ FORMS ═══════════════════ -->
+  <section class="ds" id="forms">
+    <h2>Forms</h2>
+    <p class="intro">Inputs sit on <code>--bg-2</code> with a strong cream line, 10px radius, Cairo 600. Focus turns the line orange with a soft ring. Choice cards replace bare radios.</p>
+    <div class="spec rtl start" style="max-width:620px">
+      <div class="grid" style="gap:18px">
+        <div class="field"><label>الاسم الكامل</label><input class="input" placeholder="مثال: ماجد عنقاوي"></div>
+        <div class="field"><label>البريد الإلكتروني</label><input class="input" type="email" placeholder="you@example.com" dir="ltr" style="text-align:left"></div>
+        <div class="field" data-state="error"><label>رقم الجوال</label><input class="input" value="05xx" dir="ltr" style="text-align:left"><div class="helper">الرقم غير مكتمل</div></div>
+        <div class="field"><label>اختر الدفعة</label>
+          <label class="choice"><input type="radio" name="d" checked> <span><b>الدفعة الخامسة</b> · ٨–١٠ سبتمبر</span></label>
+          <label class="choice"><input type="radio" name="d"> <span><b>الدفعة السادسة</b> · ١٥–١٧ سبتمبر</span></label>
+          <label class="choice is-full"><input type="radio" name="d" disabled> <span><b>الدفعة الرابعة</b> · اكتملت</span></label>
+        </div>
+        <div class="field"><label>ملاحظات</label><textarea class="textarea" placeholder="اختياري"></textarea></div>
+        <button class="btn btn-primary">أكمل التسجيل</button>
+      </div>
+    </div>
+<pre><button class="copy">copy</button>&lt;div class="<span class="v">field</span>"&gt;&lt;label&gt;الاسم&lt;/label&gt;&lt;input class="<span class="v">input</span>"&gt;&lt;/div&gt;
+&lt;div class="field" <span class="k">data-state="error"</span>&gt;… &lt;div class="helper"&gt;message&lt;/div&gt;&lt;/div&gt;
+&lt;label class="<span class="v">choice</span>"&gt;&lt;input type="radio"&gt; &lt;span&gt;…&lt;/span&gt;&lt;/label&gt;   <span class="c">.is-full = sold out</span></pre>
+  </section>
+
+  <!-- ═══════════════════ ACCORDION ═══════════════════ -->
+  <section class="ds" id="accordion">
+    <h2>Accordion &amp; lists</h2>
+    <p class="intro">Native <code>&lt;details&gt;</code> styled as a card. Orange number square by default; <code>.acc-lav</code> inside lavender contexts. Row lists for lessons and bullet facts.</p>
+    <div class="acc-list" dir="rtl" style="max-width:720px">
+      <details class="acc" open><summary><span class="num">٠١</span><span class="t">العين قبل الأداة — كيف تبني ذوق ما يقدر الـ AI يستبدله</span><span class="fx">+</span></summary><div class="body"><ul class="row-list"><li><span class="pl">▶</span>ليش الأداة ما تصنع مبدع</li><li><span class="pl">▶</span>مرجع &gt; اختراع: تسمية الأسطورة</li></ul></div></details>
+      <details class="acc acc-lav"><summary><span class="num">٠٢</span><span class="t">كيف أفكر في الصورة — من البريف إلى التسليم</span><span class="fx">+</span></summary><div class="body">محتوى.</div></details>
+      <details class="acc"><summary><span class="num">؟</span><span class="t">هل الجلسات مسجلة؟</span><span class="fx">+</span></summary><div class="body">بث مباشر غير مسجل — التسجيل يُتاح ٣٠ يوم بعد الجلسة.</div></details>
+    </div>
+<pre><button class="copy">copy</button>&lt;div class="<span class="v">acc-list</span>"&gt;
+  &lt;details class="<span class="v">acc</span>"&gt;&lt;summary&gt;&lt;span class="num"&gt;٠١&lt;/span&gt;&lt;span class="t"&gt;title&lt;/span&gt;&lt;span class="fx"&gt;+&lt;/span&gt;&lt;/summary&gt;
+    &lt;div class="body"&gt;&lt;ul class="<span class="v">row-list</span>"&gt;&lt;li&gt;&lt;span class="pl"&gt;▶&lt;/span&gt;lesson&lt;/li&gt;&lt;/ul&gt;&lt;/div&gt;
+  &lt;/details&gt;
+&lt;/div&gt;</pre>
+  </section>
+
+  <!-- ═══════════════════ MEDIA ═══════════════════ -->
+  <section class="ds" id="media">
+    <h2>Media</h2>
+    <p class="intro">Images live in a 22px-radius slot with a cream line. Captions are pills on a scrim. Empty states are dashed, never blank. Video frames sit on <code>--media</code> with a faint orange bloom.</p>
+    <div class="grid g3" dir="rtl">
+      <div class="img-slot" style="aspect-ratio:4/5"><img src="https://malearnsa.com/brand_assets/profile.jpg" alt=""><span class="img-cap">ماجد عنقاوي · جدة</span></div>
+      <div class="ph-slot" style="aspect-ratio:4/5">مكان الصورة<br>(حالة فارغة)</div>
+      <div class="video-embed" style="aspect-ratio:4/5"></div>
+    </div>
+<pre><button class="copy">copy</button>&lt;div class="<span class="v">img-slot</span>"&gt;&lt;img src="…"&gt;&lt;span class="img-cap"&gt;caption&lt;/span&gt;&lt;/div&gt;
+&lt;div class="<span class="v">ph-slot</span>"&gt;empty state&lt;/div&gt;
+&lt;div class="<span class="v">video-embed</span>"&gt;&lt;iframe src="bunny…"&gt;&lt;/iframe&gt;&lt;/div&gt;</pre>
+  </section>
+
+  <!-- ═══════════════════ NAV ═══════════════════ -->
+  <section class="ds" id="nav">
+    <h2>Header · sticky bar · footer</h2>
+    <p class="intro">Sticky header on a blurred scrim with a 1px line. The sticky CTA bar floats 14px off the bottom edge with a 22px radius. Footer is a single hairline and small links.</p>
+    <div class="spec on-bg" style="padding:0;overflow:hidden" dir="rtl">
+      <div class="top" style="position:relative"><div class="wrap top-in"><img class="logo" src="https://malearnsa.com/brand_assets/logo-malearn-white.png" alt="MA Learn"><nav class="nav-links"><a href="#">المنهج</a><a href="#">المدرّب</a><a href="#">الأسئلة</a></nav><a class="btn btn-primary btn-sm" href="#">احجز مقعدك</a></div></div>
+      <div style="padding:28px 24px"><div class="sticky on" style="position:relative;bottom:auto;inset-inline:auto;transform:none"><div><div class="s-name" style="font-weight:800;font-size:.86rem">معادلة صناعة الإلهام 2.0</div><div class="micro">الدفعة الخامسة · ٨–١٠ سبتمبر</div></div><a class="btn btn-primary btn-sm" href="#">احجز الآن</a></div></div>
+      <footer class="foot"><div class="wrap foot-in"><div class="foot-links"><a href="#">سياسة الاسترجاع</a><a href="#">الخصوصية</a><a href="#">تواصل معنا</a></div><div class="foot-copy">© MA Learn 2026 — جميع الحقوق محفوظة</div></div></footer>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ QUICK START ═══════════════════ -->
+  <section class="ds" id="quickstart">
+    <h2>Quick start</h2>
+    <p class="intro">Three ways to consume the system. In every case the tokens come from the canonical URL — never pasted into the page.</p>
+    <h3>1 · New page or site (HTML)</h3>
+<pre><button class="copy">copy</button>&lt;html lang="ar" dir="rtl"&gt;
+&lt;head&gt;
+  &lt;link rel="stylesheet" href="<span class="v">https://malearnsa.com/brand/ma-v4.css</span>"&gt;
+&lt;/head&gt;
+&lt;body&gt;
+  &lt;section class="sec glow-wrap"&gt;&lt;div class="wrap"&gt;
+    &lt;span class="eyebrow"&gt;&lt;span class="num"&gt;٠١&lt;/span&gt; …&lt;/span&gt;
+    &lt;h1 class="disp"&gt;… &lt;span class="hl"&gt;…&lt;/span&gt;&lt;/h1&gt;
+    &lt;p class="lead sec-lead"&gt;…&lt;/p&gt;
+    &lt;a class="btn btn-primary" href="…"&gt;…&lt;/a&gt;
+  &lt;/div&gt;&lt;/section&gt;
+&lt;/body&gt;&lt;/html&gt;</pre>
+    <h3>2 · Existing page with its own CSS (tokens only)</h3>
+<pre><button class="copy">copy</button>&lt;link rel="stylesheet" href="<span class="v">https://malearnsa.com/brand/tokens.css</span>"&gt;
+<span class="c">/* then reference var(--bg), var(--accent), var(--r-lg)… in your own rules */</span></pre>
+    <h3>3 · PDF / document (screen PDF stays dark; physical print uses paper mode)</h3>
+<pre><button class="copy">copy</button>&lt;html class="<span class="v">paper</span>"&gt;   <span class="c">← only for paper that will be physically printed (invoices, handouts)</span>
+<span class="c">Screen PDFs (guides, decks, proposals): normal dark tokens, export via print-to-PDF with backgrounds ON.</span></pre>
+    <h3>4 · Non-web tools (Canva, Figma, CapCut, Keynote)</h3>
+    <div class="tbl-wrap"><table>
+      <tr><th>Slot</th><th>Value</th></tr>
+      <tr><td>Background</td><td>#151009 &nbsp;·&nbsp; card #231A12</td></tr>
+      <tr><td>Text</td><td>#F8F0E6 &nbsp;·&nbsp; secondary #CBBBA9 &nbsp;·&nbsp; meta #96897A</td></tr>
+      <tr><td>Accent</td><td>#FF6A3C &nbsp;·&nbsp; highlight #FF8A5C &nbsp;·&nbsp; text on accent #2A1105</td></tr>
+      <tr><td>Lavender</td><td>#CFC2F5 &nbsp;·&nbsp; text on lavender #221A3D</td></tr>
+      <tr><td>Fonts</td><td>Gumela Arabic Bold (headings) · Cairo (body) — files at <code>malearnsa.com/brand_assets/</code></td></tr>
+      <tr><td>Corners</td><td>22px cards · pill buttons · 1.5px lines at 20% cream</td></tr>
+    </table></div>
+  </section>
+
+  <!-- ═══════════════════ RULES ═══════════════════ -->
+  <section class="ds" id="rules">
+    <h2>Rules</h2>
+    <p class="intro">Non-negotiables for anyone — human or agent — shipping a surface for MA Learn or Majid Angawi.</p>
+    <div class="dd">
+      <div class="do"><b>Always</b><ul>
+        <li>Link <code>tokens.css</code> or <code>ma-v4.css</code> from the canonical URL. A page that redeclares tokens is a bug.</li>
+        <li>One primary CTA per view. Orange belongs to it.</li>
+        <li>Design RTL-first; verify at 390px and 1440px.</li>
+        <li>Reduced-motion and keyboard focus must work — the tokens already handle both.</li>
+        <li>Real copy, real numbers. Placeholders use <code>.ph-slot</code>, never lorem ipsum.</li>
+        <li>Propose a new token or component here first; then use it. The changelog records every addition.</li>
+      </ul></div>
+      <div class="dont"><b>Never</b><ul>
+        <li>Heritage gold, pure black, pure white, or any new hue.</li>
+        <li>Gumela in body text or buttons; Cairo Bold as a page H1.</li>
+        <li>Square corners on interactive elements. Radius &lt; 10px on anything clickable.</li>
+        <li>Two accent buttons side by side. Orange next to lavender inside one component.</li>
+        <li>Drop-shadow on text; glow on anything that is not the hero or the primary button.</li>
+        <li>False scarcity in copy (“ما ينعاد”). Internal acronyms (CIW, ITCAI, T3) in public. كوهورت instead of دفعة.</li>
+      </ul></div>
+    </div>
+  </section>
+
+  <!-- ═══════════════════ SURFACES ═══════════════════ -->
+  <section class="ds" id="surfaces">
+    <h2>Surfaces &amp; status</h2>
+    <p class="intro">Where V4 is live and what still carries the retired Editorial Atelier gold.</p>
+    <div class="tbl-wrap"><table>
+      <tr><th>Surface</th><th>Status</th><th>Notes</th></tr>
+      <tr><td>malearnsa.com/creative-ai-workshop/ + checkout.malearnsa.com/creative-ai-workshop/</td><td class="status-ok">V4 — origin</td><td>The reference build. Local token names differ slightly (its <code>--r-md</code> = SSOT <code>--r-lg</code>).</td></tr>
+      <tr><td>malearnsa.com/ (home)</td><td class="status-ok">V4</td><td>2026-08-30 · token remap + literal sweep</td></tr>
+      <tr><td>player.malearnsa.com (BL + ITCAI)</td><td class="status-ok">V4</td><td>2026-08-30 · via css/tokens.css remap. Loader pinned to legacy gold (Majid).</td></tr>
+      <tr><td>malearnsa.com/brand/ (this)</td><td class="status-ok">V4</td><td>Consumes ma-v4.css directly.</td></tr>
+      <tr><td>footer-module/v1/footer.css (shared footer)</td><td class="status-old">Old gold</td><td>Serves every page — migrate in one coordinated pass.</td></tr>
+      <tr><td>admin.malearnsa.com (dashboard)</td><td class="status-old">Editorial Atelier</td><td>Internal; migrate when convenient.</td></tr>
+      <tr><td>player.malearnsa.com/guides/*</td><td class="status-old">Mixed</td><td>Self-contained pages; migrate on next edit.</td></tr>
+      <tr><td>Other product landings (ITCAI, BL, 1-on-1, waitlist, masterclass)</td><td class="status-old">Old gold</td><td>Migrate on next launch touch.</td></tr>
+      <tr><td>Customer emails (house template)</td><td class="status-old">Dark-gold</td><td>Decision pending — email palette not yet moved to V4.</td></tr>
+      <tr><td>Paid statics (Meta)</td><td class="status-ok">Compatible</td><td>Flat accent orange, loud, first-person — Majid's ad rule already lives on the V4 accent.</td></tr>
+    </table></div>
+  </section>
+
+  <!-- ═══════════════════ CHANGELOG ═══════════════════ -->
+  <section class="ds" id="changelog">
+    <h2>Changelog</h2>
+    <div class="tbl-wrap"><table>
+      <tr><th>Version</th><th>Date</th><th>Change</th></tr>
+      <tr><td><b>4.0.0</b></td><td>2026-08-31</td><td>V4 approved by Majid as the main branding for all upcoming pages, websites and PDFs. Tokens + components extracted from the معادلة 2.0 landing/checkout into <code>tokens.css</code> / <code>ma-v4.css</code>. Paper mode added for physical print. Semantic set (ok/warn/danger) formalized. Player and home reskinned (2026-08-30).</td></tr>
+      <tr><td>3.x</td><td>2026-04 → 08</td><td>“Editorial Atelier” — near-black + heritage gold. Retired.</td></tr>
+    </table></div>
+    <p class="micro" style="margin-top:18px">Owner: Majid Angawi (approval) · Maintainers: Noor + Maher (tokens/CSS) · Layan + Nahar (visual formula). Propose changes as a PR to <code>Majidangawi/malearnsa</code> → <code>/brand/</code>.</p>
+  </section>
+
+  </main>
+</div>
+
+<div class="toast" id="toast">copied</div>
+
+<script>
+  // click-to-copy on swatches, token codes and code blocks
+  const toast = document.getElementById('toast'); let t;
+  function say(m){ toast.textContent = m; toast.classList.add('on'); clearTimeout(t); t = setTimeout(()=>toast.classList.remove('on'), 1200); }
+  function copy(text){ navigator.clipboard?.writeText(text).then(()=>say('copied ' + text.slice(0,42))); }
+  document.querySelectorAll('.sw').forEach(el => el.addEventListener('click', () => copy(el.dataset.copy)));
+  document.querySelectorAll('td code').forEach(el => el.addEventListener('click', () => copy(el.textContent.trim())));
+  document.querySelectorAll('pre .copy').forEach(b => b.addEventListener('click', () => { const pre = b.parentElement.cloneNode(true); pre.querySelector('.copy').remove(); copy(pre.textContent.trim()); }));
+  // toc highlight
+  const links = [...document.querySelectorAll('.toc a[href^="#"]')];
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) links.forEach(a => a.classList.toggle('on', a.getAttribute('href') === '#' + e.target.id)); }), { rootMargin: '-30% 0px -60% 0px' });
+  document.querySelectorAll('section.ds').forEach(s => io.observe(s));
+</script>
+</body>
+</html>
