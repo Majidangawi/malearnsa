@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <!-- Meta Pixel Code -->
+  <script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '961157069802409');
+  fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=961157069802409&ev=PageView&noscript=1"/></noscript>
+  <!-- End Meta Pixel Code -->
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TZ9839RVDJ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TZ9839RVDJ');
+  </script>
+
+  <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ماجد عنقاوي × Figma Weave — شراكة إبداعية | MA Learn</title>
+  <meta name="description" content="شراكة بين ماجد عنقاوي و Figma Weave: ١٥٠٠ كريدت حصرياً لطلاب ورش ماجد، واختبار أحدث ميزات المنصة وإعطاء الملاحظات لفريقها. تعرّف على المنصة وعلى ورشة معادلة صناعة الإلهام 2.0.">
+  <meta name="author" content="ماجد عنقاوي — MA Learn">
+  <link rel="canonical" href="https://malearnsa.com/figma-weave/">
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="ماجد عنقاوي × Figma Weave — شراكة إبداعية">
+  <meta property="og:description" content="١٥٠٠ كريدت من Figma Weave حصرياً لطلاب ورش ماجد عنقاوي، وصوت مباشر في تطوير المنصة.">
+  <meta property="og:url" content="https://malearnsa.com/figma-weave/">
+  <meta property="og:image" content="https://malearnsa.com/figma-weave/img/og-figma-weave.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="ar_SA">
+  <meta property="og:site_name" content="MA Learn">
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="ماجد عنقاوي × Figma Weave — شراكة إبداعية">
+  <meta name="twitter:description" content="١٥٠٠ كريدت من Figma Weave حصرياً لطلاب ورش ماجد عنقاوي، وصوت مباشر في تطوير المنصة.">
+  <meta name="twitter:image" content="https://malearnsa.com/figma-weave/img/og-figma-weave.jpg">
+
+  <!-- Design System V4 — single source of truth (tokens + base + components). Never redeclare tokens here. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://malearnsa.com/brand/ma-v4.css">
+
+  <style>
+    /* ---------- page-specific layout only (all values come from tokens.css) ---------- */
+    .top .btn{ padding:10px 24px; font-size:.88rem; }
+    .en{ unicode-bidi:isolate; }
+
+    /* hero */
+    .hero{ padding-top:clamp(88px, 9vw, 120px); padding-bottom:clamp(72px, 11vw, 150px); }
+    .hero-col{ max-width:820px; margin-inline:auto; display:flex; flex-direction:column; align-items:center; }
+    .lockup{
+      display:flex; align-items:center; justify-content:center; gap:clamp(18px, 3.5vw, 40px);
+      direction:ltr; margin-top:6px; color:var(--ink);
+    }
+    .lockup .mark{ height:clamp(56px, 8vw, 88px); width:auto; }
+    .lockup .weave{ height:clamp(30px, 4.6vw, 48px); width:auto; }
+    .lockup .x{ font-family:var(--disp); font-weight:700; font-size:clamp(1.6rem, 3.6vw, 2.6rem); color:var(--accent-hot); line-height:1; }
+    .hero-col h1{ margin-top:44px; }
+    .hero-sub{ margin-top:30px; max-width:660px; line-height:var(--lh-loose); }
+    .hero-ctas{ margin-top:48px; display:flex; flex-wrap:wrap; gap:16px; align-items:center; justify-content:center; }
+    .hero-meta{ margin-top:34px; }
+
+    /* partnership — two feature cards */
+    .pair{ display:grid; grid-template-columns:1fr 1fr; gap:22px; margin-top:44px; text-align:start; }
+    @media (max-width:820px){ .pair{ grid-template-columns:1fr; } }
+    .feat{ display:flex; flex-direction:column; gap:14px; min-height:100%; }
+    .feat .big{ font-family:var(--disp); font-weight:700; font-size:clamp(3rem, 7vw, 4.6rem); line-height:1; letter-spacing:var(--track-disp); }
+    .feat h3{ font-size:var(--fs-h3); }
+    .feat p{ font-size:.97rem; }
+    .feat .foot-note{ margin-top:auto; padding-top:14px; font-size:var(--fs-label); font-weight:700; }
+    .card-accent .foot-note{ color:#6b3115; }
+    .feat.card .foot-note{ color:var(--faint); }
+
+    /* quote */
+    .quote{ max-width:760px; margin:56px auto 0; }
+    .quote blockquote{ font-family:var(--disp); font-weight:700; font-size:clamp(1.2rem, 2.6vw, 1.7rem); line-height:1.7; color:var(--ink); }
+    .quote cite{ display:block; margin-top:18px; font-style:normal; color:var(--faint); font-weight:700; font-size:.86rem; }
+
+    /* about-the-platform */
+    .grid-4{ display:grid; grid-template-columns:repeat(2, 1fr); gap:18px; margin-top:44px; text-align:start; }
+    @media (max-width:720px){ .grid-4{ grid-template-columns:1fr; } }
+    .pf h3{ font-size:1.12rem; margin-bottom:10px; }
+    .pf p{ color:var(--muted); font-size:.93rem; }
+    .pf .chips{ justify-content:flex-start; margin-top:16px; }
+    .pf .chip{ padding:6px 14px; font-size:.78rem; }
+    .proof{ margin-top:56px; }
+    .proof-grid{
+      display:grid; grid-template-columns:1800fr 989fr; gap:14px; direction:ltr;
+      max-width:900px; margin-inline:auto;
+    }
+    .proof-grid .img-slot{ aspect-ratio:auto; }
+    .proof-grid .img-slot img{ height:auto; object-fit:contain; }
+    .proof-grid .img-cap{ direction:rtl; }
+    .proof-note{ margin-top:18px; }
+    .platform-cta{ margin-top:44px; display:flex; flex-direction:column; align-items:center; gap:14px; }
+
+    /* workshop */
+    .ws-card{ padding:0; overflow:hidden; text-align:start; }
+    .ws-grid{ display:grid; grid-template-columns:1.15fr .85fr; }
+    @media (max-width:860px){ .ws-grid{ grid-template-columns:1fr; } .ws-grid .img-slot{ aspect-ratio:16/9; border-radius:0; border:0; } }
+    .ws-grid .img-slot{ border-radius:0; border:0; }
+    .ws-body{ padding:clamp(28px, 4.5vw, 52px); }
+    .ws-body .row-list{ margin-top:22px; }
+    .ws-body .btn{ margin-top:28px; }
+
+    /* about (mirrors the CIW landing) */
+    .about-grid{ display:grid; grid-template-columns:.85fr 1.15fr; gap:clamp(32px,5vw,72px); align-items:start; text-align:center; }
+    .about-grid > *{ min-width:0; }
+    @media (max-width:900px){ .about-grid{ grid-template-columns:1fr; } }
+    .about-img{ aspect-ratio:4/5; position:sticky; top:90px; }
+    @media (max-width:900px){ .about-img{ position:static; max-width:440px; margin-inline:auto; } }
+    .about-name{ font-size:clamp(1.6rem,3.4vw,2.3rem); }
+    .about-role{ color:var(--accent-hot); font-weight:800; font-size:.92rem; margin-top:10px; }
+    .about-bio{ margin-top:26px; color:var(--muted); display:grid; gap:18px; font-size:.97rem; max-width:640px; margin-inline:auto; }
+    .about-stats{ display:flex; gap:12px; margin-top:32px; flex-wrap:wrap; justify-content:center; }
+    .about-links{ margin-top:28px; display:flex; gap:12px; flex-wrap:wrap; justify-content:center; }
+
+    .foot-copy .en{ font-weight:700; }
+  </style>
+</head>
+<body>
+
+  <header class="top">
+    <div class="wrap top-in">
+      <a href="https://malearnsa.com/" aria-label="MA Learn"><img class="logo" src="../brand_assets/logo-malearn-white.png" alt="MA Learn"></a>
+      <nav class="nav-links">
+        <a href="#partnership">الشراكة</a>
+        <a href="#platform">عن Figma Weave</a>
+        <a href="#workshop">الورشة</a>
+        <a href="#about">من ماجد</a>
+      </nav>
+      <a class="btn btn-primary" href="https://malearnsa.com/creative-ai-workshop/">احجز مقعدك</a>
+    </div>
+  </header>
+
+  <main>
+    <!-- 1. HERO — MA × Figma Weave lockup -->
+    <section class="sec hero glow-wrap" id="hero">
+      <div class="wrap">
+        <div class="hero-col">
+          <div class="eyebrow"><span class="num">شراكة</span><span>ماجد عنقاوي × Figma Weave</span></div>
+          <div class="lockup" aria-label="Majid Angawi × Figma Weave">
+            <img class="mark" src="../brand_assets/logo-majid-white.png" alt="Majid Angawi" width="693" height="658">
+            <span class="x" aria-hidden="true">×</span>
+            <img class="weave" src="img/figma-weave-wordmark.svg" alt="Figma Weave" width="271" height="40">
+          </div>
+          <h1 class="disp">المنصة اللي يبني عليها ماجد أنظمة توليد الصور والفيديو <span class="hl">صارت شريك لورشه</span></h1>
+          <p class="lead hero-sub">
+            <span class="en">Figma Weave</span> تقدّم <b>١٥٠٠ كريدت</b> حصرياً لطلاب ورش ماجد عنقاوي، وماجد يختبر أحدث ميزات المنصة ويرجّع ملاحظاته لفريقها قبل ما توصلك. النتيجة: تتعلم على الأداة نفسها اللي يشتغل عليها، وتطبّق من أول يوم.
+          </p>
+          <div class="hero-ctas">
+            <a class="btn btn-primary btn-big" href="https://malearnsa.com/creative-ai-workshop/">احجز مقعدك في الورشة</a>
+            <a class="btn btn-ghost" href="https://weave.figma.com?ref=majid75" target="_blank" rel="noopener">افتح Figma Weave ↗</a>
+          </div>
+          <div class="meta-line hero-meta">
+            <span>١٥٠٠ كريدت لطلاب الورشة</span><span class="sep">·</span>
+            <span>اختبار مبكر للميزات</span><span class="sep">·</span>
+            <span>ماستركلاس Figma Weave داخل المجتمع</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 2. THE PARTNERSHIP -->
+    <section class="sec" id="partnership">
+      <div class="wrap">
+        <div class="eyebrow rv"><span class="num">٠١</span><span>الشراكة</span></div>
+        <h2 class="disp sec-h2 rv">وش تعني الشراكة لك؟</h2>
+        <p class="lead sec-lead rv">نقطتين، بدون زيادة.</p>
+
+        <div class="pair">
+          <div class="card card-xl card-accent feat rv">
+            <div class="big">١٥٠٠</div>
+            <h3 class="disp">كريدت من Figma Weave — حصرياً لطلاب ورش ماجد</h3>
+            <p class="c-muted">تستلمها كطالب في الورشة، عشان تطبّق اللي تتعلمه على المنصة نفسها من أول يوم: تبني نظامك، تجرّب النماذج، وتطلع بنتائج فعلية مو تمارين على الورق.</p>
+            <div class="foot-note">تفاصيل الاستلام توصلك داخل الورشة.</div>
+          </div>
+          <div class="card card-xl feat rv">
+            <div class="big hl">↻</div>
+            <h3 class="disp">اختبار أحدث الميزات وإعطاء الملاحظات</h3>
+            <p class="lead" style="font-size:.97rem;">ماجد يجرّب الميزات الجديدة اللي تطلقها المنصة ويرجّع ملاحظاته لفريق <span class="en">Figma Weave</span>. يعني اللي تتعلمه في الورشة مبني على استخدام حقيقي وتجربة يومية مع الأداة، مو على قراءة دليل الاستخدام.</p>
+            <div class="foot-note">صوت المبدع العربي يوصل لفريق المنصة مباشرة.</div>
+          </div>
+        </div>
+
+        <figure class="quote rv">
+          <blockquote>«اللي يعرفني يعرف إني جدًا أحب <span class="en">Figma Weave</span>. اللي مسوّينه مبدعين عشان المبدعين — فهو فاهم أسلوبك قبل الـ <span class="en">AI</span>، ومسوّي لك أداة تقدر تستخدمها مع الـ <span class="en">AI</span>، مو أداة تشتغل مكانك.»</blockquote>
+          <cite>ماجد عنقاوي — من دليل «منصات الذكاء الاصطناعي الإبداعي»</cite>
+        </figure>
+      </div>
+    </section>
+
+    <!-- 3. ABOUT FIGMA WEAVE — only what the platform states about itself -->
+    <section class="sec" id="platform">
+      <div class="wrap">
+        <div class="eyebrow rv"><span class="num">٠٢</span><span>عن المنصة</span></div>
+        <h2 class="disp sec-h2 rv">وش هي <span class="hl">Figma Weave</span>؟</h2>
+        <p class="lead sec-lead rv">
+          <span class="en">Figma Weave</span> (كانت <span class="en">Weavy</span> قبل ما تنضم لـ <span class="en">Figma</span>) منصة مبنية على العُقد <span class="en">(node-based)</span> تجمع نماذج الذكاء الاصطناعي وأدوات التحرير الاحترافية في مساحة عمل وحدة — عشان تحوّل رؤيتك الإبداعية إلى نظام عمل قابل للتكرار بدون ما تتنازل عن الجودة. هم يسمّونها <span class="en">Artistic Intelligence</span>.
+        </p>
+
+        <div class="grid-4">
+          <div class="card pf rv">
+            <h3 class="disp">كل النماذج في مكان واحد</h3>
+            <p>بدل ما تتنقل بين عشر منصات، تشغّل نماذج الصور والفيديو من مزوّدين مختلفين داخل نفس اللوحة وتربطها ببعض.</p>
+            <div class="chips">
+              <span class="chip">Google</span><span class="chip">OpenAI</span><span class="chip">Kling</span><span class="chip">ByteDance</span><span class="chip">Black Forest Labs</span><span class="chip">Runway</span><span class="chip">Luma</span><span class="chip">Grok</span><span class="chip">Recraft</span><span class="chip">Bria</span>
+            </div>
+          </div>
+          <div class="card pf rv">
+            <h3 class="disp">أدوات التحرير اللي تعرفها</h3>
+            <p>أدوات احترافية داخل نفس سير العمل، مو خطوة منفصلة بعد التوليد.</p>
+            <div class="chips">
+              <span class="chip">Inpaint</span><span class="chip">Outpaint</span><span class="chip">Mask</span><span class="chip">Relight</span><span class="chip">Upscale</span><span class="chip">Z Depth</span><span class="chip">Crop</span><span class="chip">Channels</span><span class="chip">Painter</span><span class="chip">Image Describer</span>
+            </div>
+          </div>
+          <div class="card pf rv">
+            <h3 class="disp">طبقات ودمج وتحكم بالنتيجة</h3>
+            <p>طبقات ونصوص وأنماط دمج <span class="en">(blends)</span> — من التركيب متعدد الطبقات إلى التعامل مع الـ <span class="en">matte</span>، بنفس منطق أدوات التصميم اللي تعتمد عليها.</p>
+          </div>
+          <div class="card pf rv">
+            <h3 class="disp">من نظام عمل إلى أداة</h3>
+            <p>تبني سير العمل مرة، والمنصة تولّد له واجهة مبسّطة تلقائياً <span class="en">(App Mode)</span> — فريقك يستخدم النظام بدون ما يفتح اللوحة.</p>
+          </div>
+        </div>
+
+        <!-- proof: Majid's own system built in Figma Weave + what it produced (same assets as the masterclass page) -->
+        <div class="proof rv">
+          <div class="proof-grid">
+            <div class="img-slot">
+              <img src="../masterclass/images/workflow-system.jpg" alt="نظام تصوير أزياء بناه ماجد عنقاوي داخل Figma Weave" width="1800" height="1102" loading="lazy">
+              <span class="img-cap">النظام</span>
+            </div>
+            <div class="img-slot">
+              <img src="../masterclass/images/workflow-result.jpg" alt="الغلاف الناتج من نظام Figma Weave" width="989" height="1400" loading="lazy">
+              <span class="img-cap">النتيجة</span>
+            </div>
+          </div>
+          <p class="micro proof-note">نظام «تصوير أزياء» بناه ماجد في <span class="en">Figma Weave</span> — والنتيجة اللي طلعت منه.</p>
+        </div>
+
+        <div class="platform-cta rv">
+          <a class="btn btn-lav btn-big" href="https://weave.figma.com?ref=majid75" target="_blank" rel="noopener">جرّب Figma Weave ↗</a>
+          <span class="micro">weave.figma.com · معتمدة <span class="en">SOC 2 Type II</span></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4. THE WORKSHOP — CIW 2.0 -->
+    <section class="sec" id="workshop">
+      <div class="wrap">
+        <div class="eyebrow rv"><span class="num">٠٣</span><span>الورشة</span></div>
+        <h2 class="disp sec-h2 rv">وين تستخدم الكريدت؟ في <span class="hl">معادلة صناعة الإلهام 2.0</span></h2>
+        <p class="lead sec-lead rv">ورشة مباشرة على ٣ أيام تتعلم فيها تبني نظام عمل لتوليد الصور والفيديو يضمن لك نتائج قوية كل مرة مهما اتغيرت الأدوات — و<span class="en">Figma Weave</span> هي أداة بناء الأنظمة داخل الورشة.</p>
+
+        <div class="card card-xl ws-card rv" style="margin-top:44px;">
+          <div class="ws-grid">
+            <div class="ws-body">
+              <span class="tag tag-solid">الدفعات القادمة مفتوحة للحجز</span>
+              <h3 class="disp h3" style="margin-top:16px;">وش يستلم طالب الورشة؟</h3>
+              <ul class="row-list">
+                <li><span class="pl">▶</span><span class="t">٣ أيام بث مباشر مع ماجد — ٧ إلى ١٠ مساءً بتوقيت جدة</span></li>
+                <li><span class="pl">▶</span><span class="t">١٥٠٠ كريدت من <span class="en">Figma Weave</span> حصرياً لطلاب الورشة</span></li>
+                <li><span class="pl">▶</span><span class="t">دورة «مدخل إلى الذكاء الاصطناعي الإبداعي» كاملة</span></li>
+                <li><span class="pl">▶</span><span class="t">سنة كاملة في مجتمع صُنّاع الإلهام — وفيه ماستركلاس <span class="en">Figma Weave</span></span></li>
+                <li><span class="pl">▶</span><span class="t">مشروع تصوير أزياء متكامل تطبّقه بنفسك</span></li>
+              </ul>
+              <a class="btn btn-primary btn-big" href="https://malearnsa.com/creative-ai-workshop/">تفاصيل الورشة والحجز</a>
+            </div>
+            <div class="img-slot">
+              <img src="../creative-ai-workshop/media/_web/sections/ciw-section.jpg" alt="ورشة معادلة صناعة الإلهام 2.0" loading="lazy">
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 5. ABOUT MAJID -->
+    <section class="sec" id="about">
+      <div class="wrap">
+        <div class="eyebrow rv"><span class="num">٠٤</span><span>عن ماجد</span></div>
+        <div class="about-grid">
+          <div class="img-slot about-img rv">
+            <img src="../creative-ai-workshop/media/_web/sections/profile.jpg" alt="ماجد عنقاوي" loading="lazy">
+          </div>
+          <div>
+            <h2 class="disp about-name rv">ماجد عنقاوي</h2>
+            <div class="about-role rv">مؤسِّس ومستشار متخصص في الذكاء الاصطناعي الإبداعي · مؤسِّس MA Learn</div>
+            <div class="about-bio rv">
+              <p>ماجد عنقاوي مصوّر ومدير إبداعي ومعلّم ورائد أعمال سعودي من جدة. بدأ رحلته بالتصوير كحرفة وكوسيلة سرد وتعبير ثقافي، واشتغل على مدى ١٦ سنة في الأزياء والإعلانات والاستشارات الإبداعية، وتعاون مع برندات عالمية مثل Dior و Gucci و Graff و Chaumet.</p>
+              <p>وعلى مدى السنوات، درّب ووجّه مصوّرين ومبدعين صاعدين في السعودية والخليج من خلال ورش وبرامج تعليمية تجمع بين إتقان الحرفة والنمو الفني والمهني، وتعاون مع Art Jameel و SUNONO في إصدار كتب ومطبوعات فوتوغرافية.</p>
+              <p>أسّس MA Studio و MA Learn، وفيهما يجمع بين عينه الإبداعية وخبرته كصاحب أعمال: يساعد المبدعين يبنون من موهبتهم قيمة حقيقية وشغل مستدام. وهو سفير Fujifilm في السعودية.</p>
+              <p>واليوم تركيزه كله على الذكاء الاصطناعي الإبداعي: يبني أنظمة توليد الصور والفيديو لمشاريعه وعملائه على <span class="en">Figma Weave</span>، ويعلّم المبدعين العرب نفس المعادلة اللي يشتغل بها.</p>
+            </div>
+            <div class="about-stats">
+              <div class="stat-pill rv"><div class="n">١٦</div><div class="l">سنة في المجال الإبداعي</div></div>
+              <div class="stat-pill rv"><div class="n">٣</div><div class="l">شركات أسّسها</div></div>
+            </div>
+            <div class="about-links rv">
+              <a class="btn btn-ghost btn-sm" href="https://www.instagram.com/majidangawi" target="_blank" rel="noopener">@majidangawi</a>
+              <a class="btn btn-ghost btn-sm" href="https://malearnsa.com/">MA Learn</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="foot">
+    <div class="wrap foot-in">
+      <div class="foot-links">
+        <a href="https://malearnsa.com/">الرئيسية</a>
+        <a href="https://malearnsa.com/creative-ai-workshop/">الورشة</a>
+        <a href="https://weave.figma.com?ref=majid75" target="_blank" rel="noopener">Figma Weave</a>
+        <a href="https://malearnsa.com/privacy-policy.html">الخصوصية</a>
+      </div>
+      <div class="foot-copy">ماجد عنقاوي × <span class="en">Figma Weave</span> · MA Learn · جميع الحقوق محفوظة. <span class="en">Figma Weave</span> علامة تجارية لشركة <span class="en">Figma</span>.</div>
+    </div>
+  </footer>
+
+  <script>
+    // Reveal on scroll (same pattern as the CIW landing)
+    var rMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(!rMotion && 'IntersectionObserver' in window){
+      var ro = new IntersectionObserver(function(es){
+        es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); ro.unobserve(e.target); } });
+      }, {threshold:.12});
+      document.querySelectorAll('.rv').forEach(function(el){ ro.observe(el); });
+    } else {
+      document.querySelectorAll('.rv').forEach(function(el){ el.classList.add('in'); });
+    }
+
+    // Ambassador ref passthrough: capture ?ref (30-day last-touch, shared ma_ref key) + carry it onto the workshop links.
+    (function(){
+      try{
+        var u=new URLSearchParams(location.search), r=u.get('ref');
+        if(r){ localStorage.setItem('ma_ref', JSON.stringify({v:r,exp:Date.now()+30*864e5})); }
+        var st=JSON.parse(localStorage.getItem('ma_ref')||'null');
+        var ref=(st&&st.exp>Date.now())?st.v:null;
+        if(ref){
+          document.querySelectorAll('a[href*="malearnsa.com/creative-ai-workshop"]').forEach(function(a){
+            try{ var url=new URL(a.href, location.href);
+              if(!url.searchParams.get('ref')){ url.searchParams.set('ref',ref); a.href=url.toString(); }
+            }catch(e){}
+          });
+        }
+      }catch(e){}
+    })();
+  </script>
+</body>
+</html>
