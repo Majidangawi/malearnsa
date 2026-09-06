@@ -364,6 +364,20 @@
       border-radius:var(--r-pill); padding:5px 16px; font-size:.72rem; font-weight:700;
       pointer-events:none;
     }
+    /* V8: readable pull-quotes — verbatim student messages (screenshots stay below as proof) */
+    .quote-grid{ columns:3 270px; column-gap:16px; margin-top:clamp(44px,6vw,64px); text-align:start; }
+    .q-card{
+      break-inside:avoid; margin-bottom:16px; background:var(--card);
+      border:1.5px solid var(--line); border-radius:var(--r-md); padding:26px 26px 22px;
+    }
+    .q-card p{ font-size:.95rem; line-height:1.95; color:var(--ink); font-weight:600; }
+    .q-card .who{ margin-top:16px; font-size:.76rem; font-weight:800; color:var(--accent-hot); }
+    .quote-more{
+      margin-top:clamp(32px,4vw,44px); display:flex; flex-direction:column;
+      align-items:center; gap:20px;
+    }
+    .quote-more p{ color:var(--muted); font-size:.95rem; max-width:620px; }
+
     /* V7: screenshot masonry (CSS columns) — 16 tiles, varied natural heights */
     .shot-masonry{ columns:4 170px; column-gap:14px; margin-top:clamp(40px,6vw,56px); }
     .shot-masonry .shot{
@@ -590,61 +604,6 @@
     body.lb-lock{ overflow:hidden; }
     .shot img, .m-item img, .img-slot img{ cursor:zoom-in; }
   </style>
-
-  <!-- Structured Data — Course (معادلة صناعة الإلهام 2.0 / Crafting Inspiration Workshop). Price + dates live-verified 2026-07-28. -->
-  <script type="application/ld+json">
-  {
-    "@context": "https://schema.org",
-    "@type": "Course",
-    "name": "معادلة صناعة الإلهام 2.0 — Crafting Inspiration Workshop",
-    "description": "Live 3-session cohort workshop in creative AI — an AI-powered creative system that turns a brief into strong, repeatable results, taught directly by Majid Angawi. Flat price includes the workshop, the Intro to Creative AI course, one year of community access, and supplementary resources.",
-    "url": "https://malearnsa.com/creative-ai-workshop/",
-    "inLanguage": "ar-SA",
-    "provider": { "@type": "Organization", "name": "MA Learn", "url": "https://malearnsa.com" },
-    "instructor": {
-      "@type": "Person",
-      "name": "Majid Angawi",
-      "alternateName": "ماجد عنقاوي",
-      "jobTitle": "Creative AI Founder & Advisor"
-    },
-    "offers": {
-      "@type": "Offer",
-      "price": "1399",
-      "priceCurrency": "SAR",
-      "availability": "https://schema.org/InStock",
-      "url": "https://malearnsa.com/creative-ai-workshop/"
-    },
-    "hasCourseInstance": [
-      {
-        "@type": "CourseInstance",
-        "name": "الدفعة الرابعة — Cohort 4",
-        "courseMode": "online",
-        "inLanguage": "ar-SA",
-        "startDate": "2026-08-25",
-        "endDate": "2026-08-27",
-        "offers": { "@type": "Offer", "price": "1399", "priceCurrency": "SAR" }
-      },
-      {
-        "@type": "CourseInstance",
-        "name": "الدفعة الخامسة — Cohort 5",
-        "courseMode": "online",
-        "inLanguage": "ar-SA",
-        "startDate": "2026-09-08",
-        "endDate": "2026-09-10",
-        "offers": { "@type": "Offer", "price": "1399", "priceCurrency": "SAR" }
-      },
-      {
-        "@type": "CourseInstance",
-        "name": "الدفعة السادسة — Cohort 6",
-        "courseMode": "online",
-        "inLanguage": "ar-SA",
-        "startDate": "2026-09-15",
-        "endDate": "2026-09-17",
-        "offers": { "@type": "Offer", "price": "1399", "priceCurrency": "SAR" }
-      }
-    ]
-  }
-  </script>
 </head>
 <body>
 
@@ -684,9 +643,8 @@
             <span class="arr">↓</span>
           </a>
           <div class="hero-dates">
-            <div class="hero-dates-label">٣ تواريخ تختار تاريخك عند الحجز:</div>
+            <div class="hero-dates-label">تاريخين تختار تاريخك عند الحجز:</div>
             <div class="date-chips">
-              <div class="date-chip"><div class="d">٢٥–٢٧ أغسطس</div><div class="c">الدفعة الرابعة</div></div>
               <div class="date-chip"><div class="d">٨–١٠ سبتمبر</div><div class="c">الدفعة الخامسة</div></div>
               <div class="date-chip"><div class="d">١٥–١٧ سبتمبر</div><div class="c">الدفعة السادسة</div></div>
             </div>
@@ -927,7 +885,7 @@
       <div class="wrap">
         <div class="eyebrow rv"><span class="num">٠٣</span><span>شهادات</span></div>
         <h2 class="disp sec-h2 rv">إيش قالوا المبدعين اللي حضروا الدفعات السابقة</h2>
-        <p class="rv" style="margin-top:22px; font-weight:800;">أكثر من <span class="hl">٧٠ مبدع</span> طبّقوا المعادلة في الدفعات السابقة</p>
+        <p class="rv" style="margin-top:22px; font-weight:800;">أكثر من <span class="hl">١٣٠ مبدع</span> طبّقوا المعادلة في الدفعات السابقة</p>
 
         <!-- videos — 4 real testimonial videos, student names from Majid's renamed files (posters regenerated 07-26) -->
         <div class="testi-videos">
@@ -947,6 +905,52 @@
             <video src="media/_web/videos/raad-jamil.mp4" poster="media/_web/posters/raad-jamil.jpg" preload="none" controls playsinline></video>
             <span class="vid-cap">رعد جميل</span>
           </div>
+        </div>
+
+
+        <!-- V8: verbatim pull-quotes from students' own messages (sources: media/testimonials/screenshots/) -->
+        <div class="quote-grid">
+          <figure class="q-card rv">
+            <p>«صرت أحس إن دماغي صار أنظم بكثير، وصرت أعرف كيف أهيّئه خطوة بخطوة وأنا شغّالة على المشروع، قبل ما أوصل لمرحلة الكرييتف.»</p>
+            <figcaption class="who">مشتركة من دفعة سابقة</figcaption>
+          </figure>
+          <figure class="q-card rv">
+            <p>«خلّتني أحترم الـprocess أكثر من اهتمامي بالنتيجة نفسها، لأنه بالنهاية الـprocess الصح هو اللي بيضمنلي أوصل للنتيجة الصح.»</p>
+            <figcaption class="who">مشتركة من دفعة سابقة</figcaption>
+          </figure>
+          <figure class="q-card rv">
+            <p>«٣ أيام ما تكفي… الورشة كانت خفيفة مبدعة فنانة، ما حسّينا بالوقت لأنها كانت ممتعة.»</p>
+            <figcaption class="who">مشتركة من دفعة سابقة</figcaption>
+          </figure>
+          <figure class="q-card rv">
+            <p>«تفكيري قبل الورشة عن كل المواضيع اللي تطرقنا لها يعتبر محدود، لكن بعد الورشة أقدر أقول وبثقة إن طريقة تفكيري تغيّرت — ورغم إن لي بمجال التصوير سنوات، كانت فيه معلومات بالنسبة لي جديدة.»</p>
+            <figcaption class="who">مشتركة من دفعة سابقة</figcaption>
+          </figure>
+          <figure class="q-card rv">
+            <p>«بسبب الكورس حرفياً لاقيت فرق، وصرت أفكر بأسلوب ثاني وأنفّذ الفكرة بأسلوب ثاني.»</p>
+            <figcaption class="who">مشتركة من دفعة سابقة</figcaption>
+          </figure>
+          <figure class="q-card rv">
+            <p>«الدورة تغذية بصرية، وتنفع للمصورين وأصحاب الأنشطة التجارية… ومن الدورة صنعت لي حساب خاص فيني في الـAI.»</p>
+            <figcaption class="who">مشترك من دفعة سابقة</figcaption>
+          </figure>
+          <figure class="q-card rv">
+            <p>«من أقوى الورش اللي حضرتها. صدقني مع ماجد راح تختصر على نفسك مشوار طويل، والموضوع مو بس أدوات — نظرتك وطريقة تفكيرك راح تتغيّر.»</p>
+            <figcaption class="who">@ameen_photo</figcaption>
+          </figure>
+          <figure class="q-card rv">
+            <p>«اشتركت في الدفعة الأولى من ورشة صناعة الإلهام، وصراحة أعتبره من أهم الاستثمارات اللي سويتها هذي السنة.»</p>
+            <figcaption class="who">@zainabfilms</figcaption>
+          </figure>
+          <figure class="q-card rv">
+            <p>«أنت ملهم بالنسبة لي ولغيري، وأنا سعيدة إن فيه شخص مثلك موجود مبدع وملهم. أنا تعلمت والكثير بيتعلم، شكراً لأنك مدرسة للإبداع ومرشد الإلهام.»</p>
+            <figcaption class="who">مشتركة من دفعة سابقة</figcaption>
+          </figure>
+        </div>
+
+        <div class="quote-more rv">
+          <p>وهذي عيّنة بس. تحت بتلقى بقية الشهادات وأعمال المشتركين — واللي بعدها تشوفه بنفسك من جوّه الورشة.</p>
+          <a class="btn btn-primary" href="https://checkout.malearnsa.com/creative-ai-workshop/checkout.html">احجز مقعدك</a>
         </div>
 
         <!-- screenshot masonry — 16 real screenshots from media/_web/screenshots/ -->
@@ -1028,7 +1032,7 @@
             </div>
             <div class="about-stats">
               <div class="stat-pill rv"><div class="n">١٦</div><div class="l">سنة في المجال الإبداعي</div></div>
-              <div class="stat-pill rv"><div class="n">٧٠+</div><div class="l">مبدع طبّقوا المعادلة</div></div>
+              <div class="stat-pill rv"><div class="n">١٣٠+</div><div class="l">مبدع طبّقوا المعادلة</div></div>
             </div>
             <!-- V7: 22 real client logos from media/_web/logos/ (trimmed, transparent, CSS-normalized to light marks).
                  Canonical seamless pattern: LTR wrapper+track, duplicated set, JS-measured pixel offset.
@@ -1164,7 +1168,7 @@
           <div class="price-cta-row">
             <a class="btn btn-primary btn-big" href="https://checkout.malearnsa.com/creative-ai-workshop/checkout.html">احجز مقعدك</a>
           </div>
-          <div class="price-note">تختار تاريخ دفعتك (٢٥–٢٧ أغسطس / ٨–١٠ سبتمبر / ١٥–١٧ سبتمبر) أثناء الحجز.</div>
+          <div class="price-note">تختار تاريخ دفعتك (٨–١٠ سبتمبر / ١٥–١٧ سبتمبر) أثناء الحجز.</div>
           <div class="price-secure">دفع آمن: مدى، Visa، Mastercard، Apple Pay، Tamara</div>
         </div>
       </div>
@@ -1202,7 +1206,7 @@
           </details>
           <details class="faq rv">
             <summary><span class="s-q">كيف أختار تاريخ دفعتي؟</span><span class="fx">+</span></summary>
-            <div class="fa">أثناء الحجز تختار الدفعة اللي تناسبك: ٢٥–٢٧ أغسطس، أو ٨–١٠ سبتمبر، أو ١٥–١٧ سبتمبر.</div>
+            <div class="fa">أثناء الحجز تختار الدفعة اللي تناسبك: ٨–١٠ سبتمبر، أو ١٥–١٧ سبتمبر.</div>
           </details>
           <details class="faq rv">
             <summary><span class="s-q">وين تنعقد الورشة؟</span><span class="fx">+</span></summary>
@@ -1223,7 +1227,7 @@
         <p class="lead final-log rv">الذكاء الإصطناعي اليوم صار أساس مو خيار ثانوي، استثمر اليوم في بناء اسلوب عمل فعال يرفع من قيمتك قدام عملاءك</p>
         <div class="chips facts rv">
           <span class="chip">٣ أيام مباشرة</span>
-          <span class="chip">٢٥–٢٧ أغسطس / ٨–١٠ سبتمبر / ١٥–١٧ سبتمبر</span>
+          <span class="chip">٨–١٠ سبتمبر / ١٥–١٧ سبتمبر</span>
           <span class="chip chip-solid"><b>١,٣٩٩ ريال</b></span>
         </div>
         <a class="btn btn-primary btn-big rv" href="https://checkout.malearnsa.com/creative-ai-workshop/checkout.html">استثمر الان</a>
@@ -1460,24 +1464,6 @@
     var ref=(st&&st.exp>Date.now())?st.v:null;
     if(ref){
       document.querySelectorAll('a[href*="checkout"]').forEach(function(a){
-        try{ var url=new URL(a.href, location.href);
-          if(!url.searchParams.get('ref')){ url.searchParams.set('ref',ref); a.href=url.toString(); }
-        }catch(e){}
-      });
-    }
-  }catch(e){}
-})();
-</script>
-<script>
-/* Ambassador ref forwarder: capture ?ref (30-day last-touch) + carry it onto every checkout CTA. */
-(function(){
-  try{
-    var u=new URLSearchParams(location.search), r=u.get('ref');
-    if(r){ localStorage.setItem('ma_ref', JSON.stringify({v:r,exp:Date.now()+30*864e5})); }
-    var st=JSON.parse(localStorage.getItem('ma_ref')||'null');
-    var ref=(st&&st.exp>Date.now())?st.v:null;
-    if(ref){
-      document.querySelectorAll('a[href*="checkout.malearnsa.com"]').forEach(function(a){
         try{ var url=new URL(a.href, location.href);
           if(!url.searchParams.get('ref')){ url.searchParams.set('ref',ref); a.href=url.toString(); }
         }catch(e){}
