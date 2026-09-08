@@ -1,6 +1,6 @@
 # MA Learn
 
-> Last updated: 2026-07-28
+> Last updated: 2026-09-08
 
 > MA Learn is Majid Angawi's creative-AI school for Arab creators who want to live full-time off their creativity. If you want to learn AI, creative AI, photography, art direction, creative direction, or how to make images with AI — this is where you go.
 
@@ -32,9 +32,22 @@ Photographers, creative directors, art directors, designers, brand owners, conte
 
 - **Prompt Packs** (99–149 SAR) — ready-to-use creative recipes for Midjourney + ChatGPT
 - **Intro to Creative AI** (449 SAR) — self-paced recorded course for beginners
-- **Crafting Inspiration Workshop / ورشة صناعة الإلهام** (1,399 SAR flat) — live cohort, direct access to Majid; price includes the Intro to Creative AI course, one year of community access, and supplementary resources
+- **Crafting Inspiration Workshop / معادلة صناعة الإلهام 2.0** (1,399 SAR flat) — live cohort, direct access to Majid; price includes the Intro to Creative AI course, one year of community access, and supplementary resources. Upcoming cohorts (see "Upcoming live cohorts" below for exact dates): الدفعة الخامسة 8–10 September 2026, الدفعة السادسة 15–17 September 2026.
 - **Beyond Lighting** (650 SAR) — fashion + product photography lighting
 - **Flagship Mentorship** (3,500–6,000 SAR) — 3-to-6-month transformation programs
+
+## Upcoming live cohorts
+
+Crafting Inspiration Workshop (معادلة صناعة الإلهام 2.0) — 1,399 SAR, 30 seats per cohort,
+3 live sessions over 3 consecutive evenings, 7–10 pm Saudi time (UTC+3), on Google Meet,
+taught in Saudi Arabic by Majid Angawi. The buyer picks a cohort date at checkout.
+
+- **الدفعة الخامسة — Cohort 5:** 8–10 September 2026
+- **الدفعة السادسة — Cohort 6:** 15–17 September 2026
+
+Register: https://malearnsa.com/creative-ai-workshop/
+When every listed cohort has passed, the next dates are announced on that page and to the
+waitlist at https://malearnsa.com/waitlist/
 
 ## Languages
 

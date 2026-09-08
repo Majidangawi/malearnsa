@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
+  <meta charset="UTF-8">
   <!-- Meta Pixel Code -->
   <script>
   !function(f,b,e,v,n,t,s)
@@ -26,7 +27,6 @@
     gtag('js', new Date());
     gtag('config', 'G-TZ9839RVDJ');
   </script>
-<meta charset="UTF-8">
   <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta name="referrer" content="strict-origin-when-cross-origin">
@@ -934,11 +934,11 @@
         <div class="course-badge" id="ciw-badge">مباشرة</div>
       </div>
       <div class="course-body">
-        <h3 class="course-title">معادلة صناعة الإلهام 2.0 — الدفعة الرابعة</h3>
+        <h3 class="course-title" id="ciw-title">معادلة صناعة الإلهام 2.0</h3>
         <div class="course-meta-row">
           <span>
             <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-            ٢٥ — ٢٧ أغسطس
+            <span id="ciw-dates">٨–١٠ سبتمبر</span>
           </span>
           <span id="ciw-seats">
             <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
@@ -1231,11 +1231,21 @@
     });
   })();
 
-  // ── CIW C4 (معادلة 2.0, nearest cohort) — countdown + live seats ──────────
-  // C4 starts 2026-08-25 19:00 Asia/Riyadh = 16:00 UTC. C5 (8 Sep) + C6 (15 Sep)
-  // also open; buyer picks the date at checkout. Card leads with the nearest.
+  // ── CIW live-cohort card — self-selecting, never advertises a dead دفعة ─────
+  // The card picks the first cohort that is still OPEN according to the Apps
+  // Script seat ledger (sold_out / doors_closed are authoritative). Adding a new
+  // دفعة = append one row to COHORTS. Nothing else needs touching, and a cohort
+  // that fills or closes rolls the card forward on its own.
   (function initCiwCard() {
-    const startUtc   = Date.UTC(2026, 7, 25, 16, 0, 0); // month is 0-indexed (7 = August)
+    const COHORTS = [
+      { id: 'C5', name: 'الدفعة الخامسة', dates: '٨–١٠ سبتمبر',  startUtc: Date.UTC(2026, 8,  8, 16, 0, 0) },
+      { id: 'C6', name: 'الدفعة السادسة', dates: '١٥–١٧ سبتمبر', startUtc: Date.UTC(2026, 8, 15, 16, 0, 0) }
+    ];
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbznjcsYu8gLDZqFJGededAQaATad_L8vlhRQV04pOqh57HB5nFVRy9zUHAcg6goyj8DKA/exec';
+    const WAITLIST_URL = '/waitlist/';
+
+    const elTitle    = document.getElementById('ciw-title');
+    const elDates    = document.getElementById('ciw-dates');
     const elDays     = document.getElementById('ciw-d');
     const elHrs      = document.getElementById('ciw-h');
     const elMin      = document.getElementById('ciw-m');
@@ -1245,70 +1255,97 @@
     const elBadge    = document.getElementById('ciw-badge');
     const elCta      = document.getElementById('ciw-cta');
     const elSeats    = document.getElementById('ciw-seats');
+    const elCard     = document.getElementById('card-ciw');
     if (!elDays) return;
 
     const toAr = (n) => String(n).replace(/[0-9]/g, (d) => '٠١٢٣٤٥٦٧٨٩'[+d]);
     const pad  = (n) => n < 10 ? '0' + n : String(n);
 
-    function tick() {
-      const diff = Math.max(0, Math.floor((startUtc - Date.now()) / 1000));
-      if (diff <= 0) {
-        if (elCountdown) elCountdown.style.display = 'none';
-        if (elStarted)   elStarted.style.display   = 'block';
-        if (elBadge) {
-          elBadge.textContent = 'بدأت الآن';
-          elBadge.classList.remove('live');
-          elBadge.classList.add('urgent');
-        }
-        if (elCta) elCta.textContent = 'انضم الآن ←';
-        return false;
+    function setSeatsText(text) {
+      if (!elSeats) return;
+      const icon = elSeats.querySelector('svg');
+      elSeats.innerHTML = '';
+      if (icon) elSeats.appendChild(icon);
+      elSeats.appendChild(document.createTextNode(' ' + text));
+    }
+
+    function showAllClosed() {
+      if (elCountdown) elCountdown.style.display = 'none';
+      if (elStarted) {
+        elStarted.style.display = 'block';
+        const t = elStarted.querySelector('.course-started-title');
+        const sub = elStarted.querySelector('.course-started-sub');
+        if (t)   t.textContent   = 'اكتملت الدفعات الحالية';
+        if (sub) sub.textContent = 'سجّل في قائمة الانتظار للدفعة القادمة';
       }
-      const days = Math.floor(diff / 86400);
-      const hrs  = Math.floor((diff % 86400) / 3600);
-      const min  = Math.floor((diff % 3600)  / 60);
-      const sec  = diff % 60;
-      elDays.textContent = toAr(pad(days));
-      elHrs.textContent  = toAr(pad(hrs));
-      elMin.textContent  = toAr(pad(min));
-      elSec.textContent  = toAr(pad(sec));
-      // Urgency badge if under 24h
-      if (diff < 86400 && elBadge && !elBadge.classList.contains('urgent')) {
-        elBadge.textContent = 'تبدأ قريباً!';
+      if (elBadge) {
+        elBadge.textContent = 'قائمة الانتظار';
         elBadge.classList.remove('live');
         elBadge.classList.add('urgent');
       }
-      return true;
+      if (elCta)  elCta.textContent = 'انضم لقائمة الانتظار ←';
+      if (elCard) elCard.setAttribute('href', WAITLIST_URL);
     }
-    tick();
-    const interval = setInterval(() => { if (!tick()) clearInterval(interval); }, 1000);
 
-    // Live seats — same Apps Script endpoint the CIW landing page uses.
-    (async () => {
-      const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbznjcsYu8gLDZqFJGededAQaATad_L8vlhRQV04pOqh57HB5nFVRy9zUHAcg6goyj8DKA/exec';
-      // C4: live per-cohort counter (getSeatsLeft is cohort-aware AND doors-close
-      // aware: sold_out flips at seats==0 OR Tue Aug 25 19:00 KSA, whichever
-      // first). Badge auto-swaps to اكتملت الدفعة when C4 fills/closes.
-      try {
-        const res  = await fetch(APPS_SCRIPT_URL + '?action=get_seats_left&cohort=C4');
-        const data = await res.json();
-        if (!data || typeof data.seats_left !== 'number' || !elSeats) return;
-        const left  = data.seats_left;
-        const total = data.seats_total || 30;
-        const icon  = elSeats.querySelector('svg');
-        const text  = (left === total)
-          ? toAr(total) + ' مقعد فقط'
-          : 'متبقي ' + toAr(left) + ' من ' + toAr(total) + ' مقعد';
-        elSeats.innerHTML = '';
-        if (icon) elSeats.appendChild(icon);
-        elSeats.appendChild(document.createTextNode(' ' + text));
-        if (data.sold_out && elBadge) {
-          elBadge.textContent = 'اكتملت الدفعة';
+    function runCountdown(cohort) {
+      function tick() {
+        const diff = Math.max(0, Math.floor((cohort.startUtc - Date.now()) / 1000));
+        if (diff <= 0) {
+          if (elCountdown) elCountdown.style.display = 'none';
+          if (elStarted)   elStarted.style.display   = 'block';
+          if (elBadge) {
+            elBadge.textContent = 'بدأت الآن';
+            elBadge.classList.remove('live');
+            elBadge.classList.add('urgent');
+          }
+          if (elCta) elCta.textContent = 'انضم الآن ←';
+          return false;
+        }
+        elDays.textContent = toAr(pad(Math.floor(diff / 86400)));
+        elHrs.textContent  = toAr(pad(Math.floor((diff % 86400) / 3600)));
+        elMin.textContent  = toAr(pad(Math.floor((diff % 3600) / 60)));
+        elSec.textContent  = toAr(pad(diff % 60));
+        if (diff < 86400 && elBadge && !elBadge.classList.contains('urgent')) {
+          elBadge.textContent = 'تبدأ قريباً!';
           elBadge.classList.remove('live');
           elBadge.classList.add('urgent');
-          if (elCta) elCta.textContent = 'قائمة الانتظار ←';
         }
-      } catch (_) { /* fail open — keep static "٣٠ مقعد فقط" */ }
-    })();
+        return true;
+      }
+      tick();
+      const interval = setInterval(() => { if (!tick()) clearInterval(interval); }, 1000);
+    }
+
+    function render(cohort, data) {
+      if (elTitle) elTitle.textContent = 'معادلة صناعة الإلهام 2.0 — ' + cohort.name;
+      if (elDates) elDates.textContent = cohort.dates;
+      if (data && typeof data.seats_left === 'number') {
+        const left  = data.seats_left;
+        const total = data.seats_total || 30;
+        setSeatsText(left === total ? toAr(total) + ' مقعد فقط'
+                                    : 'متبقي ' + toAr(left) + ' من ' + toAr(total) + ' مقعد');
+      }
+      runCountdown(cohort);
+    }
+
+    async function pickCohort() {
+      // Ask the ledger about each دفعة in order; first open one wins.
+      for (const c of COHORTS) {
+        try {
+          const res  = await fetch(APPS_SCRIPT_URL + '?action=get_seats_left&cohort=' + c.id);
+          const data = await res.json();
+          if (data && !data.sold_out && !data.doors_closed) { render(c, data); return; }
+        } catch (_) {
+          // Ledger unreachable — fall back to the first cohort that hasn't started.
+          const upcoming = COHORTS.find((x) => x.startUtc > Date.now());
+          if (upcoming) { render(upcoming, null); } else { showAllClosed(); }
+          return;
+        }
+      }
+      showAllClosed();
+    }
+
+    pickCohort();
   })();
 </script>
 

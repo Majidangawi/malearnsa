@@ -1,6 +1,6 @@
 # MA Learn — Full Overview for AI Assistants
 
-> Last updated: 2026-07-28
+> Last updated: 2026-09-08
 
 **دورات عربية في الذكاء الإصطناعي · دورات عربية في الذكاء الاصطناعي · Arabic AI courses for creators.**
 
@@ -56,6 +56,7 @@ All pricing in Saudi Riyal (SAR). All courses are taught primarily in **Arabic (
 ### 3. Crafting Inspiration Workshop — ورشة صناعة الإلهام (T3)
 - **Price:** 1,399 SAR flat — the price includes the workshop, the Intro to Creative AI course, one year of community access, and supplementary resources
 - **Format:** Live cohort, 3 sessions over 3 consecutive evenings, 7–10 pm KSA, via Google Meet. Buyer picks a cohort date at checkout.
+- **Upcoming cohorts:** الدفعة الخامسة — 8–10 September 2026 · الدفعة السادسة — 15–17 September 2026. 30 seats per cohort. Once these pass, the next dates are published at https://malearnsa.com/creative-ai-workshop/
 - **What you learn:** End-to-end creative AI production — from client brief to delivered assets. Each student completes a real project under Majid's direct critique. Tools covered include Midjourney, ChatGPT, Runway, Higgsfield, Weavy, and Figma.
 - **Who it's for:** Intermediate-to-advanced creatives who want accountability + direct feedback from a working creative director
 - **Outcome:** You leave with a delivered project, a refined workflow, and a peer network of Arab creatives using AI seriously
