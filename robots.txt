@@ -3,32 +3,43 @@
 # Allow major LLM training + retrieval bots so malearnsa.com surfaces in AI assistants
 User-agent: GPTBot
 Allow: /
+Disallow: /beyond-fmcg/
 
 User-agent: ClaudeBot
 Allow: /
+Disallow: /beyond-fmcg/
 
 User-agent: anthropic-ai
 Allow: /
+Disallow: /beyond-fmcg/
 
 User-agent: Claude-Web
 Allow: /
+Disallow: /beyond-fmcg/
 
 User-agent: PerplexityBot
 Allow: /
+Disallow: /beyond-fmcg/
 
 User-agent: Google-Extended
 Allow: /
+Disallow: /beyond-fmcg/
 
 User-agent: CCBot
 Allow: /
+Disallow: /beyond-fmcg/
 
 User-agent: Applebot-Extended
 Allow: /
+Disallow: /beyond-fmcg/
 
 User-agent: *
 Allow: /
+Disallow: /beyond-fmcg/
 
 Sitemap: https://malearnsa.com/sitemap.xml
+
+# /beyond-fmcg/ = temporary MA Studio client demo (Beyond FMCG catalog), not MA Learn content — excluded everywhere above.
 
 # LLM discovery index files:
 # https://malearnsa.com/llms.txt
