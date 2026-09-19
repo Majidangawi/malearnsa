@@ -258,9 +258,11 @@ input,select,textarea{font:inherit}
   .foot .wrap{grid-template-columns:1fr 1fr}
 }
 @media (max-width:640px){
-  .hdr .wrap{height:64px;gap:6px}
-  .hdr-search{height:40px;padding:0 10px;min-width:118px}
-  .logo b{font-size:17px}
+  .hdr .wrap{height:auto;min-height:60px;gap:8px;row-gap:8px;padding:8px 16px;flex-wrap:wrap}
+  .hdr-sp{display:none}
+  .logo{margin-inline-end:auto}
+  .hdr-search{order:10;flex:1 1 100%;max-width:none;min-width:0;height:40px;padding:0 12px}
+  .logo b{font-size:18px}
   #print-btn{display:none}
   .lang-btn{height:36px;padding:0 10px;font-size:13px;flex:none}
   .icon-btn{width:40px;height:40px;flex:none}
