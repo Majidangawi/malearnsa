@@ -29,7 +29,8 @@ window.BF = (function () {
   const LOGO_SVG = '<svg viewBox="0 0 40 40" fill="none" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#0B2545"/><path d="M11 27V13h8.2c3.1 0 5 1.6 5 4 0 1.6-.9 2.8-2.3 3.3 1.9.4 3.1 1.8 3.1 3.7 0 2.6-2 4-5.3 4H11zm3.4-8.2h4.2c1.5 0 2.3-.7 2.3-1.8 0-1.2-.8-1.8-2.3-1.8h-4.2v3.6zm0 5.6h4.7c1.6 0 2.5-.7 2.5-1.9s-.9-1.9-2.5-1.9h-4.7v3.8z" fill="#fff"/><path d="M27 12l4 8-4 8" stroke="#8FE3D0" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   const base = document.body.dataset.base || "./";
   const imgBase = document.body.dataset.imgBase || (base + "img/");
-  const LOGO_HTML = `${LOGO_SVG}<span><b>Beyond <span>FMCG</span></b><small>${t("tagline")}</small></span>`;
+  const LOGO_HTML = `<img src="${base}brand/beyond-fmcg-logo-black.svg" alt="Beyond FMCG" width="146" height="36">`;
+  const LOGO_HTML_W = `<img src="${base}brand/beyond-fmcg-logo-white.svg" alt="Beyond FMCG" width="162" height="40">`;
 
   // ---------- request list ----------
   function getList() { try { return JSON.parse(localStorage.getItem(LS_KEY) || "[]"); } catch (e) { return []; } }
@@ -86,7 +87,7 @@ window.BF = (function () {
     const cats = (categories || []).map(c => `<li><a href="${withLang(base + "index.html?cat=" + c.id)}#catalog">${esc(cat(c.n))}</a></li>`).join("");
     el.innerHTML = `<div class="wrap">
       <div>
-        <a class="logo" href="${withLang(base + "index.html")}">${LOGO_HTML}</a>
+        <a class="logo" href="${withLang(base + "index.html")}">${LOGO_HTML_W}</a>
         <div class="tag">${t("foot_tag")}</div>
         <p>${t("foot_p")}</p>
         <div class="social"><a href="#" aria-label="LinkedIn">${ICONS.li}</a><a href="#" aria-label="Instagram">${ICONS.ig}</a><a href="#" aria-label="Facebook">${ICONS.fb}</a></div>

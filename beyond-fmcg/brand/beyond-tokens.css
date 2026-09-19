@@ -1,0 +1,72 @@
+/* ============================================================
+   BEYOND FMCG — Design tokens v0.1 (2026-09-19)
+   Source: "beyond logo presintation.pdf" (Logo Refresh 2025)
+   Brand truths: Yellow #FBD420 · Black · White · Montserrat Black
+   Rule: link this file, never copy values into page CSS.
+   ============================================================ */
+:root{
+  /* ---- Brand palette (from the guideline) ---- */
+  --bf-yellow:#FBD420;        /* primary — the only accent */
+  --bf-black:#000000;         /* logo + hero surfaces */
+  --bf-white:#FFFFFF;
+  --bf-grey:#666666;          /* guideline secondary grey */
+
+  /* ---- Derived (design-system additions) ---- */
+  --bf-yellow-hot:#FFDF45;    /* hover on yellow */
+  --bf-yellow-deep:#E1BC0A;   /* pressed / borders on yellow */
+  --bf-yellow-soft:#FFF6C7;   /* tints, selected rows, chips */
+  --bf-yellow-faint:#FFFBE6;  /* section washes */
+  --bf-ink:#111111;           /* body headings on white (softer than pure black) */
+  --bf-text:#1F1F1F;          /* body text */
+  --bf-muted:#666666;
+  --bf-faint:#9A9A9A;
+  --bf-line:#E7E7E4;
+  --bf-line-2:#D3D3CF;
+  --bf-bg:#FFFFFF;
+  --bf-bg-2:#F6F6F3;          /* warm off-white panels */
+  --bf-bg-3:#EEEEEA;
+  --bf-ok:#1E7F4F;
+  --bf-danger:#C62828;
+
+  /* ---- Type ---- */
+  --bf-font-display:"Montserrat",system-ui,-apple-system,"Segoe UI",sans-serif;   /* 800/900 only */
+  --bf-font-body:"Mulish","Montserrat",system-ui,-apple-system,"Segoe UI",sans-serif; /* Proxima Nova stand-in */
+  --bf-font-ar:"Cairo","Mulish",system-ui,sans-serif;
+  --bf-h1:clamp(36px,5vw,64px);
+  --bf-h2:clamp(26px,3vw,38px);
+  --bf-h3:22px;
+  --bf-h4:17px;
+  --bf-body:16px;
+  --bf-small:14px;
+  --bf-micro:12px;
+  --bf-lh-tight:1.05;
+  --bf-lh-body:1.55;
+  --bf-track-caps:.14em;
+
+  /* ---- Shape: the "D" corner ---- */
+  --bf-r-sm:8px;
+  --bf-r:16px;
+  --bf-r-lg:24px;
+  --bf-r-d:36px;              /* signature: one large corner like the D's bowl */
+  --bf-r-pill:999px;
+
+  /* ---- Space (4-pt) ---- */
+  --bf-s-1:4px; --bf-s-2:8px; --bf-s-3:12px; --bf-s-4:16px; --bf-s-5:24px; --bf-s-6:32px; --bf-s-7:48px; --bf-s-8:64px; --bf-s-9:96px;
+  --bf-max:1320px;
+
+  /* ---- Elevation & motion ---- */
+  --bf-shadow:0 1px 2px rgba(0,0,0,.06),0 1px 3px rgba(0,0,0,.08);
+  --bf-shadow-lg:0 12px 32px rgba(0,0,0,.14);
+  --bf-ease:cubic-bezier(.22,1,.36,1);
+  --bf-fast:.15s;
+  --bf-base:.25s;
+
+  /* ---- Semantic aliases used by components ---- */
+  --bf-primary:var(--bf-yellow);
+  --bf-on-primary:var(--bf-black);
+  --bf-surface-dark:var(--bf-black);
+  --bf-on-dark:var(--bf-white);
+  --bf-focus:0 0 0 3px rgba(251,212,32,.55);
+}
+[dir=rtl]{ --bf-track-caps:0; }
+@media (prefers-reduced-motion:reduce){ :root{ --bf-fast:0s; --bf-base:0s; } }
