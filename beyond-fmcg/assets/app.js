@@ -72,7 +72,7 @@
     const cb = e.target; if (!cb.matches("input[type=checkbox]")) return;
     const set = setFor(cb.dataset.kind); const id = +cb.dataset.id;
     cb.checked ? set.add(id) : set.delete(id);
-    if (cb.checked) cb.closest("li").querySelectorAll("ul input:checked").forEach(c => { c.checked = false; setFor(c.dataset.kind).delete(+c.dataset.id); });
+    if (cb.checked) cb.closest("li").querySelectorAll(":scope > ul input:checked").forEach(c => { c.checked = false; setFor(c.dataset.kind).delete(+c.dataset.id); });
     if (cb.checked) { const ul = cb.closest("li").querySelector(":scope > ul"); const tg = cb.closest("li").querySelector(":scope > .node .tg"); if (ul && tg) { ul.hidden = false; tg.setAttribute("aria-expanded", "true"); } }
     apply();
   });
