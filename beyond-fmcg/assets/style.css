@@ -301,3 +301,9 @@ input,select,textarea{font:inherit}
   [dir=rtl] .filters{inset:0 0 0 auto;transform:translateX(105%)}
   [dir=rtl] .filters.open{transform:none}
 }
+
+/* nutrition tables (extra feeds) */
+.nut{border-collapse:collapse;width:min(520px,100%);background:#fff;border-radius:12px;overflow:hidden;border:1px solid var(--line)}
+.nut th{text-align:start;padding:10px 14px;background:var(--bg-3);font-size:14px}
+.nut td{padding:8px 14px;border-top:1px solid var(--line);font-size:14px}
+.nut td:last-child{text-align:end;font-weight:500}

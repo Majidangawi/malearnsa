@@ -20,8 +20,13 @@
   const SPEC = window.BF_I18N.ui[BF.lang].spec;
   const specRows = Object.entries(d.spec).filter(([, v]) => v).map(([k, v]) => [SPEC[k] || k, k === "Best Before" ? String(v).replace(" days", " " + t("days")) : v]);
   const tabs = [];
-  if (d.ingredients) tabs.push({ k: "ingredients", tt: t("tab_ingredients"), html: `<h2>${t("tab_ingredients")}</h2><div class="html ltr">${d.ingredients}</div>` });
-  if (d.nutrition) tabs.push({ k: "nutrition", tt: t("tab_nutrition"), html: `<h2>${t("tab_nutrition")}</h2><img src="${img("nutrition", d.nutrition)}" alt="${esc(t("nutrition_alt", { n: p.n }))}" loading="lazy" onerror="this.outerHTML='<p style=color:var(--muted)>${esc(t("nutrition_missing"))}</p>'">` });
+  const A = (BF.lang === "ar" && d.ar) ? d.ar : null;
+  const ingHtml = A && A.ingredients ? A.ingredients : d.ingredients, ingLtr = A && A.ingredients ? "" : " ltr";
+  const descHtml = A && A.desc ? A.desc : d.desc, descLtr = A && A.desc ? "" : " ltr";
+  const nutHtml = A && A.nutrition_html ? A.nutrition_html : d.nutrition_html;
+  if (ingHtml) tabs.push({ k: "ingredients", tt: t("tab_ingredients"), html: `<h2>${t("tab_ingredients")}</h2><div class="html${ingLtr}">${ingHtml}</div>` });
+  if (nutHtml) tabs.push({ k: "nutrition", tt: t("tab_nutrition"), html: `<h2>${t("tab_nutrition")}</h2><div class="html${A && A.nutrition_html ? "" : " ltr"}">${nutHtml}</div>` });
+  else if (d.nutrition) tabs.push({ k: "nutrition", tt: t("tab_nutrition"), html: `<h2>${t("tab_nutrition")}</h2><img src="${img("nutrition", d.nutrition)}" alt="${esc(t("nutrition_alt", { n: p.n }))}" loading="lazy" onerror="this.outerHTML='<p style=color:var(--muted)>${esc(t("nutrition_missing"))}</p>'">` });
   if (d.features) tabs.push({ k: "features", tt: t("tab_features"), html: `<h2>${t("tab_features")}</h2><div class="html ltr">${d.features}</div>` });
   if (d.prep) tabs.push({ k: "prep", tt: t("tab_prep"), html: `<h2>${t("tab_prep")}</h2><div class="html ltr">${d.prep}</div>` });
 
@@ -36,7 +41,7 @@
         <div class="brand ltr">${esc(p.bn)}${subBrand ? ` · ${esc(subBrand.n)}` : ""}</div>
         <h1>${esc(p.n)}</h1>
         <div class="sub">${d.spec["Case Count"] ? `${t("case_count")}: <b class="ltr">${esc(d.spec["Case Count"])}</b> · ` : ""}${t("product_code")}: <b class="ltr">${esc(p.c || "—")}</b>${p.cn ? ` · ${esc(catList(p.cn))}` : ""}</div>
-        ${d.desc ? `<div class="pd-desc ltr">${d.desc}</div>` : ""}
+        ${descHtml ? `<div class="pd-desc${descLtr}">${descHtml}</div>` : ""}
         <div class="actions">
           <div class="qty"><button type="button" id="q-minus" aria-label="${t("fewer")}">−</button><input id="qty" type="number" min="1" value="1" aria-label="${t("cases_lbl")}"><span>${t("cases")}</span><button type="button" id="q-plus" aria-label="${t("more")}">+</button></div>
           <button class="btn btn-primary" id="req">${t("request")}</button>
