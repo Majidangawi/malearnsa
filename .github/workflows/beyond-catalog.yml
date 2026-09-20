@@ -1,0 +1,26 @@
+name: Beyond FMCG — catalog publish
+on:
+  schedule: [{ cron: "*/10 * * * *" }]
+  workflow_dispatch:
+    inputs: { force: { description: "Force full rebuild", default: "0" } }
+permissions: { contents: write }
+concurrency: { group: beyond-catalog, cancel-in-progress: false }
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.12" }
+      - run: pip install --quiet pillow
+      - name: Pull export and rebuild
+        env:
+          EXPORT_URL: ${{ secrets.BEYOND_EXPORT_URL }}
+          EXPORT_KEY: ${{ secrets.BEYOND_EXPORT_KEY }}
+          FORCE: ${{ github.event.inputs.force || '0' }}
+        run: python beyond-fmcg/_build/build_from_export.py
+      - name: Commit if changed
+        run: |
+          git config user.name "beyond-catalog-bot"; git config user.email "bot@users.noreply.github.com"
+          git add beyond-fmcg/data beyond-fmcg/img
+          git diff --cached --quiet && echo "nothing to commit" || (git commit -m "beyond-fmcg: catalog publish $(date -u +%FT%TZ)" && git push)

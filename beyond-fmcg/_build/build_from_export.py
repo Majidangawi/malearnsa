@@ -1,0 +1,93 @@
+#!/usr/bin/env python3
+"""Pull the Beyond Catalog OS export (Apps Script web app) and rebuild the static catalog data + images.
+Env: EXPORT_URL (web app /exec URL), EXPORT_KEY (admin key). Exit 0 with no changes when the sheet is not dirty."""
+import os, sys, json, io, re, urllib.request, urllib.parse
+from PIL import Image
+SITE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+URL, KEY = os.environ.get("EXPORT_URL", ""), os.environ.get("EXPORT_KEY", "")
+if not URL or not KEY: print("EXPORT_URL/EXPORT_KEY not set — skipping"); sys.exit(0)
+def get(params):
+    q = urllib.parse.urlencode(dict(params, key=KEY))
+    return json.loads(urllib.request.urlopen(urllib.request.Request(URL + "?" + q, headers={"User-Agent": "beyond-build"}), timeout=300).read().decode())
+force = os.environ.get("FORCE") == "1"
+ex = get({"action": "export", "force": "1" if force else "0"})
+if not ex.get("ok"): print("export error:", ex); sys.exit(1)
+if ex.get("unchanged"): print("no changes"); sys.exit(0)
+prods, brands, cats = ex["products"], ex["brands"], ex["categories"]
+print("export:", ex["counts"])
+# ---- ids ----
+def num(s): m = re.search(r"\d+", str(s)); return int(m.group()) if m else None
+brand_by_name = {b["name"]: b for b in brands}
+top_brands = [b for b in brands if b["level"] == "brand"]; subs = [b for b in brands if b["level"] == "sub_brand"]; lines = [b for b in brands if b["level"] == "product_line"]
+cat_top = [c for c in cats if not c["parent_id"]]; cat_sub = [c for c in cats if c["parent_id"]]
+def cat_ids(names, pool):
+    out = []
+    for n in [x.strip() for x in str(names).split(",") if x.strip()]:
+        for c in pool:
+            if c["name"] == n: out.append(num(c["id"]))
+    return out
+def brand_ids(p):
+    ids = []
+    for n in [x.strip() for x in str(p["brand"]).split(",") if x.strip()]:
+        b = next((x for x in top_brands if x["name"] == n), None); ids += [num(b["id"])] if b else []
+    for n in [x.strip() for x in str(p["sub_brand"]).split(",") if x.strip()]:
+        b = next((x for x in subs if x["name"] == n), None); ids += [num(b["id"])] if b else []
+    return sorted(set(ids))
+def line_ids(p):
+    ids = []
+    for n in [x.strip() for x in str(p["product_line"]).split(",") if x.strip()]:
+        for l in lines:
+            if l["name"] == n: ids.append(num(l["id"]))
+    return sorted(set(ids))
+# ---- images: repo filenames stay; drive:<id> → download + webp ----
+os.makedirs(os.path.join(SITE, "img/products"), exist_ok=True); os.makedirs(os.path.join(SITE, "img/brands"), exist_ok=True)
+def resolve_images(field, kind="products", maxpx=520):
+    out = []
+    for token in [x.strip() for x in str(field).split(",") if x.strip()]:
+        if token.startswith("drive:"):
+            fid = token[6:]; fn = f"drv-{fid}.webp"; path = os.path.join(SITE, "img", kind, fn)
+            if not os.path.exists(path):
+                try:
+                    data = urllib.request.urlopen(f"https://drive.google.com/uc?export=download&id={fid}", timeout=120).read()
+                    im = Image.open(io.BytesIO(data)); im.load(); im = im.convert("RGBA" if im.mode in ("RGBA", "LA", "P") else "RGB"); im.thumbnail((maxpx, maxpx), Image.LANCZOS); im.save(path, "WEBP", quality=72, method=5)
+                except Exception as e: print("image fail", fid, str(e)[:80]); continue
+            out.append(fn)
+        elif os.path.exists(os.path.join(SITE, "img", kind, token)): out.append(token)
+    return out
+def spec(p):
+    return {"Product Code": p["code"] or None, "UPC": p["ean"] or None, "GTIN": None, "Unit Size": p["unit_size"] or None, "Case Count": p["case_count"] or None, "Net Weight": p["net_weight"] or None,
+            "Volume": p["volume"] or None, "Height": p["height"] or None, "Width": p["width"] or None, "Length": p["length"] or None, "Cases Per Layer": p["cases_per_layer"] or None, "Layers Per Pallet": p["layers_per_pallet"] or None, "Best Before": p["best_before"] or None}
+catalog, details = [], {}
+for p in sorted(prods, key=lambda x: str(x["name"]).lower()):
+    pid = num(p["id"]); imgs = resolve_images(p["images"])
+    k = cat_ids(p["category"], cat_top) + cat_ids(p["sub_category"], cat_sub)
+    catalog.append({"id": pid, "n": str(p["name"]).strip(), "n_ar": str(p.get("name_ar") or ""), "c": str(p["code"]), "u": str(p["ean"]), "bn": str(p["brand"]), "cn": str(p["category"]), "b": brand_ids(p), "pl": line_ids(p), "k": sorted(set(k)), "i": imgs[0] if imgs else None})
+    ar = {"desc": p.get("desc_ar") or "", "ingredients": p.get("ingredients_ar") or "", "nutrition_html": p.get("nutrition_html_ar") or ""}
+    details[str(pid)] = {"desc": p["desc"], "features": p["features"], "ingredients": p["ingredients"], "prep": p["prep"], "label": "", "nutrition": p["nutrition_image"] or None, "nutrition_html": p["nutrition_html"], "images": imgs, "ar": ar if any(ar.values()) else None, "spec": spec(p)}
+# ---- taxonomy with counts ----
+def count(pred): return sum(1 for c in catalog if pred(c))
+btree = []
+for b in sorted(top_brands, key=lambda x: (float(x["order"] or 0), x["name"])):
+    bid = num(b["id"]); c = count(lambda x: bid in x["b"])
+    if not c: continue
+    sub_nodes = []
+    for s in [s for s in subs if s["parent_id"] == b["id"]]:
+        sid = num(s["id"]); sc = count(lambda x: sid in x["b"])
+        if not sc: continue
+        ln = [{"id": num(l["id"]), "n": l["name"], "count": count(lambda x, l=l: num(l["id"]) in x["pl"])} for l in lines if l["parent_id"] == s["id"]]
+        sub_nodes.append({"id": sid, "n": s["name"], "count": sc, "lines": [x for x in ln if x["count"]]})
+    btree.append({"id": bid, "n": b["name"], "route": re.sub(r"[^a-z0-9]+", "-", b["name"].lower()).strip("-"), "desc": b["desc"], "logo": (resolve_images(b["logo"], "brands", 480) or [None])[0], "count": c, "subs": sub_nodes})
+ctree, promo = [], []
+for c in sorted(cat_top, key=lambda x: (float(x["order"] or 0), x["name"])):
+    cid = num(c["id"])
+    node = {"id": cid, "n": c["name"], "count": count(lambda x: cid in x["k"]), "subs": [{"id": num(s["id"]), "n": s["name"], "count": count(lambda x, s=s: num(s["id"]) in x["k"])} for s in cat_sub if s["parent_id"] == c["id"]]}
+    node["subs"] = [s for s in node["subs"] if s["count"]]
+    (promo if c["type"] == "PROMOTION" else ctree).append(node)
+logos = [{"n": b["n"], "logo": b["logo"]} for b in btree if b["logo"]]
+tax = {"brands": btree, "categories": ctree, "promotions": promo, "logos": logos, "totals": {"products": len(catalog), "brands": len(btree), "categories": len(ctree)}, "settings": ex.get("settings", {}), "built_at": ex["at"]}
+D = os.path.join(SITE, "data"); os.makedirs(os.path.join(D, "p"), exist_ok=True)
+json.dump(catalog, open(os.path.join(D, "catalog.json"), "w"), separators=(",", ":"), ensure_ascii=False)
+json.dump(tax, open(os.path.join(D, "taxonomy.json"), "w"), separators=(",", ":"), ensure_ascii=False)
+for pid, d in details.items(): json.dump(d, open(os.path.join(D, "p", pid + ".json"), "w"), separators=(",", ":"), ensure_ascii=False)
+print("built:", tax["totals"])
+get({"action": "published"})
