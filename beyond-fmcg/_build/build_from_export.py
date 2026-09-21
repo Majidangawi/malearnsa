@@ -26,12 +26,22 @@ def cat_ids(names, pool, parents=None):
         for c in pool:
             if c["name"] == n and (parents is None or c["parent_id"] in parents): out.append(num(c["id"]))
     return out
+def pick(name, pool, parents):
+    """Rows named `name` under one of `parents`; else the unique global match; else nothing."""
+    scoped = [r for r in pool if r["name"] == name and r["parent_id"] in parents]
+    if scoped: return scoped
+    glob = [r for r in pool if r["name"] == name]
+    return glob if len(glob) == 1 else []
 def brand_ids(p):
     tops = [b for n in [x.strip() for x in str(p["brand"]).split(",") if x.strip()] for b in top_brands if b["name"] == n]
-    sub = [b for n in [x.strip() for x in str(p["sub_brand"]).split(",") if x.strip()] for b in subs if b["name"] == n and b["parent_id"] in [t["id"] for t in tops]]
-    return sorted(set(num(b["id"]) for b in tops + sub)), [b["id"] for b in sub]
-def line_ids(p, sub_row_ids):
-    return sorted(set(num(l["id"]) for n in [x.strip() for x in str(p["product_line"]).split(",") if x.strip()] for l in lines if l["name"] == n and l["parent_id"] in sub_row_ids))
+    top_ids = [t["id"] for t in tops]
+    sub = [b for n in [x.strip() for x in str(p["sub_brand"]).split(",") if x.strip()] for b in pick(n, subs, top_ids)]
+    # lines imply their sub-brand when the sub-brand column is missing it
+    line_rows = [l for n in [x.strip() for x in str(p["product_line"]).split(",") if x.strip()] for l in pick(n, lines, [s["id"] for s in sub] or [s["id"] for s in subs if s["parent_id"] in top_ids])]
+    for l in line_rows:
+        par = next((s for s in subs if s["id"] == l["parent_id"]), None)
+        if par and par not in sub: sub.append(par)
+    return sorted(set(num(b["id"]) for b in tops + sub)), sorted(set(num(l["id"]) for l in line_rows))
 # ---- images: repo filenames stay; drive:<id> → download + webp ----
 os.makedirs(os.path.join(SITE, "img/products"), exist_ok=True); os.makedirs(os.path.join(SITE, "img/brands"), exist_ok=True)
 def resolve_images(field, kind="products", maxpx=520):
@@ -55,8 +65,8 @@ for p in sorted(prods, key=lambda x: str(x["name"]).lower()):
     pid = num(p["id"]); imgs = resolve_images(p["images"])
     top_rows = [c["id"] for c in cat_top if c["name"] in [x.strip() for x in str(p["category"]).split(",")]]
     k = cat_ids(p["category"], cat_top) + cat_ids(p["sub_category"], cat_sub, top_rows)
-    bids, sub_rows = brand_ids(p)
-    catalog.append({"id": pid, "n": str(p["name"]).strip(), "n_ar": str(p.get("name_ar") or ""), "c": str(p["code"]), "u": str(p["ean"]), "bn": str(p["brand"]), "cn": str(p["category"]), "b": bids, "pl": line_ids(p, sub_rows), "k": sorted(set(k)), "i": imgs[0] if imgs else None})
+    bids, plids = brand_ids(p)
+    catalog.append({"id": pid, "n": str(p["name"]).strip(), "n_ar": str(p.get("name_ar") or ""), "c": str(p["code"]), "u": str(p["ean"]), "bn": str(p["brand"]), "cn": str(p["category"]), "b": bids, "pl": plids, "k": sorted(set(k)), "i": imgs[0] if imgs else None})
     ar = {"desc": p.get("desc_ar") or "", "ingredients": p.get("ingredients_ar") or "", "nutrition_html": p.get("nutrition_html_ar") or ""}
     details[str(pid)] = {"desc": p["desc"], "features": p["features"], "ingredients": p["ingredients"], "prep": p["prep"], "label": "", "nutrition": p["nutrition_image"] or None, "nutrition_html": p["nutrition_html"], "images": imgs, "ar": ar if any(ar.values()) else None, "spec": spec(p)}
 # ---- taxonomy with counts ----
