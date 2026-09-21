@@ -58,7 +58,8 @@ def brand_ids(p):
 os.makedirs(os.path.join(SITE, "img/products"), exist_ok=True); os.makedirs(os.path.join(SITE, "img/brands"), exist_ok=True)
 def resolve_images(field, kind="products", maxpx=520):
     out = []
-    for token in [x.strip() for x in re.split(r"[|,]", str(field or "")) if x.strip()]:
+    raw = str(field or "")
+    for token in [x.strip() for x in (raw.split("|") if "|" in raw or raw.startswith("http") else raw.split(",")) if x.strip()]:
         if token.startswith("drive:"):
             fid = token[6:]; fn = f"drv-{fid}.webp"; path = os.path.join(SITE, "img", kind, fn)
             if not os.path.exists(path):
@@ -66,6 +67,16 @@ def resolve_images(field, kind="products", maxpx=520):
                     data = urllib.request.urlopen(f"https://drive.google.com/uc?export=download&id={fid}", timeout=120).read()
                     im = Image.open(io.BytesIO(data)); im.load(); im = im.convert("RGBA" if im.mode in ("RGBA", "LA", "P") else "RGB"); im.thumbnail((maxpx, maxpx), Image.LANCZOS); im.save(path, "WEBP", quality=72, method=5)
                 except Exception as e: print("image fail", fid, str(e)[:80]); continue
+            out.append(fn)
+        elif token.startswith("http://") or token.startswith("https://"):
+            import hashlib
+            fn = "u-" + hashlib.sha1(token.encode()).hexdigest()[:12] + ".webp"; path = os.path.join(SITE, "img", kind, fn)
+            if not os.path.exists(path):
+                try:
+                    req = urllib.request.Request(token, headers={"User-Agent": "Mozilla/5.0 (BeyondCatalogBuilder)"})
+                    data = urllib.request.urlopen(req, timeout=120).read()
+                    im = Image.open(io.BytesIO(data)); im.load(); im = im.convert("RGBA" if im.mode in ("RGBA", "LA", "P") else "RGB"); im.thumbnail((maxpx, maxpx), Image.LANCZOS); im.save(path, "WEBP", quality=72, method=5)
+                except Exception as e: print("image fail", token[:80], str(e)[:80]); continue
             out.append(fn)
         elif os.path.exists(os.path.join(SITE, "img", kind, token)): out.append(token)
     return out
