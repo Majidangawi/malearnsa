@@ -18,11 +18,23 @@ print("export:", ex["counts"])
 # ---- ids ----
 def num(s): m = re.search(r"\d+", str(s)); return int(m.group()) if m else None
 brand_by_name = {b["name"]: b for b in brands}
+KNOWN = {b["name"] for b in brands} | {c["name"] for c in cats}
+def multi(s):
+    s = str(s or "").strip()
+    if not s: return []
+    if "|" in s: return [x.strip() for x in s.split("|") if x.strip()]
+    if s in KNOWN: return [s]
+    parts = [x.strip() for x in s.split(",") if x.strip()]; out = []; i = 0
+    while i < len(parts):
+        for j in range(len(parts), i, -1):
+            cand = ", ".join(parts[i:j])
+            if cand in KNOWN or j == i + 1: out.append(cand); i = j; break
+    return out
 top_brands = [b for b in brands if b["level"] == "brand"]; subs = [b for b in brands if b["level"] == "sub_brand"]; lines = [b for b in brands if b["level"] == "product_line"]
 cat_top = [c for c in cats if not c["parent_id"]]; cat_sub = [c for c in cats if c["parent_id"]]
 def cat_ids(names, pool, parents=None):
     out = []
-    for n in [x.strip() for x in str(names).split(",") if x.strip()]:
+    for n in multi(names):
         for c in pool:
             if c["name"] == n and (parents is None or c["parent_id"] in parents): out.append(num(c["id"]))
     return out
@@ -33,11 +45,11 @@ def pick(name, pool, parents):
     glob = [r for r in pool if r["name"] == name]
     return glob if len(glob) == 1 else []
 def brand_ids(p):
-    tops = [b for n in [x.strip() for x in str(p["brand"]).split(",") if x.strip()] for b in top_brands if b["name"] == n]
+    tops = [b for n in multi(p["brand"]) for b in top_brands if b["name"] == n]
     top_ids = [t["id"] for t in tops]
-    sub = [b for n in [x.strip() for x in str(p["sub_brand"]).split(",") if x.strip()] for b in pick(n, subs, top_ids)]
+    sub = [b for n in multi(p["sub_brand"]) for b in pick(n, subs, top_ids)]
     # lines imply their sub-brand when the sub-brand column is missing it
-    line_rows = [l for n in [x.strip() for x in str(p["product_line"]).split(",") if x.strip()] for l in pick(n, lines, [s["id"] for s in sub] or [s["id"] for s in subs if s["parent_id"] in top_ids])]
+    line_rows = [l for n in multi(p["product_line"]) for l in pick(n, lines, [s["id"] for s in sub] or [s["id"] for s in subs if s["parent_id"] in top_ids])]
     for l in line_rows:
         par = next((s for s in subs if s["id"] == l["parent_id"]), None)
         if par and par not in sub: sub.append(par)
@@ -46,7 +58,7 @@ def brand_ids(p):
 os.makedirs(os.path.join(SITE, "img/products"), exist_ok=True); os.makedirs(os.path.join(SITE, "img/brands"), exist_ok=True)
 def resolve_images(field, kind="products", maxpx=520):
     out = []
-    for token in [x.strip() for x in str(field).split(",") if x.strip()]:
+    for token in [x.strip() for x in re.split(r"[|,]", str(field or "")) if x.strip()]:
         if token.startswith("drive:"):
             fid = token[6:]; fn = f"drv-{fid}.webp"; path = os.path.join(SITE, "img", kind, fn)
             if not os.path.exists(path):
@@ -63,7 +75,7 @@ def spec(p):
 catalog, details = [], {}
 for p in sorted(prods, key=lambda x: str(x["name"]).lower()):
     pid = num(p["id"]); imgs = resolve_images(p["images"])
-    top_rows = [c["id"] for c in cat_top if c["name"] in [x.strip() for x in str(p["category"]).split(",")]]
+    top_rows = [c["id"] for c in cat_top if c["name"] in multi(p["category"])]
     k = cat_ids(p["category"], cat_top) + cat_ids(p["sub_category"], cat_sub, top_rows)
     bids, plids = brand_ids(p)
     catalog.append({"id": pid, "n": str(p["name"]).strip(), "n_ar": str(p.get("name_ar") or ""), "c": str(p["code"]), "u": str(p["ean"]), "bn": str(p["brand"]), "cn": str(p["category"]), "b": bids, "pl": plids, "k": sorted(set(k)), "i": imgs[0] if imgs else None})
