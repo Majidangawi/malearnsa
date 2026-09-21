@@ -1,0 +1,16 @@
+/* Beyond FMCG — approved retailer area (magic link): history, quotations, wholesale-only products. */
+(async function () {
+  const { t, esc, withLang, ICONS, img } = BF; BF.header({ page: "account" }); BF.footer([]);
+  const root = document.querySelector("#account"); const token = new URLSearchParams(location.search).get("t") || "";
+  const API = document.body.dataset.api || BF.API; const money = n => Number(n || 0).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  root.innerHTML = `<h1>${t("ac_title")}</h1><div class="card"><p class="hint">${t("loading")}</p></div>`;
+  let d; try { d = await fetch(API + "?action=account&t=" + encodeURIComponent(token), { redirect: "follow" }).then(r => r.json()); } catch (e) { d = { ok: false }; }
+  if (!d || !d.ok) { root.innerHTML = `<h1>${t("ac_title")}</h1><div class="card"><p>${d && d.error === "not_approved" ? t("ac_not_approved") : t("ac_invalid")}</p><a class="btn btn-primary" href="${withLang("index.html")}">${t("ok_btn")}</a></div>`; return; }
+  const st = s => t("ac_st_" + s) === "ac_st_" + s ? esc(s) : t("ac_st_" + s);
+  const reqs = d.requests.length ? `<div class="qt-wrap"><table class="qt"><thead><tr><th>Ref</th><th>${t("rq_type")}</th><th>${t("sort") === "Sort" ? "Status" : "الحالة"}</th><th>${t("ac_quote")}</th></tr></thead><tbody>${d.requests.map(r => `<tr><td class="ltr">${esc(r.ref)}<br><small class="ltr">${String(r.created_at).slice(0, 10)}</small></td><td>${t("ac_type_" + r.type) === "ac_type_" + r.type ? esc(r.type) : t("ac_type_" + r.type)} · ${esc(r.items_count)}</td><td>${st(r.status)}</td><td>${r.quote ? `<span class="ltr">${esc(r.quote.ref)}</span> · ${st(r.quote.status)}${r.quote.total ? ` · <b class="ltr">${money(r.quote.total)} ${esc(r.quote.currency)}</b>` : ""} <a class="btn btn-ghost btn-sm" href="${withLang("quote.html?t=" + encodeURIComponent(r.quote.token))}">${t("ac_open")}</a>` : "—"}</td></tr>`).join("")}</tbody></table></div>` : `<p class="hint">${t("ac_none")}</p>`;
+  const ws = d.wholesale.length ? `<div class="grid ws-grid">${d.wholesale.map(p => `<div class="card"><div class="ph">${p.image ? `<img src="${esc(p.image)}" alt="" loading="lazy">` : ""}</div><div class="body"><div class="brand ltr">${esc(p.brand)}</div><h3 class="ltr">${esc(BF.lang === "ar" && p.name_ar ? p.name_ar : p.name)}</h3><div class="meta"><span class="ltr">${esc(p.code || "")}</span>${p.unit_size ? ` · <span class="ltr">${esc(p.unit_size)}</span>` : ""}</div><button class="btn btn-primary btn-sm" type="button" data-add="${esc(p.id)}">${t("add_btn") === "add_btn" ? "Request price" : t("add_btn")}</button></div></div>`).join("")}</div>` : "";
+  root.innerHTML = `<h1>${t("ac_hello", { name: esc(d.customer.contact) })}</h1><p class="lead">${t("ac_company")}: <b>${esc(d.customer.company)}</b>${d.customer.approved_at ? ` · ${t("ac_since", { d: String(d.customer.approved_at).slice(0, 10) })}` : ""}</p>
+    <div class="card"><h2>${t("ac_requests")}</h2>${reqs}</div>
+    ${d.wholesale.length ? `<div class="card"><h2>${t("ac_wholesale")}</h2><p class="hint">${t("ac_wholesale_p")}</p>${ws}</div>` : ""}`;
+  root.querySelectorAll("[data-add]").forEach(b => { const p = d.wholesale.find(x => String(x.id) === b.dataset.add); BF.bindRequestButton(b, { id: isNaN(+p.id) ? p.id : +p.id, n: p.name, c: p.code, i: null, bn: p.brand }); });
+})();

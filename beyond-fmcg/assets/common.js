@@ -184,5 +184,5 @@ window.BF = (function () {
     document.addEventListener("bf:list", paint); paint();
   }
 
-  return { lang, t, cat, catList, withLang, post, ICONS, LOGO_SVG, base, getList, add, remove, setQty, clear, inList, updateBadge, toast, img, esc, fmt, header, footer, openModal, closeModal, bindRequestButton };
+  return { lang, t, cat, catList, withLang, post, API, ICONS, LOGO_SVG, base, getList, add, remove, setQty, clear, inList, updateBadge, toast, img, esc, fmt, header, footer, openModal, closeModal, bindRequestButton };
 })();

@@ -85,6 +85,7 @@ def spec(p):
             "Volume": p["volume"] or None, "Height": p["height"] or None, "Width": p["width"] or None, "Length": p["length"] or None, "Cases Per Layer": p["cases_per_layer"] or None, "Layers Per Pallet": p["layers_per_pallet"] or None, "Best Before": p["best_before"] or None}
 catalog, details = [], {}
 for p in sorted(prods, key=lambda x: str(x["name"]).lower()):
+    if str(p.get("visibility") or "").strip().lower() == "wholesale": continue   # wholesale-only: served to approved retailers by the API, not in the public catalog
     pid = num(p["id"]); imgs = resolve_images(p["images"])
     top_rows = [c["id"] for c in cat_top if c["name"] in multi(p["category"])]
     k = cat_ids(p["category"], cat_top) + cat_ids(p["sub_category"], cat_sub, top_rows)
