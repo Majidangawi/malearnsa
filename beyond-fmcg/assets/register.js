@@ -1,7 +1,7 @@
 /* Beyond FMCG — retailer registration page. */
 (async function () {
   const { t, esc, ICONS } = BF; BF.header({ page: "register" });
-  const tax = await fetch(BF.base + "data/taxonomy.json").then(r => r.json()); BF.footer(tax.categories);
+  const tax = await fetch(BF.base + "data/taxonomy.json").then(r => r.json()); BF.applySettings(tax.settings); BF.footer(tax.categories);
   const D = window.BF_I18N.ui[BF.lang]; const root = document.querySelector("#reg");
   root.innerHTML = `<h1>${t("reg_title")}</h1><p class="lead">${t("reg_p")}</p><div class="card"><form id="reg-form" novalidate>
     <div class="field"><label>${t("f_company")}</label><input name="company" required placeholder="${t("f_company_ph")}"></div>

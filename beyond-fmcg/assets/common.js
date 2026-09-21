@@ -30,7 +30,20 @@ window.BF = (function () {
   const base = document.body.dataset.base || "./";
   const API = document.body.dataset.api || "https://script.google.com/macros/s/AKfycbwzA26Mfu_3dQNXndRjjReH5wExBEWBmXEo1HLe5pbLHYeEB39c63VcqT8AT1FGMcan/exec";
   const PAGE_T0 = Date.now();
-  async function post(payload) { const r = await fetch(API, { method: "POST", body: JSON.stringify(Object.assign({ lang, elapsed_ms: Date.now() - PAGE_T0 }, payload)), headers: { "Content-Type": "text/plain;charset=utf-8" }, redirect: "follow" }); return r.json(); }
+  async function post(payload) {
+    const body = JSON.stringify(Object.assign({ lang, elapsed_ms: Date.now() - PAGE_T0 }, payload));
+    for (let i = 0; i < 2; i++) { try { const r = await fetch(API, { method: "POST", body, headers: { "Content-Type": "text/plain;charset=utf-8" }, redirect: "follow" }); if (r.ok) return await r.json(); } catch (e) { if (i) throw e; } await new Promise(res => setTimeout(res, 1500)); }
+    throw new Error("network");
+  }
+  // ---------- settings-driven content (Settings tab → taxonomy.json.settings) ----------
+  let SETTINGS = {};
+  function applySettings(s) {
+    SETTINGS = s || {}; const sfx = "_" + lang;
+    Object.keys(SETTINGS).forEach(k => { if (k.indexOf("site_") === 0 && k.slice(-3) === sfx && SETTINGS[k] !== "") D[k.slice(5, -3).replace(/^(hero_h1|hero_p|foot_tag|foot_p|cities|brands_p)$/, "$1")] = SETTINGS[k]; });
+    document.querySelectorAll("[data-i18n]").forEach(el => { const k = el.dataset.i18n; if (D[k] != null && el.id !== "count") el.innerHTML = t(k); });
+    const promo = document.querySelector("#promo"); const txt = SETTINGS["site_promo" + sfx];
+    if (promo) { if (txt) { const href = SETTINGS.site_promo_link || ""; promo.innerHTML = `<div class="wrap">${href ? `<a href="${esc(href)}">` : "<span>"}${ICONS.spark || ""}${esc(txt)}${href ? "</a>" : "</span>"}</div>`; promo.hidden = false; } else promo.hidden = true; }
+  }
   const imgBase = document.body.dataset.imgBase || (base + "img/");
   const LOGO_HTML = `<img src="${base}brand/beyond-fmcg-logo-black.svg" alt="Beyond FMCG" width="146" height="36">`;
   const LOGO_HTML_W = `<img src="${base}brand/beyond-fmcg-logo-white.svg" alt="Beyond FMCG" width="162" height="40">`;
@@ -93,7 +106,8 @@ window.BF = (function () {
         <a class="logo" href="${withLang(base + "index.html")}">${LOGO_HTML_W}</a>
         <div class="tag">${t("foot_tag")}</div>
         <p>${t("foot_p")}</p>
-        <div class="social"><a href="#" aria-label="LinkedIn">${ICONS.li}</a><a href="#" aria-label="Instagram">${ICONS.ig}</a><a href="#" aria-label="Facebook">${ICONS.fb}</a></div>
+        <div class="social">${SETTINGS.site_linkedin ? `<a href="${esc(SETTINGS.site_linkedin)}" target="_blank" rel="noopener" aria-label="LinkedIn">${ICONS.li}</a>` : ""}${SETTINGS.site_instagram ? `<a href="${esc(SETTINGS.site_instagram)}" target="_blank" rel="noopener" aria-label="Instagram">${ICONS.ig}</a>` : ""}${SETTINGS.site_facebook ? `<a href="${esc(SETTINGS.site_facebook)}" target="_blank" rel="noopener" aria-label="Facebook">${ICONS.fb}</a>` : ""}</div>
+        <div class="foot-lines">${SETTINGS.site_whatsapp ? `<a class="wa" href="https://wa.me/${esc(String(SETTINGS.site_whatsapp).replace(/\D/g, ""))}" target="_blank" rel="noopener">WhatsApp <span class="ltr">+${esc(String(SETTINGS.site_whatsapp).replace(/\D/g, ""))}</span></a>` : ""}${SETTINGS.site_email ? `<a href="mailto:${esc(SETTINGS.site_email)}" class="ltr">${esc(SETTINGS.site_email)}</a>` : ""}${SETTINGS.site_phone ? `<a href="tel:${esc(String(SETTINGS.site_phone).replace(/\s/g, ""))}" class="ltr">${esc(SETTINGS.site_phone)}</a>` : ""}</div>
       </div>
       <div><h4>${t("foot_cats")}</h4><ul>${cats}</ul></div>
       <div><h4>${t("foot_contact")}</h4>
@@ -107,7 +121,7 @@ window.BF = (function () {
         </form>
       </div>
     </div>
-    <div class="foot-bar"><div class="wrap"><span>${t("rights", { y: new Date().getFullYear() })}</span><span>${t("cities")}</span></div></div>`;
+    <div class="foot-bar"><div class="wrap"><span>${t("rights", { y: new Date().getFullYear() })} · <a href="${withLang(base + "privacy.html")}">${t("privacy")}</a></span><span>${t("cities")}</span></div></div>`;
     el.querySelector("#contact-form").addEventListener("submit", async e => { e.preventDefault(); const f = e.target;
       if (!f.name.value.trim() || !f.email.value.trim()) { toast(t("t_need")); return; }
       const b = f.querySelector("button"); b.disabled = true;
@@ -184,5 +198,5 @@ window.BF = (function () {
     document.addEventListener("bf:list", paint); paint();
   }
 
-  return { lang, t, cat, catList, withLang, post, API, ICONS, LOGO_SVG, base, getList, add, remove, setQty, clear, inList, updateBadge, toast, img, esc, fmt, header, footer, openModal, closeModal, bindRequestButton };
+  return { lang, t, cat, catList, withLang, post, API, applySettings, settings: () => SETTINGS, ICONS, LOGO_SVG, base, getList, add, remove, setQty, clear, inList, updateBadge, toast, img, esc, fmt, header, footer, openModal, closeModal, bindRequestButton };
 })();

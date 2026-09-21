@@ -8,7 +8,7 @@
     fetch(BF.base + "data/taxonomy.json").then(r => r.json()),
     fetch(BF.base + "data/catalog.json").then(r => r.json())
   ]);
-  BF.footer(tax.categories);
+  BF.applySettings(tax.settings); BF.footer(tax.categories);
 
   // ---------- lookups ----------
   const brandName = {}, lineName = {}, catName = {}, promoIds = new Set();

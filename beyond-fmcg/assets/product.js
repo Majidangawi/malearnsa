@@ -8,7 +8,7 @@
     fetch(BF.base + "data/catalog.json").then(r => r.json()),
     fetch(BF.base + "data/p/" + id + ".json").then(r => r.ok ? r.json() : null).catch(() => null)
   ]);
-  BF.footer(tax.categories);
+  BF.applySettings(tax.settings); BF.footer(tax.categories);
   const p = catalog.find(x => x.id === id);
   const root = document.querySelector("#pd");
   if (!p || !d) { root.innerHTML = `<div class="empty" style="padding:80px 20px"><b>${t("not_found")}</b><a class="btn btn-ghost" href="${withLang("index.html")}">${t("back")}</a></div>`; return; }
