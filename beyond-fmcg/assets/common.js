@@ -82,7 +82,7 @@ window.BF = (function () {
     el.className = "hdr";
     el.innerHTML = `<div class="wrap">
       <a class="logo" href="${withLang(base + "index.html")}" aria-label="Beyond FMCG">${LOGO_HTML}</a>
-      <nav class="hdr-nav" aria-label="Main"><a href="${withLang(base + "index.html")}#catalog" class="${opts.page === "catalog" ? "on" : ""}">${t("nav_catalog")}</a><a href="${withLang(base + "index.html")}#brands">${t("nav_brands")}</a><a href="${withLang(base + "index.html")}#contact">${t("nav_contact")}</a><a href="${withLang(base + "register.html")}" class="${opts.page === "register" ? "on" : ""}">${t("nav_register")}</a></nav>
+      <nav class="hdr-nav" aria-label="Main"><a href="${withLang(base + "index.html")}#catalog" class="${opts.page === "catalog" ? "on" : ""}">${t("nav_catalog")}</a><a href="${withLang(base + "index.html")}#brands">${t("nav_brands")}</a><a href="${withLang(base + "index.html")}#contact">${t("nav_contact")}</a><a href="${withLang(base + "sourcing.html")}" class="${opts.page === "sourcing" ? "on" : ""}">${t("nav_sourcing")}</a><a href="${withLang(base + "register.html")}" class="${opts.page === "register" ? "on" : ""}">${t("nav_register")}</a></nav>
       <div class="hdr-sp"></div>
       ${opts.search ? `<label class="hdr-search"><span class="sr">${t("search_lbl")}</span>${ICONS.search}<input id="q" type="search" placeholder="${t("search_ph")}" autocomplete="off"></label>` : ""}
       <button class="lang-btn" id="lang-btn" type="button" aria-label="Switch language" lang="${lang === "ar" ? "en" : "ar"}">${t("lang_switch")}</button>
@@ -140,7 +140,7 @@ window.BF = (function () {
       <div class="col" id="modal-form-col">
         <h3>${t("m_title")}</h3><p class="hint">${t("m_hint")}</p>
         <form id="rq-form" novalidate>
-          <div class="field"><label>${t("rq_type")}</label><div class="seg"><label class="seg-opt"><input type="radio" name="rtype" value="rfq" checked> <span>${t("rq_price")}</span></label><label class="seg-opt"><input type="radio" name="rtype" value="sample"> <span>${t("rq_sample")}</span></label></div></div>
+          <div class="field"><label>${t("rq_type")} <small class="hint-inline">${t("rq_type_hint")}</small></label><div class="seg"><label class="seg-opt"><input type="checkbox" name="rtype" value="rfq" checked> <span>${t("rq_price")}</span></label><label class="seg-opt"><input type="checkbox" name="rtype" value="sample"> <span>${t("rq_sample")}</span></label></div></div>
           <input type="text" name="website" tabindex="-1" autocomplete="off" class="hp" aria-hidden="true">
           <div class="field"><label>${t("f_name")}</label><input name="name" required placeholder="${t("f_name_ph")}"></div>
           <div class="f2"><div class="field"><label>${t("f_email")}</label><input name="email" type="email" required placeholder="${t("f_email_ph")}" dir="ltr"></div>
@@ -179,15 +179,17 @@ window.BF = (function () {
     e.preventDefault(); const f = e.target; const l = getList();
     if (!f.name.value.trim() || !f.email.value.trim()) { toast(t("t_need")); (f.name.value.trim() ? f.email : f.name).focus(); return; }
     if (!l.length) { toast(t("t_empty")); return; }
-    const type = (f.querySelector("input[name=rtype]:checked") || {}).value || "rfq";
+    const types = [...f.querySelectorAll("input[name=rtype]:checked")].map(x => x.value); if (!types.length) { toast(t("t_type")); return; } const type = types[0];
     const btn = f.querySelector("button[type=submit]"); btn.disabled = true; const label = btn.textContent; btn.textContent = t("sending");
     let res;
-    try { res = await post({ type, name: f.name.value.trim(), email: f.email.value.trim(), phone: f.phone.value.trim(), company: f.company.value.trim(), region: f.region.value, business: f.business.value, notes: f.notes.value.trim(), website: f.website.value, items: l.map(it => ({ id: it.id, n: it.n, c: it.c, qty: it.qty || 1 })) }); }
+    try { res = await post({ type, types, name: f.name.value.trim(), email: f.email.value.trim(), phone: f.phone.value.trim(), company: f.company.value.trim(), region: f.region.value, business: f.business.value, notes: f.notes.value.trim(), website: f.website.value, items: l.map(it => ({ id: it.id, n: it.n, c: it.c, qty: it.qty || 1 })) }); }
     catch (err) { res = { ok: false, error: String(err) }; }
     if (!res || !res.ok) { btn.disabled = false; btn.textContent = label; toast(t("err_send")); return; }
-    const ref = res.ref;
-    overlay.querySelector("#modal-form-col").innerHTML = `<div class="success"><div class="ok">${ICONS.check}</div><h3>${type === "sample" ? t("ok_sample_title") : t("ok_title")}</h3>
-      <p class="hint">${(type === "sample" ? t("ok_sample_p", { ref, n: l.length, email: esc(f.email.value) }) : t("ok_p", { ref, n: l.length, email: esc(f.email.value) }))}</p>
+    const ref = res.ref, refs = res.refs || {}; const both = types.length > 1 && refs.rfq && refs.sample;
+    const title = both ? t("ok_both_title") : (type === "sample" ? t("ok_sample_title") : t("ok_title"));
+    const body = both ? t("ok_both_p", { rfq: refs.rfq, sample: refs.sample, n: l.length, email: esc(f.email.value) }) : (type === "sample" ? t("ok_sample_p", { ref, n: l.length, email: esc(f.email.value) }) : t("ok_p", { ref, n: l.length, email: esc(f.email.value) }));
+    overlay.querySelector("#modal-form-col").innerHTML = `<div class="success"><div class="ok">${ICONS.check}</div><h3>${title}</h3>
+      <p class="hint">${body}</p>
       <button class="btn btn-primary" id="rq-done">${t("ok_btn")}</button></div>`;
     overlay.querySelector("#rq-done").addEventListener("click", () => { closeModal(); });
     clear(); renderList(); overlay.dataset.stale = "1";

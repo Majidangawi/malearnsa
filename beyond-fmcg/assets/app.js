@@ -18,7 +18,7 @@
 
   // ---------- state ----------
   const PAGE = 24;
-  const state = { q: "", brands: new Set(), lines: new Set(), cats: new Set(), specials: false, sort: "name", shown: PAGE };
+  const state = { q: "", brands: new Set(), lines: new Set(), cats: new Set(), specials: false, sort: "featured", shown: PAGE };
   const params = new URLSearchParams(location.search);
   if (params.get("brand")) params.get("brand").split(",").forEach(x => state.brands.add(+x));
   if (params.get("cat")) params.get("cat").split(",").forEach(x => state.cats.add(+x));
@@ -95,7 +95,7 @@
   const qEl = document.querySelector("#q"); qEl.value = state.q; let qT;
   qEl.addEventListener("input", () => { clearTimeout(qT); qT = setTimeout(() => { state.q = qEl.value.trim(); apply(); }, 180); });
   const sortEl = document.querySelector("#sort");
-  sortEl.innerHTML = `<option value="name">${t("sort_az")}</option><option value="name-desc">${t("sort_za")}</option><option value="brand">${t("sort_brand")}</option>`;
+  sortEl.innerHTML = `<option value="featured">${t("sort_featured")}</option><option value="name">${t("sort_az")}</option><option value="name-desc">${t("sort_za")}</option><option value="brand">${t("sort_brand")}</option>`;
   sortEl.addEventListener("change", e => { state.sort = e.target.value; apply(); });
 
   // ---------- filtering ----------
@@ -113,7 +113,8 @@
   function apply() {
     state.shown = PAGE;
     current = catalog.filter(matches);
-    if (state.sort === "name-desc") current = current.slice().reverse();
+    if (state.sort === "featured") current = current.slice().sort((a, b) => ((a.o == null ? 1e9 : a.o) - (b.o == null ? 1e9 : b.o)) || a.n.localeCompare(b.n));
+    else if (state.sort === "name-desc") current = current.slice().reverse();
     else if (state.sort === "brand") current = current.slice().sort((a, b) => a.bn.localeCompare(b.bn) || a.n.localeCompare(b.n));
     renderChips(); renderGrid(); updateUrl();
   }
