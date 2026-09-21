@@ -20,25 +20,18 @@ def num(s): m = re.search(r"\d+", str(s)); return int(m.group()) if m else None
 brand_by_name = {b["name"]: b for b in brands}
 top_brands = [b for b in brands if b["level"] == "brand"]; subs = [b for b in brands if b["level"] == "sub_brand"]; lines = [b for b in brands if b["level"] == "product_line"]
 cat_top = [c for c in cats if not c["parent_id"]]; cat_sub = [c for c in cats if c["parent_id"]]
-def cat_ids(names, pool):
+def cat_ids(names, pool, parents=None):
     out = []
     for n in [x.strip() for x in str(names).split(",") if x.strip()]:
         for c in pool:
-            if c["name"] == n: out.append(num(c["id"]))
+            if c["name"] == n and (parents is None or c["parent_id"] in parents): out.append(num(c["id"]))
     return out
 def brand_ids(p):
-    ids = []
-    for n in [x.strip() for x in str(p["brand"]).split(",") if x.strip()]:
-        b = next((x for x in top_brands if x["name"] == n), None); ids += [num(b["id"])] if b else []
-    for n in [x.strip() for x in str(p["sub_brand"]).split(",") if x.strip()]:
-        b = next((x for x in subs if x["name"] == n), None); ids += [num(b["id"])] if b else []
-    return sorted(set(ids))
-def line_ids(p):
-    ids = []
-    for n in [x.strip() for x in str(p["product_line"]).split(",") if x.strip()]:
-        for l in lines:
-            if l["name"] == n: ids.append(num(l["id"]))
-    return sorted(set(ids))
+    tops = [b for n in [x.strip() for x in str(p["brand"]).split(",") if x.strip()] for b in top_brands if b["name"] == n]
+    sub = [b for n in [x.strip() for x in str(p["sub_brand"]).split(",") if x.strip()] for b in subs if b["name"] == n and b["parent_id"] in [t["id"] for t in tops]]
+    return sorted(set(num(b["id"]) for b in tops + sub)), [b["id"] for b in sub]
+def line_ids(p, sub_row_ids):
+    return sorted(set(num(l["id"]) for n in [x.strip() for x in str(p["product_line"]).split(",") if x.strip()] for l in lines if l["name"] == n and l["parent_id"] in sub_row_ids))
 # ---- images: repo filenames stay; drive:<id> → download + webp ----
 os.makedirs(os.path.join(SITE, "img/products"), exist_ok=True); os.makedirs(os.path.join(SITE, "img/brands"), exist_ok=True)
 def resolve_images(field, kind="products", maxpx=520):
@@ -60,8 +53,10 @@ def spec(p):
 catalog, details = [], {}
 for p in sorted(prods, key=lambda x: str(x["name"]).lower()):
     pid = num(p["id"]); imgs = resolve_images(p["images"])
-    k = cat_ids(p["category"], cat_top) + cat_ids(p["sub_category"], cat_sub)
-    catalog.append({"id": pid, "n": str(p["name"]).strip(), "n_ar": str(p.get("name_ar") or ""), "c": str(p["code"]), "u": str(p["ean"]), "bn": str(p["brand"]), "cn": str(p["category"]), "b": brand_ids(p), "pl": line_ids(p), "k": sorted(set(k)), "i": imgs[0] if imgs else None})
+    top_rows = [c["id"] for c in cat_top if c["name"] in [x.strip() for x in str(p["category"]).split(",")]]
+    k = cat_ids(p["category"], cat_top) + cat_ids(p["sub_category"], cat_sub, top_rows)
+    bids, sub_rows = brand_ids(p)
+    catalog.append({"id": pid, "n": str(p["name"]).strip(), "n_ar": str(p.get("name_ar") or ""), "c": str(p["code"]), "u": str(p["ean"]), "bn": str(p["brand"]), "cn": str(p["category"]), "b": bids, "pl": line_ids(p, sub_rows), "k": sorted(set(k)), "i": imgs[0] if imgs else None})
     ar = {"desc": p.get("desc_ar") or "", "ingredients": p.get("ingredients_ar") or "", "nutrition_html": p.get("nutrition_html_ar") or ""}
     details[str(pid)] = {"desc": p["desc"], "features": p["features"], "ingredients": p["ingredients"], "prep": p["prep"], "label": "", "nutrition": p["nutrition_image"] or None, "nutrition_html": p["nutrition_html"], "images": imgs, "ar": ar if any(ar.values()) else None, "spec": spec(p)}
 # ---- taxonomy with counts ----
