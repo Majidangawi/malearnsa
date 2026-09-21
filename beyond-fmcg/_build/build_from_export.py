@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Pull the Beyond Catalog OS export (Apps Script web app) and rebuild the static catalog data + images.
 Env: EXPORT_URL (web app /exec URL), EXPORT_KEY (admin key). Exit 0 with no changes when the sheet is not dirty."""
-import os, sys, json, io, re, urllib.request, urllib.parse
+import os, sys, json, io, re, time, urllib.request, urllib.parse
 from PIL import Image
 SITE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 URL, KEY = os.environ.get("EXPORT_URL", ""), os.environ.get("EXPORT_KEY", "")
