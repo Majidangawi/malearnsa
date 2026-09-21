@@ -9,7 +9,7 @@
     <div class="field"><label>${t("f_email")}</label><input name="email" type="email" required dir="ltr" placeholder="${t("f_email_ph")}"></div>
     <div class="f2"><div class="field"><label>${t("f_cr")}</label><input name="cr_number" dir="ltr" inputmode="numeric"></div><div class="field"><label>${t("f_vat")}</label><input name="vat_number" dir="ltr" inputmode="numeric"></div></div>
     <div class="f2"><div class="field"><label>${t("f_region")}</label><select name="region"><option value="">${t("f_select")}</option>${D.regions.map(r => `<option>${r}</option>`).join("")}</select></div><div class="field"><label>${t("f_business")}</label><select name="business"><option value="">${t("f_select")}</option>${D.business.map(r => `<option>${r}</option>`).join("")}</select></div></div>
-    <input type="text" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">
+    <input type="text" name="website" tabindex="-1" autocomplete="off" class="hp" aria-hidden="true">
     <button class="btn btn-primary" type="submit" style="width:100%">${t("reg_submit")}</button></form></div>`;
   root.querySelector("#reg-form").addEventListener("submit", async e => { e.preventDefault(); const f = e.target;
     if (!f.company.value.trim() || !f.name.value.trim() || !f.email.value.trim()) { BF.toast(t("t_need")); return; }

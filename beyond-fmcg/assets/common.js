@@ -117,7 +117,7 @@ window.BF = (function () {
           <div class="fr"><input class="f-in" name="email" type="email" placeholder="${t("c_email")}" required><input class="f-in" name="phone" placeholder="${t("c_phone")}"></div>
           <div class="fr one"><input class="f-in" name="company" placeholder="${t("c_company")}"></div>
           <div class="fr one"><textarea class="f-in" name="message" placeholder="${t("c_msg")}"></textarea></div>
-          <input type="text" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">
+          <input type="text" name="website" tabindex="-1" autocomplete="off" class="hp" aria-hidden="true">
           <button class="btn btn-white" type="submit">${t("c_btn")}</button>
         </form>
       </div>
@@ -141,7 +141,7 @@ window.BF = (function () {
         <h3>${t("m_title")}</h3><p class="hint">${t("m_hint")}</p>
         <form id="rq-form" novalidate>
           <div class="field"><label>${t("rq_type")}</label><div class="seg"><label class="seg-opt"><input type="radio" name="rtype" value="rfq" checked> <span>${t("rq_price")}</span></label><label class="seg-opt"><input type="radio" name="rtype" value="sample"> <span>${t("rq_sample")}</span></label></div></div>
-          <input type="text" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">
+          <input type="text" name="website" tabindex="-1" autocomplete="off" class="hp" aria-hidden="true">
           <div class="field"><label>${t("f_name")}</label><input name="name" required placeholder="${t("f_name_ph")}"></div>
           <div class="f2"><div class="field"><label>${t("f_email")}</label><input name="email" type="email" required placeholder="${t("f_email_ph")}" dir="ltr"></div>
           <div class="field"><label>${t("f_phone")}</label><input name="phone" type="tel" placeholder="${t("f_phone_ph")}" dir="ltr"></div></div>
