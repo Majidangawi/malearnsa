@@ -37,6 +37,7 @@ window.BF = (function () {
   }
   // ---------- settings-driven content (Settings tab → taxonomy.json.settings) ----------
   let SETTINGS = {};
+  try { SETTINGS = JSON.parse((document.getElementById("bf-settings") || {}).textContent || "{}") || {}; } catch (e) { SETTINGS = {}; }
   function applySettings(s) {
     SETTINGS = s || {}; const sfx = "_" + lang;
     Object.keys(SETTINGS).forEach(k => { if (k.indexOf("site_") === 0 && k.slice(-3) === sfx && SETTINGS[k] !== "") D[k.slice(5, -3).replace(/^(hero_h1|hero_p|foot_tag|foot_p|cities|brands_p)$/, "$1")] = SETTINGS[k]; });
@@ -198,5 +199,6 @@ window.BF = (function () {
     document.addEventListener("bf:list", paint); paint();
   }
 
+  if (Object.keys(SETTINGS).length) applySettings(SETTINGS);
   return { lang, t, cat, catList, withLang, post, API, applySettings, settings: () => SETTINGS, ICONS, LOGO_SVG, base, getList, add, remove, setQty, clear, inList, updateBadge, toast, img, esc, fmt, header, footer, openModal, closeModal, bindRequestButton };
 })();

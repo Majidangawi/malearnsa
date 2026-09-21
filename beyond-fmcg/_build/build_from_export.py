@@ -121,4 +121,12 @@ for pid, d in details.items(): json.dump(d, open(os.path.join(D, "p", pid + ".js
 for fn in os.listdir(os.path.join(D, "p")):                      # drop detail files of unpublished/archived products
     if fn.endswith(".json") and fn[:-5] not in details: os.remove(os.path.join(D, "p", fn))
 print("built:", tax["totals"])
+# ---- inject public settings into the HTML pages (no layout shift, no extra fetch) ----
+_inj = json.dumps(tax["settings"], ensure_ascii=False).replace("</", "<\\/")
+for _page in ("index.html", "product.html", "register.html", "quote.html", "account.html", "privacy.html"):
+    _p = os.path.join(SITE, _page)
+    if not os.path.exists(_p): continue
+    _s = open(_p, encoding="utf-8").read()
+    _n = re.sub(r'(<script id="bf-settings" type="application/json">)[\s\S]*?(</script>)', lambda m: m.group(1) + _inj + m.group(2), _s, count=1)
+    if _n != _s: open(_p, "w", encoding="utf-8").write(_n)
 get({"action": "published"})
