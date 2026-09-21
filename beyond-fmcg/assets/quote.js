@@ -1,6 +1,6 @@
 /* Beyond FMCG — quotation page (magic link): view, accept or decline. */
 (async function () {
-  const { t, esc, withLang, ICONS } = BF; BF.header({ page: "quote" }); BF.footer([]);
+  const { t, esc, withLang, ICONS } = BF; BF.header({ page: "quote" }); fetch(BF.base + "data/taxonomy.json").then(r => r.json()).then(tax => BF.footer(tax.categories)).catch(() => BF.footer([]));
   const root = document.querySelector("#quote"); const token = new URLSearchParams(location.search).get("t") || "";
   const API = document.body.dataset.api || BF.API; const money = n => Number(n || 0).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   root.innerHTML = `<h1>${t("q_title")}</h1><div class="card"><p class="hint">${t("loading")}</p></div>`;

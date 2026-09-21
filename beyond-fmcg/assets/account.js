@@ -1,6 +1,6 @@
 /* Beyond FMCG — approved retailer area (magic link): history, quotations, wholesale-only products. */
 (async function () {
-  const { t, esc, withLang, ICONS, img } = BF; BF.header({ page: "account" }); BF.footer([]);
+  const { t, esc, withLang, ICONS, img } = BF; BF.header({ page: "account" }); fetch(BF.base + "data/taxonomy.json").then(r => r.json()).then(tax => BF.footer(tax.categories)).catch(() => BF.footer([]));
   const root = document.querySelector("#account"); const token = new URLSearchParams(location.search).get("t") || "";
   const API = document.body.dataset.api || BF.API; const money = n => Number(n || 0).toLocaleString("en-US", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
   root.innerHTML = `<h1>${t("ac_title")}</h1><div class="card"><p class="hint">${t("loading")}</p></div>`;
