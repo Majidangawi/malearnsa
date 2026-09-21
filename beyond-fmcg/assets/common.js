@@ -158,7 +158,8 @@ window.BF = (function () {
     </div>`).join("");
   }
   function openModal() { ensureModal(); renderList(); overlay.classList.add("open"); document.body.style.overflow = "hidden"; setTimeout(() => { const f = overlay.querySelector("input[name=name]"); if (f) f.focus(); }, 50); }
-  function closeModal() { if (!overlay) return; overlay.classList.remove("open"); document.body.style.overflow = ""; }
+  function closeModal() { if (!overlay) return; const o = overlay; o.classList.remove("open"); document.body.style.overflow = "";
+    if (o.dataset.stale) { overlay = null; setTimeout(() => o.remove(), 400); } }
   async function onSubmit(e) {
     e.preventDefault(); const f = e.target; const l = getList();
     if (!f.name.value.trim() || !f.email.value.trim()) { toast(t("t_need")); (f.name.value.trim() ? f.email : f.name).focus(); return; }
@@ -174,8 +175,7 @@ window.BF = (function () {
       <p class="hint">${(type === "sample" ? t("ok_sample_p", { ref, n: l.length, email: esc(f.email.value) }) : t("ok_p", { ref, n: l.length, email: esc(f.email.value) }))}</p>
       <button class="btn btn-primary" id="rq-done">${t("ok_btn")}</button></div>`;
     overlay.querySelector("#rq-done").addEventListener("click", () => { closeModal(); });
-    clear(); renderList();
-    setTimeout(() => { overlay = null; const o = document.querySelector(".overlay"); if (o) o.remove(); }, 400);
+    clear(); renderList(); overlay.dataset.stale = "1";
   }
 
   function bindRequestButton(btn, product, qtyFn) {
