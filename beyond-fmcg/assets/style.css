@@ -307,3 +307,9 @@ input,select,textarea{font:inherit}
 .nut th{text-align:start;padding:10px 14px;background:var(--bg-3);font-size:14px}
 .nut td{padding:8px 14px;border-top:1px solid var(--line);font-size:14px}
 .nut td:last-child{text-align:end;font-weight:500}
+
+/* segmented radio (request type) */
+.seg{display:flex;gap:8px}.seg-opt{flex:1;display:flex;align-items:center;gap:8px;border:1.5px solid var(--line-2);border-radius:12px;padding:10px 12px;cursor:pointer;font-weight:600;font-size:14px}
+.seg-opt:has(input:checked){border-color:#000;background:var(--accent-soft)}.seg-opt input{accent-color:#000;margin:0}
+.reg{max-width:720px;margin:0 auto;padding:40px 24px 64px}.reg h1{font-size:clamp(28px,4vw,42px);margin:0 0 8px}.reg .lead{color:var(--muted);margin:0 0 24px;font-size:16px}
+.reg .card{padding:28px;border-radius:var(--r-lg)}

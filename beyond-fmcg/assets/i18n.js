@@ -2,6 +2,10 @@
 window.BF_I18N = {
   ui: {
     en: {
+      rq_type: "What do you need?", rq_price: "Price quotation", rq_sample: "Product samples", sending: "Sending…", err_send: "Could not send. Please try again or WhatsApp us.",
+      ok_sample_title: "Sample request received", ok_sample_p: "Reference <b>{ref}</b>. We will confirm availability and shipping for your {n} product(s) by email to <b>{email}</b>.",
+      reg_title: "Register as a retailer", reg_p: "Approved retailers get a private link to their requests, quotations and wholesale-only products.", f_cr: "Commercial registration (CR) number", f_vat: "VAT number", f_contact: "Contact person", reg_submit: "Submit registration", reg_ok_title: "Registration received", reg_ok_p: "Thanks, {name}. We review new accounts within one business day and will email <b>{email}</b> once approved.", nav_register: "Register",
+      c_sent: "Thanks — we received your message and will reply by email.",
       tagline: "Import & Distribution · KSA", nav_catalog: "Catalog", nav_brands: "Brands", nav_contact: "Contact",
       search_ph: "Search products, codes, UPC…", search_lbl: "Search products", print: "Print / export catalog", list_btn: "Price request list", lang_switch: "عربي",
       hero_h1: "Global brands,<br>delivered to <em>Saudi shelves.</em>",
@@ -37,6 +41,10 @@ window.BF_I18N = {
       business: ["Supermarket / Hypermarket", "Convenience store", "Pharmacy", "Wholesaler", "Distributor", "HORECA / Food service", "E-commerce", "Other"]
     },
     ar: {
+      rq_type: "ماذا تحتاج؟", rq_price: "عرض سعر", rq_sample: "عينات من المنتجات", sending: "جارٍ الإرسال…", err_send: "تعذّر الإرسال. حاول مرة أخرى أو تواصل معنا عبر واتساب.",
+      ok_sample_title: "تم استلام طلب العينات", ok_sample_p: "رقم المرجع <b>{ref}</b>. سنؤكد لك التوفر والشحن للمنتجات ({n}) عبر البريد <b>{email}</b>.",
+      reg_title: "سجّل كتاجر", reg_p: "التجّار المعتمدون يحصلون على رابط خاص لمتابعة طلباتهم وعروض الأسعار ومنتجات الجملة.", f_cr: "رقم السجل التجاري", f_vat: "الرقم الضريبي", f_contact: "الشخص المسؤول", reg_submit: "إرسال طلب التسجيل", reg_ok_title: "تم استلام طلب التسجيل", reg_ok_p: "شكرًا {name}. نراجع الحسابات الجديدة خلال يوم عمل ونراسلك على <b>{email}</b> فور الاعتماد.", nav_register: "التسجيل",
+      c_sent: "شكرًا لك — استلمنا رسالتك وسنرد عبر البريد.",
       tagline: "استيراد وتوزيع · السعودية", nav_catalog: "الكتالوج", nav_brands: "العلامات التجارية", nav_contact: "تواصل معنا",
       search_ph: "ابحث باسم المنتج أو الكود أو UPC…", search_lbl: "البحث في المنتجات", print: "طباعة / تصدير الكتالوج", list_btn: "قائمة طلب الأسعار", lang_switch: "English",
       hero_h1: "علامات عالمية،<br>على رفوف <em>المتاجر السعودية.</em>",

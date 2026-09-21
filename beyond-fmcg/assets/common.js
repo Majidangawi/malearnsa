@@ -28,6 +28,9 @@ window.BF = (function () {
   };
   const LOGO_SVG = '<svg viewBox="0 0 40 40" fill="none" aria-hidden="true"><rect width="40" height="40" rx="11" fill="#0B2545"/><path d="M11 27V13h8.2c3.1 0 5 1.6 5 4 0 1.6-.9 2.8-2.3 3.3 1.9.4 3.1 1.8 3.1 3.7 0 2.6-2 4-5.3 4H11zm3.4-8.2h4.2c1.5 0 2.3-.7 2.3-1.8 0-1.2-.8-1.8-2.3-1.8h-4.2v3.6zm0 5.6h4.7c1.6 0 2.5-.7 2.5-1.9s-.9-1.9-2.5-1.9h-4.7v3.8z" fill="#fff"/><path d="M27 12l4 8-4 8" stroke="#8FE3D0" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>';
   const base = document.body.dataset.base || "./";
+  const API = document.body.dataset.api || "https://script.google.com/macros/s/AKfycbwzA26Mfu_3dQNXndRjjReH5wExBEWBmXEo1HLe5pbLHYeEB39c63VcqT8AT1FGMcan/exec";
+  const PAGE_T0 = Date.now();
+  async function post(payload) { const r = await fetch(API, { method: "POST", body: JSON.stringify(Object.assign({ lang, elapsed_ms: Date.now() - PAGE_T0 }, payload)), headers: { "Content-Type": "text/plain;charset=utf-8" }, redirect: "follow" }); return r.json(); }
   const imgBase = document.body.dataset.imgBase || (base + "img/");
   const LOGO_HTML = `<img src="${base}brand/beyond-fmcg-logo-black.svg" alt="Beyond FMCG" width="146" height="36">`;
   const LOGO_HTML_W = `<img src="${base}brand/beyond-fmcg-logo-white.svg" alt="Beyond FMCG" width="162" height="40">`;
@@ -65,7 +68,7 @@ window.BF = (function () {
     el.className = "hdr";
     el.innerHTML = `<div class="wrap">
       <a class="logo" href="${withLang(base + "index.html")}" aria-label="Beyond FMCG">${LOGO_HTML}</a>
-      <nav class="hdr-nav" aria-label="Main"><a href="${withLang(base + "index.html")}#catalog" class="${opts.page === "catalog" ? "on" : ""}">${t("nav_catalog")}</a><a href="${withLang(base + "index.html")}#brands">${t("nav_brands")}</a><a href="${withLang(base + "index.html")}#contact">${t("nav_contact")}</a></nav>
+      <nav class="hdr-nav" aria-label="Main"><a href="${withLang(base + "index.html")}#catalog" class="${opts.page === "catalog" ? "on" : ""}">${t("nav_catalog")}</a><a href="${withLang(base + "index.html")}#brands">${t("nav_brands")}</a><a href="${withLang(base + "index.html")}#contact">${t("nav_contact")}</a><a href="${withLang(base + "register.html")}" class="${opts.page === "register" ? "on" : ""}">${t("nav_register")}</a></nav>
       <div class="hdr-sp"></div>
       ${opts.search ? `<label class="hdr-search"><span class="sr">${t("search_lbl")}</span>${ICONS.search}<input id="q" type="search" placeholder="${t("search_ph")}" autocomplete="off"></label>` : ""}
       <button class="lang-btn" id="lang-btn" type="button" aria-label="Switch language" lang="${lang === "ar" ? "en" : "ar"}">${t("lang_switch")}</button>
@@ -95,16 +98,21 @@ window.BF = (function () {
       <div><h4>${t("foot_cats")}</h4><ul>${cats}</ul></div>
       <div><h4>${t("foot_contact")}</h4>
         <form id="contact-form" novalidate>
-          <div class="fr one"><input class="f-in" placeholder="${t("c_name")}" required></div>
-          <div class="fr"><input class="f-in" type="email" placeholder="${t("c_email")}" required><input class="f-in" placeholder="${t("c_phone")}"></div>
-          <div class="fr one"><input class="f-in" placeholder="${t("c_company")}"></div>
-          <div class="fr one"><textarea class="f-in" placeholder="${t("c_msg")}"></textarea></div>
+          <div class="fr one"><input class="f-in" name="name" placeholder="${t("c_name")}" required></div>
+          <div class="fr"><input class="f-in" name="email" type="email" placeholder="${t("c_email")}" required><input class="f-in" name="phone" placeholder="${t("c_phone")}"></div>
+          <div class="fr one"><input class="f-in" name="company" placeholder="${t("c_company")}"></div>
+          <div class="fr one"><textarea class="f-in" name="message" placeholder="${t("c_msg")}"></textarea></div>
+          <input type="text" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">
           <button class="btn btn-white" type="submit">${t("c_btn")}</button>
         </form>
       </div>
     </div>
     <div class="foot-bar"><div class="wrap"><span>${t("rights", { y: new Date().getFullYear() })}</span><span>${t("cities")}</span></div></div>`;
-    el.querySelector("#contact-form").addEventListener("submit", e => { e.preventDefault(); e.target.reset(); toast(t("t_contact")); });
+    el.querySelector("#contact-form").addEventListener("submit", async e => { e.preventDefault(); const f = e.target;
+      if (!f.name.value.trim() || !f.email.value.trim()) { toast(t("t_need")); return; }
+      const b = f.querySelector("button"); b.disabled = true;
+      let res; try { res = await post({ type: "contact", name: f.name.value.trim(), email: f.email.value.trim(), phone: f.phone.value.trim(), company: f.company.value.trim(), message: f.message.value.trim(), website: f.website.value }); } catch (err) { res = { ok: false }; }
+      b.disabled = false; if (res && res.ok) { f.reset(); toast(t("c_sent")); } else toast(t("err_send")); });
   }
 
   // ---------- inquiry modal ----------
@@ -117,6 +125,8 @@ window.BF = (function () {
       <div class="col" id="modal-form-col">
         <h3>${t("m_title")}</h3><p class="hint">${t("m_hint")}</p>
         <form id="rq-form" novalidate>
+          <div class="field"><label>${t("rq_type")}</label><div class="seg"><label class="seg-opt"><input type="radio" name="rtype" value="rfq" checked> <span>${t("rq_price")}</span></label><label class="seg-opt"><input type="radio" name="rtype" value="sample"> <span>${t("rq_sample")}</span></label></div></div>
+          <input type="text" name="website" tabindex="-1" autocomplete="off" style="position:absolute;left:-9999px" aria-hidden="true">
           <div class="field"><label>${t("f_name")}</label><input name="name" required placeholder="${t("f_name_ph")}"></div>
           <div class="f2"><div class="field"><label>${t("f_email")}</label><input name="email" type="email" required placeholder="${t("f_email_ph")}" dir="ltr"></div>
           <div class="field"><label>${t("f_phone")}</label><input name="phone" type="tel" placeholder="${t("f_phone_ph")}" dir="ltr"></div></div>
@@ -149,13 +159,19 @@ window.BF = (function () {
   }
   function openModal() { ensureModal(); renderList(); overlay.classList.add("open"); document.body.style.overflow = "hidden"; setTimeout(() => { const f = overlay.querySelector("input[name=name]"); if (f) f.focus(); }, 50); }
   function closeModal() { if (!overlay) return; overlay.classList.remove("open"); document.body.style.overflow = ""; }
-  function onSubmit(e) {
+  async function onSubmit(e) {
     e.preventDefault(); const f = e.target; const l = getList();
     if (!f.name.value.trim() || !f.email.value.trim()) { toast(t("t_need")); (f.name.value.trim() ? f.email : f.name).focus(); return; }
     if (!l.length) { toast(t("t_empty")); return; }
-    const ref = "BF-" + Date.now().toString(36).toUpperCase().slice(-6);
-    overlay.querySelector("#modal-form-col").innerHTML = `<div class="success"><div class="ok">${ICONS.check}</div><h3>${t("ok_title")}</h3>
-      <p class="hint">${t("ok_p", { ref, n: l.length, email: esc(f.email.value) })}</p>
+    const type = (f.querySelector("input[name=rtype]:checked") || {}).value || "rfq";
+    const btn = f.querySelector("button[type=submit]"); btn.disabled = true; const label = btn.textContent; btn.textContent = t("sending");
+    let res;
+    try { res = await post({ type, name: f.name.value.trim(), email: f.email.value.trim(), phone: f.phone.value.trim(), company: f.company.value.trim(), region: f.region.value, business: f.business.value, notes: f.notes.value.trim(), website: f.website.value, items: l.map(it => ({ id: it.id, n: it.n, c: it.c, qty: it.qty || 1 })) }); }
+    catch (err) { res = { ok: false, error: String(err) }; }
+    if (!res || !res.ok) { btn.disabled = false; btn.textContent = label; toast(t("err_send")); return; }
+    const ref = res.ref;
+    overlay.querySelector("#modal-form-col").innerHTML = `<div class="success"><div class="ok">${ICONS.check}</div><h3>${type === "sample" ? t("ok_sample_title") : t("ok_title")}</h3>
+      <p class="hint">${(type === "sample" ? t("ok_sample_p", { ref, n: l.length, email: esc(f.email.value) }) : t("ok_p", { ref, n: l.length, email: esc(f.email.value) }))}</p>
       <button class="btn btn-primary" id="rq-done">${t("ok_btn")}</button></div>`;
     overlay.querySelector("#rq-done").addEventListener("click", () => { closeModal(); });
     clear(); renderList();
@@ -168,5 +184,5 @@ window.BF = (function () {
     document.addEventListener("bf:list", paint); paint();
   }
 
-  return { lang, t, cat, catList, withLang, ICONS, LOGO_SVG, base, getList, add, remove, setQty, clear, inList, updateBadge, toast, img, esc, fmt, header, footer, openModal, closeModal, bindRequestButton };
+  return { lang, t, cat, catList, withLang, post, ICONS, LOGO_SVG, base, getList, add, remove, setQty, clear, inList, updateBadge, toast, img, esc, fmt, header, footer, openModal, closeModal, bindRequestButton };
 })();
