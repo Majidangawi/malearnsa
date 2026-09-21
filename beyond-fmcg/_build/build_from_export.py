@@ -78,7 +78,7 @@ for p in sorted(prods, key=lambda x: str(x["name"]).lower()):
     top_rows = [c["id"] for c in cat_top if c["name"] in multi(p["category"])]
     k = cat_ids(p["category"], cat_top) + cat_ids(p["sub_category"], cat_sub, top_rows)
     bids, plids = brand_ids(p)
-    catalog.append({"id": pid, "n": str(p["name"]).strip(), "n_ar": str(p.get("name_ar") or ""), "c": str(p["code"]), "u": str(p["ean"]), "bn": str(p["brand"]), "cn": str(p["category"]), "b": bids, "pl": plids, "k": sorted(set(k)), "i": imgs[0] if imgs else None})
+    catalog.append({"id": pid, "n": str(p["name"]).strip(), "n_ar": str(p.get("name_ar") or ""), "c": str(p["code"]), "u": str(p["ean"]), "bn": ", ".join(multi(p["brand"])), "cn": ", ".join(multi(p["category"])), "b": bids, "pl": plids, "k": sorted(set(k)), "i": imgs[0] if imgs else None})
     ar = {"desc": p.get("desc_ar") or "", "ingredients": p.get("ingredients_ar") or "", "nutrition_html": p.get("nutrition_html_ar") or ""}
     details[str(pid)] = {"desc": p["desc"], "features": p["features"], "ingredients": p["ingredients"], "prep": p["prep"], "label": "", "nutrition": p["nutrition_image"] or None, "nutrition_html": p["nutrition_html"], "images": imgs, "ar": ar if any(ar.values()) else None, "spec": spec(p)}
 # ---- taxonomy with counts ----
