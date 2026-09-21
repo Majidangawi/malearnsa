@@ -6,14 +6,14 @@ from PIL import Image
 SITE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 URL, KEY = os.environ.get("EXPORT_URL", ""), os.environ.get("EXPORT_KEY", "")
 if not URL or not KEY: print("EXPORT_URL/EXPORT_KEY not set — skipping"); sys.exit(0)
-def get(params, attempts=4):
+def get(params, attempts=7):
     """Apps Script occasionally answers 404/5xx on its redirect host for a few seconds — retry with backoff."""
     q = urllib.parse.urlencode(dict(params, key=KEY)); last = None
     for i in range(attempts):
         try:
             return json.loads(urllib.request.urlopen(urllib.request.Request(URL + "?" + q, headers={"User-Agent": "beyond-build"}), timeout=300).read().decode())
         except Exception as e:
-            last = e; print(f"fetch {params.get('action')} attempt {i+1} failed: {str(e)[:120]}"); time.sleep(5 * (i + 1))
+            last = e; print(f"fetch {params.get('action')} attempt {i+1} failed: {str(e)[:120]}"); time.sleep(min(90, 10 * (2 ** i)))
     raise last
 force = os.environ.get("FORCE") == "1"
 ex = get({"action": "export", "force": "1" if force else "0"})
