@@ -102,7 +102,11 @@ for p in sorted(prods, key=lambda x: str(x["name"]).lower()):
 # ---- taxonomy with counts ----
 def count(pred): return sum(1 for c in catalog if pred(c))
 btree = []
-for b in sorted(top_brands, key=lambda x: (float(x["order"] or 0), x["name"])):
+def order_key(x):
+    try: o = float(x.get("order") or 0)
+    except Exception: o = 0
+    return (o if o > 0 else 1e9, x["name"])   # explicit order first, everything else A–Z
+for b in sorted(top_brands, key=order_key):
     bid = num(b["id"]); c = count(lambda x: bid in x["b"])
     if not c: continue
     sub_nodes = []
@@ -111,9 +115,9 @@ for b in sorted(top_brands, key=lambda x: (float(x["order"] or 0), x["name"])):
         if not sc: continue
         ln = [{"id": num(l["id"]), "n": l["name"], "count": count(lambda x, l=l: num(l["id"]) in x["pl"])} for l in lines if l["parent_id"] == s["id"]]
         sub_nodes.append({"id": sid, "n": s["name"], "count": sc, "lines": [x for x in ln if x["count"]]})
-    btree.append({"id": bid, "n": b["name"], "route": re.sub(r"[^a-z0-9]+", "-", b["name"].lower()).strip("-"), "desc": b["desc"], "logo": (resolve_images(b["logo"], "brands", 480) or [None])[0], "count": c, "subs": sub_nodes})
+    btree.append({"id": bid, "o": (order_key(b)[0] if order_key(b)[0] < 1e9 else None), "n": b["name"], "route": re.sub(r"[^a-z0-9]+", "-", b["name"].lower()).strip("-"), "desc": b["desc"], "logo": (resolve_images(b["logo"], "brands", 480) or [None])[0], "count": c, "subs": sub_nodes})
 ctree, promo = [], []
-for c in sorted(cat_top, key=lambda x: (float(x["order"] or 0), x["name"])):
+for c in sorted(cat_top, key=order_key):
     cid = num(c["id"])
     node = {"id": cid, "n": c["name"], "count": count(lambda x: cid in x["k"]), "subs": [{"id": num(s["id"]), "n": s["name"], "count": count(lambda x, s=s: num(s["id"]) in x["k"])} for s in cat_sub if s["parent_id"] == c["id"]]}
     node["subs"] = [s for s in node["subs"] if s["count"]]

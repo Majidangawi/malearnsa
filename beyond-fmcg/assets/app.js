@@ -113,7 +113,8 @@
   function apply() {
     state.shown = PAGE;
     current = catalog.filter(matches);
-    if (state.sort === "featured") current = current.slice().sort((a, b) => ((a.o == null ? 1e9 : a.o) - (b.o == null ? 1e9 : b.o)) || a.n.localeCompare(b.n));
+    if (state.sort === "featured") { const BO = {}; tax.brands.forEach(b => { if (b.o != null) BO[b.id] = b.o; }); const br = p => p.b.reduce((m, id) => BO[id] != null && BO[id] < m ? BO[id] : m, 1e9); const po = p => p.o == null ? 1e9 : p.o;
+      current = current.slice().sort((a, b) => (po(a) - po(b)) || (br(a) - br(b)) || a.n.localeCompare(b.n)); }
     else if (state.sort === "name-desc") current = current.slice().reverse();
     else if (state.sort === "brand") current = current.slice().sort((a, b) => a.bn.localeCompare(b.bn) || a.n.localeCompare(b.n));
     renderChips(); renderGrid(); updateUrl();
