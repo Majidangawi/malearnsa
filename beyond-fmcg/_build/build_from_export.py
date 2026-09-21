@@ -106,5 +106,7 @@ D = os.path.join(SITE, "data"); os.makedirs(os.path.join(D, "p"), exist_ok=True)
 json.dump(catalog, open(os.path.join(D, "catalog.json"), "w"), separators=(",", ":"), ensure_ascii=False)
 json.dump(tax, open(os.path.join(D, "taxonomy.json"), "w"), separators=(",", ":"), ensure_ascii=False)
 for pid, d in details.items(): json.dump(d, open(os.path.join(D, "p", pid + ".json"), "w"), separators=(",", ":"), ensure_ascii=False)
+for fn in os.listdir(os.path.join(D, "p")):                      # drop detail files of unpublished/archived products
+    if fn.endswith(".json") and fn[:-5] not in details: os.remove(os.path.join(D, "p", fn))
 print("built:", tax["totals"])
 get({"action": "published"})
