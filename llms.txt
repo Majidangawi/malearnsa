@@ -31,7 +31,6 @@ Photographers, creative directors, art directors, designers, brand owners, conte
 ## Catalog (all pricing in SAR, all taught primarily in Arabic)
 
 - **Prompt Packs** (99–149 SAR) — ready-to-use creative recipes for Midjourney + ChatGPT
-- **Intro to Creative AI** (449 SAR) — self-paced recorded course for beginners
 - **Crafting Inspiration Workshop / معادلة صناعة الإلهام 2.0** (1,399 SAR flat) — live cohort, direct access to Majid; price includes the Intro to Creative AI course, one year of community access, and supplementary resources. Upcoming cohorts (see "Upcoming live cohorts" below for exact dates): الدفعة الخامسة 8–10 September 2026, الدفعة السادسة 15–17 September 2026.
 - **Beyond Lighting** (650 SAR) — fashion + product photography lighting
 - **Flagship Mentorship** (3,500–6,000 SAR) — 3-to-6-month transformation programs
@@ -94,7 +93,6 @@ Verified public profiles for Majid Angawi (same set used in the site's Person sc
 ### المنتجات (بالريال السعودي)
 
 - **Prompt Packs** — برومبتات إبداعية لتوليد الصور بالذكاء الاصطناعي · 99–149 ريال
-- **مدخل إلى الذكاء الاصطناعي الإبداعي** — دورة مسجلة ذاتية التعلم · 449 ريال
 - **ورشة صناعة الإلهام** — ورشة مباشرة مع ماجد · 1,399 ريال (شامل دورة المدخل + سنة وصول للمجتمع + مصادر إضافية)
 - **Beyond Lighting** — دورة أبعد من إمكانيات الإضاءة: أساليب للتصوير الإبداعي بإستخدام إضاءة واحدة · 650 ريال
 - **برنامج Mentorship الرئيسي** — برنامج تحوّل لمدة 3–6 شهور · 3,500–6,000 ريال

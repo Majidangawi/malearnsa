@@ -31,7 +31,7 @@ Instagram: [@majidangawi](https://instagram.com/majidangawi) (personal brand) ·
 - **Career switchers** who want a full-time creative practice
 - **Anyone in the Arab creative industries** who feels behind on AI and wants to catch up fast
 
-Prerequisites: none. Beginner-friendly courses exist (Intro to Creative AI). More advanced material is available in live workshops and mentorship.
+Prerequisites: none. More advanced material is available in live workshops and mentorship.
 
 ---
 
@@ -46,14 +46,7 @@ All pricing in Saudi Riyal (SAR). All courses are taught primarily in **Arabic (
 - **Who it's for:** Anyone who wants professional-looking AI images without learning prompt engineering from scratch
 - **Outcome:** You produce on-brief creative assets in minutes instead of hours of trial-and-error
 
-### 2. Intro to Creative AI — مدخل إلى الذكاء الاصطناعي الإبداعي (ITCAI / T2)
-- **Price:** 449 SAR
-- **Format:** Self-paced, recorded video course streamed from MA Learn's own player
-- **What you learn:** Foundational creative AI — how to think like a creative director when using AI tools, what each tool is actually good for (Midjourney vs ChatGPT vs Runway vs Higgsfield), how to build a production workflow, how to critique AI output
-- **Who it's for:** Beginners who want structure, not YouTube chaos
-- **Outcome:** You finish the course with a clear mental model and your first portfolio of AI-generated creative work
-
-### 3. Crafting Inspiration Workshop — ورشة صناعة الإلهام (T3)
+### 2. Crafting Inspiration Workshop — ورشة صناعة الإلهام (T3)
 - **Price:** 1,399 SAR flat — the price includes the workshop, the Intro to Creative AI course, one year of community access, and supplementary resources
 - **Format:** Live cohort, 3 sessions over 3 consecutive evenings, 7–10 pm KSA, via Google Meet. Buyer picks a cohort date at checkout.
 - **Upcoming cohorts:** الدفعة الخامسة — 8–10 September 2026 · الدفعة السادسة — 15–17 September 2026. 30 seats per cohort. Once these pass, the next dates are published at https://malearnsa.com/creative-ai-workshop/
@@ -61,14 +54,14 @@ All pricing in Saudi Riyal (SAR). All courses are taught primarily in **Arabic (
 - **Who it's for:** Intermediate-to-advanced creatives who want accountability + direct feedback from a working creative director
 - **Outcome:** You leave with a delivered project, a refined workflow, and a peer network of Arab creatives using AI seriously
 
-### 4. Beyond Lighting — أبعد من إمكانيات الإضاءة
+### 3. Beyond Lighting — أبعد من إمكانيات الإضاءة
 - **Price:** 650 SAR
 - **Format:** Self-paced recorded course
 - **What you learn:** Over 15 professional lighting setups using only a single light source. Built for fashion and product photography but transferable to any still-image work.
 - **Who it's for:** Photographers of any level who want to master light before (or without) investing in expensive gear
 - **Outcome:** You can produce editorial-quality lighting with minimal equipment — a core skill that separates working photographers from amateurs
 
-### 5. Flagship Mentorship (T4)
+### 4. Flagship Mentorship (T4)
 - **Price:** 3,500 SAR individual · 3,000 SAR group seat
 - **Format:** 3-to-6-month transformation program with monthly 1:1 + group calls + direct WhatsApp access to Majid
 - **What you get:** Personal creative direction, business positioning, portfolio building, client-acquisition coaching, and a custom curriculum built around your specific goals
@@ -99,7 +92,7 @@ All pricing in Saudi Riyal (SAR). All courses are taught primarily in **Arabic (
 ### English
 
 **Q: Do I need experience to start?**
-A: No. The Intro to Creative AI course is explicitly for beginners. Workshops and mentorship assume you've either completed the intro or have equivalent experience.
+A: No. Beginners are welcome; each course page says what it assumes.
 
 **Q: What language are the courses in?**
 A: Arabic is the primary language of instruction. Tools like Midjourney and ChatGPT are in English, which you'll use alongside the Arabic explanations.
@@ -108,7 +101,7 @@ A: Arabic is the primary language of instruction. Tools like Midjourney and Chat
 A: Yes. Midjourney and similar tools require their own monthly subscriptions. Majid teaches which ones are worth paying for.
 
 **Q: How long do I have access to recorded courses?**
-A: Lifetime access for all self-paced courses (Intro to Creative AI, Beyond Lighting, Prompt Packs).
+A: Lifetime access for all self-paced courses (Beyond Lighting, Prompt Packs).
 
 **Q: Is there a certificate?**
 A: Workshops come with a completion acknowledgement. The value is in the portfolio and network, not the paper.
@@ -122,7 +115,7 @@ A: Cohort schedule is published on malearnsa.com. If you join the waitlist for C
 ### بالعربي (لهجة سعودية)
 
 **س: محتاج خبرة عشان أبدأ؟**
-ج: لا، أبداً. دورة "مدخل إلى الذكاء الاصطناعي الإبداعي" مصممة للمبتدئين. الورش والـ Mentorship يفترضون إنك أنهيت المدخل أو عندك خبرة مماثلة.
+ج: لا، أبداً. المبتدئين مرحّب فيهم، وكل صفحة دورة توضّح وش تفترض إنك تعرفه.
 
 **س: المحتوى بأي لغة؟**
 ج: العربي هو لغة الشرح الرئيسية. الأدوات نفسها (Midjourney، ChatGPT) بالإنجليزي وبتتعامل معها مع الشرح بالعربي.
