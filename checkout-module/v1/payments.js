@@ -490,9 +490,65 @@
   // ────────────────────────────────────────────────────────
   // BANK TRANSFER
   // ────────────────────────────────────────────────────────
-  async function proceedWithBankTransfer() {
+  // MAL-347 (2026-09-24): pressing «تحويل بنكي» no longer creates a request.
+  // A confirm dialog comes first; only «نعم، أكمل» runs the bank flow below,
+  // unchanged. «لا» / Esc / backdrop close it and the buyer stays where they were.
+  let bankConfirmOpen_ = false;
+  function proceedWithBankTransfer() {
+    if (bankConfirmOpen_) return;
     const buyer = getBuyer_(true);
     if (!buyer) return;
+    const btn = document.getElementById('bank-btn');
+    if (btn && btn.disabled) return;
+    confirmBank_(function () { startBankTransfer_(buyer); });
+  }
+
+  function confirmBank_(onYes) {
+    bankConfirmOpen_ = true;
+    const opener = document.activeElement;
+    const wrap = document.createElement('div');
+    wrap.className = 'co-confirm';
+    wrap.setAttribute('dir', 'rtl');
+    wrap.innerHTML = [
+      '<div class="co-confirm-backdrop" data-close="1"></div>',
+      '<div class="co-confirm-box" role="alertdialog" aria-modal="true" aria-labelledby="co-confirm-title">',
+      '  <p id="co-confirm-title" class="co-confirm-title">متأكد إنك تبي تكمل الشراء بالتحويل البنكي؟</p>',
+      '  <div class="co-confirm-actions">',
+      '    <button type="button" class="co-confirm-yes">نعم، أكمل</button>',
+      '    <button type="button" class="co-confirm-no" data-close="1">لا</button>',
+      '  </div>',
+      '</div>'
+    ].join('');
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+    document.body.appendChild(wrap);
+    const yes = wrap.querySelector('.co-confirm-yes');
+    const no  = wrap.querySelector('.co-confirm-no');
+
+    function close(confirmed) {
+      document.removeEventListener('keydown', onKey, true);
+      document.body.style.overflow = prevOverflow;
+      if (wrap.parentNode) wrap.parentNode.removeChild(wrap);
+      bankConfirmOpen_ = false;
+      if (confirmed) { onYes(); return; }
+      if (opener && opener.focus) { try { opener.focus(); } catch (_) {} }
+    }
+    function onKey(e) {
+      if (e.key === 'Escape' || e.key === 'Esc') { e.preventDefault(); close(false); return; }
+      if (e.key === 'Tab') {                       // focus trap: two buttons
+        e.preventDefault();
+        (document.activeElement === yes ? no : yes).focus();
+      }
+    }
+    document.addEventListener('keydown', onKey, true);
+    yes.addEventListener('click', function () { close(true); });
+    wrap.addEventListener('click', function (e) {
+      if (e.target && e.target.getAttribute && e.target.getAttribute('data-close')) close(false);
+    });
+    yes.focus();
+  }
+
+  async function startBankTransfer_(buyer) {
     const btn = document.getElementById('bank-btn');
     const msg = document.getElementById('bank-msg');
     const finalAmount = finalAmountHalalas_();
