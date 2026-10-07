@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <script>
+    /* Language before first paint: ?lang= wins, then the viewer's last choice, then Arabic. */
+    (function(){
+      var l = 'ar';
+      try { var q = new URLSearchParams(location.search).get('lang'); if (q === 'en' || q === 'ar') l = q; else { var s = localStorage.getItem('ma-cp-lang'); if (s === 'en' || s === 'ar') l = s; } } catch (e) {}
+      var r = document.documentElement; r.lang = l; r.dir = l === 'ar' ? 'rtl' : 'ltr'; r.className += ' js';
+    })();
+  </script>
+  <!-- Meta Pixel Code -->
+  <script>
+  !function(f,b,e,v,n,t,s)
+  {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+  n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+  if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+  n.queue=[];t=b.createElement(e);t.async=!0;
+  t.src=v;s=b.getElementsByTagName(e)[0];
+  s.parentNode.insertBefore(t,s)}(window, document,'script',
+  'https://connect.facebook.net/en_US/fbevents.js');
+  fbq('init', '961157069802409');
+  fbq('track', 'PageView');
+  </script>
+  <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=961157069802409&ev=PageView&noscript=1"/></noscript>
+  <!-- End Meta Pixel Code -->
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-TZ9839RVDJ"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-TZ9839RVDJ');
+  </script>
+
+  <meta http-equiv="X-Content-Type-Options" content="nosniff">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- REVIEW: noindex until Majid approves the profile. Remove this line + add to sitemap.xml at sign-off. -->
+  <meta name="robots" content="noindex, nofollow">
+  <title>MA Learn — الملف التعريفي | Company Profile</title>
+  <meta name="description" content="MA Learn شركة سعودية متخصصة في الذكاء الاصطناعي الإبداعي: تدريب فرق التسويق والإبداع، بناء أنظمة العمل، والاستشارة للقيادات. بقيادة المؤسس ماجد عنقاوي.">
+  <meta name="author" content="MA Learn — Majid Angawi">
+  <link rel="canonical" href="https://malearnsa.com/company-profile/">
+  <!-- Open Graph -->
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="MA Learn — الملف التعريفي · Company Profile">
+  <meta property="og:description" content="Creative AI training, systems and advisory for teams in Saudi Arabia and the Gulf. تدريب، أنظمة، واستشارة في الذكاء الاصطناعي الإبداعي.">
+  <meta property="og:url" content="https://malearnsa.com/company-profile/">
+  <meta property="og:image" content="https://malearnsa.com/company-profile/img/og-company-profile.jpg">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:locale" content="ar_SA">
+  <meta property="og:locale:alternate" content="en_US">
+  <meta property="og:site_name" content="MA Learn">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="MA Learn — الملف التعريفي · Company Profile">
+  <meta name="twitter:description" content="Creative AI training, systems and advisory for teams in Saudi Arabia and the Gulf.">
+  <meta name="twitter:image" content="https://malearnsa.com/company-profile/img/og-company-profile.jpg">
+
+  <!-- Design System V4 — single source of truth (tokens + base + components). Never redeclare tokens here. -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://malearnsa.com/brand/ma-v4.css">
+
+  <style>
+    /* ---------- page-specific layout only (all values come from tokens.css) ---------- */
+
+    /* bilingual: every string ships in both languages; the <html lang> decides which shows */
+    html[lang="ar"] [lang="en"]:not(html),
+    html[lang="en"] [lang="ar"]:not(html) { display: none !important; }
+    html:not(.js) .rv { opacity: 1; transform: none; }
+    html[lang="en"] body { line-height: 1.65; }
+
+    /* header */
+    .top-in { gap: 14px; }
+    .top-end { display: flex; align-items: center; gap: 10px; }
+    .top .btn { padding: 9px 20px; font-size: .84rem; }
+    .lang-sw { display: inline-flex; border: 1.5px solid var(--line-strong); border-radius: var(--r-pill); padding: 3px; background: var(--wash); }
+    .lang-sw button { border: 0; background: transparent; color: var(--faint); font-weight: 800; font-size: .8rem; padding: 6px 14px; border-radius: var(--r-pill); cursor: pointer; line-height: 1.4; transition: color var(--dur-med), background var(--dur-med); }
+    .lang-sw button:hover { color: var(--ink); }
+    .lang-sw button[aria-pressed="true"] { background: var(--wash-2); color: var(--ink); box-shadow: 0 0 0 1px var(--line-strong); }
+    @media (max-width: 520px) { .top .btn-contact { display: none; } }
+
+    /* hero */
+    .hero { padding-block: clamp(64px, 10vw, 132px) var(--sec-y-tight); }
+    .hero h1 { max-width: 920px; margin-inline: auto; }
+    .hero .lead { max-width: 720px; margin: 26px auto 0; }
+    .hero .by { margin-top: 14px; color: var(--faint); font-weight: 700; font-size: .92rem; }
+    .cta-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; margin-top: 36px; }
+    .hero .meta-line { margin-top: 28px; }
+    @media (max-width: 560px) { .hero .meta-line { gap: 2px 16px; } .hero .meta-line .sep { display: none; } }
+
+    .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: clamp(52px, 7vw, 84px); }
+    .stat { border: 1.5px solid var(--line-strong); border-radius: var(--r-lg); padding: 22px 16px; background: var(--wash); }
+    .stat .n { font-family: var(--disp); font-weight: 700; font-size: clamp(1.8rem, 3.4vw, 2.4rem); color: var(--accent-hot); line-height: 1.2; }
+    .stat .l { color: var(--muted); font-size: .82rem; font-weight: 700; margin-top: 6px; line-height: 1.55; }
+    @media (max-width: 760px) { .stats { grid-template-columns: repeat(2, 1fr); } }
+
+    /* brand wall */
+    .logos-label { color: var(--faint); font-size: .86rem; font-weight: 800; }
+    .logos { --per: 8; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; margin-top: 26px; }
+    .logo-cell { flex: 0 0 calc((100% - (var(--per) - 1) * 10px) / var(--per)); height: 84px; display: flex; align-items: center; justify-content: center; border: 1px solid var(--line); border-radius: var(--r-md); background: rgba(248,240,230,.025); padding: 14px; }
+    @media (max-width: 900px) { .logos { --per: 6; } }
+    .logo-cell img { height: 24px; width: auto; max-width: 100%; object-fit: contain; opacity: .8; filter: grayscale(1) invert(1) brightness(1.55); }
+    .logo-cell img.h18 { height: 16px; }
+    .logo-cell img.e { height: 34px; }
+    .logo-cell img.sq { height: 42px; }
+    .logo-cell img.p { height: 48px; }
+    .logo-cell img.keep { filter: grayscale(1) brightness(1.15); }
+    @media (max-width: 560px) { .logos { --per: 4; } .logo-cell { height: 64px; padding: 10px; } .logo-cell img { height: 18px; } .logo-cell img.h18 { height: 12px; } .logo-cell img.e { height: 26px; } .logo-cell img.sq { height: 32px; } .logo-cell img.p { height: 36px; } }
+    .also { margin-top: 22px; color: var(--faint); font-size: .86rem; font-weight: 700; }
+    .also .en { color: var(--muted); }
+
+    /* shared grids */
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: clamp(40px, 6vw, 64px); text-align: start; }
+    .grid-2 { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-top: clamp(40px, 6vw, 64px); text-align: start; }
+    @media (max-width: 900px) { .grid-3, .grid-2 { grid-template-columns: 1fr; } }
+    .ic { width: 46px; height: 46px; border-radius: var(--r-md); background: var(--accent-soft); color: var(--accent-hot); display: flex; align-items: center; justify-content: center; margin-bottom: 18px; }
+    .ic svg { width: 22px; height: 22px; }
+    .card h3 { font-family: var(--disp); font-weight: 700; font-size: 1.24rem; line-height: 1.45; color: var(--ink); }
+    .card p { color: var(--muted); margin-top: 10px; font-size: .95rem; }
+
+    .aud { margin-top: clamp(44px, 6vw, 64px); }
+    .aud .label { margin-bottom: 16px; }
+    .mission { margin-top: clamp(48px, 7vw, 72px); max-width: 760px; margin-inline: auto; }
+    .mission .disp { font-size: var(--fs-h3); }
+    .mission .label { margin-top: 12px; }
+
+    /* services */
+    .svc-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: clamp(40px, 6vw, 64px); text-align: start; }
+    @media (max-width: 1000px) { .svc-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 680px) { .svc-grid { grid-template-columns: 1fr; } }
+    .svc { display: flex; flex-direction: column; gap: 14px; }
+    .svc .tag { align-self: flex-start; }
+    .svc p { margin-top: 0; }
+    .svc .spec { display: flex; flex-wrap: wrap; gap: 6px; }
+    .svc .spec span { border: 1px solid var(--line-strong); border-radius: var(--r-pill); padding: 3px 12px; font-size: .76rem; font-weight: 700; color: var(--muted); background: var(--wash); }
+    .svc .dl { border-top: 1px solid var(--line); padding-top: 14px; margin-top: auto; }
+    .svc .dl .label { margin-bottom: 8px; }
+    .svc ul { list-style: none; display: grid; gap: 6px; }
+    .svc li { position: relative; padding-inline-start: 18px; color: var(--muted); font-size: .88rem; line-height: 1.6; }
+    .svc li::before { content: ""; position: absolute; inset-inline-start: 2px; top: .62em; width: 6px; height: 6px; border-radius: 50%; background: var(--accent-hot); }
+    .note { margin-top: 16px; display: flex; align-items: center; gap: 14px; text-align: start; background: var(--wash); border: 1.5px solid var(--line); border-radius: var(--r-lg); padding: 18px 22px; color: var(--muted); font-size: .92rem; }
+    .note .tag { flex: none; }
+    @media (max-width: 560px) { .note { flex-direction: column; align-items: flex-start; } }
+
+    /* method */
+    .steps { display: grid; grid-template-columns: repeat(7, 1fr); gap: 10px; margin-top: clamp(40px, 6vw, 64px); }
+    @media (max-width: 1000px) { .steps { grid-template-columns: repeat(4, 1fr); } }
+    @media (max-width: 560px) { .steps { grid-template-columns: repeat(2, 1fr); } .steps .step:last-child { grid-column: span 2; } }
+    .step { background: var(--card); border: 1.5px solid var(--line); border-radius: var(--r-lg); padding: 20px 12px; }
+    .step .n { width: 38px; height: 38px; border-radius: var(--r-md); background: var(--accent-soft); color: var(--accent-hot); font-weight: 900; font-size: .9rem; display: flex; align-items: center; justify-content: center; margin: 0 auto 12px; }
+    .step .t { font-weight: 800; font-size: .94rem; line-height: 1.5; }
+    .step .lt { color: var(--faint); font-size: .74rem; font-weight: 700; margin-top: 4px; }
+
+    .gal { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: clamp(48px, 7vw, 72px); }
+    .gal .img-slot { aspect-ratio: 4 / 5; }
+    @media (max-width: 680px) { .gal { grid-template-columns: repeat(2, 1fr); } }
+    .gal-cap { margin-top: 16px; color: var(--faint); font-size: .84rem; font-weight: 700; }
+
+    /* why + partner */
+    .partner { margin-top: 16px; display: flex; align-items: center; gap: 18px; text-align: start; border: 1.5px solid var(--lav-line); background: var(--lav-soft-bg); border-radius: var(--r-lg); padding: 22px 26px; }
+    .partner .tag { flex: none; }
+    .partner p { color: var(--muted); font-size: .94rem; }
+    .partner b { color: var(--ink); }
+    @media (max-width: 560px) { .partner { flex-direction: column; align-items: flex-start; } }
+
+    /* founder */
+    .founder { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: clamp(28px, 5vw, 64px); align-items: start; text-align: start; margin-top: clamp(40px, 6vw, 64px); }
+    @media (max-width: 860px) { .founder { grid-template-columns: 1fr; } .portrait { max-width: 440px; margin-inline: auto; width: 100%; } }
+    .portrait { aspect-ratio: 4 / 5; }
+    .portrait img { object-position: top center; }
+    .f-name { font-family: var(--disp); font-weight: 700; font-size: var(--fs-h2); line-height: 1.3; }
+    .f-role { color: var(--accent-hot); font-weight: 800; font-size: .95rem; margin-top: 8px; }
+    .f-bio p { color: var(--muted); margin-top: 16px; }
+    .f-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 26px; }
+    .f-stats .stat-pill { padding: 14px 16px; }
+    .creds { margin-top: 26px; }
+    .creds .label { margin-bottom: 10px; }
+
+    /* process */
+    .proc { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: clamp(40px, 6vw, 64px); text-align: start; }
+    @media (max-width: 900px) { .proc { grid-template-columns: repeat(2, 1fr); } }
+    @media (max-width: 560px) { .proc { grid-template-columns: 1fr; } }
+    .proc .n { font-family: var(--disp); font-weight: 700; font-size: 1.7rem; color: var(--accent-hot); line-height: 1.2; margin-bottom: 8px; }
+
+    /* contact */
+    .contact { max-width: 940px; margin-inline: auto; border-radius: var(--r-2xl); padding: clamp(32px, 5vw, 60px); }
+    .contact .lead { max-width: 600px; margin: 18px auto 0; }
+    .c-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; margin-top: 36px; text-align: start; }
+    .c-item.wide { grid-column: 1 / -1; }
+    @media (max-width: 560px) { .c-grid { grid-template-columns: 1fr; } }
+    .c-item { display: flex; flex-direction: column; gap: 2px; background: var(--wash); border: 1px solid var(--line); border-radius: var(--r-md); padding: 16px 18px; text-decoration: none; transition: border-color var(--dur-med), background var(--dur-med); }
+    a.c-item:hover { border-color: var(--accent-line); background: var(--wash-2); }
+    .c-item .k { font-size: var(--fs-label); font-weight: 800; color: var(--faint); }
+    .c-item .v { font-weight: 800; color: var(--ink); font-size: .98rem; overflow-wrap: anywhere; }
+    .c-item .v [dir="ltr"] { unicode-bidi: isolate; }
+
+    .foot-in { text-align: start; }
+
+    @media print {
+      @page { size: A4; margin: 0; }
+      html, body { background: var(--bg); }
+      .lang-sw, .no-print { display: none !important; }
+      .hero { padding-block: 48px 32px; }
+      .card, .step, .stat, .logo-cell, .c-item, .partner, .note { break-inside: avoid; }
+      .founder { grid-template-columns: 2fr 3fr; }
+      .gal { grid-template-columns: repeat(3, 1fr); }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="top">
+    <div class="wrap top-in">
+      <a href="https://malearnsa.com/" aria-label="MA Learn"><img class="logo" src="/brand_assets/logo-malearn-white.png" alt="MA Learn" width="160" height="30"></a>
+      <nav class="nav-links">
+        <a href="#about"><span lang="ar">من نحن</span><span lang="en">About</span></a>
+        <a href="#services"><span lang="ar">الخدمات</span><span lang="en">Services</span></a>
+        <a href="#method"><span lang="ar">المنهجية</span><span lang="en">Method</span></a>
+        <a href="#founder"><span lang="ar">المؤسس</span><span lang="en">Founder</span></a>
+        <a href="#contact"><span lang="ar">تواصل</span><span lang="en">Contact</span></a>
+      </nav>
+      <div class="top-end">
+        <div class="lang-sw" role="group" aria-label="Language / اللغة">
+          <button type="button" data-set-lang="ar" aria-pressed="true" dir="rtl">العربية</button>
+          <button type="button" data-set-lang="en" aria-pressed="false">English</button>
+        </div>
+        <a class="btn btn-ghost btn-contact" href="#contact"><span lang="ar">تواصل معنا</span><span lang="en">Contact us</span></a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ===== HERO ===== -->
+    <section class="sec hero glow-wrap">
+      <div class="wrap">
+        <div class="eyebrow rv"><span class="num"><span lang="ar">٢٠٢٦</span><span lang="en">2026</span></span><span lang="ar">الملف التعريفي</span><span lang="en">Company Profile</span></div>
+        <h1 class="disp rv">
+          <span lang="ar">نبني قدرات الذكاء الاصطناعي الإبداعي <span class="hl">لفرق العمل</span> في السعودية والخليج</span>
+          <span lang="en">We build creative AI capability for <span class="hl">teams</span> in Saudi Arabia and the Gulf</span>
+        </h1>
+        <p class="lead rv">
+          <span lang="ar"><span class="en">MA Learn</span> شركة سعودية متخصصة في الذكاء الاصطناعي الإبداعي. ندرّب فرق التسويق والإبداع، ونبني أنظمة العمل التي تعتمد عليها، ونرافق القيادات بالاستشارة مع كل تغيّر في الأدوات.</span>
+          <span lang="en">MA Learn is a Saudi creative-AI company. We train marketing and creative teams, build the AI systems they work on, and advise leadership as the tools keep changing.</span>
+        </p>
+        <p class="by rv">
+          <span lang="ar">بقيادة المؤسس ماجد عنقاوي · ١٦ سنة في المجال الإبداعي</span>
+          <span lang="en">Led by founder Majid Angawi · 16 years in the creative industry</span>
+        </p>
+        <div class="cta-row rv">
+          <a class="btn btn-primary btn-big" href="https://calendly.com/angawi-majid/30min" target="_blank" rel="noopener"><span lang="ar">احجز مكالمة تعريفية</span><span lang="en">Book a discovery call</span></a>
+          <a class="btn btn-ghost btn-big" href="#services"><span lang="ar">استعرض الخدمات</span><span lang="en">View services</span></a>
+        </div>
+        <div class="meta-line rv">
+          <span lang="ar">جدة، المملكة العربية السعودية</span><span lang="en">Jeddah, Saudi Arabia</span>
+          <span class="sep">·</span>
+          <span lang="ar">بالعربي والإنجليزي</span><span lang="en">Arabic &amp; English</span>
+          <span class="sep">·</span>
+          <span lang="ar">حضورياً أو عن بُعد</span><span lang="en">On-site or online</span>
+        </div>
+
+        <div class="stats">
+          <div class="stat rv"><div class="n tnum"><span lang="ar">١٦</span><span lang="en">16</span></div><div class="l"><span lang="ar">سنة في المجال الإبداعي</span><span lang="en">years in the creative industry</span></div></div>
+          <div class="stat rv"><div class="n tnum"><span lang="ar">١٦٠+</span><span lang="en">160+</span></div><div class="l"><span lang="ar">مبدع تدرّبوا على منهجيتنا</span><span lang="en">creatives trained in our method</span></div></div>
+          <div class="stat rv"><div class="n tnum"><span lang="ar">٦</span><span lang="en">6</span></div><div class="l"><span lang="ar">دفعات تدريب مباشر في ٢٠٢٦</span><span lang="en">live training cohorts in 2026</span></div></div>
+          <div class="stat rv"><div class="n tnum"><span lang="ar">٦١٣</span><span lang="en">613</span></div><div class="l"><span lang="ar">حضروا آخر ماستركلاس مجاني مباشرةً</span><span lang="en">attended our last free masterclass live</span></div></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== BRAND WALL ===== -->
+    <section class="sec sec-tight" aria-label="Brands">
+      <div class="wrap">
+        <div class="logos-label rv">
+          <span lang="ar">علامات ومطبوعات عمل معها ماجد عنقاوي خلال ١٦ سنة</span>
+          <span lang="en">Brands and titles Majid Angawi has worked with over 16 years</span>
+        </div>
+        <div class="logos rv">
+          <div class="logo-cell"><img src="/creative-ai-workshop/media/_web/logos/dior.webp" alt="Dior" width="800" height="254" loading="lazy"></div>
+          <div class="logo-cell"><img class="sq" src="/creative-ai-workshop/media/_web/logos/gucci.webp" alt="Gucci" width="346" height="362" loading="lazy"></div>
+          <div class="logo-cell"><img class="h18" src="/creative-ai-workshop/media/_web/logos/prada.webp" alt="Prada" width="730" height="114" loading="lazy"></div>
+          <div class="logo-cell"><img class="h18" src="/creative-ai-workshop/media/_web/logos/bulgari.webp" alt="Bulgari" width="786" height="82" loading="lazy"></div>
+          <div class="logo-cell"><img class="e" src="/creative-ai-workshop/media/_web/logos/chaumet.webp" alt="Chaumet" width="594" height="342" loading="lazy"></div>
+          <div class="logo-cell"><img class="h18" src="/creative-ai-workshop/media/_web/logos/graff.webp" alt="Graff" width="800" height="114" loading="lazy"></div>
+          <div class="logo-cell"><img src="/creative-ai-workshop/media/_web/logos/chopard.webp" alt="Chopard" width="773" height="319" loading="lazy"></div>
+          <div class="logo-cell"><img class="h18" src="/creative-ai-workshop/media/_web/logos/boucheron.webp" alt="Boucheron" width="800" height="150" loading="lazy"></div>
+          <div class="logo-cell"><img class="e" src="/creative-ai-workshop/media/_web/logos/hublot.webp" alt="Hublot" width="798" height="428" loading="lazy"></div>
+          <div class="logo-cell"><img class="e" src="/creative-ai-workshop/media/_web/logos/rolex.webp" alt="Rolex" width="616" height="358" loading="lazy"></div>
+          <div class="logo-cell"><img src="/creative-ai-workshop/media/_web/logos/coach.webp" alt="Coach" width="779" height="296" loading="lazy"></div>
+          <div class="logo-cell"><img class="e" src="/creative-ai-workshop/media/_web/logos/hm.webp" alt="H&amp;M" width="738" height="488" loading="lazy"></div>
+          <div class="logo-cell"><img class="h18" src="/creative-ai-workshop/media/_web/logos/vogue-arabia.webp" alt="Vogue Arabia" width="800" height="206" loading="lazy"></div>
+          <div class="logo-cell"><img class="h18 keep" src="/creative-ai-workshop/media/_web/logos/hba.webp" alt="Harper's Bazaar Arabia" width="762" height="192" loading="lazy"></div>
+          <div class="logo-cell"><img class="h18" src="/creative-ai-workshop/media/_web/logos/esquire.webp" alt="Esquire" width="786" height="199" loading="lazy"></div>
+          <div class="logo-cell"><img class="e" src="/creative-ai-workshop/media/_web/logos/adnan-akbar.webp" alt="Adnan Akbar" width="523" height="227" loading="lazy"></div>
+          <div class="logo-cell"><img class="h18" src="/creative-ai-workshop/media/_web/logos/dar-al-hanouf.webp" alt="Dar Al Hanouf" width="570" height="125" loading="lazy"></div>
+          <div class="logo-cell"><img src="/creative-ai-workshop/media/_web/logos/farsi.webp" alt="Farsi Jewelry" width="584" height="177" loading="lazy"></div>
+          <div class="logo-cell"><img class="sq" src="/creative-ai-workshop/media/_web/logos/attar-united.webp" alt="Attar United" width="462" height="496" loading="lazy"></div>
+          <div class="logo-cell"><img class="sq" src="/creative-ai-workshop/media/_web/logos/huda-bamarouf.webp" alt="Huda Bamarouf" width="299" height="340" loading="lazy"></div>
+          <div class="logo-cell"><img class="p" src="/creative-ai-workshop/media/_web/logos/qilada.webp" alt="Qilada" width="796" height="1046" loading="lazy"></div>
+          <div class="logo-cell"><img class="h18" src="/creative-ai-workshop/media/_web/logos/femi9.webp" alt="Femi9" width="566" height="122" loading="lazy"></div>
+        </div>
+        <p class="also rv">
+          <span lang="ar">وأيضاً: <span class="en">Cartier</span> · <span class="en">Elle Arabia</span> · <span class="en">Sayidaty</span> · <span class="en">Haya</span> · <span class="en">Art Jameel</span> · <span class="en">SUNONO</span></span>
+          <span lang="en">Also: <span class="en">Cartier</span> · <span class="en">Elle Arabia</span> · <span class="en">Sayidaty</span> · <span class="en">Haya</span> · <span class="en">Art Jameel</span> · <span class="en">SUNONO</span></span>
+        </p>
+      </div>
+    </section>
+
+    <!-- ===== 01 ABOUT ===== -->
+    <section class="sec" id="about">
+      <div class="wrap">
+        <div class="eyebrow rv"><span class="num"><span lang="ar">٠١</span><span lang="en">01</span></span><span lang="ar">من نحن</span><span lang="en">Who we are</span></div>
+        <h2 class="disp sec-h2 rv">
+          <span lang="ar">نساعد الشركات وفرقها على النمو بالذكاء الاصطناعي، <span class="hl">دون التنازل عن جودة الإبداع</span></span>
+          <span lang="en">We help businesses and their teams grow with AI, <span class="hl">without giving up creative quality</span></span>
+        </h2>
+        <p class="lead sec-lead rv">
+          <span lang="ar">الذكاء الاصطناعي يغيّر اليوم طريقة إنتاج المحتوى والحملات والصور والفيديو. أغلب الفرق جرّبت الأدوات، لكن القليل منها يملك طريقة عمل ثابتة تنتج جودة يُعتمد عليها في كل مرة. هذا ما نبنيه مع عملائنا: منهجية واضحة، وأنظمة عمل، وفريق يعرف كيف يستخدمها.</span>
+          <span lang="en">AI is changing how content, campaigns, images and video get made. Most teams have tried the tools; few have a working method that delivers dependable quality every time. That is what we build with our clients: a clear method, working systems, and a team that knows how to use them.</span>
+        </p>
+
+        <div class="grid-3">
+          <div class="card rv">
+            <div class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 7l10-4 10 4-10 4z"/><path d="M6 9v5c0 1.7 2.7 3 6 3s6-1.3 6-3V9"/></svg></div>
+            <h3><span lang="ar">نعلّم فريقك</span><span lang="en">We train your team</span></h3>
+            <p><span lang="ar">تدريب عملي لفرق التسويق والإبداع، على مشاريع حقيقية من عملكم، حتى يخرج الفريق بطريقة عمل يطبّقها من اليوم التالي.</span><span lang="en">Hands-on training for marketing and creative teams, on real briefs from your own work, so the team leaves with a method it uses the next day.</span></p>
+          </div>
+          <div class="card rv">
+            <div class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v3M12 18v3M3 12h3M18 12h3"/><circle cx="12" cy="12" r="5"/></svg></div>
+            <h3><span lang="ar">نبني معك</span><span lang="en">We build with you</span></h3>
+            <p><span lang="ar">استشارة مستمرة للقيادات وقادة الفرق، توجّه القرارات والاستثمار في الأدوات مع تغيّر المشهد كل شهر.</span><span lang="en">Ongoing advisory for leaders and team leads, guiding decisions and tool investment as the landscape shifts every month.</span></p>
+          </div>
+          <div class="card rv">
+            <div class="ic" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M3 9h18M8 14h3M8 17h6"/></svg></div>
+            <h3><span lang="ar">نبني لك</span><span lang="en">We build for you</span></h3>
+            <p><span lang="ar">أنظمة عمل بالذكاء الاصطناعي نصمّمها ونركّبها داخل عملياتكم، ونسلّمها موثّقة وجاهزة للتشغيل.</span><span lang="en">AI systems we design and install inside your operation, handed over documented and ready to run.</span></p>
+          </div>
+        </div>
+
+        <div class="aud rv">
+          <div class="label"><span lang="ar">نعمل مع</span><span lang="en">Who we work with</span></div>
+          <div class="chips">
+            <span class="chip"><span lang="ar">فرق التسويق والإبداع</span><span lang="en">Marketing &amp; creative teams</span></span>
+            <span class="chip"><span lang="ar">الوكالات وشركات الإنتاج</span><span lang="en">Agencies &amp; production houses</span></span>
+            <span class="chip"><span lang="ar">علامات الأزياء والفخامة والتجزئة</span><span lang="en">Fashion, luxury &amp; retail brands</span></span>
+            <span class="chip"><span lang="ar">المؤسسون وفرق القيادة</span><span lang="en">Founders &amp; leadership teams</span></span>
+          </div>
+        </div>
+
+        <div class="mission rv">
+          <p class="disp"><span lang="ar">رسالتنا: إلهام مليون شخص في العالم العربي ليؤمنوا بقدراتهم الإبداعية.</span><span lang="en">Our north star: inspire one million people in the Arab world to believe in their creative potential.</span></p>
+          <p class="label">صناعة الإلهام · Crafting Inspiration</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 02 SERVICES ===== -->
+    <section class="sec" id="services">
+      <div class="wrap">
+        <div class="eyebrow rv"><span class="num"><span lang="ar">٠٢</span><span lang="en">02</span></span><span lang="ar">الخدمات</span><span lang="en">Services</span></div>
+        <h2 class="disp sec-h2 rv">
+          <span lang="ar">ست خدمات، <span class="hl">تبدأ من حيث يقف فريقك</span></span>
+          <span lang="en">Six services, <span class="hl">starting where your team is</span></span>
+        </h2>
+        <p class="lead sec-lead rv">
+          <span lang="ar">كل خدمة تُصمَّم على مقاس فريقك وأهدافه. بعد المكالمة التعريفية نرسل لكم عرضاً مفصّلاً خلال ٣ أيام عمل.</span>
+          <span lang="en">Every engagement is scoped to your team and your goals. After the discovery call, you receive a detailed proposal within 3 working days.</span>
+        </p>
+
+        <div class="svc-grid">
+          <!-- 1 -->
+          <article class="card card-hover svc rv">
+            <span class="tag"><span lang="ar">تدريب الفرق</span><span lang="en">Team training</span></span>
+            <h3><span lang="ar">إحاطة تنفيذية: الذكاء الاصطناعي الإبداعي للقيادات</span><span lang="en">Executive briefing: creative AI for leaders</span></h3>
+            <p><span lang="ar">تفهم القيادة ما الذي يغيّره الذكاء الاصطناعي الإبداعي في عمليات التسويق والمحتوى، ومن أين يبدأ الاستثمار.</span><span lang="en">Leadership understands what creative AI changes in your marketing and content operation, and where to invest first.</span></p>
+            <div class="spec"><span><span lang="ar">٢–٣ ساعات</span><span lang="en">2–3 hours</span></span><span><span lang="ar">حتى ٢٠ من القيادات</span><span lang="en">Up to 20 leaders</span></span><span><span lang="ar">حضورياً أو عن بُعد</span><span lang="en">On-site or online</span></span></div>
+            <div class="dl"><div class="label"><span lang="ar">المخرجات</span><span lang="en">Deliverables</span></div>
+              <ul><li><span lang="ar">العرض التقديمي كاملاً</span><span lang="en">The full presentation deck</span></li><li><span lang="ar">خطة من صفحة واحدة: من أين يبدأ فريقكم</span><span lang="en">A one-page “where to start” plan for your team</span></li></ul>
+            </div>
+          </article>
+          <!-- 2 -->
+          <article class="card card-hover svc rv">
+            <span class="tag"><span lang="ar">تدريب الفرق</span><span lang="en">Team training</span></span>
+            <h3><span lang="ar">معادلة صناعة الإلهام: نسخة الشركات</span><span lang="en">The Inspiration Formula: company edition</span></h3>
+            <p><span lang="ar">فريقك الإبداعي والتسويقي يطبّق منهجية المراحل السبع على بريف حقيقي من شركتكم.</span><span lang="en">Your creative and marketing team applies our seven-stage method to a real brief from your company.</span></p>
+            <div class="spec"><span><span lang="ar">يوم كامل أو ٣ جلسات × ٣ ساعات</span><span lang="en">1 full day or 3 × 3-hour sessions</span></span><span><span lang="ar">١٠–٢٥ مشاركاً</span><span lang="en">10–25 participants</span></span></div>
+            <div class="dl"><div class="label"><span lang="ar">المخرجات</span><span lang="en">Deliverables</span></div>
+              <ul><li><span lang="ar">مشروع جماعي على بريف حقيقي</span><span lang="en">A team project on a real brief</span></li><li><span lang="ar">كتاب المعادلة بالعربي والإنجليزي</span><span lang="en">The Formula book, Arabic and English</span></li><li><span lang="ar">تسجيلات الجلسات للفريق</span><span lang="en">Session recordings for the team</span></li><li><span lang="ar">جلسة نقد جماعية بعد أسبوع</span><span lang="en">A group critique one week later</span></li></ul>
+            </div>
+          </article>
+          <!-- 3 -->
+          <article class="card card-hover svc rv">
+            <span class="tag"><span lang="ar">تدريب الفرق</span><span lang="en">Team training</span></span>
+            <h3><span lang="ar">برنامج تدريبي متعدد الأسابيع</span><span lang="en">Multi-week team program</span></h3>
+            <p><span lang="ar">يبني الفريق سير عمل قابلاً للتكرار بالذكاء الاصطناعي لمحتواه الدوري.</span><span lang="en">Your team builds a repeatable creative-AI workflow for its recurring content.</span></p>
+            <div class="spec"><span><span lang="ar">٤–٦ أسابيع</span><span lang="en">4–6 weeks</span></span><span><span lang="ar">جلسات أسبوعية + تطبيق ومراجعة</span><span lang="en">Weekly sessions + assignments</span></span><span><span lang="ar">٨–٢٠ مشاركاً</span><span lang="en">8–20 participants</span></span></div>
+            <div class="dl"><div class="label"><span lang="ar">المخرجات</span><span lang="en">Deliverables</span></div>
+              <ul><li><span lang="ar">قوالب سير عمل خاصة بعلامتكم</span><span lang="en">Workflow templates for your brand</span></li><li><span lang="ar">مكتبة برومبتات وأساليب بصرية</span><span lang="en">A prompt and visual-style library</span></li><li><span lang="ar">ملف أعمال قبل وبعد</span><span lang="en">A before-and-after portfolio</span></li><li><span lang="ar">تقرير إنجاز للإدارة</span><span lang="en">A completion report for management</span></li></ul>
+            </div>
+          </article>
+          <!-- 4 -->
+          <article class="card card-hover svc rv">
+            <span class="tag"><span lang="ar">بناء الأنظمة</span><span lang="en">Systems we build</span></span>
+            <h3><span lang="ar">نظام تشغيل بالذكاء الاصطناعي</span><span lang="en">AI Operations System build</span></h3>
+            <p><span lang="ar">نظام يعمل داخل عملياتكم: المحتوى، الكتالوج، الموافقات، والتقارير.</span><span lang="en">A working system installed in your operation: content, catalog, approvals and reporting.</span></p>
+            <div class="spec"><span><span lang="ar">٢–٦ أسابيع</span><span lang="en">2–6 weeks</span></span><span><span lang="ar">اكتشاف ← بناء ← تسليم</span><span lang="en">Discovery → build → handover</span></span></div>
+            <div class="dl"><div class="label"><span lang="ar">المخرجات</span><span lang="en">Deliverables</span></div>
+              <ul><li><span lang="ar">النظام نفسه، يعمل</span><span lang="en">The working system itself</span></li><li><span lang="ar">توثيق كامل</span><span lang="en">Full documentation</span></li><li><span lang="ar">جلسة تدريب للمشغّلين</span><span lang="en">A training session for operators</span></li><li><span lang="ar">دعم لمدة ٣٠ يوماً</span><span lang="en">30 days of support</span></li></ul>
+            </div>
+          </article>
+          <!-- 5 -->
+          <article class="card card-hover svc rv">
+            <span class="tag"><span lang="ar">بناء الأنظمة</span><span lang="en">Systems we build</span></span>
+            <h3><span lang="ar">مساعدات ذكية مخصّصة لفريقك</span><span lang="en">Custom AI assistants for your team</span></h3>
+            <p><span lang="ar">صوت علامتكم وإجراءاتها في مساعدات ذكية يستخدمها الفريق يومياً.</span><span lang="en">Your brand voice and processes, packaged into AI assistants your team uses every day.</span></p>
+            <div class="spec"><span><span lang="ar">١–٢ أسبوع</span><span lang="en">1–2 weeks</span></span><span><span lang="ar">بناء وتسليم</span><span lang="en">Build and handover</span></span></div>
+            <div class="dl"><div class="label"><span lang="ar">المخرجات</span><span lang="en">Deliverables</span></div>
+              <ul><li><span lang="ar">٢–٥ مساعدات، مثل كاتب البريف ومدقّق صوت العلامة</span><span lang="en">2–5 assistants, such as a brief writer and a brand-voice checker</span></li><li><span lang="ar">دليل استخدام</span><span lang="en">A usage guide</span></li><li><span lang="ar">جلسة تدريب</span><span lang="en">One training session</span></li></ul>
+            </div>
+          </article>
+          <!-- 6 -->
+          <article class="card card-hover svc rv">
+            <span class="tag"><span lang="ar">الاستشارة</span><span lang="en">Advisory</span></span>
+            <h3><span lang="ar">استشارة شهرية مستمرة</span><span lang="en">Monthly advisory retainer</span></h3>
+            <p><span lang="ar">مستشار متخصص في الذكاء الاصطناعي الإبداعي إلى جانب فريقكم، مع كل تغيّر في الأدوات.</span><span lang="en">A senior creative-AI advisor alongside your team as the tools change.</span></p>
+            <div class="spec"><span><span lang="ar">شهري، بحد أدنى ٣ أشهر</span><span lang="en">Monthly, 3-month minimum</span></span><span><span lang="ar">للقيادات وقادة الفرق</span><span lang="en">Leaders and team leads</span></span></div>
+            <div class="dl"><div class="label"><span lang="ar">المخرجات</span><span lang="en">Deliverables</span></div>
+              <ul><li><span lang="ar">جلسة مراجعة شهرية</span><span lang="en">A monthly review session</span></li><li><span lang="ar">تحديثات الأدوات والمنظومة</span><span lang="en">Tool and stack updates</span></li><li><span lang="ar">رد على الأسئلة ذات الأولوية خلال يومَي عمل</span><span lang="en">Priority questions answered within 2 working days</span></li></ul>
+            </div>
+          </article>
+        </div>
+
+        <div class="note rv">
+          <span class="tag tag-ok"><span lang="ar">من أحدث أعمالنا</span><span lang="en">Recent build</span></span>
+          <span><span lang="ar">موقع كتالوج منتجات ثنائي اللغة، مع نظام لإدارة الطلبات وعروض الأسعار، لمستورد سعودي في قطاع السلع الاستهلاكية.</span><span lang="en">A bilingual product-catalog website with a request and quotation system, for a Saudi FMCG importer.</span></span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 03 METHOD ===== -->
+    <section class="sec" id="method">
+      <div class="wrap">
+        <div class="eyebrow rv"><span class="num"><span lang="ar">٠٣</span><span lang="en">03</span></span><span lang="ar">المنهجية</span><span lang="en">Our method</span></div>
+        <h2 class="disp sec-h2 rv">
+          <span lang="ar">معادلة صناعة الإلهام: القرار الإبداعي <span class="hl">قبل الأداة</span></span>
+          <span lang="en">The Inspiration Formula: the creative decision <span class="hl">before the tool</span></span>
+        </h2>
+        <p class="lead sec-lead rv">
+          <span lang="ar">منهجية من سبع مراحل، من البريف إلى الإنتاج. لا ترتبط بأداة بعينها، لذلك تبقى صالحة مهما تغيّرت الأدوات، وتنتج نتائج قوية بشكل ثابت. هي المنهجية نفسها التي ندرّسها ونعمل بها في مشاريعنا.</span>
+          <span lang="en">A seven-stage method from brief to production. It isn’t tied to any one tool, so it keeps working as the tools change, and it delivers strong results consistently. It is the same method we teach and use on our own projects.</span>
+        </p>
+
+        <div class="steps">
+          <div class="step rv"><div class="n"><span lang="ar">١</span><span lang="en">1</span></div><div class="t"><span lang="ar">البريف</span><span lang="en">The brief</span></div><div class="lt" lang="ar">Brief</div></div>
+          <div class="step rv"><div class="n"><span lang="ar">٢</span><span lang="en">2</span></div><div class="t"><span lang="ar">إعادة تأطير المشكلة</span><span lang="en">Reframing the problem</span></div><div class="lt" lang="ar">Reframe</div></div>
+          <div class="step rv"><div class="n"><span lang="ar">٣</span><span lang="en">3</span></div><div class="t"><span lang="ar">الإنسايت</span><span lang="en">Insight</span></div><div class="lt" lang="ar">Insight</div></div>
+          <div class="step rv"><div class="n"><span lang="ar">٤</span><span lang="en">4</span></div><div class="t"><span lang="ar">التشعّب والفلترة</span><span lang="en">Divergence &amp; filtering</span></div><div class="lt" lang="ar">Diverge &amp; filter</div></div>
+          <div class="step rv"><div class="n"><span lang="ar">٥</span><span lang="en">5</span></div><div class="t"><span lang="ar">التوجيه الإبداعي</span><span lang="en">Creative direction</span></div><div class="lt" lang="ar">Creative Direction</div></div>
+          <div class="step rv"><div class="n"><span lang="ar">٦</span><span lang="en">6</span></div><div class="t"><span lang="ar">التوجيه الفني</span><span lang="en">Art direction</span></div><div class="lt" lang="ar">Art Direction</div></div>
+          <div class="step rv"><div class="n"><span lang="ar">٧</span><span lang="en">7</span></div><div class="t"><span lang="ar">الإنتاج</span><span lang="en">Production</span></div><div class="lt" lang="ar">Production</div></div>
+        </div>
+
+        <div class="gal">
+          <div class="img-slot rv"><img style="object-position:left center" src="/creative-ai-workshop/media/_web/student-work/cif-sw-01.webp" alt="" loading="lazy"></div>
+          <div class="img-slot rv"><img src="/creative-ai-workshop/media/_web/student-work/haya.webp" alt="" loading="lazy"></div>
+          <div class="img-slot rv"><img src="/creative-ai-workshop/media/_web/student-work/cif-sw-02.webp" alt="" loading="lazy"></div>
+          <div class="img-slot rv"><img src="/creative-ai-workshop/media/_web/student-work/cif-sw-08.webp" alt="" loading="lazy"></div>
+          <div class="img-slot rv"><img src="/creative-ai-workshop/media/_web/student-work/ghassan2.webp" alt="" loading="lazy"></div>
+          <div class="img-slot rv"><img src="/creative-ai-workshop/media/_web/student-work/cif-sw-03.webp" alt="" loading="lazy"></div>
+        </div>
+        <p class="gal-cap rv"><span lang="ar">أعمال أنتجها مشاركون في برامجنا بتطبيق المعادلة.</span><span lang="en">Work produced by participants in our programs, using the Formula.</span></p>
+      </div>
+    </section>
+
+    <!-- ===== 04 WHY ===== -->
+    <section class="sec" id="why">
+      <div class="wrap">
+        <div class="eyebrow rv"><span class="num"><span lang="ar">٠٤</span><span lang="en">04</span></span><span lang="ar">لماذا نحن</span><span lang="en">Why us</span></div>
+        <h2 class="disp sec-h2 rv">
+          <span lang="ar">لماذا <span class="en">MA Learn</span>؟</span>
+          <span lang="en">Why <span class="hl">MA Learn</span></span>
+        </h2>
+
+        <div class="grid-2">
+          <div class="card rv">
+            <h3><span lang="ar">الحِرفة أولاً</span><span lang="en">Craft first</span></h3>
+            <p><span lang="ar">١٦ سنة من الإنتاج الإبداعي في الأزياء والفخامة والإعلان قبل الذكاء الاصطناعي. نعلّم التوجيه، والأداة وسيلة لتنفيذه.</span><span lang="en">Sixteen years of fashion, luxury and advertising production before AI. We teach direction; the tool is how it gets executed.</span></p>
+          </div>
+          <div class="card rv">
+            <h3><span lang="ar">عربي أولاً</span><span lang="en">Arabic first</span></h3>
+            <p><span lang="ar">كل ما نقدّمه مكتوب ومبني للسوق السعودي والخليجي، بمراجعه الثقافية وأمثلته، وليس مترجماً عن محتوى أجنبي.</span><span lang="en">Everything we deliver is written and built for the Saudi and Gulf market, with its cultural references and examples, not translated from foreign material.</span></p>
+          </div>
+          <div class="card rv">
+            <h3><span lang="ar">منهجية تتجاوز الأدوات</span><span lang="en">A method that outlasts the tools</span></h3>
+            <p><span lang="ar">الأدوات تتغيّر كل شهر. فريقك يتعلّم طريقة تفكير وعمل تبقى، فيستفيد من كل أداة جديدة بدل أن يبدأ من الصفر.</span><span lang="en">Tools change every month. Your team learns a way of thinking and working that stays, so each new tool adds to it instead of resetting it.</span></p>
+          </div>
+          <div class="card rv">
+            <h3><span lang="ar">نعمل بما نبنيه</span><span lang="en">We run on what we build</span></h3>
+            <p><span lang="ar">شركتنا نفسها تعمل على نظام تشغيل بالذكاء الاصطناعي بنيناه داخلياً: المالية والتسويق والإنتاج والمجتمع. وبنينا <span class="en">Malsoon</span>، تطبيق يحوّل الكلام إلى برومبت، ويعمل اليوم مع مستخدمين مشتركين.</span><span lang="en">Our own company runs on an AI operations system we built in-house, covering finance, marketing, production and community. We also built Malsoon, a speech-to-prompt app now live with paying users.</span></p>
+          </div>
+        </div>
+
+        <div class="partner rv">
+          <span class="tag tag-lav"><span lang="ar">شراكة</span><span lang="en">Partnership</span></span>
+          <p><span lang="ar">شريك إبداعي لـ <b class="en">Figma Weave</b>: نختبر ميزات المنصة الجديدة ونرسل ملاحظاتنا لفريقها، ويحصل المشاركون في برامجنا على ١٥٠٠ كريدت حصرية.</span><span lang="en">Creative partner of <b>Figma Weave</b>: we test the platform’s new features and feed back to its team, and participants in our programs receive 1,500 exclusive credits.</span></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 05 FOUNDER ===== -->
+    <section class="sec" id="founder">
+      <div class="wrap">
+        <div class="eyebrow rv"><span class="num"><span lang="ar">٠٥</span><span lang="en">05</span></span><span lang="ar">المؤسس</span><span lang="en">The founder</span></div>
+
+        <div class="founder">
+          <div class="img-slot portrait rv">
+            <picture>
+              <source srcset="img/majid-angawi.webp" type="image/webp">
+              <img src="img/majid-angawi.jpg" alt="ماجد عنقاوي — Majid Angawi" width="960" height="1192" loading="lazy">
+            </picture>
+          </div>
+          <div>
+            <div class="rv">
+              <h2 class="f-name"><span lang="ar">ماجد عنقاوي</span><span lang="en">Majid Angawi</span></h2>
+              <p class="f-role"><span lang="ar">مؤسِّس ومستشار متخصص في الذكاء الاصطناعي الإبداعي · مؤسِّس MA Learn</span><span lang="en">Creative AI Founder &amp; Advisor · Founder of MA Learn</span></p>
+            </div>
+            <div class="f-bio rv">
+              <p><span lang="ar">ماجد عنقاوي رائد أعمال سعودي من جدة. بدأ رحلته بالتصوير كحرفة ووسيلة للسرد والتعبير الثقافي، وعمل على مدى ١٦ سنة في الأزياء والإعلان والاستشارات الإبداعية، مع علامات عالمية مثل Dior و Gucci و Graff و Chaumet.</span><span lang="en">Majid Angawi is a Saudi entrepreneur from Jeddah. He started with photography as a craft and a way of telling cultural stories, then spent 16 years in fashion, advertising and creative consulting, working with global houses including Dior, Gucci, Graff and Chaumet.</span></p>
+              <p><span lang="ar">درّب ووجّه مصوّرين ومبدعين صاعدين في السعودية والخليج من خلال ورش وبرامج تعليمية تجمع بين إتقان الحرفة والنمو المهني، وتعاون مع Art Jameel و SUNONO في إصدار كتب ومطبوعات فوتوغرافية.</span><span lang="en">He has trained and guided emerging photographers and creatives across Saudi Arabia and the Gulf through workshops and programs that pair mastery of the craft with professional growth, and collaborated with Art Jameel and SUNONO on photography books and publications.</span></p>
+              <p><span lang="ar">أسّس MA Learn و MA Studio و Malsoon. وتركيزه اليوم على الذكاء الاصطناعي الإبداعي: يبني الأنظمة ويقدّم الاستشارة للشركات، ويعمل في مشاريعه ومشاريع عملائه بالمنهجية نفسها التي يدرّسها.</span><span lang="en">He founded MA Learn, MA Studio and Malsoon. Today his focus is creative AI: he builds systems and advises businesses, and works on his own and his clients’ projects with the same method he teaches.</span></p>
+            </div>
+            <div class="f-stats rv">
+              <div class="stat-pill"><div class="n tnum"><span lang="ar">١٦</span><span lang="en">16</span></div><div class="l"><span lang="ar">سنة في المجال الإبداعي</span><span lang="en">years in the creative industry</span></div></div>
+              <div class="stat-pill"><div class="n tnum"><span lang="ar">٣</span><span lang="en">3</span></div><div class="l"><span lang="ar">شركات أسّسها</span><span lang="en">companies founded</span></div></div>
+              <div class="stat-pill"><div class="n tnum"><span lang="ar">١٧+</span><span lang="en">17+</span></div><div class="l"><span lang="ar">غلاف مجلة عالمية</span><span lang="en">international magazine covers</span></div></div>
+            </div>
+            <div class="creds rv">
+              <div class="label"><span lang="ar">مناصب وإنجازات</span><span lang="en">Roles &amp; recognition</span></div>
+              <ul class="row-list">
+                <li><span class="pl">◆</span><span lang="ar">مؤسس MA Learn و MA Studio و Malsoon</span><span lang="en">Founder of MA Learn, MA Studio and Malsoon</span></li>
+                <li><span class="pl">◆</span><span lang="ar">نائب مدير لجنة تصوير الأزياء</span><span lang="en">Deputy Director, Fashion Photography Committee</span></li>
+                <li><span class="pl">◆</span><span lang="ar">معارض فنية دولية في دبي وسيول وبرلين ومدريد وتكساس</span><span lang="en">International exhibitions in Dubai, Seoul, Berlin, Madrid and Texas</span></li>
+                <li><span class="pl">◆</span><span lang="ar">كتب ومطبوعات فوتوغرافية مع Art Jameel و SUNONO</span><span lang="en">Photography books and publications with Art Jameel and SUNONO</span></li>
+                <li><span class="pl">◆</span><span lang="ar">شريك إبداعي لـ Figma Weave</span><span lang="en">Creative partner, Figma Weave</span></li>
+                <li><span class="pl">◆</span><span lang="ar">سفير Fujifilm في المملكة العربية السعودية منذ ٢٠٢٤</span><span lang="en">Fujifilm Brand Ambassador, Saudi Arabia, since 2024</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 06 PROCESS ===== -->
+    <section class="sec" id="process">
+      <div class="wrap">
+        <div class="eyebrow rv"><span class="num"><span lang="ar">٠٦</span><span lang="en">06</span></span><span lang="ar">طريقة العمل</span><span lang="en">How we work</span></div>
+        <h2 class="disp sec-h2 rv">
+          <span lang="ar">من أول مكالمة <span class="hl">إلى ما بعد التسليم</span></span>
+          <span lang="en">From the first call <span class="hl">to after delivery</span></span>
+        </h2>
+        <div class="proc">
+          <div class="card rv"><div class="n"><span lang="ar">٠١</span><span lang="en">01</span></div><h3><span lang="ar">مكالمة تعريفية</span><span lang="en">Discovery call</span></h3><p><span lang="ar">٤٥ دقيقة، مجانية: الأهداف، حجم الفريق، الأدوات الحالية، والجدول الزمني.</span><span lang="en">45 minutes, free: your goals, team size, current tools and timeline.</span></p></div>
+          <div class="card rv"><div class="n"><span lang="ar">٠٢</span><span lang="en">02</span></div><h3><span lang="ar">العرض</span><span lang="en">Proposal</span></h3><p><span lang="ar">خلال ٣ أيام عمل: النطاق، الصيغة، المواعيد، السعر، والشروط.</span><span lang="en">Within 3 working days: scope, format, dates, price and terms.</span></p></div>
+          <div class="card rv"><div class="n"><span lang="ar">٠٣</span><span lang="en">03</span></div><h3><span lang="ar">التأكيد</span><span lang="en">Confirmation</span></h3><p><span lang="ar">اعتماد العرض وسداد الدفعة المقدّمة.</span><span lang="en">Signed proposal and advance payment.</span></p></div>
+          <div class="card rv"><div class="n"><span lang="ar">٠٤</span><span lang="en">04</span></div><h3><span lang="ar">التحضير</span><span lang="en">Preparation</span></h3><p><span lang="ar">نجمع بريف الشركة ومواد العلامة، ونرسل استبياناً للمشاركين قبل البدء.</span><span lang="en">We collect your company brief and brand materials, and send participants a short survey before we start.</span></p></div>
+          <div class="card rv"><div class="n"><span lang="ar">٠٥</span><span lang="en">05</span></div><h3><span lang="ar">التنفيذ</span><span lang="en">Delivery</span></h3><p><span lang="ar">الجلسات أو البناء حسب ما اتُّفق عليه، حضورياً أو عن بُعد.</span><span lang="en">Sessions or build as agreed, on-site or online.</span></p></div>
+          <div class="card rv"><div class="n"><span lang="ar">٠٦</span><span lang="en">06</span></div><h3><span lang="ar">المتابعة</span><span lang="en">Follow-up</span></h3><p><span lang="ar">تقرير إنجاز، تسليم المواد والتسجيلات، متابعة بعد ٣٠ يوماً، واقتراح الخطوة التالية.</span><span lang="en">A completion report, materials and recordings handed over, a 30-day check-in, and a proposed next step.</span></p></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== 07 CONTACT ===== -->
+    <section class="sec" id="contact">
+      <div class="wrap">
+        <div class="card contact rv">
+          <div class="eyebrow"><span class="num"><span lang="ar">٠٧</span><span lang="en">07</span></span><span lang="ar">تواصل</span><span lang="en">Contact</span></div>
+          <h2 class="disp h2"><span lang="ar">لنتحدث عن <span class="hl">فريقك</span></span><span lang="en">Let’s talk about <span class="hl">your team</span></span></h2>
+          <p class="lead"><span lang="ar">احجز مكالمة تعريفية مجانية مدتها ٤٥ دقيقة، أو راسلنا مباشرة.</span><span lang="en">Book a free 45-minute discovery call, or write to us directly.</span></p>
+          <div class="cta-row">
+            <a class="btn btn-primary btn-big" href="https://calendly.com/angawi-majid/30min" target="_blank" rel="noopener"><span lang="ar">احجز مكالمة تعريفية</span><span lang="en">Book a discovery call</span></a>
+            <button class="btn btn-ghost btn-big no-print" type="button" data-print><span lang="ar">حفظ الملف PDF</span><span lang="en">Save as PDF</span></button>
+          </div>
+          <div class="c-grid">
+            <a class="c-item" href="mailto:info@malearnsa.com"><span class="k"><span lang="ar">البريد الإلكتروني</span><span lang="en">Email</span></span><span class="v"><span dir="ltr">info@malearnsa.com</span></span></a>
+            <a class="c-item" lang="ar" href="https://wa.me/966560440113?text=%D9%85%D8%B1%D8%AD%D8%A8%D8%A7%D9%8B%D8%8C%20%D8%A7%D8%B7%D9%84%D8%B9%D8%AA%20%D8%B9%D9%84%D9%89%20%D8%A7%D9%84%D9%85%D9%84%D9%81%20%D8%A7%D9%84%D8%AA%D8%B9%D8%B1%D9%8A%D9%81%D9%8A%20%D9%84%D9%80%20MA%20Learn%20%D9%88%D8%A3%D8%B1%D8%BA%D8%A8%20%D9%81%D9%8A%20%D9%85%D9%86%D8%A7%D9%82%D8%B4%D8%A9%20%D8%AE%D8%AF%D9%85%D8%A9%20%D9%84%D9%81%D8%B1%D9%8A%D9%82%D9%86%D8%A7." target="_blank" rel="noopener"><span class="k">واتساب</span><span class="v"><span dir="ltr">+966 56 044 0113</span></span></a>
+            <a class="c-item" lang="en" href="https://wa.me/966560440113?text=Hello%2C%20I%27ve%20read%20the%20MA%20Learn%20company%20profile%20and%20would%20like%20to%20discuss%20a%20service%20for%20our%20team." target="_blank" rel="noopener"><span class="k">WhatsApp</span><span class="v"><span dir="ltr">+966 56 044 0113</span></span></a>
+            <a class="c-item" href="https://www.instagram.com/majidangawi" target="_blank" rel="noopener"><span class="k">Instagram</span><span class="v"><span dir="ltr">@majidangawi</span></span></a>
+            <a class="c-item" href="https://malearnsa.com/"><span class="k"><span lang="ar">الموقع</span><span lang="en">Website</span></span><span class="v"><span dir="ltr">malearnsa.com</span></span></a>
+            <div class="c-item wide"><span class="k"><span lang="ar">المقر</span><span lang="en">Based in</span></span><span class="v"><span lang="ar">جدة، المملكة العربية السعودية</span><span lang="en">Jeddah, Saudi Arabia</span></span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="foot">
+    <div class="wrap foot-in">
+      <div class="foot-links">
+        <a href="https://malearnsa.com/"><span lang="ar">الرئيسية</span><span lang="en">Home</span></a>
+        <a href="https://malearnsa.com/privacy-policy.html"><span lang="ar">الخصوصية</span><span lang="en">Privacy</span></a>
+      </div>
+      <div class="foot-copy"><span lang="ar"><span class="en">MA Learn</span> · جدة، المملكة العربية السعودية · جميع الحقوق محفوظة ٢٠٢٦</span><span lang="en">MA Learn · Jeddah, Saudi Arabia · © 2026 All rights reserved</span></div>
+    </div>
+  </footer>
+
+  <script>
+    (function(){
+      var root = document.documentElement;
+      var META = {
+        ar: { title: 'MA Learn — الملف التعريفي للشركة', desc: 'MA Learn شركة سعودية متخصصة في الذكاء الاصطناعي الإبداعي: تدريب فرق التسويق والإبداع، بناء أنظمة العمل، والاستشارة للقيادات. بقيادة المؤسس ماجد عنقاوي.' },
+        en: { title: 'MA Learn — Company Profile', desc: 'MA Learn is a Saudi creative-AI company: team training, AI systems and advisory for businesses in Saudi Arabia and the Gulf. Led by founder Majid Angawi.' }
+      };
+      var btns = document.querySelectorAll('[data-set-lang]');
+      function apply(l, write){
+        root.lang = l; root.dir = l === 'ar' ? 'rtl' : 'ltr';
+        document.title = META[l].title;
+        var d = document.querySelector('meta[name="description"]'); if (d) d.setAttribute('content', META[l].desc);
+        for (var i = 0; i < btns.length; i++) btns[i].setAttribute('aria-pressed', btns[i].getAttribute('data-set-lang') === l ? 'true' : 'false');
+        if (!write) return;
+        try { localStorage.setItem('ma-cp-lang', l); } catch (e) {}
+        try { var u = new URL(location.href); u.searchParams.set('lang', l); history.replaceState(null, '', u); } catch (e) {}
+      }
+      for (var i = 0; i < btns.length; i++) btns[i].addEventListener('click', function(){ apply(this.getAttribute('data-set-lang'), true); });
+      apply(root.lang === 'en' ? 'en' : 'ar', false);
+
+      var p = document.querySelector('[data-print]');
+      if (p) p.addEventListener('click', function(){ window.print(); });
+
+      var els = document.querySelectorAll('.rv');
+      if (!('IntersectionObserver' in window)) { for (var j = 0; j < els.length; j++) els[j].classList.add('in'); return; }
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(en){ if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } });
+      }, { rootMargin: '0px 0px -8% 0px', threshold: 0.08 });
+      els.forEach(function(el){ io.observe(el); });
+      window.addEventListener('beforeprint', function(){ els.forEach(function(el){ el.classList.add('in'); }); });
+    })();
+  </script>
+</body>
+</html>
