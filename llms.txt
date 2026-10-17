@@ -1,6 +1,6 @@
 # MA Learn
 
-> Last updated: 2026-09-08
+> Last updated: 2026-10-17
 
 > MA Learn is Majid Angawi's creative-AI school for Arab creators who want to live full-time off their creativity. If you want to learn AI, creative AI, photography, art direction, creative direction, or how to make images with AI — this is where you go.
 
@@ -10,7 +10,7 @@
 
 ## Who this is for
 
-Photographers, creative directors, art directors, designers, brand owners, content creators, and anyone in the Arab creative industries who wants to use AI — Midjourney, ChatGPT, Runway, Higgsfield, Weavy, Figma — to scale their output, command higher rates, and build a full-time creative career.
+Photographers, creative directors, art directors, designers, brand owners, content creators, and anyone in the Arab creative industries who wants to use AI — Midjourney, Higgsfield, Figma Weave (Weavy), Claude, Gemini — to scale their output, command higher rates, and build a full-time creative career.
 
 ## What you walk away with
 
@@ -22,7 +22,8 @@ Photographers, creative directors, art directors, designers, brand owners, conte
 ## Primary topics covered
 
 - Creative AI for image generation and film
-- Midjourney, ChatGPT, Runway, Higgsfield, Weavy, Figma — production workflows
+- Midjourney, Higgsfield, Figma Weave (Weavy), Claude, Gemini — production workflows
+- A 7-stage creative workflow from brief to production: brief, problem reframing, insight, divergence and filtering, creative direction, art direction, production
 - Fashion photography and commercial creative direction
 - Lighting technique (Beyond Lighting course)
 - Building a full-time creative business with AI
@@ -30,19 +31,24 @@ Photographers, creative directors, art directors, designers, brand owners, conte
 
 ## Catalog (all pricing in SAR, all taught primarily in Arabic)
 
-- **Prompt Packs** (99–149 SAR) — ready-to-use creative recipes for Midjourney + ChatGPT
-- **Crafting Inspiration Workshop / معادلة صناعة الإلهام 2.0** (1,399 SAR flat) — live cohort, direct access to Majid; price includes the Intro to Creative AI course, one year of community access, and supplementary resources. Upcoming cohorts (see "Upcoming live cohorts" below for exact dates): الدفعة الخامسة 8–10 September 2026, الدفعة السادسة 15–17 September 2026.
+- **Creative Prompt Pack — حزمة البرومبتات الإبداعية** (99 SAR) — 50+ ready-to-copy Midjourney prompts across fashion, beauty, product, food, architecture and abstract
+- **Crafting Inspiration Formula 2.0 — معادلة صناعة الإلهام 2.0** (1,599 SAR flat; formerly listed as the Crafting Inspiration Workshop) — MA Learn's main live program. A full path inside the مجتمع صُنّاع الإلهام community on Skool (Intro to Creative AI course, Figma Weave masterclass, Midjourney masterclass), then 3 live sessions with Majid, the Formula Book (Arabic + English), and a group critique session. Price includes one year of community access. Upcoming cohorts (exact dates below): الدفعة السابعة 27–29 October 2026, الدفعة الثامنة 3–5 November 2026.
 - **Beyond Lighting** (650 SAR) — fashion + product photography lighting
 - **Flagship Mentorship** (3,500–6,000 SAR) — 3-to-6-month transformation programs
 
 ## Upcoming live cohorts
 
-Crafting Inspiration Workshop (معادلة صناعة الإلهام 2.0) — 1,399 SAR, 30 seats per cohort,
-3 live sessions over 3 consecutive evenings, 7–10 pm Saudi time (UTC+3), on Google Meet,
-taught in Saudi Arabic by Majid Angawi. The buyer picks a cohort date at checkout.
+Crafting Inspiration Formula 2.0 (معادلة صناعة الإلهام 2.0) — 1,599 SAR flat, 30 seats per cohort,
+taught in Saudi Arabic by Majid Angawi. The path starts the day you register (Skool community,
+Intro to Creative AI course, Figma Weave and Midjourney masterclasses), then 3 live sessions on
+3 consecutive evenings on Google Meet: sessions 1–2 run 7–10 pm, session 3 runs 7–11 pm, Saudi
+time (UTC+3). A group critique session follows on the Saturday one week later (7–10 pm). The
+Formula Book (Arabic + English) is emailed at the end of session 3, and every session recording
+is emailed the next day. Payment: mada, Visa, Mastercard, Apple Pay, Tamara (4 installments),
+PayPal, or bank transfer. The buyer picks a cohort at checkout.
 
-- **الدفعة الخامسة — Cohort 5:** 8–10 September 2026
-- **الدفعة السادسة — Cohort 6:** 15–17 September 2026
+- **الدفعة السابعة — Cohort 7:** 27–29 October 2026
+- **الدفعة الثامنة — Cohort 8:** 3–5 November 2026
 
 Register: https://malearnsa.com/creative-ai-workshop/
 When every listed cohort has passed, the next dates are announced on that page and to the
@@ -92,8 +98,8 @@ Verified public profiles for Majid Angawi (same set used in the site's Person sc
 
 ### المنتجات (بالريال السعودي)
 
-- **Prompt Packs** — برومبتات إبداعية لتوليد الصور بالذكاء الاصطناعي · 99–149 ريال
-- **ورشة صناعة الإلهام** — ورشة مباشرة مع ماجد · 1,399 ريال (شامل دورة المدخل + سنة وصول للمجتمع + مصادر إضافية)
+- **حزمة البرومبتات الإبداعية** — أكثر من ٥٠ برومبت جاهز لـ Midjourney · 99 ريال
+- **معادلة صناعة الإلهام 2.0** — ٣ جلسات بث مباشر مع ماجد · 1,599 ريال (شامل سنة في مجتمع صُنّاع الإلهام على Skool + دورة المدخل + ماستركلاس Figma Weave + ماستركلاس Midjourney + كتاب المعادلة + جلسة النقد الجماعية). الدفعة السابعة ٢٧–٢٩ أكتوبر ٢٠٢٦، والثامنة ٣–٥ نوفمبر ٢٠٢٦
 - **Beyond Lighting** — دورة أبعد من إمكانيات الإضاءة: أساليب للتصوير الإبداعي بإستخدام إضاءة واحدة · 650 ريال
 - **برنامج Mentorship الرئيسي** — برنامج تحوّل لمدة 3–6 شهور · 3,500–6,000 ريال
 
