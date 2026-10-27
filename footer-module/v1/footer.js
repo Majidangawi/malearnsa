@@ -21,8 +21,6 @@
   const cfg = Object.assign({
     logoSrc:        'https://malearnsa.com/MA Learn white-08.png',
     tagline:        'صناعة الإلهام',
-    legalName:      'Majid Zaki Suleiman Anqawi Establishment For Trading',
-    crNumber:       '7015430502',
     supportEmail:   'support@malearnsa.com',
     supportPhone:   '+966 560 440 113',
     instagramUrl:   'https://instagram.com/majidangawi',
@@ -136,9 +134,6 @@
     <span class="sep">·</span>
     <span>تم تطوير الموقع بكل عناية في المملكة العربية السعودية</span>
   </div>
-
-  <!-- Legal entity line -->
-  <p class="ma-footer-legal" dir="ltr">MA Learn is operated by ${cfg.legalName} · Unified National Number (CR) ${cfg.crNumber}</p>
 
 </footer>
     `;
