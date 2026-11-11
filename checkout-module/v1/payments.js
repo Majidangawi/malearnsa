@@ -117,7 +117,7 @@
       '  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M3 10h18M5 6l7-3 7 3M4 10v11M20 10v11M8 14v3M12 14v3M16 14v3"/></svg>',
       '  تحويل بنكي',
       '  <span class="co-bank-btn-divider"></span>',
-      '  <span class="co-bank-badge">مصرف الإنماء · يومين عمل</span>',
+      '  <span class="co-bank-badge">التأكيد خلال يومَي عمل</span>',
       '</button>',
       '<p id="bank-msg" style="display:none;"></p>'
     ].join('\n');
@@ -149,7 +149,7 @@
       '<button id="tamara-btn" class="co-tamara-btn" onclick="MaCheckout.proceedWithTamara()">',
       tamaraLogo,
       '  <span class="co-tamara-divider-line"></span>',
-      '  <span class="co-tamara-badge">٣ أقساط · بدون فوائد</span>',
+      '  <span class="co-tamara-badge">أقساط من دون فوائد</span>',
       '</button>',
       // Inline country picker — hidden by default. Shown only after the buyer
       // clicks the Tamara button. Lets UAE customers proceed via Tamara with
@@ -279,7 +279,7 @@
       if (msg) {
         msg.style.display = 'block';
         msg.style.color = '#e74c3c';
-        msg.textContent = 'خطأ في التحقق من الكود - حاول مرة ثانية';
+        msg.textContent = 'خطأ في التحقق من الكود، حاول مرة أخرى.';
       }
       if (btn) { btn.disabled = false; btn.textContent = 'تطبيق'; }
     }
@@ -383,7 +383,7 @@
         window.location.href = cfg.successUrl + '?status=paid&id=' + freeId + '&message=free';
       } catch (e) {
         if (btn) { btn.disabled = false; btn.textContent = 'الدفع بالبطاقة'; }
-        alert('حدث خطأ - حاول مرة ثانية');
+        alert('حدث خطأ، حاول مرة أخرى.');
       }
       return;
     }
@@ -411,7 +411,7 @@
     const buyerEmail = document.getElementById('email').value.trim();
     const buyerPhone = document.getElementById('phone').value.trim();
     const priceSAR = (finalAmount / 100).toFixed(0);
-    const description = `${cfg.productNameAr || cfg.productId} — MA Learn (${priceSAR} ر.س)`;
+    const description = `${cfg.productNameAr || cfg.productId} - MA Learn (${priceSAR} ر.س)`;
     Moyasar.init({
       element:              formEl,
       amount:               finalAmount,
@@ -512,7 +512,7 @@
     wrap.innerHTML = [
       '<div class="co-confirm-backdrop" data-close="1"></div>',
       '<div class="co-confirm-box" role="alertdialog" aria-modal="true" aria-labelledby="co-confirm-title">',
-      '  <p id="co-confirm-title" class="co-confirm-title">متأكد إنك تبي تكمل الشراء بالتحويل البنكي؟</p>',
+      '  <p id="co-confirm-title" class="co-confirm-title">هل تريد إكمال الشراء بالتحويل البنكي؟</p>',
       '  <div class="co-confirm-actions">',
       '    <button type="button" class="co-confirm-yes">نعم، أكمل</button>',
       '    <button type="button" class="co-confirm-no" data-close="1">لا</button>',
@@ -599,12 +599,12 @@
         }));
         window.location.href = cfg.successUrl + '?status=bank-pending&payment_method=bank&reference=' + encodeURIComponent(data.reference);
       } else {
-        flashError_(msg, data.error || 'تعذر تسجيل الطلب. حاول مرة ثانية.');
+        flashError_(msg, data.error || 'تعذّر تسجيل الطلب، حاول مرة أخرى.');
         btn.disabled = false;
         btn.innerHTML = originalHTML;
       }
     } catch (e) {
-      flashError_(msg, 'تعذّر الاتصال - تحقق من الإنترنت وحاول مرة ثانية.');
+      flashError_(msg, 'تعذّر الاتصال. تحقّق من الإنترنت وحاول مرة أخرى.');
       btn.disabled = false;
       btn.innerHTML = originalHTML;
     }
@@ -648,7 +648,7 @@
     if (btn) {
       btn.disabled = true;
       btn.style.opacity = '1';
-      btn.innerHTML = 'جارٍ الاتصال بتمارا...';
+      btn.innerHTML = 'جارٍ الاتصال بـ Tamara...';
     }
     if (picker) picker.style.display = 'none';
     if (msg) msg.style.display = 'none';
@@ -701,11 +701,11 @@
         }));
         window.location.href = data.checkout_url;
       } else {
-        flashError_(msg, data.error || 'تعذر إنشاء طلب الدفع. حاول مرة ثانية.');
+        flashError_(msg, data.error || 'تعذّر إنشاء طلب الدفع، حاول مرة أخرى.');
         btn.disabled = false; btn.innerHTML = originalHTML;
       }
     } catch (e) {
-      flashError_(msg, 'تعذّر الاتصال - تحقق من الإنترنت وحاول مرة ثانية.');
+      flashError_(msg, 'تعذّر الاتصال. تحقّق من الإنترنت وحاول مرة أخرى.');
       btn.disabled = false; btn.innerHTML = originalHTML;
     }
   }
@@ -784,19 +784,19 @@
             if (captured.success) {
               window.location.href = cfg.successUrl + '?status=paid&payment_method=paypal&order_id=' + encodeURIComponent(data.orderID);
             } else {
-              flashError_(msg, captured.error || 'تعذر إتمام الدفع - حاول مرة ثانية');
+              flashError_(msg, captured.error || 'تعذّر إتمام الدفع، حاول مرة أخرى.');
             }
           })
           .catch(err => flashError_(msg, 'خطأ في إتمام الدفع: ' + (err.message || 'unknown')));
       },
       onError: function (err) {
         const msg = document.getElementById('paypal-msg');
-        flashError_(msg, 'حدث خطأ مع PayPal - جرب مرة ثانية أو اختر طريقة دفع أخرى');
+        flashError_(msg, 'حدث خطأ في PayPal. حاول مرة أخرى أو اختر طريقة دفع أخرى.');
         console.error('[PayPal] onError:', err);
       },
       onCancel: function () {
         const msg = document.getElementById('paypal-msg');
-        flashError_(msg, 'تم إلغاء الدفع - يمكنك المحاولة مرة ثانية');
+        flashError_(msg, 'أُلغيت عملية الدفع، ويمكنك المحاولة مرة أخرى.');
       }
     }).render('#paypal-button-container');
   }

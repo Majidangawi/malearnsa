@@ -17,7 +17,7 @@ Mirror this exactly.
 6. **`supported_networks` ALSO inside `apple_pay` block** — required. Both places.
 7. **`label: 'MA Learn'`** — Latin chars only. Arabic productNameAr in label dismisses Apple Pay sheet.
 8. **`metadata: { email, phone, coupon }`** — required. Used for merchant-side reconciliation.
-9. **Description format:** `${productNameAr} — MA Learn (${priceSAR} ر.س)` — matches C1 working pattern.
+9. **Description format:** `${productNameAr} - MA Learn (${priceSAR} ر.س)` (plain hyphen since 2026-11-11; was an em-dash. Routing reads `metadata.product`; the backend's legacy description sniff matches keywords only, never the dash).
 10. **No `on_initiating` callback** — Apple Pay flow chokes on it. Persist data BEFORE `Moyasar.init` instead.
 11. **Apple Pay domain registered** in Moyasar dashboard → Apple Pay - Domains → `checkout.malearnsa.com` (bare hostname).
 
