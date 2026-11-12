@@ -27,7 +27,6 @@
     gtag('js', new Date());
     gtag('config', 'G-TZ9839RVDJ');
   </script>
-    <meta http-equiv="X-Frame-Options" content="SAMEORIGIN">
   <meta http-equiv="X-Content-Type-Options" content="nosniff">
   <meta name="referrer" content="strict-origin-when-cross-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -51,16 +50,13 @@
   <meta name="twitter:description" content="سياسة الاسترجاع والاسترداد لمنصة MA Learn — ماجد عنقاوي.">
   <meta name="twitter:image" content="https://malearnsa.com/images/og-malearn.jpg">
   <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://malearnsa.com/brand/tokens.css">
   <style>
-    :root {
-      --bg: #080808; --surface: #121212; --border: rgba(255,255,255,0.07);
-      --gold: #C9A84C; --gold-lum: #E8D08A; --ivory: #F5F0E8;
-      --silver: #BBBBBB; --grey: #666; --muted: #888;
-    }
+    /* V4 remap 2026-11-11: colours come from brand/tokens.css; page aliases mapped onto V4 tokens */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     body {
-      font-family: 'Cairo', sans-serif;
-      background: var(--bg); color: var(--ivory);
+      font-family: var(--body);
+      background: var(--bg); color: var(--ink);
       min-height: 100vh; direction: rtl;
       line-height: 1.9; font-size: 16px;
     }
@@ -68,17 +64,17 @@
     /* ── HEADER ── */
     header {
       position: sticky; top: 0; z-index: 100;
-      background: rgba(8,8,8,0.95); backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--border);
+      background: var(--scrim-bar); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--line);
       padding: 16px 40px;
       display: flex; align-items: center; justify-content: space-between;
     }
     .logo-img { height: 26px; width: auto; }
     nav a {
-      color: var(--muted); text-decoration: none;
+      color: var(--faint); text-decoration: none;
       font-size: 14px; margin-right: 24px; transition: color 0.2s;
     }
-    nav a:hover { color: var(--gold); }
+    nav a:hover { color: var(--accent-hot); }
     @media (max-width: 600px) {
       header { padding: 12px 16px; }
       nav a { margin-right: 12px; font-size: 13px; }
@@ -88,35 +84,35 @@
     .hero {
       padding: 72px 40px 48px;
       max-width: 820px; margin: 0 auto;
-      border-bottom: 1px solid var(--border);
+      border-bottom: 1px solid var(--line);
     }
     .breadcrumb {
-      font-size: 12px; color: var(--grey);
-      letter-spacing: 0.08em; margin-bottom: 20px;
+      font-size: 12px; color: var(--faint);
+      margin-bottom: 20px;
     }
-    .breadcrumb a { color: var(--grey); text-decoration: none; }
-    .breadcrumb a:hover { color: var(--gold); }
+    .breadcrumb a { color: var(--faint); text-decoration: none; }
+    .breadcrumb a:hover { color: var(--accent-hot); }
     h1 {
       font-size: clamp(1.8rem, 4vw, 2.6rem);
-      font-weight: 900; color: #fff; margin-bottom: 12px;
+      font-family: var(--disp); font-weight: 700; color: var(--ink); margin-bottom: 12px;
     }
-    h1 span { color: var(--gold); }
-    .meta { font-size: 13px; color: var(--grey); }
+    h1 span { color: var(--accent-hot); }
+    .meta { font-size: 13px; color: var(--faint); }
 
     /* ── CONTENT ── */
     .content { max-width: 820px; margin: 0 auto; padding: 48px 40px 80px; }
 
     /* Language toggle */
     .lang-toggle {
-      display: inline-flex; border: 1px solid var(--border);
+      display: inline-flex; border: 1px solid var(--line);
       border-radius: 6px; overflow: hidden; margin-bottom: 40px;
     }
     .lang-btn {
-      padding: 8px 20px; font-size: 13px; font-family: 'Cairo', sans-serif;
-      background: transparent; color: var(--grey);
+      padding: 8px 20px; font-size: 13px; font-family: var(--body);
+      background: transparent; color: var(--faint);
       border: none; cursor: pointer; transition: all 0.2s;
     }
-    .lang-btn.active { background: var(--gold); color: #000; font-weight: 700; }
+    .lang-btn.active { background: var(--accent); color: var(--on-accent); font-weight: 700; }
 
     .ar-content, .en-content { display: none; }
     .ar-content.active, .en-content.active { display: block; }
@@ -124,57 +120,63 @@
     /* Sections */
     .section { margin-bottom: 40px; }
     h2 {
-      font-size: 1.1rem; font-weight: 700; color: var(--gold);
-      letter-spacing: 0.06em; text-transform: uppercase;
+      font-size: 1.1rem; font-family: var(--disp); font-weight: 700; color: var(--accent-hot);
+      text-transform: uppercase;
       margin-bottom: 16px; padding-bottom: 10px;
-      border-bottom: 1px solid rgba(201,168,76,0.15);
+      border-bottom: 1px solid var(--line);
     }
     .en-content h2 { text-align: left; direction: ltr; }
-    p { color: var(--silver); margin-bottom: 12px; font-weight: 300; }
+    p { color: var(--muted); margin-bottom: 12px; font-weight: 300; }
     ul { list-style: none; padding: 0; margin-bottom: 12px; }
     ul li {
-      color: var(--silver); padding: 6px 0; font-weight: 300;
+      color: var(--muted); padding: 6px 0; font-weight: 300;
       padding-right: 20px; position: relative;
     }
     ul li::before {
       content: '—'; position: absolute; right: 0;
-      color: var(--gold); font-size: 0.85rem;
+      color: var(--accent-hot); font-size: 0.85rem;
     }
     .en-content ul li { padding-right: 0; padding-left: 20px; }
     .en-content ul li::before { right: auto; left: 0; }
 
     .callout {
-      background: rgba(201,168,76,0.06);
-      border: 1px solid rgba(201,168,76,0.2);
+      background: var(--wash-2);
+      border: 1px solid var(--line-strong);
       border-radius: 8px; padding: 16px 20px; margin: 16px 0;
     }
-    .callout p { margin: 0; color: var(--ivory); font-weight: 400; }
+    .callout p { margin: 0; color: var(--ink); font-weight: 400; }
     .callout-red {
-      background: rgba(224,82,82,0.06);
-      border-color: rgba(224,82,82,0.2);
+      background: var(--danger-bg);
+      border-color: var(--danger-line);
     }
-    .callout-red p { color: #f0a0a0; }
+    .callout-red p { color: var(--danger); }
 
     /* Footer */
     footer {
-      border-top: 1px solid var(--border);
+      border-top: 1px solid var(--line);
       padding: 32px 40px;
       display: flex; flex-direction: column; align-items: center;
       gap: 12px; text-align: center;
     }
-    footer p { font-size: 13px; color: var(--grey); font-weight: 300; }
+    footer p { font-size: 13px; color: var(--faint); font-weight: 300; }
     .footer-links { display: flex; gap: 20px; flex-wrap: wrap; justify-content: center; }
     .footer-links a {
-      font-size: 13px; color: var(--grey); text-decoration: none; transition: color 0.2s;
+      font-size: 13px; color: var(--faint); text-decoration: none; transition: color 0.2s;
     }
-    .footer-links a:hover { color: var(--gold); }
-    .contact-info { font-size: 13px; color: var(--muted); direction: ltr; }
+    .footer-links a:hover { color: var(--accent-hot); }
+    .contact-info { font-size: 13px; color: var(--faint); direction: ltr; }
 
     @media (max-width: 600px) {
       .hero { padding: 48px 20px 32px; }
       .content { padding: 32px 20px 60px; }
       footer { padding: 24px 20px; }
     }
+    /* numbered clauses (refund policy 2026-11-12) */
+    ol.lst { list-style: none; padding: 0; margin-bottom: 12px; }
+    ol.lst li { display: flex; gap: 10px; color: var(--muted); padding: 6px 0; font-weight: 300; }
+    ol.lst .mk { flex: none; color: var(--accent-hot); font-weight: 700; }
+    .content strong { color: var(--ink); font-weight: 600; }
+    .content a { color: var(--accent-hot); }
   </style>
   <link rel="stylesheet" href="https://malearnsa.com/footer-module/v1/footer.css">
 </head>
@@ -193,9 +195,9 @@
 
 <!-- HERO -->
 <div class="hero">
-  <p class="breadcrumb"><a href="https://malearnsa.com">MA Learn</a> ← سياسة الاسترجاع والاستبدال</p>
-  <h1>سياسة <span>الاسترجاع</span> والاستبدال</h1>
-  <p class="meta">آخر تحديث: أبريل ٢٠٢٦ &nbsp;·&nbsp; Refund & Returns Policy</p>
+  <p class="breadcrumb"><a href="https://malearnsa.com">MA Learn</a> ← سياسة الاسترجاع</p>
+  <h1>سياسة <span>الاسترجاع</span></h1>
+  <p class="meta">آخر تحديث: ١٢ نوفمبر ٢٠٢٦ &nbsp;·&nbsp; Refund Policy</p>
 </div>
 
 <!-- CONTENT -->
@@ -207,124 +209,62 @@
     <button class="lang-btn" onclick="switchLang('en')">English</button>
   </div>
 
-  <!-- ═══════════════ ARABIC ═══════════════ -->
+  <!-- ARABIC -->
   <div class="ar-content active">
 
     <div class="section">
-      <h2>طبيعة الخدمات الرقمية</h2>
-      <p>منصة MA Learn تقدم محتوى رقمياً تعليمياً يشمل الدورات المسجلة، والورش التدريبية المباشرة، والملفات القابلة للتحميل. نظراً لطبيعة هذه المنتجات الرقمية، فإن جميع المشتريات <strong>تُعدّ نهائية</strong> بعد إتمام عملية الدفع وتسليم رابط الوصول أو المحتوى.</p>
-      <div class="callout">
-        <p>هذه السياسة متوافقة مع نظام التجارة الإلكترونية في المملكة العربية السعودية ولائحته التنفيذية الصادرة عن وزارة التجارة.</p>
-      </div>
+      <p>تسري هذه السياسة على كل ما تشتريه من MA Learn عبر malearnsa.com. أما <strong>العضوية السنوية في مجتمع صُنّاع الإلهام</strong> فلها أحكامها الخاصة في البند ٧ من <a href="/membership-terms.html">شروط العضوية</a>، ويحق لك فيها استرداد المبلغ كاملاً خلال ٧ أيام من أي عملية دفع، سواء استخدمتها أم لم تستخدمها، بالشروط المذكورة هناك.</p>
     </div>
 
     <div class="section">
-      <h2>حالات يحق فيها طلب التعويض أو الإصلاح</h2>
-      <p>يحق للعميل طلب تعويض أو حل بديل في الحالات التالية:</p>
-      <ul>
-        <li>إذا كان الملف أو الرابط لا يعمل أو يوجد خلل يمنع فتحه أو استخدامه.</li>
-        <li>إذا استلم العميل محتوى مختلفاً جذرياً عن الوصف المذكور في صفحة المنتج.</li>
-        <li>إذا تعذّر على العميل الوصول للمحتوى بسبب خطأ تقني من المنصة.</li>
-      </ul>
-      <p>في هذه الحالات يتم اتخاذ أحد الإجراءات التالية:</p>
-      <ul>
-        <li>إعادة إرسال الرابط أو المحتوى.</li>
-        <li>تقديم نسخة بديلة تعمل بشكل سليم.</li>
-        <li>تعويض العميل بما يتناسب مع طبيعة المشكلة.</li>
-      </ul>
+      <h2>حقك في الإلغاء خلال ٧ أيام</h2>
+      <p>يحق لك إلغاء الشراء واسترداد المبلغ كاملاً خلال ٧ أيام من تاريخ الدفع، ما دمت لم تستفد من المنتج أو الخدمة بعد. ونَعُدّك قد استفدت:</p>
+      <ol class="lst"><li><span class="mk">١.</span><span><strong>في المنتجات الرقمية</strong> (حزم البرومبت والقوالب والملفات): إذا نزّلت الملف أو فتحته.</span></li><li><span class="mk">٢.</span><span><strong>في الدورات المسجّلة:</strong> إذا فتحت أي درس فيها.</span></li><li><span class="mk">٣.</span><span><strong>في الورش وجلسات البث المباشر والتدريب الفردي والبرامج الخاصة:</strong> إذا حضرت أي جلسة منها، أو بدأنا العمل معك.</span></li></ol>
+      <p>وبعد مضي ٧ أيام، أو بعد أن تستفيد من المنتج أو الخدمة، لا يُستردّ المبلغ إلا في الحالات المذكورة في البند الآتي.</p>
     </div>
 
     <div class="section">
-      <h2>حالات لا يحق فيها طلب الاسترجاع</h2>
-      <div class="callout callout-red">
-        <p>لا يمكن قبول طلبات الاسترجاع في الحالات التالية:</p>
-      </div>
-      <ul>
-        <li>بعد تحميل الملف أو الوصول للمحتوى الرقمي بنجاح.</li>
-        <li>إذا كانت المشكلة ناتجة عن برامج أو أجهزة العميل لا عن المنصة.</li>
-        <li>إذا قُدّمت الخدمة وفق المواصفات المعلنة دون أي خلل تقني.</li>
-        <li>بعد مضي أكثر من ٧ أيام من تاريخ الشراء دون إبلاغ المنصة.</li>
-      </ul>
+      <h2>حالات نردّ فيها المبلغ في كل الأحوال</h2>
+      <ol class="lst"><li><span class="mk">١.</span><span><strong>إذا لم نسلّمك ما اشتريته</strong> خلال ١٥ يوماً من تاريخ الدفع أو من الموعد المتفق عليه، لسبب يعود إلينا: المبلغ كاملاً.</span></li><li><span class="mk">٢.</span><span><strong>إذا جاء المحتوى مختلفاً اختلافاً جوهرياً</strong> عن وصفه في صفحة المنتج: المبلغ كاملاً.</span></li><li><span class="mk">٣.</span><span><strong>إذا ألغينا ورشة أو جلسة بث مباشر:</strong> المبلغ كاملاً، أو ننقلك إلى موعد آخر إن فضّلت ذلك. وإن أجّلناها أكثر من ١٥ يوماً ولم يناسبك الموعد الجديد، رددنا لك المبلغ كاملاً.</span></li><li><span class="mk">٤.</span><span><strong>إذا خُصم منك المبلغ مرتين</strong> لعملية شراء واحدة: المبلغ المكرر كاملاً.</span></li></ol>
+      <p>وإن واجهت خللاً تقنياً يمنعك من الوصول إلى ما اشتريته، فأخبرنا لنصلحه أو نرسل لك نسخة سليمة.</p>
     </div>
 
     <div class="section">
-      <h2>الورش التدريبية المباشرة (T3)</h2>
-      <p>تُعدّ مبالغ التسجيل في الورش المباشرة غير قابلة للاسترداد بعد إتمام الدفع، وذلك لأن الأماكن محدودة ويُحجز مكانك فور الدفع.</p>
-      <ul>
-        <li>في حال إلغاء الورشة من قِبل المنصة: يُستردّ كامل المبلغ أو يُحوَّل لدورة بديلة.</li>
-        <li>في حال تأجيل الورشة: تُعقد بتاريخ جديد ويُبلَّغ المشتركون مسبقاً.</li>
-      </ul>
-    </div>
-
-    <div class="section">
-      <h2>كيفية تقديم طلب</h2>
-      <p>لتقديم طلب تعويض أو الإبلاغ عن مشكلة تقنية، تواصل معنا خلال ٧ أيام من تاريخ الشراء عبر:</p>
-      <ul>
-        <li>البريد الإلكتروني: <a href="mailto:support@malearnsa.com" style="color:var(--gold);">support@malearnsa.com</a></li>
-        <li>واتساب: <a href="https://wa.me/966560440113" style="color:var(--gold);" target="_blank">+966 560 440 113</a></li>
-      </ul>
-      <p>يُرجى تضمين: اسمك الكامل، رقم الطلب، وصف المشكلة.</p>
+      <h2>كيف تطلب الاسترداد</h2>
+      <p>راسلنا على <a href="mailto:support@malearnsa.com" dir="ltr">support@malearnsa.com</a> أو على WhatsApp <a href="https://wa.me/966506302522" dir="ltr">+966 50 630 2522</a>، واذكر اسمك والبريد الذي دفعت به ورقم الطلب إن وُجد. نردّ عليك خلال يومَي عمل، ونعيد المبلغ خلال ١٤ يوماً من تاريخ طلبك، بطريقة الدفع نفسها:</p>
+      <ol class="lst"><li><span class="mk">١.</span><span><strong>البطاقة وApple Pay:</strong> إلى البطاقة نفسها.</span></li><li><span class="mk">٢.</span><span><strong>Tamara:</strong> تعيد إليك Tamara ما دفعته من أقساط، وتلغي الأقساط المتبقية.</span></li><li><span class="mk">٣.</span><span><strong>PayPal:</strong> إلى حسابك في PayPal بالدولار.</span></li><li><span class="mk">٤.</span><span><strong>التحويل البنكي:</strong> إلى حساب بنكي باسمك أنت، ولهذا نطلب منك رقم الآيبان.</span></li></ol>
+      <p>وقد يستغرق ظهور المبلغ في حسابك بضعة أيام عمل أخرى، بحسب بنكك أو مزود الدفع. وبعد الاسترداد يتوقف وصولك إلى ما اشتريته.</p>
     </div>
 
   </div>
 
-  <!-- ═══════════════ ENGLISH ═══════════════ -->
+  <!-- ENGLISH -->
   <div class="en-content" style="direction:ltr; text-align:left;">
 
+    <p class="meta">Last updated: 12 November 2026</p>
+
     <div class="section">
-      <h2>Nature of Digital Services</h2>
-      <p>MA Learn offers digital educational content including recorded courses, live workshops, and downloadable files. Due to the nature of digital products, all purchases are <strong>considered final</strong> once payment is completed and access links or content are delivered.</p>
-      <div class="callout">
-        <p>This policy is compliant with Saudi Arabia's E-Commerce Law and its Executive Regulations issued by the Ministry of Commerce.</p>
-      </div>
+      <p>This policy applies to everything you buy from MA Learn on malearnsa.com. The <strong>annual membership of مجتمع صُنّاع الإلهام</strong> has its own rules in section 7 of the <a href="/membership-terms.html">Membership Terms</a>. Under them, you can get a full refund within 7 days of any payment, whether or not you have used the membership, on the conditions stated there.</p>
     </div>
 
     <div class="section">
-      <h2>Eligible Cases for Compensation or Remedy</h2>
-      <p>Customers are entitled to request compensation or an alternative solution in the following cases:</p>
-      <ul>
-        <li>If the file or access link is broken or contains a defect that prevents access or use.</li>
-        <li>If the customer receives content materially different from the product description.</li>
-        <li>If the customer cannot access the content due to a technical error on the platform's side.</li>
-      </ul>
-      <p>In such cases, one of the following remedies will be provided:</p>
-      <ul>
-        <li>Re-sending the access link or content.</li>
-        <li>Providing a functional replacement copy.</li>
-        <li>Offering appropriate compensation based on the nature of the issue.</li>
-      </ul>
+      <h2>Your 7-day right to cancel</h2>
+      <p>You may cancel a purchase and get a full refund within 7 days of payment, as long as you have not yet benefited from the product or service. You have benefited:</p>
+      <ol class="lst"><li><span class="mk">1.</span><span><strong>Digital products</strong> (prompt packs, templates, files): once you download or open the file.</span></li><li><span class="mk">2.</span><span><strong>Recorded courses:</strong> once you open any lesson.</span></li><li><span class="mk">3.</span><span><strong>Live workshops, live sessions, 1-on-1 training and private programmes:</strong> once you attend any session, or once we start working with you.</span></li></ol>
+      <p>After 7 days, or once you have benefited, there is no refund except in the cases below.</p>
     </div>
 
     <div class="section">
-      <h2>Non-Refundable Cases</h2>
-      <div class="callout callout-red">
-        <p>Refund requests cannot be accepted in the following cases:</p>
-      </div>
-      <ul>
-        <li>After the file has been downloaded or digital content successfully accessed.</li>
-        <li>If the issue is caused by the customer's own device or software, not the platform.</li>
-        <li>If the service was delivered as described with no technical defects.</li>
-        <li>After more than 7 days from the purchase date without reporting to the platform.</li>
-      </ul>
+      <h2>When we always refund</h2>
+      <ol class="lst"><li><span class="mk">1.</span><span><strong>We don't deliver</strong> what you bought within 15 days of payment or of the agreed date, for a reason on our side: a full refund.</span></li><li><span class="mk">2.</span><span><strong>The content is materially different</strong> from its description on the product page: a full refund.</span></li><li><span class="mk">3.</span><span><strong>We cancel a live workshop or session:</strong> a full refund, or a move to another date if you prefer. If we postpone it by more than 15 days and the new date doesn't suit you, a full refund.</span></li><li><span class="mk">4.</span><span><strong>You were charged twice</strong> for one purchase: the duplicate charge in full.</span></li></ol>
+      <p>If a technical problem stops you reaching what you bought, tell us and we'll fix it or send you a working copy.</p>
     </div>
 
     <div class="section">
-      <h2>Live Workshops (T3)</h2>
-      <p>Registration fees for live workshops are non-refundable after payment, as seats are limited and reserved immediately upon purchase.</p>
-      <ul>
-        <li>If the workshop is cancelled by MA Learn: a full refund or transfer to an alternative session will be offered.</li>
-        <li>If the workshop is rescheduled: a new date will be communicated and registered participants will be notified in advance.</li>
-      </ul>
-    </div>
-
-    <div class="section">
-      <h2>How to Submit a Request</h2>
-      <p>To submit a compensation request or report a technical issue, contact us within 7 days of purchase:</p>
-      <ul>
-        <li>Email: <a href="mailto:support@malearnsa.com" style="color:var(--gold);">support@malearnsa.com</a></li>
-        <li>WhatsApp: <a href="https://wa.me/966560440113" style="color:var(--gold);" target="_blank">+966 560 440 113</a></li>
-      </ul>
-      <p>Please include: your full name, order number, and a description of the issue.</p>
+      <h2>How to request a refund</h2>
+      <p>Email <a href="mailto:support@malearnsa.com" dir="ltr">support@malearnsa.com</a> or WhatsApp <a href="https://wa.me/966506302522" dir="ltr">+966 50 630 2522</a> with your name, the email you paid with and your order reference if you have it. We reply within 2 working days and refund within 14 days of your request, by the same payment method:</p>
+      <ol class="lst"><li><span class="mk">1.</span><span><strong>Card and Apple Pay:</strong> to the same card.</span></li><li><span class="mk">2.</span><span><strong>Tamara:</strong> Tamara returns the instalments you have paid and cancels the rest.</span></li><li><span class="mk">3.</span><span><strong>PayPal:</strong> to your PayPal account, in USD.</span></li><li><span class="mk">4.</span><span><strong>Bank transfer:</strong> to a bank account in your own name, so we will ask for your IBAN.</span></li></ol>
+      <p>Your bank or payment provider may take a few more working days to show the refund. After a refund, your access to the purchase ends.</p>
     </div>
 
   </div>
@@ -334,6 +274,7 @@
 <!-- FOOTER -->
 <!-- MA Learn shared footer module v1 -->
 <div id="ma-footer"></div>
+<script>window.MaFooterConfig = { supportPhone: '+966 50 630 2522', refundUrl: 'https://malearnsa.com/refund-policy.html', privacyUrl: 'https://malearnsa.com/privacy-policy.html' };</script>
 <script src="https://malearnsa.com/footer-module/v1/footer.js"></script>
 
 <script>
