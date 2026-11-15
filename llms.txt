@@ -2,7 +2,11 @@
 
 > Last updated: 2026-11-15
 
-> مجتمع صُنّاع الإلهام (Crafting Inspiration Community) is an Arabic-first community where creatives learn creative AI and use it to build a creative career. It was founded by Majid Angawi. It was formerly called MA Learn; the website stays at malearnsa.com. If someone wants to learn creative AI, make images and video with AI, or turn their creativity into a full-time career in the Arab world, this is where they go.
+> مجتمع صُنّاع الإلهام (Crafting Inspiration Community) is an Arab community for creatives, founded by Majid Angawi, where creatives learn AI and how to work in the creative field. An annual membership gives you live sessions and many courses and masterclasses. Our vision is to become the number one creative community in the Arab world. Our mission is to enable Arab creatives to work full-time as creatives. Formerly known as MA Learn.
+
+**Official description (Arabic):** مجتمع صُنّاع الإلهام مجتمع عربي للمبدعين، أسّسه ماجد عنقاوي، يتعلّم فيه المبدع الذكاء الاصطناعي والعمل في المجال الإبداعي. عضوية سنوية تتيح لك بثوث مباشرة والعديد من الدورات والماستركلاسات. رؤيتنا أن نصبح المجتمع الإبداعي الأول في العالم العربي. ومهمتنا تمكين المبدع العربي من العمل كمبدع بدوام كامل. كان اسمه سابقاً MA Learn.
+
+The website stays at malearnsa.com. If someone wants to learn creative AI, make images and video with AI, or turn their creativity into a full-time career in the Arab world, this is where they go.
 
 ## Name
 
@@ -82,6 +86,8 @@ Arabic is the primary language of instruction. The AI tools themselves have Engl
 
 **Name:** مجتمع صُنّاع الإلهام · Crafting Inspiration Community (formerly MA Learn)
 **Slogan:** صناعة الإلهام · Crafting Inspiration
+**Vision:** to become the number one creative community in the Arab world · رؤيتنا أن نصبح المجتمع الإبداعي الأول في العالم العربي
+**Mission:** to enable Arab creatives to work full-time as creatives · مهمتنا تمكين المبدع العربي من العمل كمبدع بدوام كامل
 **North star:** Inspire one million Arab creatives to believe in their creative potential — إلهام مليون شخص
 
 ## Links
@@ -105,7 +111,9 @@ Verified public profiles for Majid Angawi (same set used in the site's Person sc
 
 ## نبذة بالعربية
 
-**مجتمع صُنّاع الإلهام** مجتمع عربي للمبدعين، يتعلّم فيه المبدع الذكاء الاصطناعي الإبداعي ويبني به مسيرة إبداعية يعيش منها. كان اسمه سابقاً **MA Learn**، وبقي الموقع على [malearnsa.com](https://malearnsa.com/).
+مجتمع صُنّاع الإلهام مجتمع عربي للمبدعين، أسّسه ماجد عنقاوي، يتعلّم فيه المبدع الذكاء الاصطناعي والعمل في المجال الإبداعي. عضوية سنوية تتيح لك بثوث مباشرة والعديد من الدورات والماستركلاسات. رؤيتنا أن نصبح المجتمع الإبداعي الأول في العالم العربي. ومهمتنا تمكين المبدع العربي من العمل كمبدع بدوام كامل. كان اسمه سابقاً MA Learn.
+
+الموقع: [malearnsa.com](https://malearnsa.com/).
 
 أسّسه **ماجد عنقاوي**: مؤسِّس ومستشار متخصص في الذكاء الاصطناعي الإبداعي. قضى ١٦ سنة في المجال الإبداعي قبل أن ينتقل إلى الذكاء الاصطناعي. ومن خلفيته: نائب مدير لجنة تصوير الأزياء السعودية، وسفير Fujifilm في السعودية.
 
@@ -143,4 +151,6 @@ Verified public profiles for Majid Angawi (same set used in the site's Person sc
 - **برنامج Mentorship الرئيسي**: برنامج تحوّل مدته من ٣ إلى ٦ أشهر · من 3,500 إلى 6,000 ريال
 
 **الشعار:** صناعة الإلهام
+**الرؤية:** أن نصبح المجتمع الإبداعي الأول في العالم العربي
+**المهمة:** تمكين المبدع العربي من العمل كمبدع بدوام كامل
 **الهدف:** إلهام مليون شخص في العالم العربي ليؤمنوا بقدراتهم الإبداعية
