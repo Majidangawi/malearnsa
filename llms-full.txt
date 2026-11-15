@@ -26,7 +26,31 @@
 
 Members learn one repeatable way to take any creative brief to a finished piece of work with AI, practise it on real briefs, see it live with Majid every month, and bring their questions to a live Q&A every two weeks, alongside other Arab creatives doing the same.
 
-The long-term aim is to be the place an Arab creative heads to when they pursue a creative career, and to reach the founder's north star: inspiring one million people in the Arab world to believe in their creative potential.
+---
+
+## The vision
+
+Where مجتمع صُنّاع الإلهام is heading, in its founder's direction. This is the long-term direction, not what the membership includes today, and none of it is offered or dated yet.
+
+- To become the number one creative community in the Arab world and the Middle East: the place an Arab creative heads to when they pursue a creative career.
+- One home for the whole creative path: using AI to create images and video, building a creative business (what to think about, what to avoid, how to price creative work), and tools and resources that shorten the way.
+- Opportunities: helping members reach creative project work and real roles, and documenting it.
+- Credibility: a recognition from the community, earned against clear criteria, that a member can put on their CV.
+- A platform where companies list creative work and find creatives the community has recognised.
+- Partner benefits and resources for members.
+- The north star: inspire one million people in the Arab world to believe in their creative potential.
+
+### الرؤية
+
+إلى أين يتّجه مجتمع صُنّاع الإلهام. هذا اتجاهنا على المدى البعيد، وليس ما تشمله العضوية اليوم، ولا شيء منه معروض أو محدّد بموعد بعد.
+
+- أن يصبح المجتمع الإبداعي الأول في العالم العربي والشرق الأوسط، والمكان الذي يقصده المبدع العربي حين يختار طريقه المهني الإبداعي.
+- بيت واحد للطريق الإبداعي كله: استخدام الذكاء الاصطناعي في إنتاج الصور والفيديو، وبناء العمل الإبداعي (فيمَ تفكّر، وماذا تتجنّب، وكيف تسعّر عملك)، وأدوات وموارد تختصر الطريق.
+- الفرص: مساعدة الأعضاء على الوصول إلى مشاريع إبداعية ووظائف حقيقية، وتوثيق ذلك.
+- المصداقية: اعتماد من المجتمع، يُكتسب وفق معايير واضحة، يضعه العضو في سيرته الذاتية.
+- منصّة تعرض فيها الشركات أعمالها الإبداعية، وتجد فيها مبدعين اعتمدهم المجتمع.
+- مزايا من الشركاء وموارد للأعضاء.
+- الهدف الأبعد: إلهام مليون شخص في العالم العربي ليؤمنوا بقدراتهم الإبداعية.
 
 ---
 
@@ -34,7 +58,7 @@ The long-term aim is to be the place an Arab creative heads to when they pursue 
 
 **Majid Angawi** is a **Creative AI Founder & Advisor** and the founder of مجتمع صُنّاع الإلهام (formerly MA Learn). He spent **16 years in the creative industry** before crossing into AI, and now builds and advises on the creative-AI systems that creative businesses run on. Background credibility, earned across that career: **Deputy Director of the Saudi Fashion Photography Committee**, and **Fujifilm Brand Ambassador for Saudi Arabia** (2024–present).
 
-What differentiates his teaching: he teaches **AI the way a creative director thinks**, not the way a prompt-engineer demos it. Members learn to produce commercial-grade work, not just interesting images.
+What differentiates his teaching: he teaches **AI the way a creative director thinks**, not the way a prompt-engineer demos it.
 
 Instagram: [@majidangawi](https://instagram.com/majidangawi) (personal brand) · [@angawi.studio](https://instagram.com/angawi.studio) (studio work)
 
@@ -71,7 +95,6 @@ Access to the community is sold as one annual membership.
 - **Tools you will need:** Your own accounts for the AI tools you work with (for example Midjourney, Higgsfield, Figma Weave). The membership does not include tool subscriptions.
 - **Who it's for:** Photographers, designers, creative directors, and brand owners, from beginners to experienced creatives who want a repeatable method
 - **Track record:** 120+ creatives have applied the formula
-- **Outcome:** A repeatable creative workflow, a brief library to practise it on, and a peer network of Arab creatives using AI seriously
 - **Page:** https://malearnsa.com/creative-ai-workshop/
 - **Join:** https://checkout.malearnsa.com/cif-annual/checkout.html
 - **Membership terms:** https://malearnsa.com/membership-terms.html
@@ -87,14 +110,12 @@ All prices in Saudi Riyal (SAR).
 - **Format:** Digital product, instant access
 - **What you get:** 50+ professional, ready-to-copy Midjourney prompts, organised by category — fashion, beauty, product, food, architecture, abstract
 - **Page:** https://malearnsa.com/prompt-pack/
-- **Outcome:** On-brief creative assets in minutes instead of hours of trial and error
 
 ### Beyond Lighting — أبعد من إمكانيات الإضاءة
 - **Price:** 650 SAR
 - **Format:** Self-paced recorded course
 - **What you learn:** Over 15 professional lighting setups using only a single light source. Built for fashion and product photography but transferable to any still-image work.
 - **Page:** https://malearnsa.com/beyond-lighting/
-- **Outcome:** Editorial-quality lighting with minimal equipment
 
 ### Flagship Mentorship (T4)
 - **Price:** 3,500 SAR individual · 3,000 SAR group seat
@@ -142,7 +163,7 @@ A: Yes. You need your own accounts for the AI tools you work with, such as Midjo
 A: The classrooms in the annual membership stay open for as long as the membership is active. Self-paced courses bought on their own (Beyond Lighting, the Prompt Pack) keep lifetime access.
 
 **Q: Is there a certificate?**
-A: Not today. The value is in the work you produce with the formula and the network you build in the community.
+A: Not today. A recognition from the community, earned against clear criteria, is part of its long-term direction (see "The vision").
 
 **Q: Where are the purchase terms?**
 A: The annual membership follows the membership terms at https://malearnsa.com/membership-terms.html. Every other product follows the policies linked in the site footer. Questions: majid@malearnsa.com.
@@ -171,7 +192,7 @@ A: You start the day you join; there is no start date to wait for. «معادل�
 ج: الفصول الدراسية في العضوية السنوية متاحة ما دامت عضويتك سارية. أما الدورات ذاتية التعلّم التي تُشترى منفردة (Beyond Lighting وحزمة البرومبتات) فيبقى الوصول إليها دائماً.
 
 **س: هل توجد شهادة؟**
-ج: ليس حالياً. القيمة في الأعمال التي تنتجها بالمعادلة، والعلاقات التي تبنيها داخل المجتمع.
+ج: ليس حالياً. اعتماد من المجتمع، يُكتسب وفق معايير واضحة، جزء من اتجاهه على المدى البعيد (انظر «الرؤية»).
 
 **س: أين أجد شروط الشراء؟**
 ج: العضوية السنوية تخضع لشروط العضوية: https://malearnsa.com/membership-terms.html. وبقية المنتجات تخضع للسياسات المنشورة في أسفل الموقع. لأي سؤال: majid@malearnsa.com.

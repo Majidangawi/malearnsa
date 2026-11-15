@@ -21,7 +21,7 @@ It is built for the Arab creative who is talented but stuck: unsure where to sta
 
 ## Who this is for
 
-Photographers, designers, art directors, creative directors, brand owners, content creators, and anyone in the Arab creative industries who wants to use AI (Midjourney, Higgsfield, Figma Weave, Claude, Gemini) to raise the quality of their work, command higher rates, and build a full-time creative career.
+Photographers, designers, art directors, creative directors, brand owners, content creators, and anyone in the Arab creative industries who wants to bring AI (Midjourney, Higgsfield, Figma Weave, Claude, Gemini) into their creative work.
 
 ## The membership (what the community sells)
 
@@ -53,12 +53,17 @@ Payment: mada, Visa, Mastercard, Apple Pay, Tamara, PayPal, or bank transfer.
 - **Beyond Lighting — أبعد من إمكانيات الإضاءة** (650 SAR) — fashion and product photography lighting with a single light source
 - **Flagship Mentorship** (3,500–6,000 SAR) — 3-to-6-month transformation programs
 
-## What members walk away with
+## The vision
 
-- A repeatable creative workflow they apply to every AI project, whatever the tool
-- Work produced at a professional level, not just interesting images
-- The ability to execute faster and charge more for it
-- A network of Arab creatives using AI seriously
+Where مجتمع صُنّاع الإلهام is heading, in its founder's direction. This is the long-term direction, not what the membership includes today, and none of it is offered or dated yet.
+
+- To become the number one creative community in the Arab world and the Middle East: the place an Arab creative heads to when they pursue a creative career.
+- One home for the whole creative path: using AI to create images and video, building a creative business (what to think about, what to avoid, how to price creative work), and tools and resources that shorten the way.
+- Opportunities: helping members reach creative project work and real roles, and documenting it.
+- Credibility: a recognition from the community, earned against clear criteria, that a member can put on their CV.
+- A platform where companies list creative work and find creatives the community has recognised.
+- Partner benefits and resources for members.
+- The north star: inspire one million people in the Arab world to believe in their creative potential.
 
 ## Primary topics
 
@@ -106,7 +111,7 @@ Verified public profiles for Majid Angawi (same set used in the site's Person sc
 
 ### لمن هذا المجتمع
 
-للمصوّرين والمصمّمين والمخرجين الفنّيين والمخرجين الإبداعيين وأصحاب العلامات وصنّاع المحتوى، ولكل مبدع عربي يريد أن يستخدم الذكاء الاصطناعي ليرفع جودة عمله، ويرفع أسعاره، ويبني مشروعاً إبداعياً يتفرّغ له.
+للمصوّرين والمصمّمين والمخرجين الفنّيين والمخرجين الإبداعيين وأصحاب العلامات وصنّاع المحتوى، ولكل مبدع عربي يريد أن يُدخل الذكاء الاصطناعي في عمله الإبداعي.
 
 ### العضوية السنوية
 
@@ -118,6 +123,18 @@ Verified public profiles for Majid Angawi (same set used in the site's Person sc
 سعر الانطلاق 1,600 ريال في السنة، أو 425 دولاراً عبر PayPal، لأول ٥٠ عضواً ينضمون أو حتى الاثنين ٣٠ نوفمبر ٢٠٢٦ الساعة ١١:٥٩ مساءً بتوقيت السعودية، أيهما أسبق، ثم يصبح السعر 1,880 ريالاً. العضوية سنة كاملة من يوم انضمامك، وسعر انضمامك يبقى لك ما دمت تجدّد دون انقطاع. أكثر من ١٢٠ مبدعاً طبّقوا المعادلة.
 
 الانضمام: https://checkout.malearnsa.com/cif-annual/checkout.html
+
+### الرؤية
+
+إلى أين يتّجه مجتمع صُنّاع الإلهام. هذا اتجاهنا على المدى البعيد، وليس ما تشمله العضوية اليوم، ولا شيء منه معروض أو محدّد بموعد بعد.
+
+- أن يصبح المجتمع الإبداعي الأول في العالم العربي والشرق الأوسط، والمكان الذي يقصده المبدع العربي حين يختار طريقه المهني الإبداعي.
+- بيت واحد للطريق الإبداعي كله: استخدام الذكاء الاصطناعي في إنتاج الصور والفيديو، وبناء العمل الإبداعي (فيمَ تفكّر، وماذا تتجنّب، وكيف تسعّر عملك)، وأدوات وموارد تختصر الطريق.
+- الفرص: مساعدة الأعضاء على الوصول إلى مشاريع إبداعية ووظائف حقيقية، وتوثيق ذلك.
+- المصداقية: اعتماد من المجتمع، يُكتسب وفق معايير واضحة، يضعه العضو في سيرته الذاتية.
+- منصّة تعرض فيها الشركات أعمالها الإبداعية، وتجد فيها مبدعين اعتمدهم المجتمع.
+- مزايا من الشركاء وموارد للأعضاء.
+- الهدف الأبعد: إلهام مليون شخص في العالم العربي ليؤمنوا بقدراتهم الإبداعية.
 
 ### يُباع منفصلاً
 
