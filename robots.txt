@@ -1,6 +1,26 @@
-# MA Learn — crawler policy
+# مجتمع صُنّاع الإلهام (Crafting Inspiration Community, formerly MA Learn) — crawler policy
 
 # Allow major LLM training + retrieval bots so malearnsa.com surfaces in AI assistants
+User-agent: OAI-SearchBot
+Allow: /
+Disallow: /beyond-fmcg/
+
+User-agent: ChatGPT-User
+Allow: /
+Disallow: /beyond-fmcg/
+
+User-agent: Claude-SearchBot
+Allow: /
+Disallow: /beyond-fmcg/
+
+User-agent: Claude-User
+Allow: /
+Disallow: /beyond-fmcg/
+
+User-agent: Perplexity-User
+Allow: /
+Disallow: /beyond-fmcg/
+
 User-agent: GPTBot
 Allow: /
 Disallow: /beyond-fmcg/
@@ -39,7 +59,8 @@ Disallow: /beyond-fmcg/
 
 Sitemap: https://malearnsa.com/sitemap.xml
 
-# /beyond-fmcg/ = temporary MA Studio client demo (Beyond FMCG catalog), not MA Learn content — excluded everywhere above.
+# /beyond-fmcg/ = temporary MA Studio client demo (Beyond FMCG catalog), not community content — excluded everywhere above.
 
 # LLM discovery index files:
 # https://malearnsa.com/llms.txt
+# https://malearnsa.com/llms-full.txt
