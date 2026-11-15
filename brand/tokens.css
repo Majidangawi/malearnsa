@@ -4,7 +4,7 @@
    Canonical URL : https://malearnsa.com/brand/tokens.css
    Spec (HTML)   : https://malearnsa.com/brand/
    Guideline     : https://malearnsa.com/brand/guidelines.html
-   Version       : 4.0.0 · approved by Majid Angawi 2026-08-31
+   Version       : 4.1.0 · approved by Majid Angawi 2026-08-31 · carousel direction 2026-11-15
    Rule          : every new page, site, and PDF consumes these tokens.
                    Never redeclare a token at page scope — override only via
                    a scoped class, and log the exception in the changelog.
