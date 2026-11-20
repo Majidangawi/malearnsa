@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <!-- Marketing consent page (Majid, 2026-11-20; membership terms §10). Optional, separate from the membership, withdrawable here.
+       noindex, linked only from member messages. No analytics or pixels on this page. Wording id: mkt-consent-2026-11-20. -->
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="referrer" content="strict-origin-when-cross-origin">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self' 'unsafe-inline' https://malearnsa.com https://fonts.googleapis.com; font-src 'self' https://malearnsa.com https://fonts.gstatic.com; img-src 'self' https://malearnsa.com; connect-src https://script.google.com https://script.googleusercontent.com; form-action 'none'; base-uri 'none'; object-src 'none'">
+  <title>ظهورك في تسجيلات الجلسات | مجتمع صُنّاع الإلهام</title>
+  <link rel="stylesheet" href="https://malearnsa.com/brand/ma-v4.css">
+  <style>
+.consent{padding:clamp(40px,7vw,88px) var(--page-x) clamp(72px,10vw,128px)}
+.consent .box{max-width:600px;margin-inline:auto;text-align:start;position:relative;z-index:1}
+.consent h1{margin-bottom:var(--s-4)}
+.consent .lead{margin-bottom:var(--s-6)}
+.consent form{display:grid;gap:var(--s-5)}
+.consent fieldset{border:0;display:grid;gap:12px}
+.consent legend{font-size:var(--fs-label);font-weight:700;color:var(--faint);margin-bottom:8px}
+.consent .choice{align-items:flex-start;font-size:.95rem;font-weight:600;color:var(--ink);line-height:1.9}
+.consent .choice input{flex:none;margin-top:6px;accent-color:var(--ink)}
+.consent .choice:has(input:checked){border-color:var(--line-strong);background:var(--wash-2)}   /* neutral: neither answer is nudged; orange stays on the one button */
+.consent .choice-err{display:none;font-size:var(--fs-label);color:var(--danger);font-weight:700}
+.consent fieldset[data-state="error"] .choice-err{display:block}
+.consent .btn{justify-self:start}
+.consent .status{display:none;border-radius:var(--r-md);padding:14px 18px;font-weight:700;line-height:1.9}
+.consent .status.is-ok{display:block;background:var(--ok-bg);border:1.5px solid var(--ok-line);color:var(--ink)}
+.consent .status.is-err{display:block;background:var(--danger-bg);border:1.5px solid var(--danger-line);color:var(--ink)}
+.consent .note{color:var(--faint);font-size:var(--fs-sm);margin-top:var(--s-6)}
+.consent .note a{color:var(--muted);text-decoration:underline;text-underline-offset:4px}
+.consent .note a:hover{color:var(--ink)}
+.hp{position:absolute;inset-inline-start:-9999px;width:1px;height:1px;overflow:hidden}
+.top .logo{height:44px;width:auto}
+.foot .mail{color:var(--faint);font-size:.8rem;font-weight:700;text-decoration:none}
+.foot .mail:hover{color:var(--muted)}
+  </style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap top-in">
+    <a href="https://malearnsa.com" aria-label="مجتمع صُنّاع الإلهام"><img class="logo" src="https://malearnsa.com/brand_assets/logo-malearn-white.png" alt="مجتمع صُنّاع الإلهام" width="46" height="44"></a>
+  </div>
+</header>
+
+<main class="consent glow-wrap">
+  <div class="box">
+    <h1 class="disp h1">ظهورك في تسجيلات الجلسات</h1>
+    <p class="lead">نسجّل جلسات البث المباشر ليتعلّم منها الأعضاء داخل المجتمع. ولا نستخدم ظهورك فيها خارج المجتمع، في التسويق مثلاً، إلا إذا وافقت على ذلك. وتستطيع أن تغيّر اختيارك متى شئت من هذه الصفحة.</p>
+
+    <form id="consent-form" class="card" novalidate>
+      <div class="field" id="email-field">
+        <label for="email">بريدك الإلكتروني</label>
+        <input class="input" id="email" name="email" type="email" inputmode="email" autocomplete="email" dir="ltr" maxlength="254" placeholder="you@example.com" required aria-describedby="email-help">
+        <p class="helper" id="email-help">البريد الذي انضممت به إلى المجتمع.</p>
+      </div>
+
+      <fieldset id="answer-set" aria-describedby="answer-err">
+        <legend>اختيارك</legend>
+        <label class="choice"><input type="radio" name="answer" value="yes"> <span>أوافق على أن تُستخدم صورتي وصوتي واسمي في تسجيلات الجلسات خارج المجتمع، في التسويق مثلاً. (اختياري، ولا يؤثر في عضويتك)</span></label>
+        <label class="choice"><input type="radio" name="answer" value="no"> <span>لا أوافق. وإن كنت وافقت من قبل، فاختياري هذا يسحب موافقتي.</span></label>
+        <p class="choice-err" id="answer-err">اختر أحد الخيارين.</p>
+      </fieldset>
+
+      <div class="hp" aria-hidden="true"><label>اترك هذا الحقل فارغاً <input name="website" tabindex="-1" autocomplete="off"></label></div>
+
+      <p class="status" id="status" role="status" aria-live="polite"></p>
+      <button class="btn btn-primary" id="save" type="submit">احفظ اختياري</button>
+    </form>
+
+    <p class="note">نحفظ بريدك واختيارك ووقت الحفظ فقط. وإن سحبت موافقتك، نتوقف عن استخدام ظهورك في أي مادة جديدة. التفاصيل في <a href="/membership-terms.html#s10">البند ١٠ من شروط العضوية</a> وفي <a href="/privacy-policy.html">سياسة الخصوصية</a>.</p>
+  </div>
+</main>
+
+<footer class="foot">
+  <div class="wrap foot-in">
+    <nav class="foot-links" aria-label="الصفحات القانونية">
+      <a href="/membership-terms.html">شروط العضوية</a>
+      <a href="/privacy-policy.html">سياسة الخصوصية</a>
+    </nav>
+    <a class="mail" href="mailto:support@malearnsa.com" dir="ltr">support@malearnsa.com</a>
+  </div>
+</footer>
+
+<script src="/consent/consent.js"></script>
+</body>
+</html>
